@@ -1,0 +1,138 @@
+{
+  "scope": "isolated synthetic demo only",
+  "version": 1,
+  "schemaSHA256": "5175219cd47d8014519c162efdd7e17e7fbd8c53bd119bb8afdabd0840544a94",
+  "modules": 82,
+  "initialRecords": 984,
+  "tables": {
+    "demo_records": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "entity",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "revision",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "enterprise",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "state",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "date",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "payload",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "mysqlTypes": {
+        "entity": "VARBINARY(128)",
+        "id": "VARBINARY(128)",
+        "revision": "INT UNSIGNED",
+        "enterprise": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "state": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "date": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "payload": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+      }
+    },
+    "demo_events": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "entity",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "revision",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 3
+        },
+        {
+          "cid": 3,
+          "name": "at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "kind",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "payload",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "mysqlTypes": {
+        "entity": "VARBINARY(128)",
+        "id": "VARBINARY(128)",
+        "revision": "INT UNSIGNED",
+        "at": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "kind": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "payload": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+      }
+    }
+  }
+}

@@ -12,3 +12,5 @@ await copyFile(join(webRoot,'src/index.html'),join(outDir,'index.html'));
 await copyFile(join(webRoot,'node_modules/three/LICENSE'),join(outDir,'THREE-LICENSE.txt'));
 await build({absWorkingDir:webRoot,entryPoints:['src/portal.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'portal.js')});
 for(const name of ['portal.html','portal.css'])await copyFile(join(webRoot,'src',name),join(outDir,name));
+await build({absWorkingDir:webRoot,entryPoints:['src/reference-demo.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'reference-demo.js')});
+for(const name of ['reference-demo.html','reference-demo.css'])await copyFile(join(webRoot,'src',name),join(outDir,name));

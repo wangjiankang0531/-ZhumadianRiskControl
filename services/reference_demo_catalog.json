@@ -1,0 +1,1090 @@
+[
+  {
+    "id": "risk-unit",
+    "name": "安全风险单元",
+    "group": "双重预防",
+    "columns": [
+      "责任部门",
+      "风险分析对象",
+      "风险分析单元",
+      "风险等级"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list_and_detail",
+    "detailFields": [
+      "责任部门",
+      "部门责任人",
+      "风险分析对象",
+      "风险分析单元",
+      "风险等级",
+      "坐标信息/查看坐标"
+    ]
+  },
+  {
+    "id": "check-content",
+    "name": "检查内容",
+    "group": "双重预防",
+    "columns": [
+      "责任部门",
+      "风险分析单元",
+      "风险等级",
+      "隐患排查内容",
+      "风险类型",
+      "创建部门",
+      "创建时间"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "check-list",
+    "name": "排查清单",
+    "group": "双重预防",
+    "columns": [
+      "排查清单编号",
+      "排查清单名称",
+      "排查清单状态",
+      "创建时间",
+      "所属部门"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "check-plan",
+    "name": "排查计划",
+    "group": "双重预防",
+    "columns": [
+      "计划名称",
+      "排查人员",
+      "排查部门",
+      "协同部门",
+      "排查周期",
+      "计划日期范围"
+    ],
+    "layout": "cards",
+    "referenceCoverage": "page"
+  },
+  {
+    "id": "check-task",
+    "name": "排查任务",
+    "group": "双重预防",
+    "columns": [
+      "排查计划编号",
+      "排查计划名称",
+      "排查类型",
+      "排查部门",
+      "排查人",
+      "排查日期",
+      "排查完成日期",
+      "排查周期",
+      "隐患数/关闭数",
+      "排查状态"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "hidden-handle",
+    "name": "隐患处理",
+    "group": "双重预防",
+    "columns": [
+      "隐患描述",
+      "隐患位置",
+      "协同部门",
+      "隐患级别",
+      "隐患排查内容",
+      "排查人",
+      "排查日期",
+      "排查计划名称",
+      "排查计划编号",
+      "隐患来源"
+    ],
+    "layout": "table",
+    "referenceCoverage": "three_tabs"
+  },
+  {
+    "id": "supervision",
+    "name": "上级检查记录",
+    "group": "双重预防",
+    "columns": [
+      "检查单位",
+      "带队领导",
+      "检查日期",
+      "受检单位",
+      "查出问题或亮点",
+      "建议措施"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "hidden-danger",
+    "name": "隐患台账",
+    "group": "双重预防",
+    "columns": [
+      "隐患描述",
+      "隐患位置",
+      "隐患来源",
+      "排查类型",
+      "排查人",
+      "排查日期",
+      "隐患类型",
+      "隐患级别",
+      "整改部门",
+      "整改人",
+      "是否逾期",
+      "是否督办",
+      "隐患状态"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list_and_scrolled_detail",
+    "detailFields": [
+      "排查项目",
+      "隐患排查内容",
+      "检查标准",
+      "协同部门/人",
+      "管控措施",
+      "排查部门/人/日期",
+      "排查类型",
+      "隐患类型/级别",
+      "位置描述",
+      "隐患描述",
+      "所在区域",
+      "是否逾期",
+      "坐标",
+      "图片",
+      "整改部门/人",
+      "限期整改时间",
+      "实际整改日期",
+      "产生原因",
+      "投入(元)",
+      "整改情况"
+    ]
+  },
+  {
+    "id": "special-task",
+    "name": "下发专项检查任务",
+    "group": "双重预防",
+    "columns": [
+      "企业编码",
+      "任务名称",
+      "任务开始日期",
+      "任务结束日期",
+      "检查任务类型",
+      "任务内容描述",
+      "是否转计划"
+    ],
+    "layout": "table",
+    "referenceCoverage": "empty_list"
+  },
+  {
+    "id": "inspection-team",
+    "name": "班组管理",
+    "group": "智能巡检",
+    "columns": [
+      "班组名称",
+      "班组类型",
+      "负责人名称",
+      "负责人电话",
+      "所属部门",
+      "人数"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "inspection-point",
+    "name": "巡检点维护",
+    "group": "智能巡检",
+    "columns": [
+      "巡检点编号",
+      "巡检点名称",
+      "风险级别",
+      "巡检区域",
+      "所属部门",
+      "巡检内容"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "inspection-route",
+    "name": "巡检路线规划",
+    "group": "智能巡检",
+    "columns": [
+      "巡检路线编号",
+      "巡检路线名称",
+      "巡检路线状态",
+      "所属部门",
+      "巡检路线图"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "inspection-plan",
+    "name": "巡检任务计划",
+    "group": "智能巡检",
+    "columns": [
+      "计划名称",
+      "巡检编号",
+      "巡检人员",
+      "巡检区域",
+      "责任单位",
+      "巡检日期范围"
+    ],
+    "layout": "cards",
+    "referenceCoverage": "page"
+  },
+  {
+    "id": "inspection-exception",
+    "name": "巡检问题台账",
+    "group": "智能巡检",
+    "columns": [
+      "问题名称",
+      "问题状态",
+      "问题描述",
+      "巡检点名称",
+      "所在区域",
+      "巡检人",
+      "巡检日期",
+      "问题类型",
+      "巡检任务编号"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "work-programme",
+    "name": "作业方案",
+    "group": "特殊作业",
+    "columns": [
+      "方案名称",
+      "作业类型",
+      "申请部门",
+      "申请时间"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "work-reservation",
+    "name": "作业票预约",
+    "group": "特殊作业",
+    "columns": [
+      "作业编号",
+      "作业类型",
+      "申请单位",
+      "作业级别",
+      "作业区域",
+      "作业内容",
+      "开始实施时间"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list_and_scrolled_detail",
+    "detailFields": [
+      "作业编号/类型/申请单位/申请时间",
+      "动火级别/方式",
+      "作业内容/区域/地点部位/坐标",
+      "是否为承包商",
+      "作业单位/负责人",
+      "风险辨识结果",
+      "作业实施时间范围",
+      "作业方案选择",
+      "关联作业票",
+      "作业人员表：岗位代号/工种/资质标记/所在单位/是否承包商；不保留参考真实个人信息"
+    ]
+  },
+  {
+    "id": "special-work",
+    "name": "特殊作业台账",
+    "group": "特殊作业",
+    "columns": [
+      "作业编号",
+      "作业类型",
+      "申请单位",
+      "申请时间",
+      "作业区域",
+      "作业内容",
+      "作业状态"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "park-basic",
+    "name": "基础信息管理",
+    "group": "安全基础管理",
+    "columns": [
+      "园区基本信息",
+      "园区概况",
+      "园区内两重点一重大",
+      "值班值守",
+      "企业事件停车场",
+      "停车位"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "law",
+    "name": "法律",
+    "group": "安全基础管理",
+    "columns": [
+      "名称",
+      "发布来源",
+      "发布时间",
+      "获取渠道",
+      "获取方式",
+      "是否有效",
+      "简介",
+      "备注"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "administration",
+    "name": "行政法规",
+    "group": "安全基础管理",
+    "columns": [
+      "名称",
+      "发布来源",
+      "发布时间",
+      "获取渠道",
+      "获取方式",
+      "是否有效",
+      "简介",
+      "备注"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "regulation-locality",
+    "name": "地方性法规",
+    "group": "安全基础管理",
+    "columns": [
+      "名称",
+      "发布来源",
+      "发布时间",
+      "获取渠道",
+      "获取方式",
+      "是否有效",
+      "简介",
+      "备注"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "departmental",
+    "name": "部门规章",
+    "group": "安全基础管理",
+    "columns": [
+      "名称",
+      "发布来源",
+      "发布时间",
+      "获取渠道",
+      "获取方式",
+      "是否有效",
+      "简介",
+      "备注"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "local-government",
+    "name": "地方政府规章",
+    "group": "安全基础管理",
+    "columns": [
+      "名称",
+      "发布来源",
+      "发布时间",
+      "获取渠道",
+      "获取方式",
+      "是否有效",
+      "简介",
+      "备注"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "administrative-documents",
+    "name": "行政规范性文件",
+    "group": "安全基础管理",
+    "columns": [
+      "名称",
+      "发布来源",
+      "发布时间",
+      "获取渠道",
+      "获取方式",
+      "是否有效",
+      "简介",
+      "备注"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "regulatory-requirements",
+    "name": "监管部门通知要求",
+    "group": "安全基础管理",
+    "columns": [
+      "名称",
+      "发布来源",
+      "发布时间",
+      "获取渠道",
+      "获取方式",
+      "是否有效",
+      "简介",
+      "备注"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "work-statistics",
+    "name": "特殊作业统计",
+    "group": "特殊作业",
+    "columns": [
+      "名称",
+      "所属区域",
+      "责任部门",
+      "说明"
+    ],
+    "layout": "statistics",
+    "referenceCoverage": "page",
+    "sourceEntity": "special-work"
+  },
+  {
+    "id": "policy-safety",
+    "name": "安技部管理制度",
+    "group": "安全基础管理",
+    "columns": [
+      "名称",
+      "发布来源",
+      "发布时间",
+      "获取渠道",
+      "获取方式",
+      "是否有效",
+      "简介",
+      "备注"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "policy-parking",
+    "name": "停车场管理制度",
+    "group": "安全基础管理",
+    "columns": [
+      "名称",
+      "发布来源",
+      "发布时间",
+      "获取渠道",
+      "获取方式",
+      "是否有效",
+      "简介",
+      "备注"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "policy-storage",
+    "name": "仓储部管理制度",
+    "group": "安全基础管理",
+    "columns": [
+      "名称",
+      "发布来源",
+      "发布时间",
+      "获取渠道",
+      "获取方式",
+      "是否有效",
+      "简介",
+      "备注"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "inspection-standard",
+    "name": "检查标准",
+    "group": "安全基础管理",
+    "columns": [
+      "一级类别",
+      "二级类别",
+      "检查依据",
+      "检查标准",
+      "状态"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "inspection-personnel",
+    "name": "巡检人员信息管理",
+    "group": "安全基础管理",
+    "columns": [
+      "姓名",
+      "性别",
+      "年龄",
+      "籍贯",
+      "家庭住址",
+      "特殊作业技能",
+      "安全工作证照"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "work-qualification",
+    "name": "作业人员资质检测",
+    "group": "安全基础管理",
+    "columns": [
+      "用户名称",
+      "工种",
+      "是否为承包商",
+      "是否有效",
+      "是否为监护人",
+      "是否为审核人"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "safety-license",
+    "name": "安全生产许可管理文件",
+    "group": "安全基础管理",
+    "columns": [
+      "图片",
+      "上传时间"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "contractor",
+    "name": "第三方单位信息",
+    "group": "安全基础管理",
+    "columns": [
+      "承包商税码/社会信用代码",
+      "承包商名称",
+      "承包商类型",
+      "承包商法人",
+      "承包商注册地址",
+      "安全责任人",
+      "联系方式",
+      "开始服务时间"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "blacklist",
+    "name": "黑名单",
+    "group": "安全基础管理",
+    "columns": [
+      "企业信用代码",
+      "类型",
+      "身份证号",
+      "状态",
+      "时间",
+      "原因"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "employee-training",
+    "name": "员工培训信息",
+    "group": "安全基础管理",
+    "columns": [
+      "培训名称",
+      "培训分类",
+      "培训组织单位(部门)",
+      "培训开始日期",
+      "培训结束日期",
+      "培训类别",
+      "培训地点"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "training-assessment",
+    "name": "培训考核信息",
+    "group": "安全基础管理",
+    "columns": [
+      "考核名称",
+      "考核分类",
+      "考核开始时间",
+      "考核结束时间"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "safety-commit",
+    "name": "公司级安全承诺",
+    "group": "安全承诺信息",
+    "columns": [
+      "企业状态",
+      "企业承诺",
+      "企业负责人",
+      "承诺时间",
+      "创建人"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "risk-daily",
+    "name": "每日风险研判",
+    "group": "安全承诺信息",
+    "columns": [
+      "企业状态",
+      "企业承诺",
+      "研判人",
+      "负责人",
+      "承诺时间",
+      "创建人"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "risk-storage",
+    "name": "仓储部风险研判",
+    "group": "安全承诺信息",
+    "columns": [
+      "仓储部承诺信息",
+      "班组负责人",
+      "车间负责人",
+      "部门负责人",
+      "创建时间",
+      "创建人"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "risk-parking",
+    "name": "停车场风险研判",
+    "group": "安全承诺信息",
+    "columns": [
+      "停车场承诺信息",
+      "研判人",
+      "负责人",
+      "创建时间",
+      "创建人"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "risk-general",
+    "name": "综合部风险研判",
+    "group": "安全承诺信息",
+    "columns": [
+      "企业状态",
+      "企业承诺",
+      "研判人",
+      "负责人",
+      "承诺时间",
+      "创建人"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "anti-terror",
+    "name": "防恐台账",
+    "group": "防恐台账",
+    "columns": [
+      "危险化学品企业名称",
+      "地址或位置",
+      "危险化学品储量",
+      "目标等级",
+      "防范级别",
+      "负责人",
+      "人力防范措施",
+      "实体防范措施",
+      "电子防范措施",
+      "应急处置预案"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "fire-devices",
+    "name": "监测设备列表",
+    "group": "消防设备监测",
+    "columns": [
+      "设备编号",
+      "设备类型",
+      "设备位置",
+      "监测指标状态",
+      "在线状态"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "fire-alarms",
+    "name": "监测设备告警列表",
+    "group": "消防设备监测",
+    "columns": [
+      "告警时间",
+      "告警等级",
+      "告警类型",
+      "告警状态",
+      "告警设备",
+      "隐患描述",
+      "设备类型",
+      "设备位置",
+      "设备坐标"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "major-hazard",
+    "name": "重大危险源",
+    "group": "重大危险源管理",
+    "columns": [
+      "危险源编号",
+      "危险源名称",
+      "地理位置",
+      "危险物质类型",
+      "临界量(吨)",
+      "当前存量(吨)",
+      "状态",
+      "评估日期"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list_and_detail"
+  },
+  {
+    "id": "hazard-statistics",
+    "name": "重大危险源统计",
+    "group": "重大危险源管理",
+    "columns": [
+      "名称",
+      "所属区域",
+      "责任部门",
+      "说明"
+    ],
+    "layout": "statistics",
+    "referenceCoverage": "page",
+    "sourceEntity": "major-hazard"
+  },
+  {
+    "id": "ep-air",
+    "name": "大气环境特征污染物",
+    "group": "环保监测管理",
+    "columns": [
+      "污染物编码",
+      "污染物名称",
+      "CAS编号",
+      "环境空气质量标准限值(μg/m³)",
+      "危害等级",
+      "主要来源"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "ep-water",
+    "name": "水环境特征污染物",
+    "group": "环保监测管理",
+    "columns": [
+      "污染物编码",
+      "污染物名称",
+      "CAS编号",
+      "地表水环境质量标准限值(mg/L)",
+      "危害等级",
+      "主要来源"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "ep-soil",
+    "name": "土壤特征污染物",
+    "group": "环保监测管理",
+    "columns": [
+      "污染物编码",
+      "污染物名称",
+      "CAS编号",
+      "土壤污染风险管制值(mg/kg)",
+      "危害等级",
+      "主要来源"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "ep-groundwater",
+    "name": "地下水环境特征污染物名录库",
+    "group": "环保监测管理",
+    "columns": [
+      "污染物编码",
+      "污染物名称",
+      "CAS编号",
+      "地下水质量标准(mg/L)",
+      "危害等级",
+      "主要来源"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "ep-alarms",
+    "name": "环境检测与告警",
+    "group": "环保监测管理",
+    "columns": [
+      "类型",
+      "污染物名称",
+      "监测结果",
+      "检测时间",
+      "达标情况",
+      "创建时间"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "ep-report",
+    "name": "环境报表",
+    "group": "环保监测管理",
+    "columns": [
+      "名称",
+      "所属区域",
+      "责任部门",
+      "说明"
+    ],
+    "layout": "statistics",
+    "referenceCoverage": "page",
+    "sourceEntity": "ep-alarms"
+  },
+  {
+    "id": "plans",
+    "name": "应急预案结构化",
+    "group": "敏捷应急",
+    "columns": [
+      "应急预案名称",
+      "应急预案类型",
+      "事故类型",
+      "指挥长",
+      "指挥长电话",
+      "是否备案",
+      "所属部门"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list_and_scrolled_detail",
+    "detailFields": [
+      "事故区域",
+      "处置措施",
+      "附件",
+      "副指挥长及联系方式",
+      "其他成员",
+      "参与单位及负责人",
+      "应急物资/队伍/专家页签"
+    ]
+  },
+  {
+    "id": "duty-personnel",
+    "name": "值班人员",
+    "group": "值班管理",
+    "columns": [
+      "姓名",
+      "性别",
+      "年龄",
+      "联系方式",
+      "职务",
+      "部门"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "duty-schedule",
+    "name": "值班计划",
+    "group": "值班管理",
+    "columns": [
+      "值班地点",
+      "值班日期",
+      "班次",
+      "值班岗位",
+      "交接事项"
+    ],
+    "layout": "calendar",
+    "referenceCoverage": "page"
+  },
+  {
+    "id": "duty-log",
+    "name": "值班日志",
+    "group": "值班管理",
+    "columns": [
+      "值班时间",
+      "值班人员",
+      "日志内容",
+      "重要事件",
+      "问题",
+      "处理情况"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "events",
+    "name": "应急事件",
+    "group": "敏捷应急",
+    "columns": [
+      "事件编号",
+      "事件名称",
+      "事件内容",
+      "事件类型",
+      "上报时间",
+      "上报人",
+      "事件级别",
+      "状态",
+      "研判结果"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "response",
+    "name": "应急响应",
+    "group": "敏捷应急",
+    "columns": [
+      "事件编号",
+      "事件名称",
+      "事件内容",
+      "事件类型",
+      "上报时间",
+      "上报人",
+      "事件级别",
+      "状态",
+      "研判结果"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list_and_scrolled_detail",
+    "detailFields": [
+      "事件区域",
+      "事件坐标",
+      "事件图片",
+      "研判：级别/预警启动/应急预案/状态/结果",
+      "处置时间线：人员/描述/附件"
+    ]
+  },
+  {
+    "id": "experts",
+    "name": "应急专家",
+    "group": "应急资源",
+    "columns": [
+      "专家姓名",
+      "专家电话",
+      "专家领域",
+      "专家学历",
+      "专家专业",
+      "工作年限",
+      "所属部门"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "teams",
+    "name": "应急队伍",
+    "group": "应急资源",
+    "columns": [
+      "队伍名称",
+      "队伍类型",
+      "负责人名称",
+      "负责人电话",
+      "所属部门",
+      "队伍位置"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "resources",
+    "name": "应急物资",
+    "group": "应急资源",
+    "columns": [
+      "物资名称",
+      "物资类型",
+      "物资型号",
+      "物资数量",
+      "单位",
+      "所属部门",
+      "存放地点"
+    ],
+    "layout": "table",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "approval-started",
+    "name": "我发起的",
+    "group": "审批管理",
+    "columns": [
+      "流程名称",
+      "所属流程",
+      "审批节点",
+      "发起时间",
+      "办理时间"
+    ],
+    "layout": "cards",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "approval-todo",
+    "name": "待办中心",
+    "group": "审批管理",
+    "columns": [
+      "流程名称",
+      "所属流程",
+      "审批节点",
+      "发起时间",
+      "办理时间"
+    ],
+    "layout": "cards",
+    "referenceCoverage": "empty_list"
+  },
+  {
+    "id": "approval-completed",
+    "name": "已办中心",
+    "group": "审批管理",
+    "columns": [
+      "流程名称",
+      "所属流程",
+      "审批节点",
+      "发起时间",
+      "办理时间"
+    ],
+    "layout": "cards",
+    "referenceCoverage": "list"
+  },
+  {
+    "id": "approval-monitor",
+    "name": "流程监控",
+    "group": "审批管理",
+    "columns": [
+      "流程名称",
+      "所属流程",
+      "审批节点",
+      "发起时间",
+      "办理时间"
+    ],
+    "layout": "cards",
+    "referenceCoverage": "list"
+  }
+]
