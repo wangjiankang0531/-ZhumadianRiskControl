@@ -105,7 +105,9 @@ ZhumadianNativeCpu decodeZhumadianNativeChunks(int tile,
       }
       part.indices = mesh.indices;
       const int atlasSide = item.at("atlas_size").get<int>();
-      const bool tightAtlas = item.value("atlas_layout_policy", std::string{}) == "tight_square_gutter4_v1" &&
+      const auto atlasPolicy = item.value("atlas_layout_policy", std::string{});
+      const bool tightAtlas = (atlasPolicy == "tight_square_gutter4_v1" ||
+                               atlasPolicy == "edge_clamped_square_v1") &&
                               atlasSide >= 16 && atlasSide <= 2048 && atlasSide % 8 == 0;
       if (std::any_of(
               part.indices.begin(), part.indices.end(), [&](uint32_t i) { return i >= part.vertices.size(); }) ||

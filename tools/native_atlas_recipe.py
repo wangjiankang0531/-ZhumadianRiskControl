@@ -5,15 +5,17 @@ import json
 import re
 import threading
 if __package__:
-    from . import native_texture_parts as textures, native_tight_atlas as tight, native_cache_policy as cache_policy
+    from . import native_texture_parts as textures, native_tight_atlas as tight, native_cache_policy as cache_policy, native_edge_clamp_atlas as edge
 else:
     import native_texture_parts as textures
     import native_tight_atlas as tight
     import native_cache_policy as cache_policy
+    import native_edge_clamp_atlas as edge
 
 LEGACY = 'legacy_pot_gutter4_v1'
 TIGHT = tight.POLICY
-LAYOUTS = (LEGACY, TIGHT)
+EDGE_CLAMP = edge.POLICY
+LAYOUTS = (LEGACY, TIGHT, EDGE_CLAMP)
 BUILD_LOCK = threading.RLock()
 
 
@@ -26,6 +28,8 @@ def policy(value=None):
 
 def layouts(sizes, atlas_layout=None):
     selected = policy(atlas_layout)
+    if selected == EDGE_CLAMP:
+        return edge.layouts(sizes)
     original = textures.atlas_layouts(sizes)
     return tight.tight_layouts(original) if selected == TIGHT else original
 
@@ -44,9 +48,23 @@ def stamp(atlas_layout=None):
     selected = policy(atlas_layout)
     sha = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
     result = {'atlas_recipe_sha256': sha(__file__)}
-    if selected == TIGHT:
+    if selected in (TIGHT, EDGE_CLAMP):
         result.update(atlas_layout_policy=selected, tight_layout_sha256=sha(tight.__file__))
+    if selected == EDGE_CLAMP:
+        result["edge_layout_sha256"] = sha(edge.__file__)
     return result
+
+
+def save_atlas(mapping, output, size, atlas_layout=None):
+    if policy(atlas_layout) == EDGE_CLAMP:
+        return edge.save(mapping, output, size)
+    return textures.save_atlas(mapping, output, size)
+
+
+def apply_sampler(gltf, atlas_layout=None):
+    if policy(atlas_layout) == EDGE_CLAMP:
+        gltf["samplers"] = [dict(edge.SAMPLER)]
+        gltf["textures"][0]["sampler"] = 0
 
 
 def cache_directory(root, legacy, atlas_layout=None, override=None):

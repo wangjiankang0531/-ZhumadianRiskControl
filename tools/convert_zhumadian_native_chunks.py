@@ -131,7 +131,7 @@ def _build_parts(bundle, sources, source_directory, env, alias, first_part, *, a
                 )
                 part_counts = textures.face_counts(part_obj)
                 native.full.SIZE = atlas_size
-                textures.save_atlas(mapping, part_folder / "atlas.jpg", atlas_size)
+                recipes.save_atlas(mapping, part_folder / "atlas.jpg", atlas_size, atlas_layout)
                 views, vertices, indices, low, high, _ = native.full.write_geometry(
                     [part_obj], mapping, part_folder / "geometry.bin"
                 )
@@ -210,6 +210,7 @@ def _build_parts(bundle, sources, source_directory, env, alias, first_part, *, a
                     "scenes": [{"nodes": [0]}],
                     "scene": 0,
                 }
+                recipes.apply_sampler(gltf, atlas_layout)
                 (part_folder / "geometry.gltf").write_text(
                     json.dumps(gltf), encoding="utf-8"
                 )
