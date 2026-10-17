@@ -96,7 +96,7 @@ bool ShowcaseInteractiveApp::initEditorWindow() {
   render.hCursor = LoadCursor(nullptr, IDC_ARROW);
   RegisterClassW(&render);
   hwnd_ = CreateWindowExW(
-      0, render.lpszClassName, L"三维地景", WS_CHILD | WS_VISIBLE, 0, 0, 1, 1, editorFrame_, nullptr, hinstance_, this);
+      0, render.lpszClassName, L"三维地景", WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS, 0, 0, 1, 1, editorFrame_, nullptr, hinstance_, this);
   ShowWindow(editorFrame_, SW_SHOW);
   ShowWindow(editorFrame_, SW_MAXIMIZE);
   editorLayout();
@@ -214,6 +214,7 @@ void ShowcaseInteractiveApp::editorLayout() {
     ShowWindow(controlsHwnd_, editorPanelVisible_ ? SW_SHOW : SW_HIDE);
     MoveWindow(controlsHwnd_, editorDockRight_ ? r.right - panel : 0, chrome, px(438), height, TRUE);
     editorPanelLayout();
+    SetWindowPos(controlsHwnd_, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
   }
   int x = r.right - px(362);
   for (int id : {3200, 3201, 3202}) {
@@ -256,7 +257,8 @@ void ShowcaseInteractiveApp::editorPanelLayout() {
     MoveWindow(editorControls_[id], px(x), px(10), px(id == 3191 ? 66 : 40), px(28), TRUE);
     SetWindowPos(editorControls_[id], HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
   }
-  InvalidateRect(controlsHwnd_, nullptr, TRUE);
+  // A moved parent can retain stale child surfaces, especially across a Vulkan resize.
+  RedrawWindow(controlsHwnd_, nullptr, nullptr, RDW_INVALIDATE | RDW_ERASE | RDW_ALLCHILDREN | RDW_UPDATENOW);
 }
 
 void ShowcaseInteractiveApp::editorShellCommand(int id) {
@@ -297,6 +299,8 @@ bool ShowcaseInteractiveApp::editorResizeViewport() {
   imageAvailable_ = device_->createSemaphore();
   renderFinished_ = device_->createSemaphore();
   editorResizePending_ = false;
+  if (controlsHwnd_ && editorPanelVisible_)
+    RedrawWindow(controlsHwnd_, nullptr, nullptr, RDW_INVALIDATE | RDW_ERASE | RDW_ALLCHILDREN | RDW_UPDATENOW);
   return imageAvailable_ && renderFinished_;
 }
 

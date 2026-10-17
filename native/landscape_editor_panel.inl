@@ -23,7 +23,7 @@ bool ShowcaseInteractiveApp::initEditorPanel() {
   controlsHwnd_ = CreateWindowExW(0,
                                   wc.lpszClassName,
                                   L"标注和图层",
-                                  WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_CLIPCHILDREN,
+                                  WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
                                   0,
                                   0,
                                   420,
