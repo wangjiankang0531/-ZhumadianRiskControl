@@ -1,0 +1,637 @@
+{
+  "schemaVersion": 2,
+  "schemaDefinitionSHA256": "0345db86c84b827ca89a23a00893343fe83d5c940bb1ab7c40f47d823c5919ad",
+  "states": [
+    "archived",
+    "feedback",
+    "following",
+    "inspection",
+    "onsite",
+    "pending",
+    "supplement"
+  ],
+  "focusFlags": [
+    "high-risk",
+    "major",
+    "repeated",
+    "special-inspection",
+    "spillover",
+    "supervision"
+  ],
+  "reviewResults": [
+    "continue",
+    "emergency",
+    "inadequate",
+    "rectified",
+    "special-inspection"
+  ],
+  "tables": {
+    "issues": {
+      "description": "园区重点问题当前快照；不替代企业一般隐患台账",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "enterprise",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "source_system",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "source_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "revision",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "updated",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "payload",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "issue_enterprise",
+          "unique": false,
+          "columns": [
+            "tenant",
+            "enterprise",
+            "updated"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_issues_2",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "enterprise",
+            "source_system",
+            "source_id"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_issues_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": []
+    },
+    "events": {
+      "description": "逐版本追加的业务变更/反馈/复查及成功写入审计",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "issue",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "revision",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 3,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "at",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "actor",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "policy",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "kind",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "payload",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_events_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "issue",
+            "revision"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        [
+          0,
+          0,
+          "issues",
+          "tenant",
+          "tenant",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          1,
+          "issues",
+          "issue",
+          "id",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ]
+      ]
+    },
+    "requests": {
+      "description": "按租户、操作者及幂等键保存重复提交结果",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "actor",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "key",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 3,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "digest",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "enterprise",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "result",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_requests_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "actor",
+            "key"
+          ]
+        }
+      ],
+      "foreignKeys": []
+    },
+    "dlg_documents": {
+      "description": "当前用户DLG文档及原始UTF8字节",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "document_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "revision",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "source_sha256",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "updated",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "payload",
+          "sqliteType": "BLOB",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGBLOB"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_dlg_documents_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "document_id"
+          ]
+        }
+      ],
+      "foreignKeys": []
+    },
+    "dlg_versions": {
+      "description": "DLG完整历史快照及SHA256",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "document_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "revision",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 3,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "source_sha256",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "updated",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "payload",
+          "sqliteType": "BLOB",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGBLOB"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_dlg_versions_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "document_id",
+            "revision"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        [
+          0,
+          0,
+          "dlg_documents",
+          "tenant",
+          "tenant",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          1,
+          "dlg_documents",
+          "document_id",
+          "document_id",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ]
+      ]
+    },
+    "dlg_layers": {
+      "description": "可查询的图层分组、顺序、名称和显隐/锁定",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "document_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "layer_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 3,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "sort_index",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "name",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        },
+        {
+          "name": "visible",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "TINYINT UNSIGNED"
+        },
+        {
+          "name": "locked",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "TINYINT UNSIGNED"
+        },
+        {
+          "name": "payload",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "dlg_layer_order",
+          "unique": false,
+          "columns": [
+            "tenant",
+            "document_id",
+            "sort_index"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_dlg_layers_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "document_id",
+            "layer_id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        [
+          0,
+          0,
+          "dlg_documents",
+          "tenant",
+          "tenant",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          1,
+          "dlg_documents",
+          "document_id",
+          "document_id",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ]
+      ]
+    },
+    "dlg_features": {
+      "description": "可查询的点线面要素、绘制顺序、企业及完整几何样式",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "document_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "feature_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 3,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "layer_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "sort_index",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "geometry_type",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(8) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "enterprise",
+          "sqliteType": "TEXT",
+          "notNull": false,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "payload",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "dlg_feature_enterprise",
+          "unique": false,
+          "columns": [
+            "tenant",
+            "enterprise"
+          ]
+        },
+        {
+          "name": "dlg_feature_layer",
+          "unique": false,
+          "columns": [
+            "tenant",
+            "document_id",
+            "layer_id",
+            "sort_index"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_dlg_features_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "document_id",
+            "feature_id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        [
+          0,
+          0,
+          "dlg_layers",
+          "tenant",
+          "tenant",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          1,
+          "dlg_layers",
+          "document_id",
+          "document_id",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          2,
+          "dlg_layers",
+          "layer_id",
+          "layer_id",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "schema":"xnby.api.config.v1",
+  "jwt":{"issuer":"https://identity.example.invalid","audience":"xnby-zhumadian-api","jwksFile":"public-jwks.json","tenantClaim":"tenant","tenant":"zhumadian","format":"rfc9068","maxLifetimeSeconds":3600},
+  "policyFile":"authorization.json",
+  "data":{"layers":"../DLG/驻马店图层.json","publicSpatialIds":[]},
+  "auditFile":"../../Document/Deployment/api_audit/access.jsonl"
+}

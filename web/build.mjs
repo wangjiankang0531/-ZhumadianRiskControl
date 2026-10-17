@@ -1,0 +1,14 @@
+import {build} from 'esbuild';
+import {mkdir,copyFile} from 'node:fs/promises';
+import {dirname,resolve,join} from 'node:path';
+import {fileURLToPath} from 'node:url';
+const webRoot=dirname(fileURLToPath(import.meta.url));
+const args=process.argv.slice(2);
+if(args.length && (args.length!==2 || args[0]!=='--outdir' || !args[1]))throw new Error('Usage: build.mjs [--outdir DIRECTORY]');
+const outDir=args.length?resolve(args[1]):join(webRoot,'dist');
+await mkdir(outDir,{recursive:true});
+await build({absWorkingDir:webRoot,entryPoints:['src/viewer.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'viewer.js')});
+await copyFile(join(webRoot,'src/index.html'),join(outDir,'index.html'));
+await copyFile(join(webRoot,'node_modules/three/LICENSE'),join(outDir,'THREE-LICENSE.txt'));
+await build({absWorkingDir:webRoot,entryPoints:['src/portal.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'portal.js')});
+for(const name of ['portal.html','portal.css'])await copyFile(join(webRoot,'src',name),join(outDir,name));

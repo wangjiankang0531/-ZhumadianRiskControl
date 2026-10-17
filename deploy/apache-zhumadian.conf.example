@@ -1,0 +1,23 @@
+# TEMPLATE ONLY: substitute hostname/certificates/config and validate on target Linux.
+# Requires mod_ssl, mod_proxy, mod_proxy_http and mod_headers.
+<VirtualHost *:443>
+    ServerName risk.example.invalid
+    SSLEngine on
+    SSLCertificateFile /etc/xnby/tls/fullchain.pem
+    SSLCertificateKeyFile /etc/xnby/tls/privkey.pem
+    ProxyRequests Off
+    ProxyPreserveHost On
+    ProxyTimeout 180
+    RequestHeader unset X-Forwarded-Host
+    RequestHeader set X-Forwarded-Proto "https"
+    ProxyPass / http://127.0.0.1:8781/ connectiontimeout=5 timeout=180
+    ProxyPassReverse / http://127.0.0.1:8781/
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "no-referrer"
+    ErrorLog ${APACHE_LOG_DIR}/xnby_error.log
+    CustomLog ${APACHE_LOG_DIR}/xnby_access.log "%h %t %m %U %>s %b"
+</VirtualHost>
+# Set portal.json publicOrigin to https://risk.example.invalid.
+# Backend processes remain on loopback. Do NOT Alias the whole Assets or services tree.
+# Current Python http.server transport is for development/acceptance only.
+# A production HTTP worker/adapter, target OS dependencies, capacity and recovery must be accepted before launch.

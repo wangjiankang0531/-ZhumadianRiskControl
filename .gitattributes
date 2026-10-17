@@ -1,0 +1,3 @@
+run_business_api.cmd text eol=crlf
+verify_business_api.cmd text eol=crlf
+run_api_web_qa.cmd text eol=crlf

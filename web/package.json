@@ -1,0 +1,5 @@
+{
+  "name": "xnby-landscape-viewer", "version": "0.8.5", "private": true, "type": "module",
+  "scripts": {"build": "node build.mjs", "test": "node --test tests/*.test.mjs"},
+  "dependencies": {"three": "0.185.0"}, "devDependencies": {"esbuild": "0.25.10"}
+}

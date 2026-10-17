@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {parseInspectionView} from '../src/inspection_view.js';
+test('local metric inspection is reproducible without changing the default view',()=>{assert.equal(parseInspectionView(''),null);assert.deepEqual(parseInspectionView('?inspect=-317,-1988,43&height=25'),{point:[-317,-1988,43],height:25});});
+test('inspection rejects malformed, nonfinite and unbounded coordinates and heights',()=>{for(const value of ['?inspect=1,2','?inspect=,2,3','?inspect=NaN,2,3','?inspect=100001,0,0','?inspect=1,2,3&height=0','?inspect=1,2,3&height=Infinity'])assert.throws(()=>parseInspectionView(value));});

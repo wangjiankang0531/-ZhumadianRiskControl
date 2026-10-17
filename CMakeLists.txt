@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.20)
+project(ZhumadianRiskControl VERSION 0.9.6 LANGUAGES C CXX)
+set(XNBY_ENGINE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../XNBYEngine" CACHE PATH "XNBY engine checkout")
+set(HT_ENGINE_LIBRARIES_ONLY ON CACHE BOOL "" FORCE)
+set(HT_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(HT_BUILD_RENDER_REGRESSION_TESTS OFF CACHE BOOL "" FORCE)
+add_subdirectory("${XNBY_ENGINE_ROOT}" "${CMAKE_BINARY_DIR}/engine")
+find_package(glm REQUIRED)
+find_package(nlohmann_json REQUIRED)
+if(NOT WIN32)
+  message(FATAL_ERROR "The current native scene editor requires Windows; use web viewer on other platforms")
+endif()
+add_executable(xnby_zmd_editor native/main.cpp native/showcase_demo.rc)
+target_link_libraries(xnby_zmd_editor PRIVATE ht_core ht_rhi ht_asset ht_gis ht_measure ht_renderer
+  glm::glm nlohmann_json::nlohmann_json stb user32 comctl32 comdlg32 gdi32 shell32)
+target_compile_definitions(xnby_zmd_editor PRIVATE HT_LANDSCAPE_EDITOR VK_USE_PLATFORM_WIN32_KHR
+  WIN32_LEAN_AND_MEAN NOMINMAX)
+target_compile_features(xnby_zmd_editor PRIVATE cxx_std_20)
+if(MSVC)
+  target_compile_options(xnby_zmd_editor PRIVATE /W4 /utf-8)
+  target_link_options(xnby_zmd_editor PRIVATE "/MANIFEST:EMBED"
+    "/MANIFESTINPUT:${CMAKE_CURRENT_SOURCE_DIR}/native/showcase_demo.manifest")
+endif()

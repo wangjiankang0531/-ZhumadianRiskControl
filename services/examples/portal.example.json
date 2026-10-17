@@ -1,0 +1,12 @@
+{
+  "schema": "xnby.portal.config.v1",
+  "mode": "authenticated",
+  "development": false,
+  "oauth": {
+    "issuer": "https://identity.example.invalid",
+    "clientId": "PROVIDER_PUBLIC_CLIENT_ID",
+    "authorizationEndpoint": "https://identity.example.invalid/oauth2/authorize",
+    "tokenEndpoint": "https://identity.example.invalid/oauth2/token",
+    "scope": "spatial:read business:read"
+  }
+}
