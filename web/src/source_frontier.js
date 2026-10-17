@@ -1,10 +1,15 @@
-import {Vector3,Box3,Frustum,Matrix4} from 'three';
+import {Vector3,Box3,Frustum,Matrix4,ClampToEdgeWrapping} from 'three';
 
 export function validateSourcePart(part,mesh){if(!mesh?.geometry?.index||mesh.geometry.index.count!==part.indices||mesh.geometry.attributes.position.count!==part.vertices||!/^part_\d{3}$/.test(part.directory)||!Number.isFinite(part.gpu_payload_bytes)||part.gpu_payload_bytes<=0||part.gpu_payload_bytes>32*1048576)throw Error('源模型分批不一致');
-    const side=part.atlas_size,image=(Array.isArray(mesh.material)?mesh.material[0]:mesh.material)?.map?.source?.data;
-    const tight=part.atlas_layout_policy==='tight_square_gutter4_v1'&&Number.isInteger(side)&&side>=16&&side<=2048&&side%8===0;
-    if(!([1024,2048].includes(side)||tight)||image?.width!==side||image?.height!==side)throw Error('源纹理尺寸不一致');
-    let textureBytes=0;for(let n=side;n>0;n=Math.floor(n/2))textureBytes+=n*n*4;
+    const side=part.atlas_size,texture=(Array.isArray(mesh.material)?mesh.material[0]:mesh.material)?.map,image=texture?.source?.data;
+    const rectangular=part.atlas_layout_policy==='edge_clamped_rect_v1';
+    if(Object.hasOwn(part,'atlas_extent')!==rectangular)throw Error('矩形源纹理需要显式格式');
+    const extent=rectangular?part.atlas_extent:[side,side];
+    const bounded=Array.isArray(extent)&&extent.length===2&&extent.every(n=>Number.isInteger(n)&&n>=16&&n<=2048&&n%8===0)&&Math.max(...extent)===side;
+    const declared=['tight_square_gutter4_v1','edge_clamped_square_v1','edge_clamped_rect_v1'].includes(part.atlas_layout_policy);
+    if(!bounded||(![1024,2048].includes(side)&&!declared)||image?.width!==extent[0]||image?.height!==extent[1])throw Error('源纹理尺寸不一致');
+    if(['edge_clamped_square_v1','edge_clamped_rect_v1'].includes(part.atlas_layout_policy)&&(texture.wrapS!==ClampToEdgeWrapping||texture.wrapT!==ClampToEdgeWrapping))throw Error('源纹理采样方式不一致');
+    let textureBytes=0,w=extent[0],h=extent[1];for(;;){textureBytes+=w*h*4;if(w===1&&h===1)break;w=Math.max(1,Math.floor(w/2));h=Math.max(1,Math.floor(h/2));}
     if(part.gpu_payload_bytes!==part.vertices*64+part.indices*4+textureBytes)throw Error('实际纹理及几何资源账目不一致');
 }
 

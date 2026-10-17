@@ -41,6 +41,12 @@ def copy_tree(source,target,link=False):
     return count
 
 
+def runtime_tool_names(previous_manifest):
+    names={r['path'].split('/',1)[1] for r in previous_manifest['files'] if r['path'].startswith('tools/')}
+    names|={'native_atlas_recipe.py','native_tight_atlas.py','native_edge_clamp_atlas.py','native_rectangular_atlas.py','serve_business_portal_qa.py','launch_business_portal_qa.py'}
+    return names
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--base',type=Path,required=True)
@@ -68,8 +74,7 @@ def main():
     for p in base.glob('*.dll'):copy_file(p,out/p.name)
     executable='XNBY_ZhumadianEditor_0_9_7.exe';copy_file(args.editor,out/executable)
     copy_tree(args.web_dist,out/'apps/landscape_web/dist')
-    tools={r['path'].split('/',1)[1] for r in old['files'] if r['path'].startswith('tools/')}
-    tools|={'native_atlas_recipe.py','native_tight_atlas.py','serve_business_portal_qa.py','launch_business_portal_qa.py'}
+    tools=runtime_tool_names(old)
     for name in sorted(tools):copy_file(ROOT/'tools'/name,out/'tools'/name)
     for name in ['osgb_exporter_build','osg-build-min']:copy_tree(base/'work'/name,out/'work'/name)
     copy_file(args.exporter,out/'work/osgb_exporter_build/Release/ht_osgb_exporter.exe')

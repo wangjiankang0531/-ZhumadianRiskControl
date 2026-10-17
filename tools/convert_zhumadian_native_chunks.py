@@ -113,6 +113,7 @@ def _build_parts(bundle, sources, source_directory, env, alias, first_part, *, a
                 sizes[path] = image.size
         all_parts = []
         for mapping, atlas_size in recipes.layouts(sizes, atlas_layout):
+            atlas_extent = recipes.extent(atlas_size)
             texture_bytes = recipes.mip_bytes(atlas_size)
             max_faces = (PART_LIMIT - texture_bytes) // 204
             count = textures.face_count(obj, materials, mapping)
@@ -130,10 +131,10 @@ def _build_parts(bundle, sources, source_directory, env, alias, first_part, *, a
                     min(max_faces, count - first_face),
                 )
                 part_counts = textures.face_counts(part_obj)
-                native.full.SIZE = atlas_size
+                native.full.SIZE = max(atlas_extent)
                 recipes.save_atlas(mapping, part_folder / "atlas.jpg", atlas_size, atlas_layout)
                 views, vertices, indices, low, high, _ = native.full.write_geometry(
-                    [part_obj], mapping, part_folder / "geometry.bin"
+                    [part_obj], mapping, part_folder / "geometry.bin", atlas_extent=atlas_extent
                 )
                 texture_bytes = recipes.mip_bytes(atlas_size)
                 payload = vertices * 64 + indices * 4 + texture_bytes
@@ -239,10 +240,9 @@ def _build_parts(bundle, sources, source_directory, env, alias, first_part, *, a
                     for a, b in ((0, 1), (1, 2), (2, 0)):
                         uv_length = (
                             math.hypot(
-                                uvs[ids[a] * 2] - uvs[ids[b] * 2],
-                                uvs[ids[a] * 2 + 1] - uvs[ids[b] * 2 + 1],
+                                (uvs[ids[a] * 2] - uvs[ids[b] * 2]) * atlas_extent[0],
+                                (uvs[ids[a] * 2 + 1] - uvs[ids[b] * 2 + 1]) * atlas_extent[1],
                             )
-                            * atlas_size
                         )
                         if uv_length > 1e-6:
                             texels.append(math.dist(points[a], points[b]) / uv_length)
@@ -251,7 +251,7 @@ def _build_parts(bundle, sources, source_directory, env, alias, first_part, *, a
                     "vertices": vertices,
                     "indices": indices,
                     "gpu_payload_bytes": payload,
-                    "atlas_size": atlas_size,
+                    "atlas_size": max(atlas_extent),
                     "source_atlas_pages": len(mapping),
                     "source_texture_scale": 1.0,
                     "source_names": [r["name"] for r in sources],
@@ -266,6 +266,8 @@ def _build_parts(bundle, sources, source_directory, env, alias, first_part, *, a
                         for name in ("geometry.gltf", "geometry.bin", "atlas.jpg")
                     ],
                 }
+                if atlas_layout == recipes.RECTANGULAR:
+                    record["atlas_extent"] = list(atlas_extent)
                 if atlas_layout != recipes.LEGACY:
                     record["atlas_layout_policy"] = atlas_layout
                 all_parts.append((record, edges, texels))

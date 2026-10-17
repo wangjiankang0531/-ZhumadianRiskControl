@@ -33,10 +33,19 @@ def verify(tile, depth, parent):
     ]:
         payload, indices = 0, 0
         for part in marker["parts"]:
+            from PIL import Image
+            with Image.open(folder / part["directory"] / "atlas.jpg") as image:
+                width, height = image.size
+            assert [width, height] == part.get("atlas_extent", [part["atlas_size"]] * 2)
+            texture_bytes = 0
+            while True:
+                texture_bytes += width * height * 4
+                if width == height == 1: break
+                width, height = max(1, width // 2), max(1, height // 2)
             physical = (
                 part["vertices"] * 64
                 + part["indices"] * 4
-                + sum((part["atlas_size"] // (2**i)) ** 2 * 4 for i in range(12))
+                + texture_bytes
             )
             if physical != part["gpu_payload_bytes"] or physical > chunks.PART_LIMIT:
                 raise ValueError(

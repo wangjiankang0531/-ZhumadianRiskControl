@@ -175,10 +175,9 @@ def source_metadata(folder, parts, sources, catalog, source_directory):
                 for a, b in [(0, 1), (1, 2), (2, 0)]:
                     pixels = (
                         math.hypot(
-                            uvs[ids[a] * 2] - uvs[ids[b] * 2],
-                            uvs[ids[a] * 2 + 1] - uvs[ids[b] * 2 + 1],
+                            (uvs[ids[a] * 2] - uvs[ids[b] * 2]) * part.get("atlas_extent", [part["atlas_size"]] * 2)[0],
+                            (uvs[ids[a] * 2 + 1] - uvs[ids[b] * 2 + 1]) * part.get("atlas_extent", [part["atlas_size"]] * 2)[1],
                         )
-                        * part["atlas_size"]
                     )
                     if pixels > 1e-6:
                         record["texels"].append(

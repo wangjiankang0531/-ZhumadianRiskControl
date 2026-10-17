@@ -5,17 +5,19 @@ import json
 import re
 import threading
 if __package__:
-    from . import native_texture_parts as textures, native_tight_atlas as tight, native_cache_policy as cache_policy, native_edge_clamp_atlas as edge
+    from . import native_texture_parts as textures, native_tight_atlas as tight, native_cache_policy as cache_policy, native_edge_clamp_atlas as edge, native_rectangular_atlas as rectangular
 else:
     import native_texture_parts as textures
     import native_tight_atlas as tight
     import native_cache_policy as cache_policy
     import native_edge_clamp_atlas as edge
+    import native_rectangular_atlas as rectangular
 
 LEGACY = 'legacy_pot_gutter4_v1'
 TIGHT = tight.POLICY
 EDGE_CLAMP = edge.POLICY
-LAYOUTS = (LEGACY, TIGHT, EDGE_CLAMP)
+RECTANGULAR = rectangular.POLICY
+LAYOUTS = (LEGACY, TIGHT, EDGE_CLAMP, RECTANGULAR)
 BUILD_LOCK = threading.RLock()
 
 
@@ -28,41 +30,54 @@ def policy(value=None):
 
 def layouts(sizes, atlas_layout=None):
     selected = policy(atlas_layout)
+    if selected == RECTANGULAR:
+        return rectangular.layouts(sizes)
     if selected == EDGE_CLAMP:
         return edge.layouts(sizes)
     original = textures.atlas_layouts(sizes)
     return tight.tight_layouts(original) if selected == TIGHT else original
 
 
-def mip_bytes(side):
-    if type(side) is not int or side <= 0 or side > 2048:
-        raise ValueError('Invalid native atlas side')
+def extent(size):
+    values = (size, size) if type(size) is int else size
+    if not isinstance(values, (tuple, list)) or len(values) != 2 or any(type(n) is not int or n <= 0 or n > 2048 for n in values):
+        raise ValueError('Invalid native atlas extent')
+    return tuple(values)
+
+
+def mip_bytes(size):
+    width, height = extent(size)
     result = 0
-    while side:
-        result += side * side * 4
-        side //= 2
-    return result
+    while True:
+        result += width * height * 4
+        if width == height == 1:
+            return result
+        width, height = max(1, width // 2), max(1, height // 2)
 
 
 def stamp(atlas_layout=None):
     selected = policy(atlas_layout)
     sha = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
     result = {'atlas_recipe_sha256': sha(__file__)}
-    if selected in (TIGHT, EDGE_CLAMP):
+    if selected in (TIGHT, EDGE_CLAMP, RECTANGULAR):
         result.update(atlas_layout_policy=selected, tight_layout_sha256=sha(tight.__file__))
-    if selected == EDGE_CLAMP:
+    if selected in (EDGE_CLAMP, RECTANGULAR):
         result["edge_layout_sha256"] = sha(edge.__file__)
+    if selected == RECTANGULAR:
+        result["rectangular_layout_sha256"] = sha(rectangular.__file__)
     return result
 
 
 def save_atlas(mapping, output, size, atlas_layout=None):
+    if policy(atlas_layout) == RECTANGULAR:
+        return rectangular.save(mapping, output, extent(size))
     if policy(atlas_layout) == EDGE_CLAMP:
         return edge.save(mapping, output, size)
     return textures.save_atlas(mapping, output, size)
 
 
 def apply_sampler(gltf, atlas_layout=None):
-    if policy(atlas_layout) == EDGE_CLAMP:
+    if policy(atlas_layout) in (EDGE_CLAMP, RECTANGULAR):
         gltf["samplers"] = [dict(edge.SAMPLER)]
         gltf["textures"][0]["sampler"] = 0
 

@@ -2,7 +2,7 @@ import {withSourceRestorations,sourceBundleIdentity} from '../src/source_residen
 import {stageSourceParts,SourceLoadCancelled} from '../src/lod_transaction.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {Group,BufferGeometry,Float32BufferAttribute,Mesh,MeshBasicMaterial,DataTexture,Ray,Vector3,PerspectiveCamera} from 'three';
+import {Group,BufferGeometry,Float32BufferAttribute,Mesh,MeshBasicMaterial,DataTexture,Ray,Vector3,PerspectiveCamera,ClampToEdgeWrapping,RepeatWrapping} from 'three';
 import {SourceFrontier,pickVisibleSource,validateSourceBundle,visibleSourceCandidates,sourceRefinementScore,sourceViewPriority,rankSourceCandidates,planSourceBudget} from '../src/source_frontier.js';
 const hash='a'.repeat(64),side=1024,mipBytes=5592404;
 function mesh(points){const g=new BufferGeometry();g.setAttribute('position',new Float32BufferAttribute(points,3));g.setIndex(points.length===18?[0,1,2,3,4,5]:[0,1,2]);return new Mesh(g,new MeshBasicMaterial({map:new DataTexture(new Uint8Array(4),side,side)}));}
@@ -153,4 +153,21 @@ test('a later restoration read failure disposes earlier staged pages and changes
 test('tight atlas accepts only declared aligned bounded dimensions with exact mip accounting',()=>{
  const {marker,meshes}=initial(),m=meshes.get('part_000'),p=marker.parts[0];p.atlas_size=520;p.atlas_layout_policy='tight_square_gutter4_v1';m.material.map.source.data={width:520,height:520};let texture=0;for(let n=520;n>0;n=Math.floor(n/2))texture+=n*n*4;p.gpu_payload_bytes=p.vertices*64+p.indices*4+texture;marker.gpu_payload_bytes=p.gpu_payload_bytes;validateSourceBundle(marker,meshes);
  for(const change of [q=>delete q.atlas_layout_policy,q=>q.atlas_layout_policy='unknown',q=>q.atlas_size=521,q=>q.atlas_size=2056,q=>q.gpu_payload_bytes++]){const copy=structuredClone(marker);change(copy.parts[0]);assert.throws(()=>validateSourceBundle(copy,meshes));}
+});
+
+
+test('rectangular source pages validate real two-axis mip bytes and explicit clamp sampling',()=>{
+ const chain=[[2048,520],[1024,260],[512,130],[256,65],[128,32],[64,16],[32,8],[16,4],[8,2],[4,1],[2,1],[1,1]];
+ for(const [width,height] of [[2048,520],[520,2048]]){
+  const {marker,meshes}=initial(),p=marker.parts[0],m=meshes.get(p.directory);
+  p.atlas_layout_policy='edge_clamped_rect_v1';p.atlas_size=2048;p.atlas_extent=[width,height];
+  m.material.map.source.data.width=width;m.material.map.source.data.height=height;
+  m.material.map.wrapS=m.material.map.wrapT=ClampToEdgeWrapping;
+  p.gpu_payload_bytes=p.vertices*64+p.indices*4+chain.reduce((sum,[w,h])=>sum+w*h*4,0);marker.gpu_payload_bytes=p.gpu_payload_bytes;
+  validateSourceBundle(marker,meshes);
+  for(const change of [q=>delete q.atlas_layout_policy,q=>q.atlas_layout_policy='unknown',q=>q.atlas_extent.reverse(),q=>q.atlas_extent=[2048,521],q=>q.gpu_payload_bytes++]){
+   const copy=structuredClone(marker);change(copy.parts[0]);assert.throws(()=>validateSourceBundle(copy,meshes));
+  }
+  m.material.map.wrapS=RepeatWrapping;assert.throws(()=>validateSourceBundle(marker,meshes),/采样/);
+ }
 });

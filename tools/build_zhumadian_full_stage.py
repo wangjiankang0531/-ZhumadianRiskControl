@@ -141,7 +141,8 @@ def pack_atlas(objects, output):
     return mapping, len(images)
 
 
-def write_geometry(objects, mapping, output):
+def write_geometry(objects, mapping, output, *, atlas_extent=None):
+    atlas_width, atlas_height = (SIZE, SIZE) if atlas_extent is None else atlas_extent
     positions, normals, uvs, indices = (array.array("f"), array.array("f"), array.array("f"), array.array("I"))
     low, high = [math.inf] * 3, [-math.inf] * 3
     batches = []
@@ -191,7 +192,7 @@ def write_geometry(objects, mapping, output):
                         positions.extend(pos)
                         normals.extend(ns[ni - 1] if ni else face_normal)
                         # OBJ is lower-left; glTF texture coordinates are upper-left.
-                        uvs.extend(((x + uv[0] * width) / SIZE, (y + (1 - uv[1]) * height) / SIZE))
+                        uvs.extend(((x + uv[0] * width) / atlas_width, (y + (1 - uv[1]) * height) / atlas_height))
                         low = [min(a, b) for a, b in zip(low, pos)]
                         high = [max(a, b) for a, b in zip(high, pos)]
                         batch_min = [min(a, b) for a, b in zip(batch_min, pos)]

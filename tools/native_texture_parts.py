@@ -86,7 +86,7 @@ def atlas_layouts(sizes):
     return layouts
 
 
-def save_atlas(mapping, output, size=ATLAS_SIZE):
+def atlas_image(mapping, size=ATLAS_SIZE):
     from PIL import Image
 
     atlas = Image.new("RGB", (size, size))
@@ -110,7 +110,11 @@ def save_atlas(mapping, output, size=ATLAS_SIZE):
                     (x + w - 1 + dx, y + h - 1 + dy, w - 1, h - 1),
                 ]:
                     atlas.putpixel((px, py), tile.getpixel((cx, cy)))
-    atlas.save(output, quality=98, subsampling=0)
+    return atlas
+
+
+def save_atlas(mapping, output, size=ATLAS_SIZE):
+    atlas_image(mapping, size).save(output, quality=98, subsampling=0)
 
 
 def face_count(obj, materials, selected):

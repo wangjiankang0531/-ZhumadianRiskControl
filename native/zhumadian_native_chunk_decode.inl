@@ -106,15 +106,21 @@ ZhumadianNativeCpu decodeZhumadianNativeChunks(int tile,
       part.indices = mesh.indices;
       const int atlasSide = item.at("atlas_size").get<int>();
       const auto atlasPolicy = item.value("atlas_layout_policy", std::string{});
-      const bool tightAtlas = (atlasPolicy == "tight_square_gutter4_v1" ||
-                               atlasPolicy == "edge_clamped_square_v1") &&
-                              atlasSide >= 16 && atlasSide <= 2048 && atlasSide % 8 == 0;
+      const bool rectangularAtlas = atlasPolicy == "edge_clamped_rect_v1";
+      if (item.contains("atlas_extent") != rectangularAtlas)
+        throw std::runtime_error("Native rectangular extent requires its explicit recipe");
+      const auto extent = rectangularAtlas ? item.at("atlas_extent").get<std::array<int, 2>>()
+                                           : std::array<int, 2>{atlasSide, atlasSide};
+      const bool boundedAtlas = extent[0] >= 16 && extent[1] >= 16 && extent[0] <= 2048 &&
+                                extent[1] <= 2048 && extent[0] % 8 == 0 && extent[1] % 8 == 0 &&
+                                std::max(extent[0], extent[1]) == atlasSide;
+      const bool declaredAtlas = atlasPolicy == "tight_square_gutter4_v1" ||
+                                 atlasPolicy == "edge_clamped_square_v1" || rectangularAtlas;
       if (std::any_of(
               part.indices.begin(), part.indices.end(), [&](uint32_t i) { return i >= part.vertices.size(); }) ||
-          !loadRgbaImage(partFolder / "atlas.jpg", part.image) ||
-          part.image.width != item.at("atlas_size").get<int>() ||
-          part.image.height != item.at("atlas_size").get<int>() ||
-          (part.image.width != 1024 && part.image.width != 2048 && !tightAtlas))
+          !boundedAtlas || !loadRgbaImage(partFolder / "atlas.jpg", part.image) ||
+          part.image.width != extent[0] || part.image.height != extent[1] ||
+          (part.image.width != 1024 && part.image.width != 2048 && !declaredAtlas))
         throw std::runtime_error("Native part indices/image changed");
       if (picking)
         for (size_t i = 0; i < part.indices.size(); i += 3)
@@ -122,8 +128,11 @@ ZhumadianNativeCpu decodeZhumadianNativeChunks(int tile,
                                part.vertices[part.indices[i + 1]].position,
                                part.vertices[part.indices[i + 2]].position);
       uint64_t textureBytes = 0;
-      for (int side = part.image.width; side > 0; side /= 2)
-        textureBytes += uint64_t(side) * side * 4;
+      for (int width = part.image.width, height = part.image.height;;
+           width = std::max(1, width / 2), height = std::max(1, height / 2)) {
+        textureBytes += uint64_t(width) * height * 4;
+        if (width == 1 && height == 1) break;
+      }
       if (part.payload != part.vertices.size() * sizeof(Vertex) + part.indices.size() * sizeof(uint32_t) + textureBytes)
         throw std::runtime_error("Native physical upload accounting differs from marker");
       result.payload += part.payload;
