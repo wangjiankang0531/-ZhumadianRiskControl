@@ -91,6 +91,12 @@ class ReadOnlyHttpTests(unittest.TestCase):
         self.assertEqual(self.request('/api/lod/117/3')[0],409)
         self.assertEqual(self.snapshot(),before)
 
+    def test_worker_static_entry_is_explicitly_served_without_opening_other_scripts(self):
+        static=self.root/'apps/landscape_web/dist';static.mkdir(parents=True)
+        (static/'source-gain-worker.js').write_text('self.onmessage = () => {};')
+        self.assertEqual(self.request('/source-gain-worker.js')[0],200)
+        self.assertEqual(self.request('/unexpected-worker.js')[0],404)
+
     def test_corrupt_payload_stale_producer_and_changed_marker_are_rejected(self):
         status,body,_ = self.request('/api/lod/117/3');self.assertEqual(status,200)
         token = json.loads(body)['cache_lease']

@@ -8,6 +8,7 @@ if(args.length && (args.length!==2 || args[0]!=='--outdir' || !args[1]))throw ne
 const outDir=args.length?resolve(args[1]):join(webRoot,'dist');
 await mkdir(outDir,{recursive:true});
 await build({absWorkingDir:webRoot,entryPoints:['src/viewer.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'viewer.js')});
+await build({absWorkingDir:webRoot,entryPoints:['src/source_gain_worker.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'source-gain-worker.js')});
 await copyFile(join(webRoot,'src/index.html'),join(outDir,'index.html'));
 await copyFile(join(webRoot,'node_modules/three/LICENSE'),join(outDir,'THREE-LICENSE.txt'));
 await build({absWorkingDir:webRoot,entryPoints:['src/portal.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'portal.js')});

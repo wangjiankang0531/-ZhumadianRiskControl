@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {Scene,Mesh,BufferGeometry,Float32BufferAttribute,MeshBasicMaterial,PerspectiveCamera,Color} from 'three';
-import {encodeVisibilityId,countVisibilityPixels,visiblePixelPriority,depthWeightedPriority,SourceVisibility} from '../src/source_visibility.js';
+import {encodeVisibilityId,countVisibilityPixels,visiblePixelPriority,depthWeightedPriority,SourceVisibility,visiblePixelSamples,visibilityCameraKey,matchesVisibilityCamera} from '../src/source_visibility.js';
 
 test('visibility ID raster keeps 24-bit identity and discounts obscured dashboard pixels',()=>{
  const pixels=new Uint8Array(12);pixels.set([...encodeVisibilityId(65537),255],0);pixels.set([...encodeVisibilityId(65537),255],4);pixels.set([...encodeVisibilityId(255),255],8);
@@ -13,6 +13,10 @@ test('zero actually visible pixels suppresses an overlapping source box',()=>{
  const node={bounds_min:[-100,-100,-100],bounds_max:[100,100,100],longest_edge_p90_m:5,texel_world_p90_m:1};
  assert.equal(visiblePixelPriority(node,0,camera,683),0);assert.ok(visiblePixelPriority(node,.5,camera,683)>visiblePixelPriority(node,.01,camera,683));
 });
+test('visible samples preserve GPU lower-left orientation, source ID, depth and global occlusion weights',()=>{
+ const bytes=new Uint8Array([1,0,0,10,2,0,0,20,0,0,0,30,1,0,0,40]),registry=new Map([[1,'root/1'],[2,'node/2/other']]),samples=visiblePixelSamples(bytes,2,2,new Float32Array([1,.2,1,1]),registry);
+ assert.equal(samples.get('root/1').length,8);assert.deepEqual(samples.get('root/1').slice(0,3),[-.5,-.5,10]);assert.deepEqual(samples.get('root/1').slice(4,7),[.5,.5,40]);assert.equal(samples.get('node/2/other').length,4);assert.ok(Math.abs(samples.get('root/1')[3]-1/3.2)<1e-8);
+});
 function fixture(failRead=false){
  const geometry=new BufferGeometry();geometry.setAttribute('position',new Float32BufferAttribute([-1,-1,0,1,-1,0,0,1,0],3));geometry.setIndex([0,1,2]);geometry.addGroup(0,3,0);
  const base=new Mesh(geometry,new MeshBasicMaterial()),context=new Scene(),ground=new Mesh(geometry,new MeshBasicMaterial());context.add(ground);const scene=new Scene();scene.background=new Color('#809ab0');scene.add(base,context);
@@ -23,6 +27,21 @@ function fixture(failRead=false){
 }
 test('ID pass restores genuine draw groups, materials, context, target and clear state',()=>{const f=fixture();assert.equal(f.sampler.sample(f.args).visibleSources,1);assert.equal(f.sampler.weight(1),1);f.check();f.sampler.dispose();});
 test('readback failure restores the visible rendering state before bounds fallback',()=>{const f=fixture(true);assert.throws(()=>f.sampler.sample(f.args),/read failed/);f.check();f.sampler.dispose();});
+test('gain snapshots copy only genuinely visible source samples and reject a moved camera',()=>{
+ const f=fixture();f.args.baseQuality={edges:new Map([[1,10]]),texels:new Map([[1,0]])};f.sampler.sample(f.args);const snapshot=f.sampler.capture(1,[''],f.args.camera,683);assert.ok(snapshot.samples.length>0);assert.equal(snapshot.nodes.length,1);snapshot.samples[0]=999;snapshot.cameraWorld[12]=999;
+ const again=f.sampler.capture(1,[''],f.args.camera,683);assert.notEqual(again.samples[0],999);assert.notEqual(again.cameraWorld[12],999);assert.equal(f.sampler.capture(2,[''],f.args.camera,683).samples.length,0);
+ f.args.camera.position.x++;f.args.camera.updateMatrixWorld();assert.throws(()=>f.sampler.capture(1,[''],f.args.camera,683),/stale/);f.sampler.dispose();
+});
+test('camera comparison ignores floating roundoff while preserving full ray matrices and real movement',()=>{
+ const f=fixture();f.args.camera.position.set(-404.14709360453753,-2083.0695566594954,201.44926109873967);f.args.camera.updateMatrixWorld();const key=visibilityCameraKey(f.args.camera,991,683),exact=f.args.camera.matrixWorld.elements[14];
+ f.args.camera.position.z+=1e-12;f.args.camera.updateMatrixWorld();assert.equal(visibilityCameraKey(f.args.camera,991,683),key);assert.notEqual(f.args.camera.matrixWorld.elements[14],exact);
+ f.args.camera.position.x+=.001;f.args.camera.updateMatrixWorld();assert.notEqual(visibilityCameraKey(f.args.camera,991,683),key);f.sampler.dispose();
+});
+test('pose comparison uses bounded matrix differences even across a rounded-key boundary',()=>{
+ const camera=new PerspectiveCamera(52,1,.5,60000);camera.position.set(1.0000000000049,0,5);camera.updateMatrixWorld();const key=visibilityCameraKey(camera,991,683),snapshot={width:991,height:683,cameraWorld:[...camera.matrixWorld.elements],projectionInverse:[...camera.projectionMatrixInverse.elements]};
+ camera.position.x+=.0000000000002;camera.updateMatrixWorld();assert.notEqual(visibilityCameraKey(camera,991,683),key);assert.equal(matchesVisibilityCamera(snapshot,camera,991,683),true);
+ camera.position.x+=.001;camera.updateMatrixWorld();assert.equal(matchesVisibilityCamera(snapshot,camera,991,683),false);assert.equal(matchesVisibilityCamera(snapshot,camera,992,683),false);
+});
 
 
 test('logarithmic depth distinguishes a nearby visible surface from a camera-containing box',()=>{
@@ -60,4 +79,12 @@ test('parent eviction sums disjoint child depth coverage without using a global 
 test('rendered quality audit uses the same weighted depth samples and restores scene state',()=>{
  const f=fixture();f.args.baseQuality={edges:new Map([[1,1000]]),texels:new Map([[1,0]])};const stats=f.sampler.sample(f.args),node={...f.args.catalog.root_records[0],longest_edge_p90_m:1000,texel_world_p90_m:0};
  const expected=visiblePixelPriority(node,1,f.args.camera,683,60000);assert.ok(expected>0);assert.ok(Math.abs(stats.weightedQualityDeficit-expected)<1e-12);assert.ok(Math.abs(f.sampler.priority(1,node,f.args.camera,683)-expected)<1e-12);f.check();f.sampler.dispose();
+});
+
+test('retirement measures the marginal loss against the current visible cut',()=>{
+ const f=fixture(),camera=f.args.camera,parent={name:'parent',bounds_min:[-1,-1,-1],bounds_max:[1,1,1],longest_edge_p90_m:5,texel_world_p90_m:0},child={...parent,name:'child',longest_edge_p90_m:2};
+ f.sampler.depthBins.set('node/1/child',new Map([[96,.3]]));const nodes=new Map([['child',{node:child}]]);
+ const expected=f.sampler.priority(1,parent,camera,683,['child'])-f.sampler.priority(1,child,camera,683);
+ assert.ok(expected>0);assert.ok(Math.abs(f.sampler.retirementLoss(1,parent,['child'],nodes,camera,683)-expected)<1e-12);
+ assert.equal(f.sampler.retirementLoss(1,child,['child'],nodes,camera,683),0);assert.equal(f.sampler.retirementLoss(1,parent,['child'],new Map(),camera,683),Infinity);f.sampler.dispose();
 });

@@ -127,7 +127,7 @@ export function rankSourceCandidates(candidates){return [...candidates].sort((a,
 
 // Plan all coarsenings before changing any live draw cut. Independent siblings
 // within one root may jointly make room; failed admission changes nothing.
-export function planSourceBudget(residents,request,cost,limit,priority,rootPriority=null){
+export function planSourceBudget(residents,request,cost,limit,priority,rootPriority=null,{checkRestorePeak=true}={}){
  let used=[...residents.values()].reduce((sum,r)=>sum+r.frontier.bytes,0);if(used+cost<=limit)return[];
  const candidates=[];
  for(const [root,ready] of residents)for(const parent of ready.frontier.bundles.keys())if(parent!=='$root'){
@@ -136,13 +136,14 @@ export function planSourceBudget(residents,request,cost,limit,priority,rootPrior
    if(plan.bytes<ready.frontier.bytes&&benefit*2<request.score)candidates.push({root,parent,benefit});
  }
  if(rootPriority)for(const [root,ready] of residents)if(root!==request.id){const benefit=rootPriority(root,new Set(ready.frontier.visible));if(benefit*2<request.score)candidates.push({root,parent:null,benefit});}
+ const totalLoss=actions=>actions.reduce((sum,action)=>sum+(candidates.find(c=>c.root===action.root&&c.parent===action.parent)?.benefit??Infinity),0);
  candidates.sort((a,b)=>a.benefit-b.benefit);const copies=new Map(),actions=[];
  for(const candidate of candidates){let copy=copies.get(candidate.root);if(copy===null)continue;if(!copy){copy=residents.get(candidate.root).frontier.copyForPlanning();copies.set(candidate.root,copy);}
-   if(candidate.parent===null){used-=copy.bytes;copies.set(candidate.root,null);actions.splice(0,actions.length,...actions.filter(a=>a.root!==candidate.root));actions.push({root:candidate.root,parent:null});if(used+cost<=limit)return actions;continue;}
+   if(candidate.parent===null){used-=copy.bytes;copies.set(candidate.root,null);actions.splice(0,actions.length,...actions.filter(a=>a.root!==candidate.root));actions.push({root:candidate.root,parent:null});if(used+cost<=limit&&totalLoss(actions)*2<request.score)return actions;continue;}
    const plan=copy.rollbackPlan(candidate.parent);if(!plan||plan.bytes>=copy.bytes)continue;
    const proposed=[...actions.filter(a=>a.root!==candidate.root||!plan.subtree.has(a.parent)),{root:candidate.root,parent:candidate.parent}];
-   if(sourceRestorationFootprint(residents,proposed)>limit)continue;
-   used+=plan.bytes-copy.bytes;copy.rollback(candidate.parent);actions.splice(0,actions.length,...actions.filter(a=>a.root!==candidate.root||!plan.subtree.has(a.parent)));actions.push({root:candidate.root,parent:candidate.parent});if(used+cost<=limit)return actions;
+   if(checkRestorePeak&&sourceRestorationFootprint(residents,proposed)>limit)continue;
+   used+=plan.bytes-copy.bytes;copy.rollback(candidate.parent);actions.splice(0,actions.length,...actions.filter(a=>a.root!==candidate.root||!plan.subtree.has(a.parent)));actions.push({root:candidate.root,parent:candidate.parent});if(used+cost<=limit&&totalLoss(actions)*2<request.score)return actions;
  }
  return null;
 }

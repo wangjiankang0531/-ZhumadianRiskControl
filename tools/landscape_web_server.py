@@ -321,7 +321,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def translate_path(self,path):
         route=unquote(urlsplit(path).path).lstrip('/')
         if '\\' in route or '..' in route.split('/') or '\x00' in route:return str(ROOT/'work/web_not_found')
-        if route in ('','index.html','viewer.js','THREE-LICENSE.txt','portal.html','portal.js','portal.css'):
+        if route in ('','index.html','viewer.js','source-gain-worker.js','THREE-LICENSE.txt','portal.html','portal.js','portal.css'):
             return str(self.root/'apps/landscape_web/dist'/(route or 'index.html'))
         if route=='layers/default.json':return str(self.layers)
         if route=='spatial/default.json':return str(self.spatial or publication_assets(self.root)/'Spatial/spatial_catalog.json')
