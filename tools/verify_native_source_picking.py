@@ -73,6 +73,7 @@ def main():
     parser.add_argument('--reference-root', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--require-visibility', action='store_true')
+    parser.add_argument('--prepared-assets', type=Path, help='Verify the sealed external generation named by native_lod.prepared_assets')
     args = parser.parse_args()
     package = args.package.resolve()
     reference_root = args.reference_root.resolve()
@@ -82,6 +83,13 @@ def main():
     assert lod['picking_enabled'] and lod['settled'] and not lod['pending']
     assert not lod['partial_root_drawn'] and not lod['local_family_pending']
     assert not lod['local_family_error']
+    assets = None
+    if args.prepared_assets is not None:
+        from verify_prepared_native_assets import PreparedAssets, require
+        assets = PreparedAssets(package, args.prepared_assets)
+        assets.require_runtime_identity(lod)
+        require(not args.output.resolve().is_relative_to((assets.project/'Assets').resolve()),
+                'Verification reports cannot be written into project assets')
     hierarchy = read(package / 'data/showcase/zhumadian_native_hierarchy.json')
     positions, indices = reference.mesh(reference_root / 'assets/showcase/runtime/zhumadian/full/zhumadian_full.gltf')
     cp, ci = reference.mesh(reference_root / 'assets/showcase/runtime/zhumadian/context/context_fused.gltf')
@@ -96,7 +104,11 @@ def main():
     resident = {r['tile']: r for r in lod['resident']}
     assert len(resident) == len(lod['resident'])
     assert all(f['tile'] in resident for f in lod['local_families'])
-    cache = package / 'work/zhumadian_native_chunk_cache'
+    cache = assets.store if assets is not None else package / 'work/zhumadian_native_chunk_cache'
+    def bundle_marker(folder):
+        return assets.bundle(folder.name) if assets is not None else read(folder / 'complete.json')
+    def evidence_path(path):
+        return str(path) if assets is not None else str(path.relative_to(package))
     fine, hashes, cuts = [], [], []
     for tile, ready in resident.items():
         root = next(r for r in hierarchy['root_records'] if r['tile_id'] == tile)
@@ -105,7 +117,7 @@ def main():
         catalog = read(catalog_path)
         bundles = []
         base_folder = cache / f'tile_{tile}_depth_{ready["base_depth"]}'
-        base = read(base_folder / 'complete.json')
+        base = bundle_marker(base_folder)
         assert base['tile_id'] == tile and base['depth'] == ready['base_depth'] and base['complete_frontier']
         bundles.append((base_folder, base))
         families = []
@@ -113,7 +125,7 @@ def main():
             parent = family['parent']
             key = hashlib.sha256(parent.encode('utf-8')).hexdigest()[:16]
             folder = cache / f'family_tile_{tile}_{key}'
-            marker = read(folder / 'complete.json')
+            marker = bundle_marker(folder)
             assert marker['tile_id'] == tile and marker['replacement_parent'] == parent and marker['complete_sibling_family']
             assert marker['indices'] == family['triangles'] * 3
             families.append((parent, marker['source_nodes']))
@@ -122,7 +134,7 @@ def main():
         assert len(selected) == ready['frontier']
         sources = {}
         for folder, marker in bundles:
-            hashes.append({'path': str((folder / 'complete.json').relative_to(package)), 'sha256': digest(folder / 'complete.json')})
+            hashes.append({'path': evidence_path(folder / 'complete.json'), 'sha256': digest(folder / 'complete.json')})
             meshes = {}
             ownership = {}
             directories = [p['directory'] for p in marker['parts']]
@@ -134,7 +146,7 @@ def main():
                 for item in part['files']:
                     path = folder / directory / item['name']
                     assert path.stat().st_size == item['bytes'] and digest(path) == item['sha256']
-                    hashes.append({'path': str(path.relative_to(package)), 'sha256': item['sha256']})
+                    hashes.append({'path': evidence_path(path), 'sha256': item['sha256']})
                 meshes[directory] = reference.mesh(folder / directory / 'geometry.gltf')
                 ownership[directory] = []
             for node in marker['source_nodes']:
@@ -256,6 +268,9 @@ def main():
                  'intersections, complete current source-family cut; no whole-area/performance claim',
         'statsSha256': digest(args.stats),
         'referenceInputs': reference_inputs,
+        'geometryStore': str(cache),
+        'preparedAssets': assets.identity() if assets is not None else None,
+        'preparedSourceInputs': assets.source_inputs if assets is not None else [],
         'visibleCuts': cuts,
         'samples': rows,
         'maxDistanceErrorM': max_error,
@@ -265,7 +280,8 @@ def main():
         'gpuVisibilitySamples': visibility_rows,
         'gpuVisibilityVerified': bool(visibility_rows),
     }
-    args.output.write_text(json.dumps(result, indent=2), encoding='utf-8')
+    with args.output.open('x', encoding='utf-8') as stream:
+        json.dump(result, stream, indent=2)
     print(json.dumps({'passed': True, 'rays': len(rows), 'fineHits': probe['fine_hits'], 'maxDistanceErrorM': max_error}))
 
 
