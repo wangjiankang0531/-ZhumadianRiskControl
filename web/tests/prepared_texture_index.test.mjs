@@ -31,3 +31,7 @@ test('restore footprint keeps all old roots until commit and deduplicates missin
  assert.equal(sourceRestorationFootprint(residents,[{root:1,parent:'a'},{root:1,parent:'b'},{root:2,parent:null}]),105);
  assert.equal(sourceRestorationFootprint(residents,[{root:2,parent:null}]),85);
 });
+
+test('rejected compressed source remains on fallback for this index without changing files or other identities',()=>{
+ const v=value(),other='c'.repeat(64);v.entries.push({sourceSHA256:other,payloadSHA256:'d'.repeat(64)});const index=new PreparedTextureIndex(v,'http://localhost/');assert.equal(index.reject(part),true);assert.equal(index.has(part),false);assert.equal(index.reject(part),false);assert.throws(()=>index.url(part,'texture.bc7'));assert.equal(index.has({files:[{name:'atlas.jpg',sha256:other}]}),true);assert.equal(v.entries.length,2);assert.equal(new PreparedTextureIndex(v,'http://localhost/').has(part),true);assert.throws(()=>index.reject({files:[]}));
+});

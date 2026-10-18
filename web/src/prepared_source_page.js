@@ -4,11 +4,12 @@ import {LoadingManager,TextureLoader,SRGBColorSpace,ClampToEdgeWrapping,LinearMi
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {loadPreparedPhotograph,uploadPreparedBc7,sha256,rgbaMipBytes,PreparedTextureCancelled,describePreparedBc7} from './prepared_bc7.js';
 import {stageSourceParts} from './lod_transaction.js';
+import {WEB_SOURCE_GEOMETRY_LAYOUT,webSourceGeometryBytes,validateSourceGltfGeometry,validateLoadedSourceGeometry} from './source_geometry_layout.js';
 const identities=new WeakMap(),plans=new WeakMap();
 export class SourcePagePlanChanged extends Error{
  constructor(directory,reason){super('Source page requires budget replanning: '+directory+' / '+reason);this.name='SourcePagePlanChanged';this.directory=directory;this.reason=reason;this.retryFormat='rgba8';}
 }
-function pageIdentity(source,geometryBytes,format,textureBytes,payloadSHA256=null){return Object.freeze({schema:'xnby.source_page.texture.v1',format,sourceSHA256:source.sha256,width:source.width,height:source.height,textureBytes,payloadSHA256,geometryBytes,totalBytes:textureBytes+geometryBytes});}
+function pageIdentity(source,geometryBytes,format,textureBytes,payloadSHA256=null){return Object.freeze({schema:'xnby.source_page.texture.v1',format,sourceSHA256:source.sha256,width:source.width,height:source.height,textureBytes,payloadSHA256,geometryLayout:WEB_SOURCE_GEOMETRY_LAYOUT,geometryBytes,totalBytes:textureBytes+geometryBytes});}
 function immutable(value){if(value&&typeof value==='object'){for(const child of Object.values(value))immutable(child);Object.freeze(value);}return value;}
 function sameIdentity(a,b){return a&&b&&Object.keys(a).length===Object.keys(b).length&&Object.keys(a).every(k=>a[k]===b[k]);}
 // Only descriptors are read here. No geometry, image, compressed payload or GPU work.
@@ -18,7 +19,7 @@ export async function planPreparedSourceBundle({marker,supported,loadManifest,fo
  const wanted=()=>{if(!stillWanted())throw new PreparedTextureCancelled('Source plan no longer wanted');};
  const choices=new Map(),parts=[],fallbacks=[];let originalTotal=0;
  for(const part of marker.parts){
-  wanted();const source=sourcePageSource(part),geometry=sourcePageGeometryBytes(part);originalTotal+=part.source_gpu_payload_bytes??part.gpu_payload_bytes;
+  wanted();const source=sourcePageSource(part),geometry=webSourceGeometryBytes(part);originalTotal+=part.source_gpu_payload_bytes??part.gpu_payload_bytes;
   let manifest=null,format='rgba8',bytes=rgbaMipBytes(source.width,source.height),payload=null,reason='unsupported';
   if(forceRgbaParts.has(part.directory))reason='explicit_budget_replan';
   else if(typeof supported==='function'?supported(part):supported){
@@ -47,6 +48,7 @@ export function subsetPreparedSourcePlan(plan,directories){
 function disposeMaterials(mesh){for(const material of new Set(Array.isArray(mesh.material)?mesh.material:[mesh.material]))material?.dispose();}
 const require=(ok,message)=>{if(!ok)throw Error(message);};
 export function sourcePageTextureIdentity(texture){return identities.get(texture);}
+// Original source/native descriptor accounting remains unchanged.
 export function sourcePageGeometryBytes(part){
  require(Number.isSafeInteger(part.vertices)&&part.vertices>0&&Number.isSafeInteger(part.indices)&&part.indices>0&&part.indices%3===0,'Invalid source page geometry');
  const bytes=part.vertices*64+part.indices*4;require(Number.isSafeInteger(bytes)&&bytes>0&&bytes<=32*1048576,'Invalid source page geometry cost');return bytes;
@@ -72,17 +74,18 @@ function validateGltf(json,part){
  require(primitive.material===0&&primitive.mode===undefined&&Object.keys(primitive.attributes??{}).sort().join(',')==='NORMAL,POSITION,TEXCOORD_0','Unexpected source page primitive');
  require(json.materials[0].pbrMetallicRoughness?.baseColorTexture?.index===0&&!json.materials[0].pbrMetallicRoughness.baseColorTexture.texCoord&&sampler?.wrapS===33071&&sampler.wrapT===33071&&sampler.minFilter===9987&&sampler.magFilter===9729,'Unexpected source page sampler');
  require(json.accessors?.[primitive.indices]?.count===part.indices&&json.accessors?.[primitive.attributes.POSITION]?.count===part.vertices,'Source page GLTF geometry counts mismatch');
+ validateSourceGltfGeometry(json,part);
 }
 // loadFile serves only the three SHA-pinned source files. Prepared loads are read-only.
 // Caller must provide the same budget allocator used by all live/staged pages.
 export async function loadPreparedSourcePage({THREE,renderer,part,supported,loadFile,loadManifest,loadPayload,reserve,stillWanted=()=>true,expectedIdentity}){
  require(typeof reserve==='function','A shared page budget is required');
- const source=sourcePageSource(part),geometryBytes=sourcePageGeometryBytes(part);let geometryLease,photo,model,objectURL;
+ const source=sourcePageSource(part),geometryBytes=webSourceGeometryBytes(part);let geometryLease,photo,model,objectURL;
  const wanted=()=>{if(!stillWanted())throw new PreparedTextureCancelled('Source page is no longer wanted');};
  let released=false;const releaseGeometry=()=>{if(!released){released=true;geometryLease?.release();}};
  try{
   wanted();const jsonBytes=await checkedFile(part,'geometry.gltf',loadFile);wanted();const json=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(jsonBytes));validateGltf(json,part);
-  const binary=await checkedFile(part,'geometry.bin',loadFile);wanted();require(json.buffers[0].byteLength===binary.byteLength,'GLTF buffer length mismatch');
+  const binary=await checkedFile(part,'geometry.bin',loadFile);wanted();require(json.buffers[0].byteLength===binary.byteLength,'GLTF buffer length mismatch');validateSourceGltfGeometry(json,part,binary);
   geometryLease=await reserve({format:'geometry',bytes:geometryBytes});require(typeof geometryLease?.release==='function','Invalid geometry budget lease');wanted();
   photo=await loadPreparedPhotograph({supported,source,loadManifest,loadPayload,reserve:async request=>{require(geometryBytes+request.bytes<=32*1048576,'Source page exceeds upload limit');return reserve(request);},stillWanted,
    upload:prepared=>uploadPreparedBc7(THREE,renderer,prepared),
@@ -97,7 +100,7 @@ export async function loadPreparedSourcePage({THREE,renderer,part,supported,load
   const loader=new GLTFLoader(manager);loader.register(parser=>({name:'XNBY_prepared_source_photograph',loadTexture(index){require(index===0,'Unexpected source texture index');parser.associations.set(photo.texture,{textures:index});return Promise.resolve(photo.texture);}}));
   model=await loader.parseAsync(json,'');wanted();
   const meshes=[];model.scene.traverse(node=>{if(node.isMesh)meshes.push(node);});require(meshes.length===1,'Unexpected source page mesh count');
-  const mesh=meshes[0];require(mesh.geometry.index.count===part.indices&&mesh.geometry.attributes.position.count===part.vertices&&mesh.material.map===photo.texture,'Loaded source page mismatch');
+  const mesh=meshes[0];require(mesh.geometry.index.count===part.indices&&mesh.geometry.attributes.position.count===part.vertices&&mesh.material.map===photo.texture,'Loaded source page mismatch');validateLoadedSourceGeometry(mesh.geometry,part);
   mesh.geometry.addEventListener('dispose',releaseGeometry);
   const identity=pageIdentity(source,geometryBytes,photo.format,photo.bytes,photo.payloadSHA256);
   if(expectedIdentity&&!sameIdentity(identity,expectedIdentity))throw new SourcePagePlanChanged(part.directory,'loaded_identity_changed');
@@ -115,7 +118,7 @@ export function runtimeSourceBundle(marker,meshes){
 }
 export function validateRuntimeSourceTexture(part,texture){
  const identity=sourcePageTextureIdentity(texture),claimed=part.runtime_texture;require(identity&&claimed&&Object.keys(identity).length===Object.keys(claimed).length&&Object.keys(identity).every(k=>identity[k]===claimed[k]),'Runtime texture identity mismatch');
- const source=sourcePageSource(part);require(identity.sourceSHA256===source.sha256&&identity.width===source.width&&identity.height===source.height&&identity.geometryBytes===sourcePageGeometryBytes(part)&&part.gpu_payload_bytes===identity.totalBytes,'Runtime source page cost mismatch');
+ const source=sourcePageSource(part);require(identity.sourceSHA256===source.sha256&&identity.width===source.width&&identity.height===source.height&&identity.geometryLayout===WEB_SOURCE_GEOMETRY_LAYOUT&&identity.geometryBytes===webSourceGeometryBytes(part)&&part.gpu_payload_bytes===identity.totalBytes,'Runtime source page cost mismatch');
  if(identity.format==='bc7')require(texture.isCompressedTexture===true&&/^[0-9a-f]{64}$/.test(identity.payloadSHA256)&&texture.mipmaps?.reduce((sum,m)=>sum+m.data.byteLength,0)===identity.textureBytes,'Runtime compressed mip identity mismatch');
  else require(identity.format==='rgba8'&&!texture.isCompressedTexture&&identity.payloadSHA256===null&&identity.textureBytes===rgbaMipBytes(source.width,source.height),'Runtime original texture identity mismatch');
  return identity.textureBytes;
@@ -128,7 +131,7 @@ export async function stagePreparedSourceBundle({THREE,renderer,marker,plan,supp
  const group=new THREE.Group(),meshes=new Map(),pages=[];let disposed=false;
  const dispose=()=>{if(disposed)return;disposed=true;try{for(const page of pages)page.dispose();}finally{group.removeFromParent();group.clear();}};
  try{
-  await stageSourceParts({marker,group,stillWanted,prepare,upload,onReady,yieldFrame,urlForPart:part=>part.directory,
+  await stageSourceParts({marker,group,stillWanted,prepare,upload:async(model,index)=>{const part=marker.parts[index],page=pages.find(p=>p.model===model);require(page,'Unknown prepared upload');validateLoadedSourceGeometry(page.mesh.geometry,part);await upload?.(model,index);},onReady,yieldFrame,urlForPart:part=>part.directory,
    downloads:{load:async directory=>{
     const part=marker.parts.find(p=>p.directory===directory);require(part,'Unknown staged source page');
     const choice=planned?.choices.get(directory);

@@ -1,4 +1,5 @@
-import {validateRuntimeSourceTexture} from './prepared_source_page.js';
+import {validateRuntimeSourceTexture,sourcePageGeometryBytes} from './prepared_source_page.js';
+import {webSourceGeometryBytes,validateLoadedSourceGeometry} from './source_geometry_layout.js';
 import {sourceRestorationFootprint} from './source_page_budget.js';
 import {Vector3,Box3,Frustum,Matrix4,ClampToEdgeWrapping} from 'three';
 
@@ -11,8 +12,8 @@ export function validateSourcePart(part,mesh){if(!mesh?.geometry?.index||mesh.ge
     const declared=['tight_square_gutter4_v1','edge_clamped_square_v1','edge_clamped_rect_v1','edge_packed_rect_v1'].includes(part.atlas_layout_policy);
     if(!bounded||(![1024,2048].includes(side)&&!declared)||image?.width!==extent[0]||image?.height!==extent[1])throw Error('源纹理尺寸不一致');
     if(['edge_clamped_square_v1','edge_clamped_rect_v1','edge_packed_rect_v1'].includes(part.atlas_layout_policy)&&(texture.wrapS!==ClampToEdgeWrapping||texture.wrapT!==ClampToEdgeWrapping))throw Error('源纹理采样方式不一致');
-    let textureBytes=0,w=extent[0],h=extent[1];if(part.runtime_texture){textureBytes=validateRuntimeSourceTexture(part,texture);}else{if(part.source_gpu_payload_bytes!==undefined||texture?.isCompressedTexture)throw Error('未协商压缩源页');for(;;){textureBytes+=w*h*4;if(w===1&&h===1)break;w=Math.max(1,Math.floor(w/2));h=Math.max(1,Math.floor(h/2));}}
-    if(part.gpu_payload_bytes!==part.vertices*64+part.indices*4+textureBytes)throw Error('实际纹理及几何资源账目不一致');
+    let textureBytes=0,w=extent[0],h=extent[1];if(part.runtime_texture){validateLoadedSourceGeometry(mesh.geometry,part);textureBytes=validateRuntimeSourceTexture(part,texture);}else{if(part.source_gpu_payload_bytes!==undefined||texture?.isCompressedTexture)throw Error('未协商压缩源页');for(;;){textureBytes+=w*h*4;if(w===1&&h===1)break;w=Math.max(1,Math.floor(w/2));h=Math.max(1,Math.floor(h/2));}}
+    if(part.gpu_payload_bytes!==(part.runtime_texture?webSourceGeometryBytes(part):sourcePageGeometryBytes(part))+textureBytes)throw Error('实际纹理及几何资源账目不一致');
 }
 
 function retireSourceGpu(mesh){if(mesh.userData.sourceGpuResident===false)return;mesh.geometry.dispose();const material=mesh.userData.sourceMaterial??(Array.isArray(mesh.material)?mesh.material[0]:mesh.material);material.map?.dispose();material.dispose();mesh.userData.sourceGpuResident=false;}

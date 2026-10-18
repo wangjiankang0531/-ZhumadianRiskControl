@@ -1,3 +1,5 @@
+import {OrbitActivity} from './orbit_activity.js';
+import {chooseRefinementCandidate} from './source_allocation.js';
 import {SourceVisibility,visiblePixelPriority,matchesVisibilityCamera} from './source_visibility.js';
 import * as THREE from 'three';
 import {readPortalConfiguration,OAuthLogin} from './oauth_login.js';
@@ -31,6 +33,7 @@ const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawi
 renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NoToneMapping;
 viewport.insertBefore(renderer.domElement,viewport.firstChild);
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.12;controls.maxDistance=40000;controls.minDistance=8;controls.maxPolarAngle=Math.PI*.49;
+const orbitActivity=new OrbitActivity(controls);
 const loader=new GLTFLoader(),photoGroup=new THREE.Group(),contextGroup=new THREE.Group();scene.add(photoGroup,contextGroup);
 const HUD=$('annotations'),ctx=HUD.getContext('2d');let layersDoc=null,businessCatalog=null,businessLoadGeneration=0,selected=null,base=null,catalog=null,width=1,height=1,lastRank=0;
 let resident=new Map(),pending=null,epoch=0,lastError='',lastStation='',frames=0,fps=0,frameClock=performance.now();
@@ -379,6 +382,7 @@ function maintain(){const restorations=[],ranked=ranking(),wanted=new Set(ranked
   try{const viewportRect=viewport.getBoundingClientRect(),obscured=[...document.querySelectorAll('.layout>aside')].filter(n=>n.getClientRects().length).map(n=>{const r=n.getBoundingClientRect();return {left:r.left-viewportRect.left,right:r.right-viewportRect.left,top:r.top-viewportRect.top,bottom:r.bottom-viewportRect.top};});const visibilityStart=performance.now();const signature=JSON.stringify({width,height,obscured,photo:sceneOpacity('photo'),terrain:sceneOpacity('satellite'),terrainVisible:$('satellite').checked,cut:sourceRecoverySnapshot(resident)});
     if(signature!==telemetry.visibilitySignature||!matchesVisibilityCamera(sourceVisibility.visibleSnapshot,camera,width,height)){telemetry.visibility=sourceVisibility.sample({camera,width,height,base,catalog,residents:resident,obscured,baseQuality:{edges:baseEdges,texels:baseTexels}});telemetry.visibility.milliseconds=performance.now()-visibilityStart;telemetry.visibilitySignature=signature;telemetry.visibilityCut=sourceRecoverySnapshot(resident);rootGainEstimates.clear();familyGainEstimates.clear();}visibilityReady=true;}catch(error){visibilityReady=false;console.info('[XNBY visibility] '+error.message);}
   if(visibilityReady)for(const r of ranked){const bounds=catalog.root_records[r.id-1];r.viewScore=rootGainEstimates.get(`${r.id}/${r.depth}`)??visiblePriority(r.id,{...bounds,longest_edge_p90_m:baseEdges.get(r.id),texel_world_p90_m:baseTexels.get(r.id)??0});}
+  if(visibilityReady){const chosen=chooseRefinementCandidate(allocationCandidates(ranked));if(chosen){telemetry.allocationChoice={key:chosen.key,gain:chosen.score,bytes:chosen.cost};(chosen.kind==='family'?loadWebFamily({id:chosen.id,parent:chosen.node.name,ready:chosen.ready,score:chosen.score}):loadFine(chosen.request)).catch(fail);}return;}
   const local=wantedWebFamily(),seed=ranked.filter(r=>r.viewScore>0&&!resident.has(r.id)&&!failed.has(`${r.id}/${r.depth}`)&&(!rootCosts.has(`${r.id}/${r.depth}`)||canMakeFamilyRoom(r.id,null,r.viewScore,rootCosts.get(`${r.id}/${r.depth}`),false))).sort((a,b)=>b.viewScore-a.viewScore)[0];
   if(local&&(!seed||local.score>=seed.viewScore)){loadWebFamily({id:local.id,parent:local.node.name,ready:local.ready,score:local.score}).catch(fail);return;}
   if(seed){loadFine(seed).catch(fail);return;}
@@ -391,8 +395,8 @@ async function measureSourceGain({id,names,marker,downloads,folder,stillWanted})
  const snapshot=sourceVisibility.capture(id,names,camera,height),cut=sourceRecoverySnapshot(resident),version=epoch;
  const isCurrent=()=>{camera.updateMatrixWorld();const wanted=stillWanted(),sameCamera=matchesVisibilityCamera(snapshot,camera,width,height),sameCut=cut===sourceRecoverySnapshot(resident),valid=version===epoch&&wanted&&sameCamera&&sameCut;if(!valid)telemetry.sourceGainCancelReason={root:id,phase:'compute',epoch:version===epoch,wanted,camera:sameCamera,cut:sameCut,worldDelta:Math.max(...snapshot.cameraWorld.map((n,i)=>Math.abs(n-camera.matrixWorld.elements[i])))};return valid;};
  const result=await geometryGainWorker.measure({marker,snapshot,loadFile:(part,name)=>downloads.read(`native/${folder}/${part.directory}/${name}`),isCurrent});
- ensureSourceWanted(isCurrent);telemetry.sourceGainJobs=(telemetry.sourceGainJobs??0)+1;telemetry.sourceGainWorkerMs=Math.max(telemetry.sourceGainWorkerMs??0,result.milliseconds);
- telemetry.lastGainEstimate={root:id,samples:result.samples,hits:result.hits,missing:result.missing,parentDeficit:result.beforeDeficit,childResidual:result.afterDeficit,gain:result.gain,model:result.model,milliseconds:result.milliseconds};
+ ensureSourceWanted(isCurrent);if(result.memoHit)telemetry.sourceGainMemoHits=(telemetry.sourceGainMemoHits??0)+1;else telemetry.sourceGainJobs=(telemetry.sourceGainJobs??0)+1;telemetry.sourceGainWorkerMs=Math.max(telemetry.sourceGainWorkerMs??0,result.milliseconds);
+ telemetry.lastGainEstimate={root:id,samples:result.samples,hits:result.hits,missing:result.missing,parentDeficit:result.beforeDeficit,childResidual:result.afterDeficit,gain:result.gain,model:result.model,memoHit:result.memoHit,milliseconds:result.milliseconds};
  console.info('[XNBY source gain] '+JSON.stringify(telemetry.lastGainEstimate));return result.gain;
 }
 function uploadSourceModel(model){
@@ -412,7 +416,7 @@ async function stageManagedSource({marker,downloads,folder,stillWanted,admit,onR
   }catch(error){
    cancelAttempt?.();
    if(!(error instanceof SourcePagePlanChanged)||forceRgbaParts.has(error.directory))throw error;
-   forceRgbaParts.add(error.directory);telemetry.preparedReplans=(telemetry.preparedReplans??0)+1;
+   preparedTextures.reject(marker.parts.find(part=>part.directory===error.directory));forceRgbaParts.add(error.directory);telemetry.preparedReplans=(telemetry.preparedReplans??0)+1;
   }
  }
  throw Error('源页格式重新规划次数超限');
@@ -423,9 +427,10 @@ async function loadFine(request){const owner=resident.get(request.id),stillWante
   tierEdges.set(`${request.id}/${request.depth}`,marker.longest_edge_p90_m);tierTexels.set(`${request.id}/${request.depth}`,marker.texel_world_p90_m??0);
   ensureSourceWanted(stillWanted);
   const previous=resident.get(request.id);
-  const gain=await measureSourceGain({id:request.id,names:previous?[...previous.frontier.visible]:[''],marker,downloads,folder:`tile_${request.id}_depth_${request.depth}`,stillWanted});rootGainEstimates.set(`${request.id}/${request.depth}`,gain);if(gain<=0)return;
+  await learnAllocationCost(marker,rootCosts,`${request.id}/${request.depth}`,stillWanted);if(!allocationStillBest(`root/${request.id}/${request.depth}`))return;
+  const gain=await measureSourceGain({id:request.id,names:previous?[...previous.frontier.visible]:[''],marker,downloads,folder:`tile_${request.id}_depth_${request.depth}`,stillWanted});rootGainEstimates.set(`${request.id}/${request.depth}`,gain);if(gain<=0||!allocationStillBest(`root/${request.id}/${request.depth}`))return;
   const loaded=await stageManagedSource({marker,downloads,folder:`tile_${request.id}_depth_${request.depth}`,stillWanted,admit:async runtime=>{
-   rootCosts.set(`${request.id}/${request.depth}`,runtime.gpu_payload_bytes);
+   rootCosts.set(`${request.id}/${request.depth}`,runtime.gpu_payload_bytes);if(!allocationStillBest(`root/${request.id}/${request.depth}`))return false;
    if(!await canMakeFamilyRoom(request.id,null,gain,runtime.gpu_payload_bytes,true,stillWanted)){telemetry.budgetFallbacks=(telemetry.budgetFallbacks??0)+1;return false;}
    const used=[...resident.values()].reduce((sum,r)=>sum+r.bytes,0);if(used+runtime.gpu_payload_bytes>detailLimit)return false;
    telemetry.stagingBytes=runtime.gpu_payload_bytes;telemetry.peakBytes=Math.max(telemetry.peakBytes??0,used+runtime.gpu_payload_bytes+uploadTargetBytes);message(`航拍细层加载中：瓦片 ${request.id} · 深度 ${request.depth}`);return true;
@@ -436,6 +441,28 @@ async function loadFine(request){const owner=resident.get(request.id),stillWante
 
 function sourceCancelled(){telemetry.cancellations++;message($('fine').checked?'已取消本次细层加载':'细层加载已关闭，保留完整基础地景');}
 const familyFailed=new Set(),familyCosts=new Map();
+// Compare roots and local families in one queue. Cost is immutable per negotiated
+// source layout, while actual geometry gains expire with the visible camera/cut.
+function allocationCandidates(ranked=ranking()){
+ const candidates=[];
+ for(const r of ranked){
+  if(resident.get(r.id)?.depth===r.depth||failed.has(`${r.id}/${r.depth}`))continue;
+  const bounds=catalog.root_records[r.id-1],score=rootGainEstimates.get(`${r.id}/${r.depth}`)??visiblePriority(r.id,{...bounds,longest_edge_p90_m:baseEdges.get(r.id),texel_world_p90_m:baseTexels.get(r.id)??0}),cost=rootCosts.get(`${r.id}/${r.depth}`)??null;
+  if(score>0&&(cost===null||canMakeFamilyRoom(r.id,null,score,cost,false)))candidates.push({key:`root/${r.id}/${r.depth}`,kind:'root',id:r.id,request:r,score,cost});
+ }
+ for(const [id,ready] of resident)if(ready.frontier)for(const c of visibleSourceCandidates(ready.frontier,camera,height)){
+  const parent=c.node.name;if(familyFailed.has(`${id}/${parent}`))continue;
+  const score=familyGainEstimates.get(`${id}/${parent}`)??visiblePriority(id,c.node),cost=familyCosts.get(`${id}/${parent}`)??null;
+  if(score>0&&(cost===null||canMakeFamilyRoom(id,parent,score,cost,false)))candidates.push({...c,key:`family/${id}/${parent}`,kind:'family',id,ready,score,cost});
+ }
+ return candidates;
+}
+function allocationStillBest(key){if(!visibilityReady)return true;const best=chooseRefinementCandidate(allocationCandidates());if(best?.key===key)return true;telemetry.allocationReorders=(telemetry.allocationReorders??0)+1;return false;}
+async function learnAllocationCost(marker,costs,key,stillWanted){
+ const plan=await planPreparedSourceBundle({marker,supported:part=>supportsPreparedBc7(renderer)&&preparedTextures.has(part),loadManifest:part=>preparedTextures.manifest(part),stillWanted});
+ ensureSourceWanted(stillWanted);costs.set(key,plan.marker.gpu_payload_bytes);telemetry.allocationMetadata=(telemetry.allocationMetadata??0)+1;
+}
+
 const familyUploadTarget=new THREE.WebGLRenderTarget(16,16,{depthBuffer:false,stencilBuffer:false});
 function wantedWebFamily(){
  if(!$('fine').checked||!$('photo').checked||sceneOpacity('photo')<=0)return null;
@@ -473,9 +500,10 @@ async function loadWebFamily(request){pending={...request,type:'family'};telemet
  try{
   const route=`api/lod-family/${request.id}/${encodeURIComponent(request.parent)}`;let response=await fetch(route,{cache:'no-store'});while(response.status===202){await new Promise(resolve=>setTimeout(resolve,300));if(!stillWanted()){requestCancelled=true;sourceCancelled();return;}response=await fetch(route,{cache:'no-store'});}if(!response.ok)throw sourceResponseError(response,'family',{root:request.id,parent:request.parent});const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);if(!stillWanted()){requestCancelled=true;sourceCancelled();return;}
   if(!/^[0-9a-f]{16}$/.test(marker.family_key)||marker.tile_id!==request.id||marker.gpu_payload_bytes>256*1048576)throw Error('局部模型标记无效');
-  const gain=await measureSourceGain({id:request.id,names:[request.parent],marker,downloads,folder:`family_tile_${request.id}_${marker.family_key}`,stillWanted});familyGainEstimates.set(`${request.id}/${request.parent}`,gain);if(gain<=0)return;
+  await learnAllocationCost(marker,familyCosts,`${request.id}/${request.parent}`,stillWanted);if(!allocationStillBest(`family/${request.id}/${request.parent}`))return;
+  const gain=await measureSourceGain({id:request.id,names:[request.parent],marker,downloads,folder:`family_tile_${request.id}_${marker.family_key}`,stillWanted});familyGainEstimates.set(`${request.id}/${request.parent}`,gain);if(gain<=0||!allocationStillBest(`family/${request.id}/${request.parent}`))return;
   const loaded=await stageManagedSource({marker,downloads,folder:`family_tile_${request.id}_${marker.family_key}`,stillWanted,admit:async runtime=>{
-   familyCosts.set(`${request.id}/${request.parent}`,runtime.gpu_payload_bytes);
+   familyCosts.set(`${request.id}/${request.parent}`,runtime.gpu_payload_bytes);if(!allocationStillBest(`family/${request.id}/${request.parent}`))return false;
    if(!await canMakeFamilyRoom(request.id,request.parent,gain,runtime.gpu_payload_bytes,true,stillWanted)){telemetry.budgetFallbacks=(telemetry.budgetFallbacks??0)+1;message('当前视野已分配细节预算，部分外围保留较粗层');return false;}
    ensureSourceWanted(stillWanted);const used=[...resident.values()].reduce((sum,r)=>sum+r.bytes,0);
    ticket=request.ready.frontier.begin(runtime,detailLimit-used);telemetry.stagingBytes=runtime.gpu_payload_bytes;telemetry.peakBytes=Math.max(telemetry.peakBytes??0,used+runtime.gpu_payload_bytes+uploadTargetBytes);message(`航拍局部细层加载中：深度 ${Math.max(...runtime.source_nodes.map(n=>n.depth))}`);return true;
@@ -588,7 +616,7 @@ async function boot(){
   reloadSpatial(true).catch(error=>spatialNotice(error.message));
   reloadBusinessRecords(true).catch(error=>businessNotice(`发布台账读取失败：${error.message}`));
 }
-function animate(now){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);drawAnnotations();frames++;if(now-frameClock>1000){fps=frames*1000/(now-frameClock);frames=0;frameClock=now;$('status').textContent=`${Math.round(fps)} FPS · 2346 基础瓦片 · 细层 ${resident.size}/${telemetry.nativeDesired??0} 块 / ${Math.round(telemetry.nativeBytes/1048576)} MiB · 已加载最高层级 ${resident.size?Math.max(...[...resident.values()].map(r=>r.frontier?.maxDepth??r.depth)):"基础层"}`;}
+function animate(now){requestAnimationFrame(animate);orbitActivity.update();renderer.render(scene,camera);drawAnnotations();frames++;if(now-frameClock>1000){fps=frames*1000/(now-frameClock);frames=0;frameClock=now;$('status').textContent=`${Math.round(fps)} FPS · 2346 基础瓦片 · 细层 ${resident.size}/${telemetry.nativeDesired??0} 块 / ${Math.round(telemetry.nativeBytes/1048576)} MiB · 已加载最高层级 ${resident.size?Math.max(...[...resident.values()].map(r=>r.frontier?.maxDepth??r.depth)):"基础层"}`;}
   if(now-lastRank>700&&telemetry.ready){lastRank=now;maintain();}}
 requestAnimationFrame(animate);boot().catch(error=>{$('loading').style.display='none';fail(error);});
 // Read-only QA observation and reproducible camera controls; no private files.

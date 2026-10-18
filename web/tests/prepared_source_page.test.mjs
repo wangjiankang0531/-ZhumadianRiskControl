@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {sourcePageSource,sourcePageGeometryBytes,loadPreparedSourcePage,runtimeSourceBundle,validateRuntimeSourceTexture,planPreparedSourceBundle,stagePreparedSourceBundle,SourcePagePlanChanged,originalSourceBundle,subsetPreparedSourcePlan} from '../src/prepared_source_page.js';
 import {sha256} from '../src/prepared_bc7.js';
+import {geometryFixture} from './fixtures/source_geometry.mjs';
 const part=()=>({directory:'part_000',vertices:3,indices:3,atlas_size:16,atlas_extent:[16,16],gpu_payload_bytes:1568,files:[{name:'atlas.jpg',sha256:'a'.repeat(64),bytes:1}]});
 test('source storage cost includes geometry and every original mip',()=>{
  const p=part();assert.equal(sourcePageGeometryBytes(p),204);assert.deepEqual(sourcePageSource(p),{width:16,height:16,sha256:'a'.repeat(64)});
@@ -36,16 +37,16 @@ test('restoration canonicalizes original bytes and subsets only the missing admi
  const f=plannedFixture();f.marker.parts.push({...structuredClone(f.p),directory:'part_001'});f.marker.gpu_payload_bytes*=2;
  const plan=await planPreparedSourceBundle({marker:f.marker,supported:part=>part.directory==='part_000',loadManifest:async()=>f.manifest});
  assert.deepEqual(originalSourceBundle(plan.marker),f.marker);const subset=subsetPreparedSourcePlan(plan,['part_000']);
- assert.equal(subset.marker.parts.length,1);assert.equal(subset.marker.gpu_payload_bytes,1568);assert.equal(subset.plan.marker.gpu_payload_bytes,572);assert.equal(subset.plan.marker.parts[0].runtime_texture.payloadSHA256,'b'.repeat(64));
+ assert.equal(subset.marker.parts.length,1);assert.equal(subset.marker.gpu_payload_bytes,1568);assert.equal(subset.plan.marker.gpu_payload_bytes,476);assert.equal(subset.plan.marker.parts[0].runtime_texture.payloadSHA256,'b'.repeat(64));
  assert.throws(()=>subsetPreparedSourcePlan(plan,['part_999']));assert.throws(()=>subsetPreparedSourcePlan(plan,['part_000','part_000']));assert.throws(()=>subsetPreparedSourcePlan({marker:plan.marker},['part_000']));
  let allocated=false;await assert.rejects(stagePreparedSourceBundle({THREE:{Group:class{constructor(){allocated=true;throw Error('reached valid plan boundary');}}},...subset}),/valid plan boundary/);assert.equal(allocated,true);
 });
 test('descriptor preflight costs every compressed mip without reading geometry or payload',async()=>{
  const f=plannedFixture(),before=structuredClone(f.marker);let calls=0;const plan=await planPreparedSourceBundle({marker:f.marker,supported:true,loadManifest:async p=>{calls++;assert.equal(p,f.p);return f.manifest;}});
- assert.equal(calls,1);assert.equal(plan.marker.gpu_payload_bytes,572);assert.equal(plan.marker.parts[0].source_gpu_payload_bytes,1568);assert.equal(plan.marker.parts[0].runtime_texture.payloadSHA256,'b'.repeat(64));assert.deepEqual(f.marker,before);assert.ok(Object.isFrozen(plan.marker.parts[0].runtime_texture));assert.deepEqual(plan.fallbacks,[]);
+ assert.equal(calls,1);assert.equal(plan.marker.gpu_payload_bytes,476);assert.equal(plan.marker.parts[0].runtime_texture.geometryLayout,'three_float32_pnu_uint32_v1');assert.equal(plan.marker.parts[0].runtime_texture.geometryBytes,108);assert.equal(plan.marker.parts[0].source_gpu_payload_bytes,1568);assert.equal(plan.marker.parts[0].runtime_texture.payloadSHA256,'b'.repeat(64));assert.deepEqual(f.marker,before);assert.ok(Object.isFrozen(plan.marker.parts[0].runtime_texture));assert.deepEqual(plan.fallbacks,[]);
 });
-test('unsupported, invalid descriptor and explicit fallback plans retain original whole-mip cost',async()=>{
- for(const mode of ['unsupported','invalid','explicit']){const f=plannedFixture();if(mode==='invalid')f.manifest.mips.pop();let calls=0;const plan=await planPreparedSourceBundle({marker:f.marker,supported:mode!=='unsupported',forceRgbaParts:new Set(mode==='explicit'?['part_000']:[]),loadManifest:async()=>{calls++;return f.manifest;}});assert.equal(plan.marker.gpu_payload_bytes,1568);assert.equal(plan.marker.parts[0].runtime_texture.format,'rgba8');assert.equal(calls,mode==='invalid'?1:0);assert.equal(plan.fallbacks.length,1);}
+test('unsupported, invalid descriptor and explicit fallback plans retain every original mip with WEB geometry cost',async()=>{
+ for(const mode of ['unsupported','invalid','explicit']){const f=plannedFixture();if(mode==='invalid')f.manifest.mips.pop();let calls=0;const plan=await planPreparedSourceBundle({marker:f.marker,supported:mode!=='unsupported',forceRgbaParts:new Set(mode==='explicit'?['part_000']:[]),loadManifest:async()=>{calls++;return f.manifest;}});assert.equal(plan.marker.gpu_payload_bytes,1472);assert.equal(plan.marker.parts[0].runtime_texture.format,'rgba8');assert.equal(calls,mode==='invalid'?1:0);assert.equal(plan.fallbacks.length,1);}
 });
 test('cancellation while descriptors load cannot silently become an original-image plan',async()=>{
  const f=plannedFixture();let wanted=true;await assert.rejects(planPreparedSourceBundle({marker:f.marker,supported:true,stillWanted:()=>wanted,loadManifest:async()=>{wanted=false;return f.manifest;}}),/plan no longer wanted/);
@@ -58,8 +59,8 @@ test('forged or changed plans are refused before scene creation or any download'
  await assert.rejects(stagePreparedSourceBundle({THREE,marker:f.marker,plan:{marker:plan.marker}}),/plan identity/);f.marker.parts[0].vertices++;await assert.rejects(stagePreparedSourceBundle({THREE,marker:f.marker,plan}),/plan identity/);assert.equal(groups,0);
 });
 test('an admitted compressed page must replan before original JPEG download or reservation',async()=>{
- const f=plannedFixture(),p=f.p,binary=new ArrayBuffer(36),gltf={asset:{version:'2.0'},buffers:[{uri:'geometry.bin',byteLength:36}],images:[{uri:'atlas.jpg'}],textures:[{source:0,sampler:0}],samplers:[{wrapS:33071,wrapT:33071,minFilter:9987,magFilter:9729}],materials:[{pbrMetallicRoughness:{baseColorTexture:{index:0}}}],meshes:[{primitives:[{material:0,attributes:{POSITION:0,NORMAL:1,TEXCOORD_0:2},indices:3}]}],accessors:[{count:3},{count:3},{count:3},{count:3}]},raw=new TextEncoder().encode(JSON.stringify(gltf)).buffer;
- p.files.push({name:'geometry.gltf',bytes:raw.byteLength,sha256:await sha256(raw)},{name:'geometry.bin',bytes:36,sha256:await sha256(binary)});let held=0,jpeg=0;const reservations=[];
+ const f=plannedFixture(),p=f.p,{binary,gltf}=geometryFixture(),raw=new TextEncoder().encode(JSON.stringify(gltf)).buffer;
+ p.files.push({name:'geometry.gltf',bytes:raw.byteLength,sha256:await sha256(raw)},{name:'geometry.bin',bytes:binary.byteLength,sha256:await sha256(binary)});let held=0,jpeg=0;const reservations=[];
  await assert.rejects(loadPreparedSourcePage({part:p,supported:true,expectedIdentity:{format:'bc7'},loadFile:async name=>{if(name==='atlas.jpg'){jpeg++;throw Error('must not download original');}return name==='geometry.gltf'?raw:binary;},loadManifest:async()=>{throw Error('descriptor no longer available');},reserve:async({format,bytes})=>{reservations.push(format);held+=bytes;return {release(){held-=bytes;}};}}),SourcePagePlanChanged);
  assert.equal(held,0);assert.equal(jpeg,0);assert.deepEqual(reservations,['geometry']);
 });

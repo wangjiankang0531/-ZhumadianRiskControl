@@ -58,3 +58,13 @@ test('a cancelled loading job cannot overlap a second job or create its worker',
 test('unresponsive workers terminate on a bounded timeout without changing a live cut',async()=>{
  const f=await fixture(),worker={postMessage(){},terminate(){this.stopped=true;}},client=new SourceGeometryGainWorker({createWorker:()=>worker,timeout:20});await assert.rejects(client.measure({...f,isCurrent:()=>true,loadFile:async(part,name)=>f.packets[0][name==='geometry.gltf'?'json':'binary']}),/timed out/);assert.equal(worker.stopped,true);assert.equal(client.pending,null);assert.equal(client.busy,false);
 });
+
+test('exact captured inputs reuse a verified result without reading geometry; changed visibility computes again',async()=>{
+ const client=new SourceGeometryGainWorker({createWorker:()=>new CpuWorker()});let reads=0;
+ const run=async f=>client.measure({...f,isCurrent:()=>true,loadFile:async(part,name)=>{reads++;return f.packets[0][name==='geometry.gltf'?'json':'binary'];}});
+ const first=await run(await fixture());assert.equal(first.memoHit,false);assert.equal(reads,2);
+ const same=await fixture();same.marker.cache_lease='new transport';const second=await run(same);assert.equal(second.memoHit,true);assert.equal(reads,2);assert.equal(second.gain,first.gain);assert.equal(same.packets[0].binary.byteLength,108);
+ const changed=await fixture();changed.snapshot.samples[0]=.9;const third=await run(changed);assert.equal(third.memoHit,false);assert.equal(reads,4);assert.equal(third.hits,0);
+ await assert.rejects(client.measure({...await fixture(),isCurrent:()=>false,loadFile:()=>{throw Error('must not read');}}),SourceLoadCancelled);
+ client.dispose();assert.equal(client.memo.bytes,0);
+});

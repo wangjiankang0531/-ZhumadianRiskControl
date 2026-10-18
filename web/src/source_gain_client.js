@@ -1,13 +1,19 @@
+import {sourceGainMemoKey,SourceGainMemo} from './source_gain_memo.js';
 import {geometryDigest,geometryPacketLimit} from './source_geometry_gain.js';
 import {SourceLoadCancelled} from './lod_transaction.js';
 export class SourceGainUnavailable extends Error{}
 export class SourceGeometryGainWorker{
- constructor({createWorker=()=>new Worker(new URL('source-gain-worker.js',new URL('./',location.href)),{type:'module'}),timeout=30000,onStats=()=>{}}={}){this.createWorker=createWorker;this.timeout=timeout;this.onStats=onStats;this.next=0;this.worker=null;this.pending=null;}
+ constructor({createWorker=()=>new Worker(new URL('source-gain-worker.js',new URL('./',location.href)),{type:'module'}),timeout=30000,onStats=()=>{}}={}){this.createWorker=createWorker;this.timeout=timeout;this.onStats=onStats;this.next=0;this.worker=null;this.pending=null;this.memo=new SourceGainMemo();}
  cancel(){this.generation=(this.generation??0)+1;this.pending?.fail(new SourceLoadCancelled());}
- dispose(){this.cancel();this.worker?.terminate();this.worker=null;}
+ dispose(){this.cancel();this.worker?.terminate();this.worker=null;this.memo.clear();}
  async measure({marker,snapshot,loadFile,isCurrent}){
   if(this.busy)throw new SourceGainUnavailable('A geometry gain job is already active');this.busy=true;
-  try{return await this._measure({marker,snapshot,loadFile,isCurrent});}finally{this.busy=false;}
+  const generation=this.generation??0,wanted=()=>{if((this.generation??0)!==generation||!isCurrent())throw new SourceLoadCancelled();};
+  try{
+   wanted();const key=await sourceGainMemoKey(marker,snapshot);wanted();const cached=this.memo.get(key);
+   if(cached){this.onStats({phase:'cached',bytes:0,memoBytes:this.memo.bytes});return {...cached,identity:'memo/'+key,memoHit:true};}
+   const result=await this._measure({marker,snapshot,loadFile,isCurrent});wanted();this.memo.set(key,result);return {...result,memoHit:false};
+  }finally{this.busy=false;}
  }
  async _measure({marker,snapshot,loadFile,isCurrent}){
   const generation=this.generation??0,wanted=()=>{if((this.generation??0)!==generation||!isCurrent())throw new SourceLoadCancelled();};wanted();
