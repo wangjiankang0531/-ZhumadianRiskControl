@@ -50,6 +50,11 @@ const telemetry={lodRevision:'visible-pixel-geometry-worker-r1',baseRoots:0,nati
 const geometryGainWorker=new SourceGeometryGainWorker({onStats:state=>{telemetry.sourceGainCpuBytes=state.bytes;telemetry.sourceGainCpuPeak=Math.max(telemetry.sourceGainCpuPeak??0,state.bytes);if(state.phase==='cancelled')telemetry.sourceGainCancelled=(telemetry.sourceGainCancelled??0)+1;if(state.phase==='failed')telemetry.sourceGainErrors=(telemetry.sourceGainErrors??0)+1;}});
 function message(text){$('message').textContent=text;}
 function fail(error){lastError=String(error.message||error);telemetry.errors.push(lastError);message(lastError);console.error(error);}
+function sourceResponseError(response,operation,source){
+ const status=response.status,notice=status===409?'此处更细地景暂不可用':status===404?'此处暂无更细地景':status===422?'此处地景资源未通过校验':status===401||status===403?'暂时无法读取此处地景':'更细地景加载暂时失败';
+ const detail={operation,source,status};telemetry.lastSourceResponse=detail;console.info('[XNBY source response] '+JSON.stringify(detail));
+ const error=Error(notice+'，继续显示已有地景。');error.httpStatus=status;return error;
+}
 function preset(name){visibilityReady=false;
   if(name==='overview'){camera.position.set(-4300,-5200,6700);controls.target.set(650,200,20);}
   else if(name==='oblique'){camera.position.set(-2100,-3400,1900);controls.target.set(650,-300,35);}
@@ -413,7 +418,7 @@ async function stageManagedSource({marker,downloads,folder,stillWanted,admit,onR
  throw Error('源页格式重新规划次数超限');
 }
 async function loadFine(request){const owner=resident.get(request.id),stillWanted=()=>resident.get(request.id)===owner&&ranking().some(r=>r.id===request.id&&r.depth===request.depth);pending=request;telemetry.requests++;let staged=new THREE.Group(),downloads=null,requestCancelled=false;try{
-  ensureSourceWanted(stillWanted);let response=await fetch(`api/lod/${request.id}/${request.depth}`);while(response.status===202){await new Promise(r=>setTimeout(r,300));ensureSourceWanted(stillWanted);response=await fetch(`api/lod/${request.id}/${request.depth}`);}if(!response.ok)throw Error(`细层 ${request.id}/${request.depth} 保留父层：${await response.text()}`);const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);
+  ensureSourceWanted(stillWanted);let response=await fetch(`api/lod/${request.id}/${request.depth}`);while(response.status===202){await new Promise(r=>setTimeout(r,300));ensureSourceWanted(stillWanted);response=await fetch(`api/lod/${request.id}/${request.depth}`);}if(!response.ok)throw sourceResponseError(response,'root',{root:request.id,depth:request.depth});const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);
   if(!marker.complete_frontier||!marker.parts?.length||marker.parts.length>64||marker.gpu_payload_bytes>384*1048576||marker.texture_policy!=='original_pixels_v1'||!Number.isFinite(marker.texel_world_p90_m)||marker.texel_world_p90_m<=0)throw Error('细层数据不完整，保留父层');
   tierEdges.set(`${request.id}/${request.depth}`,marker.longest_edge_p90_m);tierTexels.set(`${request.id}/${request.depth}`,marker.texel_world_p90_m??0);
   ensureSourceWanted(stillWanted);
@@ -466,7 +471,7 @@ function rollbackWebFamilies(ready){
 async function loadWebFamily(request){pending={...request,type:'family'};telemetry.familyRequests=(telemetry.familyRequests??0)+1;const requestEpoch=epoch;let staged=new THREE.Group(),ticket=null,downloads=null,requestCancelled=false;
  const stillWanted=()=>epoch===requestEpoch&&resident.get(request.id)===request.ready&&(ticket===null||request.ready.frontier.pending?.ticket===ticket)&&request.ready.frontier.visible.has(request.parent)&&visibleSourceCandidates(request.ready.frontier,camera,height).some(c=>c.node.name===request.parent)&&(!visibilityReady||sourceVisibility.weight(request.id,request.parent)>0);
  try{
-  const route=`api/lod-family/${request.id}/${encodeURIComponent(request.parent)}`;let response=await fetch(route,{cache:'no-store'});while(response.status===202){await new Promise(resolve=>setTimeout(resolve,300));if(!stillWanted()){requestCancelled=true;sourceCancelled();return;}response=await fetch(route,{cache:'no-store'});}if(!response.ok)throw Error(`局部细层保留父节点：${await response.text()}`);const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);if(!stillWanted()){requestCancelled=true;sourceCancelled();return;}
+  const route=`api/lod-family/${request.id}/${encodeURIComponent(request.parent)}`;let response=await fetch(route,{cache:'no-store'});while(response.status===202){await new Promise(resolve=>setTimeout(resolve,300));if(!stillWanted()){requestCancelled=true;sourceCancelled();return;}response=await fetch(route,{cache:'no-store'});}if(!response.ok)throw sourceResponseError(response,'family',{root:request.id,parent:request.parent});const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);if(!stillWanted()){requestCancelled=true;sourceCancelled();return;}
   if(!/^[0-9a-f]{16}$/.test(marker.family_key)||marker.tile_id!==request.id||marker.gpu_payload_bytes>256*1048576)throw Error('局部模型标记无效');
   const gain=await measureSourceGain({id:request.id,names:[request.parent],marker,downloads,folder:`family_tile_${request.id}_${marker.family_key}`,stillWanted});familyGainEstimates.set(`${request.id}/${request.parent}`,gain);if(gain<=0)return;
   const loaded=await stageManagedSource({marker,downloads,folder:`family_tile_${request.id}_${marker.family_key}`,stillWanted,admit:async runtime=>{
@@ -485,7 +490,7 @@ function sourceRestoreFailed(error){telemetry.restoreErrors=(telemetry.restoreEr
 async function readSourcePages(need,stillWanted){
  const source=need.bundle.marker,isFamily=source.schema==='xnby.osgb_native_family.v1',route=isFamily?`api/lod-family/${need.root}/${encodeURIComponent(source.replacement_parent)}`:`api/lod/${need.root}/${need.ready.depth}`;let downloads=null,staged=null;
  try{
-  telemetry.restoreRequests=(telemetry.restoreRequests??0)+1;ensureSourceWanted(stillWanted);let response=await fetch(route,{cache:'no-store'});while(response.status===202){await new Promise(resolve=>setTimeout(resolve,300));ensureSourceWanted(stillWanted);response=await fetch(route,{cache:'no-store'});}if(!response.ok)throw Error(`回退源页HTTP ${response.status}`);
+  telemetry.restoreRequests=(telemetry.restoreRequests??0)+1;ensureSourceWanted(stillWanted);let response=await fetch(route,{cache:'no-store'});while(response.status===202){await new Promise(resolve=>setTimeout(resolve,300));ensureSourceWanted(stillWanted);response=await fetch(route,{cache:'no-store'});}if(!response.ok)throw sourceResponseError(response,'restore',{root:need.root,parent:source.replacement_parent??null});
   const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);ensureSourceWanted(stillWanted);if(sourceBundleIdentity(marker)!==sourceBundleIdentity(originalSourceBundle(source)))throw Error('回退源包与当前场景不一致');
   const plan=await planPreparedSourceBundle({marker,supported:part=>supportsPreparedBc7(renderer)&&preparedTextures.has(part),loadManifest:part=>preparedTextures.manifest(part),forceRgbaParts:new Set(source.parts.filter(p=>p.runtime_texture.format==='rgba8').map(p=>p.directory)),stillWanted});
   if(sourceBundleIdentity(plan.marker)!==sourceBundleIdentity(source))throw Error('回退源页格式或载荷身份已变化，保留当前细层');
