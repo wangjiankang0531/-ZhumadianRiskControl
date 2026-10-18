@@ -134,23 +134,42 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def _leases(self):
         return self.read_only_leases if self.read_only_lod else CACHE_LEASES
 
+    def _source_plans_enabled(self):
+        return self.read_only_lod and self.read_only_store is not None and callable(getattr(self.read_only_store,'plan',None)) and callable(getattr(self.read_only_store,'describe_with_identity',None))
+
+    def _readonly_plan(self,tile,*,depth=None,parent=None):
+        if not self._source_plans_enabled():return self.send_error(404)
+        try:
+            raw=json.dumps(self.read_only_store.plan(tile,depth=depth,parent=parent),allow_nan=False).encode('utf-8')
+        except (FileNotFoundError,PermissionError,TimeoutError):
+            return self.send_error(409,'Prepared plan unavailable; keep current layer')
+        except (ValueError,RuntimeError,KeyError,TypeError):
+            return self.send_error(422,'Prepared plan failed descriptor validation')
+        self.send_response(200);self.send_header('Content-Type','application/json; charset=utf-8');self.send_header('Content-Length',str(len(raw)));self.end_headers();self.wfile.write(raw)
+
     def _readonly_bundle(self,tile,*,depth=None,parent=None):
         if self.read_only_store is None or self.read_only_leases is None:
             return self.send_error(503,'Read-only landscape store is not configured')
         directory=(f'tile_{tile}_depth_{depth}' if parent is None else
                    f'family_tile_{tile}_{hashlib.sha256(parent.encode()).hexdigest()[:16]}')
-        loaded={}
+        loaded={};token=None
         def validate():
-            loaded['marker']=self.read_only_store.describe(tile,depth=depth,parent=parent)
+            if self._source_plans_enabled():
+                loaded['marker'],loaded['sha256']=self.read_only_store.describe_with_identity(tile,depth=depth,parent=parent)
+            else:loaded['marker']=self.read_only_store.describe(tile,depth=depth,parent=parent)
             return True
         try:
             token=self.read_only_leases.grant(self.read_only_store.cache,directory,validate)
-            raw=json.dumps({**loaded['marker'],'cache_lease':token}).encode('utf-8')
+            raw=json.dumps({**loaded['marker'],'cache_lease':token},allow_nan=False).encode('utf-8')
         except (FileNotFoundError,PermissionError,TimeoutError):
+            if token:self.read_only_leases.release(token)
             return self.send_error(409,'Read-only bundle or existing reader lock unavailable; keep current layer')
         except (ValueError,RuntimeError,KeyError,TypeError):
+            if token:self.read_only_leases.release(token)
             return self.send_error(422,'Prepared read-only bundle failed validation; no conversion attempted')
-        self.send_response(200);self.send_header('Content-Type','application/json; charset=utf-8');self.send_header('Content-Length',str(len(raw)));self.end_headers();self.wfile.write(raw)
+        self.send_response(200);self.send_header('Content-Type','application/json; charset=utf-8');self.send_header('Content-Length',str(len(raw)))
+        if loaded.get('sha256'):self.send_header('X-XNBY-Source-Marker-SHA256',loaded['sha256'])
+        self.end_headers();self.wfile.write(raw)
     def _native_response(self,head=False):
         route=unquote(urlsplit(self.path).path)
         match=re.fullmatch(r'/native/((?:tile_\d+_depth_\d+|family_tile_\d+_[0-9a-f]{16}))/part_\d{3}/(?:geometry\.(?:gltf|bin)|atlas\.jpg)',route)
@@ -232,6 +251,20 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if self._prepared_texture_response():return
         if self._native_response(): return
         route=urlsplit(self.path).path
+        if route.startswith(('/api/lod-plan/','/api/lod-family-plan/')):
+            if urlsplit(self.path).query:return self.send_error(400)
+            if not self._source_plans_enabled():return self.send_error(404)
+            decoded=unquote(route)
+            match=re.fullmatch(r'/api/lod-plan/(\d{1,4})/(\d{1,2})',decoded)
+            if match:
+                tile,depth=map(int,match.groups())
+                if not 1<=tile<=2346 or not 1<=depth<=12:return self.send_error(400)
+                return self._readonly_plan(tile,depth=depth)
+            match=re.fullmatch(r'/api/lod-family-plan/(\d{1,4})/(Tile_\d+_L\d+_0[0-9u]+\.osgb)',decoded)
+            if not match:return self.send_error(400)
+            tile,parent=int(match.group(1)),match.group(2)
+            if not 1<=tile<=2346 or not parent.startswith(f'Tile_{tile}_'):return self.send_error(400)
+            return self._readonly_plan(tile,parent=parent)
         if route.startswith('/api/lod-family/'):
             match=re.fullmatch(r'/api/lod-family/(\d{1,4})/(Tile_\d+_L\d+_0[0-9u]+\.osgb)',route)
             if not match:return self.send_error(400)
@@ -306,6 +339,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             data=b'{"application":"xnby.landscape.web.v1","scene":"zhumadian"}'
             if self.read_only_lod:
                 data=json.dumps({**json.loads(data),'lodAccess':'read_only','conversionEnabled':False}).encode('utf-8')
+                if self._source_plans_enabled():data=json.dumps({**json.loads(data),'descriptorPlanSchema':'xnby.source_bundle_plan.v1'}).encode('utf-8')
             manifest=self.root/'package.json'
             if manifest.is_file():
                 raw=manifest.read_bytes();release=json.loads(raw)
@@ -336,7 +370,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return str(self.root/'work/zhumadian_native_chunk_cache'/route.removeprefix('native/'))
         return str(ROOT/'work/web_not_found')
     def end_headers(self):
-        self.send_header('X-Content-Type-Options','nosniff');self.send_header('Cache-Control','no-store' if (unquote(urlsplit(self.path).path) in ('/business/default.json','/spatial/default.json') or unquote(urlsplit(self.path).path).startswith(('/api/lod/','/api/lod-family/'))) else 'no-cache');super().end_headers()
+        self.send_header('X-Content-Type-Options','nosniff');self.send_header('Cache-Control','no-store' if (unquote(urlsplit(self.path).path) in ('/business/default.json','/spatial/default.json') or unquote(urlsplit(self.path).path).startswith(('/api/lod/','/api/lod-family/','/api/lod-plan/','/api/lod-family-plan/'))) else 'no-cache');super().end_headers()
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)

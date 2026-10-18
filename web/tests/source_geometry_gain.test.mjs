@@ -68,3 +68,11 @@ test('exact captured inputs reuse a verified result without reading geometry; ch
  await assert.rejects(client.measure({...await fixture(),isCurrent:()=>false,loadFile:()=>{throw Error('must not read');}}),SourceLoadCancelled);
  client.dispose();assert.equal(client.memo.bytes,0);
 });
+
+test('planning memo probes never pretend to be geometry loads or create workers',async()=>{
+ let creations=0;const client=new SourceGeometryGainWorker({createWorker:()=>{creations++;return new CpuWorker();}}),cold=await fixture();
+ const task=client.peek({marker:cold.marker,snapshot:cold.snapshot,isCurrent:()=>true});assert.equal(client.probing,true);assert.equal(!!client.busy,false);await assert.rejects(client.measure({...cold,isCurrent:()=>true}),/already active/);assert.equal(await task,null);assert.equal(creations,0);assert.equal(cold.packets[0].binary.byteLength,108);
+ const first=await fixture(),result=await client.measure({...first,isCurrent:()=>true,loadFile:async(part,name)=>first.packets[0][name==='geometry.gltf'?'json':'binary']});const next=await fixture();const hit=await client.peek({marker:next.marker,snapshot:next.snapshot,isCurrent:()=>true});assert.equal(hit.gain,result.gain);assert.equal(creations,1);assert.equal(next.packets[0].binary.byteLength,108);
+ const moved=await fixture();moved.snapshot.samples[0]=.9;assert.equal(await client.peek({marker:moved.marker,snapshot:moved.snapshot,isCurrent:()=>true}),null);
+ await assert.rejects(client.peek({marker:next.marker,snapshot:next.snapshot,isCurrent:()=>false}),SourceLoadCancelled);assert.equal(client.probing,false);client.dispose();
+});

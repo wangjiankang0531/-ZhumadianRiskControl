@@ -1,3 +1,4 @@
+import {supportsSourcePlans,readSourcePlan,verifyPlannedSource,SourcePlanResponseError} from './source_descriptor_plan.js';
 import {OrbitActivity} from './orbit_activity.js';
 import {chooseRefinementCandidate} from './source_allocation.js';
 import {SourceVisibility,visiblePixelPriority,matchesVisibilityCamera} from './source_visibility.js';
@@ -40,6 +41,7 @@ let resident=new Map(),pending=null,epoch=0,lastError='',lastStation='',frames=0
 const sourceVisibility=new SourceVisibility(renderer,scene,contextGroup);let visibilityReady=false;
 const budget=512*1024*1024,uploadTargetBytes=16*16*4,detailLimit=budget-uploadTargetBytes;
 const pageBudget=new SourcePageBudget(budget);pageBudget.reserve({format:'upload_target',bytes:uploadTargetBytes});
+let sourcePlansEnabled=false;
 let preparedTextures=new PreparedTextureIndex({schema:'xnby.prepared_texture_index.v1',entries:[]},location.href);
 const imageCache=new Map();let markerAtlas=null;
 let baseEdges=new Map(),baseTexels=new Map(),focusId=0;const tierEdges=new Map(),tierTexels=new Map(),residentLimit=16;
@@ -389,15 +391,31 @@ function maintain(){const restorations=[],ranked=ranking(),wanted=new Set(ranked
   ranked.splice(0,ranked.length,...prioritizeDetail(ranked,resident,focusId));
   for(const r of ranked){if(resident.get(r.id)?.depth===r.depth||visibilityReady&&!r.viewScore)continue;const key=`${r.id}/${r.depth}`;if(failed.has(key)||rootCosts.has(key)&&!canMakeFamilyRoom(r.id,null,r.viewScore,rootCosts.get(key),false))continue;loadFine(r).catch(fail);break;}}
 const failed=new Set(),rootCosts=new Map(),rootGainEstimates=new Map(),familyGainEstimates=new Map();
-async function measureSourceGain({id,names,marker,downloads,folder,stillWanted}){
+function sourceGainContext({id,names,stillWanted}){
  if(!sourceVisibility.visibleSnapshot)throw new SourceGainUnavailable('可见像素尚未就绪，保留当前地景');
  camera.updateMatrixWorld();if(!matchesVisibilityCamera(sourceVisibility.visibleSnapshot,camera,width,height)||telemetry.visibilityCut!==sourceRecoverySnapshot(resident)){telemetry.sourceGainCancelReason={root:id,phase:'capture',camera:matchesVisibilityCamera(sourceVisibility.visibleSnapshot,camera,width,height),cut:telemetry.visibilityCut===sourceRecoverySnapshot(resident),worldDelta:Math.max(...sourceVisibility.visibleSnapshot.cameraWorld.map((n,i)=>Math.abs(n-camera.matrixWorld.elements[i]))),dimensions:[sourceVisibility.visibleSnapshot.width,sourceVisibility.visibleSnapshot.height,width,height]};throw new SourceLoadCancelled();}
  const snapshot=sourceVisibility.capture(id,names,camera,height),cut=sourceRecoverySnapshot(resident),version=epoch;
  const isCurrent=()=>{camera.updateMatrixWorld();const wanted=stillWanted(),sameCamera=matchesVisibilityCamera(snapshot,camera,width,height),sameCut=cut===sourceRecoverySnapshot(resident),valid=version===epoch&&wanted&&sameCamera&&sameCut;if(!valid)telemetry.sourceGainCancelReason={root:id,phase:'compute',epoch:version===epoch,wanted,camera:sameCamera,cut:sameCut,worldDelta:Math.max(...snapshot.cameraWorld.map((n,i)=>Math.abs(n-camera.matrixWorld.elements[i])))};return valid;};
+ return {snapshot,isCurrent};
+}
+async function measureSourceGain({id,names,marker,downloads,folder,stillWanted}){
+ const {snapshot,isCurrent}=sourceGainContext({id,names,stillWanted});
  const result=await geometryGainWorker.measure({marker,snapshot,loadFile:(part,name)=>downloads.read(`native/${folder}/${part.directory}/${name}`),isCurrent});
  ensureSourceWanted(isCurrent);if(result.memoHit)telemetry.sourceGainMemoHits=(telemetry.sourceGainMemoHits??0)+1;else telemetry.sourceGainJobs=(telemetry.sourceGainJobs??0)+1;telemetry.sourceGainWorkerMs=Math.max(telemetry.sourceGainWorkerMs??0,result.milliseconds);
  telemetry.lastGainEstimate={root:id,samples:result.samples,hits:result.hits,missing:result.missing,parentDeficit:result.beforeDeficit,childResidual:result.afterDeficit,gain:result.gain,model:result.model,memoHit:result.memoHit,milliseconds:result.milliseconds};
  console.info('[XNBY source gain] '+JSON.stringify(telemetry.lastGainEstimate));return result.gain;
+}
+async function prepareSourceAllocation({id,depth,parent,names,costs,key,choice,stillWanted}){
+ if(!sourcePlansEnabled)return null;
+ const request=parent===undefined?{id,depth}:{id,parent};let plan;
+ try{plan=await readSourcePlan({request,stillWanted});}catch(error){if(error instanceof SourcePlanResponseError)throw sourceResponseError(error.response,'plan',{root:id,depth,parent});throw error;}
+ telemetry.sourcePlanRequests=(telemetry.sourcePlanRequests??0)+1;
+ await learnAllocationCost(plan.marker,costs,key,stillWanted);
+ if(!allocationStillBest(choice))return {plan,continue:false};
+ const {snapshot,isCurrent}=sourceGainContext({id,names,stillWanted});
+ const cached=await geometryGainWorker.peek({marker:plan.marker,snapshot,isCurrent});ensureSourceWanted(isCurrent);
+ if(cached){telemetry.sourcePlanMemoHits=(telemetry.sourcePlanMemoHits??0)+1;const estimates=parent===undefined?rootGainEstimates:familyGainEstimates;estimates.set(key,cached.gain);if(cached.gain<=0||!allocationStillBest(choice))return {plan,continue:false};}
+ return {plan,continue:true};
 }
 function uploadSourceModel(model){
  const uploadScene=new THREE.Scene(),priorTarget=renderer.getRenderTarget();uploadScene.add(model.scene);model.scene.traverse(n=>{if(n.isMesh)n.frustumCulled=false;});
@@ -422,12 +440,13 @@ async function stageManagedSource({marker,downloads,folder,stillWanted,admit,onR
  throw Error('源页格式重新规划次数超限');
 }
 async function loadFine(request){const owner=resident.get(request.id),stillWanted=()=>resident.get(request.id)===owner&&ranking().some(r=>r.id===request.id&&r.depth===request.depth);pending=request;telemetry.requests++;let staged=new THREE.Group(),downloads=null,requestCancelled=false;try{
-  ensureSourceWanted(stillWanted);let response=await fetch(`api/lod/${request.id}/${request.depth}`);while(response.status===202){await new Promise(r=>setTimeout(r,300));ensureSourceWanted(stillWanted);response=await fetch(`api/lod/${request.id}/${request.depth}`);}if(!response.ok)throw sourceResponseError(response,'root',{root:request.id,depth:request.depth});const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);
+  const allocation=await prepareSourceAllocation({id:request.id,depth:request.depth,names:owner?[...owner.frontier.visible]:[''],costs:rootCosts,key:`${request.id}/${request.depth}`,choice:`root/${request.id}/${request.depth}`,stillWanted});if(allocation&&!allocation.continue)return;
+  ensureSourceWanted(stillWanted);let response=await fetch(`api/lod/${request.id}/${request.depth}`);while(response.status===202){await new Promise(r=>setTimeout(r,300));ensureSourceWanted(stillWanted);response=await fetch(`api/lod/${request.id}/${request.depth}`);}if(!response.ok)throw sourceResponseError(response,'root',{root:request.id,depth:request.depth});const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);if(allocation)verifyPlannedSource(allocation.plan,response,marker);
   if(!marker.complete_frontier||!marker.parts?.length||marker.parts.length>64||marker.gpu_payload_bytes>384*1048576||marker.texture_policy!=='original_pixels_v1'||!Number.isFinite(marker.texel_world_p90_m)||marker.texel_world_p90_m<=0)throw Error('细层数据不完整，保留父层');
   tierEdges.set(`${request.id}/${request.depth}`,marker.longest_edge_p90_m);tierTexels.set(`${request.id}/${request.depth}`,marker.texel_world_p90_m??0);
   ensureSourceWanted(stillWanted);
   const previous=resident.get(request.id);
-  await learnAllocationCost(marker,rootCosts,`${request.id}/${request.depth}`,stillWanted);if(!allocationStillBest(`root/${request.id}/${request.depth}`))return;
+  if(!allocation)await learnAllocationCost(marker,rootCosts,`${request.id}/${request.depth}`,stillWanted);if(!allocationStillBest(`root/${request.id}/${request.depth}`))return;
   const gain=await measureSourceGain({id:request.id,names:previous?[...previous.frontier.visible]:[''],marker,downloads,folder:`tile_${request.id}_depth_${request.depth}`,stillWanted});rootGainEstimates.set(`${request.id}/${request.depth}`,gain);if(gain<=0||!allocationStillBest(`root/${request.id}/${request.depth}`))return;
   const loaded=await stageManagedSource({marker,downloads,folder:`tile_${request.id}_depth_${request.depth}`,stillWanted,admit:async runtime=>{
    rootCosts.set(`${request.id}/${request.depth}`,runtime.gpu_payload_bytes);if(!allocationStillBest(`root/${request.id}/${request.depth}`))return false;
@@ -498,9 +517,10 @@ function rollbackWebFamilies(ready){
 async function loadWebFamily(request){pending={...request,type:'family'};telemetry.familyRequests=(telemetry.familyRequests??0)+1;const requestEpoch=epoch;let staged=new THREE.Group(),ticket=null,downloads=null,requestCancelled=false;
  const stillWanted=()=>epoch===requestEpoch&&resident.get(request.id)===request.ready&&(ticket===null||request.ready.frontier.pending?.ticket===ticket)&&request.ready.frontier.visible.has(request.parent)&&visibleSourceCandidates(request.ready.frontier,camera,height).some(c=>c.node.name===request.parent)&&(!visibilityReady||sourceVisibility.weight(request.id,request.parent)>0);
  try{
-  const route=`api/lod-family/${request.id}/${encodeURIComponent(request.parent)}`;let response=await fetch(route,{cache:'no-store'});while(response.status===202){await new Promise(resolve=>setTimeout(resolve,300));if(!stillWanted()){requestCancelled=true;sourceCancelled();return;}response=await fetch(route,{cache:'no-store'});}if(!response.ok)throw sourceResponseError(response,'family',{root:request.id,parent:request.parent});const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);if(!stillWanted()){requestCancelled=true;sourceCancelled();return;}
+  const allocation=await prepareSourceAllocation({id:request.id,parent:request.parent,names:[request.parent],costs:familyCosts,key:`${request.id}/${request.parent}`,choice:`family/${request.id}/${request.parent}`,stillWanted});if(allocation&&!allocation.continue)return;
+  const route=`api/lod-family/${request.id}/${encodeURIComponent(request.parent)}`;let response=await fetch(route,{cache:'no-store'});while(response.status===202){await new Promise(resolve=>setTimeout(resolve,300));if(!stillWanted()){requestCancelled=true;sourceCancelled();return;}response=await fetch(route,{cache:'no-store'});}if(!response.ok)throw sourceResponseError(response,'family',{root:request.id,parent:request.parent});const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);if(allocation)verifyPlannedSource(allocation.plan,response,marker);if(!stillWanted()){requestCancelled=true;sourceCancelled();return;}
   if(!/^[0-9a-f]{16}$/.test(marker.family_key)||marker.tile_id!==request.id||marker.gpu_payload_bytes>256*1048576)throw Error('局部模型标记无效');
-  await learnAllocationCost(marker,familyCosts,`${request.id}/${request.parent}`,stillWanted);if(!allocationStillBest(`family/${request.id}/${request.parent}`))return;
+  if(!allocation)await learnAllocationCost(marker,familyCosts,`${request.id}/${request.parent}`,stillWanted);if(!allocationStillBest(`family/${request.id}/${request.parent}`))return;
   const gain=await measureSourceGain({id:request.id,names:[request.parent],marker,downloads,folder:`family_tile_${request.id}_${marker.family_key}`,stillWanted});familyGainEstimates.set(`${request.id}/${request.parent}`,gain);if(gain<=0||!allocationStillBest(`family/${request.id}/${request.parent}`))return;
   const loaded=await stageManagedSource({marker,downloads,folder:`family_tile_${request.id}_${marker.family_key}`,stillWanted,admit:async runtime=>{
    familyCosts.set(`${request.id}/${request.parent}`,runtime.gpu_payload_bytes);if(!allocationStillBest(`family/${request.id}/${request.parent}`))return false;
@@ -601,6 +621,7 @@ async function configureBusinessConnection(){
 
 async function boot(){
   await configureBusinessConnection();
+  try{const response=await fetch('api/health',{cache:'no-store'});sourcePlansEnabled=response.ok&&supportsSourcePlans(await response.json());}catch{sourcePlansEnabled=false;}telemetry.sourcePlansEnabled=sourcePlansEnabled;
   try{const response=await fetch('api/prepared-textures',{cache:'no-store'});if(!response.ok)throw Error('纹理索引HTTP '+response.status);preparedTextures=new PreparedTextureIndex(await response.json(),location.href);telemetry.preparedTextureCount=preparedTextures.entries.size;telemetry.bc7Supported=supportsPreparedBc7(renderer);console.info('[XNBY prepared textures] '+JSON.stringify({indexed:telemetry.preparedTextureCount,supported:telemetry.bc7Supported}));}catch(error){telemetry.preparedTextureNotice='压缩纹理索引不可用，按原JPEG预算加载';telemetry.preparedTextureCount=0;}
   const atlas=new Image();atlas.src='assets/landscape/icons.png';markerAtlas=atlas;
   const catalogBytes=await(await fetch('data/showcase/zhumadian_native_hierarchy.json')).arrayBuffer();catalog=JSON.parse(new TextDecoder().decode(catalogBytes));if(catalog.base_root_count!==2346)throw Error('驻马店基础层目录不完整');telemetry.baseRoots=2346;

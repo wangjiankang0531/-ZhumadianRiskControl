@@ -69,6 +69,17 @@ class ReadOnlyLandscapeStore:
         self.lock = threading.Lock()
 
     def describe(self, tile, *, depth=None, parent=None):
+        return self.describe_with_identity(tile,depth=depth,parent=parent)[0]
+
+    def describe_with_identity(self, tile, *, depth=None, parent=None):
+        return self._inspect_bundle(tile,depth=depth,parent=parent,verify_payloads=True)
+
+    def plan(self, tile, *, depth=None, parent=None):
+        marker,digest = self._inspect_bundle(tile,depth=depth,parent=parent,verify_payloads=False)
+        require('cache_lease' not in marker,'Plan must not carry a resource lease')
+        return dict(schema='xnby.source_bundle_plan.v1',verification='metadata_only',availabilityVerified=False,markerSHA256=digest,marker=marker)
+
+    def _inspect_bundle(self, tile, *, depth=None, parent=None, verify_payloads):
         require(type(tile) is int and 1<=tile<=2346 and (depth is None)!=(parent is None), 'Invalid source request')
         if parent is None:
             require(type(depth) is int and 1<=depth<=12, 'Invalid frontier depth')
@@ -104,16 +115,19 @@ class ReadOnlyLandscapeStore:
             for row in records:
                 require(type(row.get('bytes')) is int and 0<row['bytes']<=32*1048576 and SHA.fullmatch(str(row.get('sha256'))),'Invalid physical file identity')
                 relative = Path(part['directory'])/row['name']
-                content = read_bytes(owned(folder,relative),32*1048576)
-                require(len(content)==row['bytes'] and hashlib.sha256(content).hexdigest()==row['sha256'],'Physical file digest differs')
+                if verify_payloads:
+                    content = read_bytes(owned(folder,relative),32*1048576)
+                    require(len(content)==row['bytes'] and hashlib.sha256(content).hexdigest()==row['sha256'],'Physical file digest differs')
                 files[relative.as_posix()] = dict(bytes=row['bytes'],sha256=row['sha256'])
         require(marker.get('gpu_payload_bytes')==payload and payload<=(384 if parent is None else 256)*1048576,'Complete bundle exceeds original budget')
-        with self.lock:
-            self.entries[name] = dict(markerSHA256=hashlib.sha256(raw).hexdigest(),files=files)
-            self.entries.move_to_end(name)
-            while len(self.entries)>256:
-                self.entries.popitem(last=False)
-        return marker
+        digest = hashlib.sha256(raw).hexdigest()
+        if verify_payloads:
+            with self.lock:
+                self.entries[name] = dict(markerSHA256=digest,files=files)
+                self.entries.move_to_end(name)
+                while len(self.entries)>256:
+                    self.entries.popitem(last=False)
+        return marker,digest
 
     def payload(self, name, part, filename):
         require(re.fullmatch(r'(?:tile_\d+_depth_\d+|family_tile_\d+_[0-9a-f]{16})',name) and re.fullmatch(r'part_\d{3}',part) and filename in ('geometry.gltf','geometry.bin','atlas.jpg'),'Invalid physical file route')

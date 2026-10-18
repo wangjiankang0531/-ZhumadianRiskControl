@@ -127,4 +127,61 @@ class ReadOnlyHttpTests(unittest.TestCase):
         with self.assertRaises(ValueError):policy.FileLock(missing,exclusive=True,read_only=True)
 
 
+    def test_plan_reads_only_marker_and_never_admits_or_leases_payload(self):
+        from tools import readonly_landscape_store as readonly
+        original=readonly.read_bytes;reads=[]
+        def metadata_only(path,maximum):
+            self.assertEqual(path.name,'complete.json')
+            reads.append(path.name);return original(path,maximum)
+        with patch.object(readonly,'read_bytes',side_effect=metadata_only),patch.object(web.POOL,'submit',side_effect=AssertionError('No producer')):
+            status,body,headers=self.request('/api/lod-plan/117/3')
+        value=json.loads(body);self.assertEqual(status,200);self.assertEqual(reads,['complete.json'])
+        self.assertEqual(value['schema'],'xnby.source_bundle_plan.v1');self.assertFalse(value['availabilityVerified']);self.assertEqual(value['verification'],'metadata_only')
+        self.assertNotIn('cache_lease',value);self.assertNotIn('cache_lease',value['marker']);self.assertFalse(self.registry.entries);self.assertFalse(self.server.RequestHandlerClass.read_only_store.entries)
+        self.assertEqual(headers['Cache-Control'],'no-store')
+        self.assertEqual(self.request('/native/tile_117_depth_3/part_000/atlas.jpg')[0],422)
+
+    def test_verified_load_binds_exact_plan_marker_sha(self):
+        status,body,_=self.request('/api/lod-plan/117/3');self.assertEqual(status,200);plan=json.loads(body)
+        status,body,headers=self.request('/api/lod/117/3');self.assertEqual(status,200)
+        self.assertEqual(headers['X-XNBY-Source-Marker-SHA256'],plan['markerSHA256']);self.assertEqual(plan['markerSHA256'],hashlib.sha256((self.folder/'complete.json').read_bytes()).hexdigest())
+        token=json.loads(body)['cache_lease'];self.assertEqual(self.request('/api/lod-lease/'+token+'/release','POST')[0],204);self.assertFalse(self.registry.entries)
+
+    def test_metadata_availability_is_not_a_substitute_for_verified_load(self):
+        from tools import readonly_landscape_store as readonly
+        original=readonly.read_bytes
+        def corrupt(path,maximum):
+            raw=original(path,maximum)
+            return b'x'*len(raw) if path.name=='atlas.jpg' else raw
+        with patch.object(readonly,'read_bytes',side_effect=corrupt):
+            self.assertEqual(self.request('/api/lod-plan/117/3')[0],200)
+            self.assertEqual(self.request('/api/lod/117/3')[0],422)
+        self.assertFalse(self.registry.entries)
+
+    def test_plan_capability_is_readonly_and_cannot_reach_writable_producers(self):
+        health=json.loads(self.request('/api/health')[1]);self.assertEqual(health['descriptorPlanSchema'],'xnby.source_bundle_plan.v1')
+        handler=self.server.RequestHandlerClass;handler.read_only_lod=False
+        try:
+            with patch.object(web.POOL,'submit',side_effect=AssertionError('No producer')):
+                self.assertEqual(self.request('/api/lod-plan/117/3')[0],404)
+                self.assertEqual(self.request('/api/lod-family-plan/117/Tile_117_L19_0uuuu.osgb')[0],404)
+            self.assertNotIn('descriptorPlanSchema',json.loads(self.request('/api/health')[1]))
+        finally:handler.read_only_lod=True
+
+    def test_family_plan_route_passes_only_validated_source_identity(self):
+        store=self.server.RequestHandlerClass.read_only_store
+        with patch.object(store,'plan',return_value={'schema':'test-route'}) as plan:
+            self.assertEqual(self.request('/api/lod-family-plan/117/Tile_117_L19_0uuuu.osgb')[0],200)
+            plan.assert_called_once_with(117,depth=None,parent='Tile_117_L19_0uuuu.osgb')
+        for route in ['/api/lod-plan/0/3','/api/lod-plan/117/99','/api/lod-plan/117/3?skip=1','/api/lod-family-plan/117/Tile_118_L19_0uuuu.osgb','/api/lod-family-plan/117/../../private']:
+            self.assertEqual(self.request(route)[0],400)
+
+    def test_post_grant_json_failure_releases_the_new_lease(self):
+        store=self.server.RequestHandlerClass.read_only_store;original=store.describe_with_identity
+        def invalid(*args,**kwargs):
+            marker,digest=original(*args,**kwargs);return {**marker,'invalid_number':float('nan')},digest
+        with patch.object(store,'describe_with_identity',side_effect=invalid):self.assertEqual(self.request('/api/lod/117/3')[0],422)
+        self.assertFalse(self.registry.entries)
+
+
 if __name__=='__main__':unittest.main()
