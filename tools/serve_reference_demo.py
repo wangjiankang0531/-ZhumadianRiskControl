@@ -19,13 +19,17 @@ class Handler(BaseHTTPRequestHandler):
             self.trusted();u=urlsplit(self.path);q=parse_qs(u.query,max_num_fields=8)
             if any(len(v)!=1 for v in q.values()):raise DemoError(400,'重复查询参数')
             q={k:v[0] for k,v in q.items()}
-            if u.path=='/api/demo/health':return self.json(200,dict(schema='xnby.reference.demo.v1',version='0.8.7',synthetic=True,databaseBinding=self.server.database_binding,modules=len(MODULES),initialRecords=len(MODULES)*12))
-            if u.path=='/api/demo/catalog':return self.json(200,dict(schema='xnby.reference.demo.v1',synthetic=True,version='0.8.7',databaseBinding=self.server.database_binding,token=self.server.demo_token,modules=list(MODULES.values()),workFormSchema=catalog_schema()))
-            if u.path=='/api/demo/summary' and set(q)=={'entity'}:return self.json(200,self.server.store.summary(q['entity']))
-            if u.path=='/api/demo/records':
-                if set(q)-{'entity','q','state','enterprise','page','id'}:raise DemoError(400,'未知查询参数')
-                if 'id' in q:return self.json(200,self.server.store.detail(q.get('entity',''),q['id']))
-                return self.json(200,self.server.store.list(q.get('entity',''),q.get('q','')[:256],q.get('state',''),q.get('enterprise',''),int(q.get('page','1'))))
+            if u.path=='/api/demo/health':return self.json(200,dict(schema='xnby.reference.demo.v1',version='0.8.8',synthetic=True,databaseBinding=self.server.database_binding,modules=len(MODULES),initialRecords=len(MODULES)*12))
+            if u.path=='/api/demo/catalog':return self.json(200,dict(schema='xnby.reference.demo.v1',synthetic=True,version='0.8.8',databaseBinding=self.server.database_binding,token=self.server.demo_token,modules=list(MODULES.values()),workFormSchema=catalog_schema()))
+            if u.path in ('/api/demo/summary','/api/demo/records'):
+                allowed={'entity','q','state','enterprise','dateFrom','dateTo'}|({'page','id'} if u.path.endswith('/records') else set())
+                if set(q)-allowed:raise DemoError(400,'未知查询参数')
+                if 'id' in q:
+                    if set(q)!={'entity','id'}:raise DemoError(400,'详情查询不能混用筛选条件')
+                    return self.json(200,self.server.store.detail(q['entity'],q['id']))
+                args=dict(q=q.get('q',''),state=q.get('state',''),enterprise=q.get('enterprise',''),date_from=q.get('dateFrom',''),date_to=q.get('dateTo',''))
+                if u.path.endswith('/summary'):return self.json(200,self.server.store.summary(q.get('entity',''),**args))
+                return self.json(200,self.server.store.list(q.get('entity',''),page=int(q.get('page','1')),**args))
             names={'/':'reference-demo.html','/reference-demo.html':'reference-demo.html','/reference-demo.js':'reference-demo.js','/reference-demo.css':'reference-demo.css'}
             name=names.get(u.path)
             if not name:raise DemoError(404,'资源不存在')
@@ -64,4 +68,4 @@ def make_server(port,static,database,*,server_type=ThreadingHTTPServer,handler_t
 
 if __name__=='__main__':
     root=Path(__file__).resolve().parents[1];p=argparse.ArgumentParser();p.add_argument('--port',type=int,default=8791);p.add_argument('--static',type=Path,default=root/'web/dist');p.add_argument('--database',type=Path,default=root/'work/reference_demo/demo.sqlite');a=p.parse_args()
-    server=make_server(a.port,a.static,a.database);print(json.dumps(dict(url=f'http://127.0.0.1:{server.server_port}/',version='0.8.7',synthetic=True),ensure_ascii=False),flush=True);server.serve_forever()
+    server=make_server(a.port,a.static,a.database);print(json.dumps(dict(url=f'http://127.0.0.1:{server.server_port}/',version='0.8.8',synthetic=True),ensure_ascii=False),flush=True);server.serve_forever()

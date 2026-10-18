@@ -2,7 +2,7 @@
 import json, sqlite3, uuid
 from pathlib import Path
 from contextlib import closing
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from services.reference_work_forms import TYPES, ENTERPRISES, normalize, synthetic_form, list_fields
 
 # Names come from the recorded read-only reference navigation and 261013 requirements.
@@ -114,32 +114,50 @@ class DemoStore:
         for key in ('状态','隐患状态','排查状态','作业状态','巡检路线状态','排查清单状态'):
             if key in value['fields']:value['fields'][key]=row['state']
         return {**{k:row[k] for k in ('entity','id','revision','enterprise','state','date')},**value,'synthetic':True}
-    def list(self,entity,q='',state='',enterprise='',page=1):
+    def query_filter(self,entity,q='',state='',enterprise='',date_from='',date_to='',include_state=True):
         if entity not in MODULES:raise DemoError(404,'未知业务模块')
-        if not isinstance(page,int) or page<1 or page>100000:raise DemoError(400,'页码无效')
+        if not isinstance(q,str) or len(q)>256:raise DemoError(400,'搜索内容不超过256字')
+        if state and state not in MODULES[entity]['states']:raise DemoError(400,'状态无效')
+        if enterprise and enterprise not in ENTERPRISES:raise DemoError(400,'模拟企业无效')
+        for value in (date_from,date_to):
+            if not isinstance(value,str):raise DemoError(400,'记录日期无效')
+            if value:
+                try:
+                    if len(value)!=10 or date.fromisoformat(value).isoformat()!=value:raise ValueError()
+                except ValueError:raise DemoError(400,'记录日期需为有效的YYYY-MM-DD日期')
+        if date_from and date_to and date_from>date_to:raise DemoError(400,'开始日期不能晚于结束日期')
         where=['entity=?'];params=[entity]
-        for col,value in [('state',state),('enterprise',enterprise)]:
-            if value:where.append(col+'=?');params.append(value)
+        if enterprise:where.append('enterprise=?');params.append(enterprise)
+        if include_state and state:where.append('state=?');params.append(state)
+        if date_from:where.append('date>=?');params.append(date_from)
+        if date_to:where.append('date<=?');params.append(date_to)
         if q:
-            # Literal search, including %, _, and backslash. Parameters never form SQL.
             term=q.replace('\\','\\\\').replace('%','\\%').replace('_','\\_')
             where.append("(id LIKE ? ESCAPE '\\' OR payload LIKE ? ESCAPE '\\')");params.extend(['%'+term+'%']*2)
-        clause=' AND '.join(where)
+        return ' AND '.join(where),params
+
+    def list(self,entity,q='',state='',enterprise='',page=1,date_from='',date_to=''):
+        if type(page) is not int or not 1<=page<=100000:raise DemoError(400,'页码无效')
+        args=dict(q=q,state=state,enterprise=enterprise,date_from=date_from,date_to=date_to)
+        clause,params=self.query_filter(entity,**args)
+        facet,facet_params=self.query_filter(entity,**args,include_state=False)
         with closing(self.connect()) as db:
+            db.execute('BEGIN')
             total=db.execute('SELECT COUNT(*) FROM demo_records WHERE '+clause,params).fetchone()[0]
             rows=db.execute('SELECT * FROM demo_records WHERE '+clause+' ORDER BY id LIMIT 8 OFFSET ?',params+[(page-1)*8]).fetchall()
-            counts={r[0]:r[1] for r in db.execute('SELECT state,COUNT(*) FROM demo_records WHERE entity=? GROUP BY state',(entity,))}
-        return dict(records=[self.record(r) for r in rows],total=total,page=page,pageSize=8,counts=counts,synthetic=True)
-    def summary(self,entity):
-        if entity not in MODULES:raise DemoError(404,'未知业务模块')
+            counts={r[0]:r[1] for r in db.execute('SELECT state,COUNT(*) FROM demo_records WHERE '+facet+' GROUP BY state',facet_params)}
+        return dict(records=[self.record(r) for r in rows],total=total,page=page,pageSize=8,counts=counts,synthetic=True,dateBasis='record_date_utc',countsBasis='same_query_except_selected_state')
+
+    def summary(self,entity,q='',state='',enterprise='',date_from='',date_to=''):
+        clause,params=self.query_filter(entity,q,state,enterprise,date_from,date_to)
         with closing(self.connect()) as db:
-            data=[self.record(r) for r in db.execute('SELECT * FROM demo_records WHERE entity=? ORDER BY id',(entity,))]
+            data=[self.record(r) for r in db.execute('SELECT * FROM demo_records WHERE '+clause+' ORDER BY id',params)]
         counts={state:0 for state in MODULES[entity]['states']};dates={};enterprises={};groups={c:{} for c in MODULES[entity]['columns']}
         for record in data:
             counts[record['state']]+=1;dates[record['date']]=dates.get(record['date'],0)+1;enterprises[record['enterprise']]=enterprises.get(record['enterprise'],0)+1
             for key in groups:
                 value=record['fields'].get(key,'未提供');groups[key][value]=groups[key].get(value,0)+1
-        return dict(total=len(data),states=counts,dates=dates,enterprises=enterprises,groups=groups,synthetic=True)
+        return dict(total=len(data),states=counts,dates=dates,enterprises=enterprises,groups=groups,synthetic=True,dateBasis='record_date_utc')
     def detail(self,entity,identity):
         with closing(self.connect()) as db:
             row=db.execute('SELECT * FROM demo_records WHERE entity=? AND id=?',(entity,identity)).fetchone()

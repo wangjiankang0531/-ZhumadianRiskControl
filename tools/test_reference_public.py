@@ -69,6 +69,16 @@ class PublicHTTPTests(unittest.TestCase):
             self.assertIn(attr, session)
         return session.split(';')[0]
 
+    def test_authenticated_record_date_scope_matches_list_summary_and_blocks_bad_range(self):
+        cookie=self.session();headers={'Cookie':cookie}
+        query=urlencode(dict(entity='special-work',enterprise='模拟企业甲',dateFrom='2026-10-13',dateTo='2026-10-15'))
+        status,_,raw=self.request('/zhumadian/api/demo/records?'+query,headers=headers)
+        self.assertEqual(status,200);listing=json.loads(raw);self.assertEqual(listing['total'],2);self.assertEqual(sum(listing['counts'].values()),2)
+        status,_,raw=self.request('/zhumadian/api/demo/summary?'+query,headers=headers)
+        self.assertEqual(status,200);self.assertEqual(json.loads(raw)['total'],2)
+        self.assertEqual(self.request('/zhumadian/api/demo/records?entity=special-work&dateFrom=2026-02-30',headers=headers)[0],400)
+        self.assertEqual(self.request('/zhumadian/api/demo/records?'+query)[0],401)
+
     def test_every_resource_requires_fixed_ingress_and_login(self):
         for path in ('/zhumadian/', '/zhumadian/reference-demo.js', '/zhumadian/api/demo/catalog'):
             self.assertEqual(self.request(path, ingress=False)[0], 403)
