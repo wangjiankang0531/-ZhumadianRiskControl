@@ -108,6 +108,28 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     data_binding=None
     allow_local_layer_database=True
     root=ROOT; python=None; layers=None; business=None; spatial=None
+    read_only_lod=False; read_only_store=None; read_only_leases=None
+
+    def _leases(self):
+        return self.read_only_leases if self.read_only_lod else CACHE_LEASES
+
+    def _readonly_bundle(self,tile,*,depth=None,parent=None):
+        if self.read_only_store is None or self.read_only_leases is None:
+            return self.send_error(503,'Read-only landscape store is not configured')
+        directory=(f'tile_{tile}_depth_{depth}' if parent is None else
+                   f'family_tile_{tile}_{hashlib.sha256(parent.encode()).hexdigest()[:16]}')
+        loaded={}
+        def validate():
+            loaded['marker']=self.read_only_store.describe(tile,depth=depth,parent=parent)
+            return True
+        try:
+            token=self.read_only_leases.grant(self.read_only_store.cache,directory,validate)
+            raw=json.dumps({**loaded['marker'],'cache_lease':token}).encode('utf-8')
+        except (FileNotFoundError,PermissionError,TimeoutError):
+            return self.send_error(409,'Read-only bundle or existing reader lock unavailable; keep current layer')
+        except (ValueError,RuntimeError,KeyError,TypeError):
+            return self.send_error(422,'Prepared read-only bundle failed validation; no conversion attempted')
+        self.send_response(200);self.send_header('Content-Type','application/json; charset=utf-8');self.send_header('Content-Length',str(len(raw)));self.end_headers();self.wfile.write(raw)
     def _native_response(self,head=False):
         route=unquote(urlsplit(self.path).path)
         match=re.fullmatch(r'/native/((?:tile_\d+_depth_\d+|family_tile_\d+_[0-9a-f]{16}))/part_\d{3}/(?:geometry\.(?:gltf|bin)|atlas\.jpg)',route)
@@ -118,12 +140,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             tokens=query.get('lease',[])
             if query and (set(query)!={'lease'} or len(tokens)!=1 or not re.fullmatch(r'[0-9a-f]{32}',tokens[0])):
                 self.send_error(400); return True
-            guard=CACHE_LEASES.use(tokens[0],cache,name) if tokens else cache_policy.bundle_lock(cache,name,timeout=0)
+            registry=self._leases()
+            if registry is None:raise PermissionError('Read-only reader registry unavailable')
+            guard=(registry.use(tokens[0],cache,name) if tokens else
+                   cache_policy.readonly_bundle_lock(cache,name,timeout=0) if self.read_only_lod else
+                   cache_policy.bundle_lock(cache,name,timeout=0))
             with guard:
-                if head: super().do_HEAD()
+                if self.read_only_lod:
+                    if self.read_only_store is None:raise PermissionError('Read-only store unavailable')
+                    pieces=route.split('/')
+                    raw=self.read_only_store.payload(name,pieces[-2],pieces[-1])
+                    mime={'gltf':'model/gltf+json','bin':'application/octet-stream','jpg':'image/jpeg'}[pieces[-1].rsplit('.',1)[-1]]
+                    self.send_response(200);self.send_header('Content-Type',mime);self.send_header('Content-Length',str(len(raw)));self.end_headers()
+                    if not head:self.wfile.write(raw)
+                elif head: super().do_HEAD()
                 else: super().do_GET()
-        except (PermissionError,TimeoutError): self.send_error(409,'Cache lease unavailable; keep previous complete layer')
-        except ValueError: self.send_error(400)
+        except (PermissionError,TimeoutError,FileNotFoundError): self.send_error(409,'Cache lease unavailable; keep previous complete layer')
+        except (ValueError,KeyError,TypeError): self.send_error(422 if self.read_only_lod else 400)
         return True
 
     def do_HEAD(self):
@@ -133,7 +166,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         match=re.fullmatch(r'/api/lod-lease/([0-9a-f]{32})/release',urlsplit(self.path).path)
         if not match: return self.send_error(501)
         if self.headers.get('Transfer-Encoding') or self.headers.get('Content-Length','0')!='0': return self.send_error(400)
-        CACHE_LEASES.release(match.group(1)); self.send_response(204); self.send_header('Content-Length','0'); self.end_headers()
+        registry=self._leases()
+        if registry is None:return self.send_error(503)
+        registry.release(match.group(1)); self.send_response(204); self.send_header('Content-Length','0'); self.end_headers()
 
     def _database_layers(self):
         try:
@@ -180,6 +215,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             if not match:return self.send_error(400)
             tile,parent=int(match.group(1)),match.group(2)
             if not 1<=tile<=2346 or not parent.startswith(f'Tile_{tile}_'):return self.send_error(400)
+            if self.read_only_lod:return self._readonly_bundle(tile,parent=parent)
             key=(tile,parent)
             with LOCK:
                 previous=JOBS.get(key)
@@ -214,6 +250,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             if not match:return self.send_error(400)
             tile,depth=map(int,match.groups())
             if not 1<=tile<=2346 or not 1<=depth<=12:return self.send_error(400)
+            if self.read_only_lod:return self._readonly_bundle(tile,depth=depth)
             key=(tile,depth)
             with LOCK:
                 previous=JOBS.get(key)
@@ -245,6 +282,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Content-Type','application/json; charset=utf-8');self.send_header('Content-Length',str(len(data)));self.send_header('Cache-Control','no-store');self.end_headers();self.wfile.write(data);return
         if route=='/api/health':
             data=b'{"application":"xnby.landscape.web.v1","scene":"zhumadian"}'
+            if self.read_only_lod:
+                data=json.dumps({**json.loads(data),'lodAccess':'read_only','conversionEnabled':False}).encode('utf-8')
             manifest=self.root/'package.json'
             if manifest.is_file():
                 raw=manifest.read_bytes();release=json.loads(raw)
@@ -283,14 +322,25 @@ def main():
     parser.add_argument('--layer-database',type=Path);parser.add_argument('--layers',type=Path);parser.add_argument('--python',type=Path)
     parser.add_argument('--business',type=Path,help='Published business snapshot JSON, read-only')
     parser.add_argument('--spatial',type=Path,help='Published spatial directory JSON, read-only')
+    parser.add_argument('--read-only-lod',action='store_true',help='Only read existing verified bundles/locks; never submit conversions, touch markers or maintain caches')
     args=parser.parse_args();Handler.layer_repository=LayerRepository(args.layer_database or publication_assets(ROOT)/'BusinessData/xnby_business.sqlite');Handler.spatial=args.spatial;Handler.layers=args.layers or ROOT/'projects/驻马店图层.json'
     Handler.data_binding=layer_data_binding(Handler.layers,Handler.layer_repository.path)
     Handler.business=args.business
+    Handler.read_only_lod=args.read_only_lod
+    if args.read_only_lod:
+        if __package__:
+            from .readonly_landscape_store import ReadOnlyLandscapeStore
+        else:
+            from readonly_landscape_store import ReadOnlyLandscapeStore
+        Handler.read_only_store=ReadOnlyLandscapeStore(ROOT)
+        Handler.read_only_leases=LeaseRegistry(read_only=True)
     Handler.python=args.python or ROOT/'runtime/python/python.exe'
     if not Handler.python.exists():Handler.python=Path.home()/'.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'
     server=http.server.ThreadingHTTPServer((args.host,args.port),Handler)
     print(f'XNBY LANDSCAPE WEB http://{args.host}:{args.port}  (Ctrl+C to stop)',flush=True)
     try:server.serve_forever()
     except KeyboardInterrupt:pass
-    finally:server.server_close();POOL.shutdown(wait=False,cancel_futures=True);CACHE_LEASES.close()
+    finally:
+        server.server_close();POOL.shutdown(wait=False,cancel_futures=True);CACHE_LEASES.close()
+        if Handler.read_only_leases is not None:Handler.read_only_leases.close()
 if __name__=='__main__':main()

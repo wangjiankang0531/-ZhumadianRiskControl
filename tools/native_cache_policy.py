@@ -27,11 +27,14 @@ def bundle_tile(name):
 
 
 class FileLock:
-    def __init__(self, path, exclusive=False, timeout=100):
-        path.parent.mkdir(parents=True, exist_ok=True)
+    def __init__(self, path, exclusive=False, timeout=100, *, read_only=False):
+        if read_only and exclusive:
+            raise ValueError("read-only cache locks cannot be exclusive")
+        if not read_only:
+            path.parent.mkdir(parents=True, exist_ok=True)
         if linked(path.parent) or linked(path):
             raise ValueError("cache lock path cannot be a link")
-        self.file = path.open("a+b")
+        self.file = path.open("rb" if read_only else "a+b")
         self.closed = False
         deadline = time.monotonic() + timeout
         if os.name == "nt":
@@ -143,6 +146,19 @@ def bundle_lock(cache, name, exclusive=False, timeout=100):
         folder = cache / name
         if linked(folder) or folder.resolve().parent != cache.resolve():
             raise ValueError("derived bundle escapes cache")
+        yield folder
+
+
+@contextmanager
+def readonly_bundle_lock(cache, name, timeout=0):
+    """Reuse existing producer locks without creating directories or files."""
+    tile = bundle_tile(name)
+    with ExitStack() as stack:
+        stack.enter_context(FileLock(cache / '.locks' / f'tile_{tile}.lock', timeout=timeout, read_only=True))
+        stack.enter_context(FileLock(cache / '.locks' / (name+'.lock'), timeout=timeout, read_only=True))
+        folder = cache / name
+        if linked(cache) or linked(folder) or folder.resolve().parent != cache.resolve():
+            raise ValueError('read-only bundle escapes cache')
         yield folder
 
 

@@ -13,9 +13,10 @@ else:
 
 
 class LeaseRegistry:
-    def __init__(self, ttl=180, maximum=256, janitor=True):
+    def __init__(self, ttl=180, maximum=256, janitor=True, *, read_only=False):
         self.ttl = ttl
         self.maximum = maximum
+        self.read_only = read_only
         self.entries = {}
         self.caches = set()
         self.lock = threading.RLock()
@@ -40,20 +41,26 @@ class LeaseRegistry:
                     roots.add(cache)
         with self.lock:
             roots.update(self.caches)
-        for cache in roots:
-            policy.maintain(cache)
+        if not self.read_only:
+            for cache in roots:
+                policy.maintain(cache)
+
+    def _guard(self, cache, name):
+        return (policy.readonly_bundle_lock(cache,name,timeout=0) if self.read_only
+                else policy.bundle_lock(cache,name,timeout=0))
 
     def grant(self, cache, name, validate):
         self.expire()
         with self.lock:
             if len(self.entries) >= self.maximum:
                 raise RuntimeError("cache reader capacity reached")
-            guard = policy.bundle_lock(cache, name, timeout=0)
+            guard = self._guard(cache, name)
             folder = guard.__enter__()
             try:
                 if not validate():
                     raise FileNotFoundError("derived bundle changed before lease")
-                (folder / "complete.json").touch()
+                if not self.read_only:
+                    (folder / "complete.json").touch()
                 token = secrets.token_hex(16)
                 self.entries[token] = (cache, name, guard, time.monotonic() + self.ttl)
                 self.caches.add(cache)
@@ -73,7 +80,7 @@ class LeaseRegistry:
                 or row[3] <= time.monotonic()
             ):
                 raise PermissionError("expired or mismatched cache lease")
-            guard = policy.bundle_lock(cache, name, timeout=0)
+            guard = self._guard(cache, name)
             guard.__enter__()
             self.entries[token] = (*row[:3], time.monotonic() + self.ttl)
         try:
@@ -86,7 +93,7 @@ class LeaseRegistry:
             row = self.entries.pop(token, None)
             if row:
                 row[2].__exit__(None, None, None)
-        if row:
+        if row and not self.read_only:
             policy.maintain(row[0])
 
     def close(self):
