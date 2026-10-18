@@ -1,5 +1,6 @@
 import {SourceLoadCancelled,ensureSourceWanted} from './lod_transaction.js';
 import {validateSourcePart} from './source_frontier.js';
+import {sourceRestorationFootprint} from './source_page_budget.js';
 
 export class SourceRestoreUnavailable extends Error{constructor(message){super(message);this.name='SourceRestoreUnavailable';}}
 
@@ -17,7 +18,7 @@ export async function withSourceRestorations({actions,residents,load,stillWanted
   for(const action of actions){const copy=copies.get(action.root);if(!copy)throw new SourceLoadCancelled();if(action.parent===null)copies.delete(action.root);else if(!copy.rollback(action.parent).length)throw new SourceLoadCancelled();}
   if([...copies.values()].reduce((sum,copy)=>sum+copy.bytes,0)+reservedBytes>limit)throw new SourceLoadCancelled();
  };
- ensureSourceWanted(current);preview();
+ ensureSourceWanted(current);preview();if(sourceRestorationFootprint(residents,actions)>limit)throw new SourceLoadCancelled();
  for(const action of actions)if(action.parent!==null){
   const {ready}=snapshots.get(action.root),plan=ready.frontier.rollbackPlan(action.parent);if(!plan)throw new SourceLoadCancelled();
   for(const {bundle,part} of plan.missingPages){if(!requirements.has(bundle))requirements.set(bundle,{root:action.root,ready,bundle,parts:new Map()});requirements.get(bundle).parts.set(part.directory,part);}

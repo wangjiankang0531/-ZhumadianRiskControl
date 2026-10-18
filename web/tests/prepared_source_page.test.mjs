@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {sourcePageSource,sourcePageGeometryBytes,loadPreparedSourcePage,runtimeSourceBundle,validateRuntimeSourceTexture,planPreparedSourceBundle,stagePreparedSourceBundle,SourcePagePlanChanged} from '../src/prepared_source_page.js';
+import {sourcePageSource,sourcePageGeometryBytes,loadPreparedSourcePage,runtimeSourceBundle,validateRuntimeSourceTexture,planPreparedSourceBundle,stagePreparedSourceBundle,SourcePagePlanChanged,originalSourceBundle,subsetPreparedSourcePlan} from '../src/prepared_source_page.js';
 import {sha256} from '../src/prepared_bc7.js';
 const part=()=>({directory:'part_000',vertices:3,indices:3,atlas_size:16,atlas_extent:[16,16],gpu_payload_bytes:1568,files:[{name:'atlas.jpg',sha256:'a'.repeat(64),bytes:1}]});
 test('source storage cost includes geometry and every original mip',()=>{
@@ -31,6 +31,15 @@ function plannedFixture(){
  for(let level=0;;level++){const bytes=Math.ceil(size/4)**2*16;manifest.mips.push({level,width:size,height:size,offset,bytes,sha256:'c'.repeat(64)});offset+=bytes;if(size===1)break;size=Math.max(1,Math.floor(size/2));}manifest.payloadBytes=offset;
  return {p,manifest,marker:{parts:[p],gpu_payload_bytes:p.gpu_payload_bytes}};
 }
+
+test('restoration canonicalizes original bytes and subsets only the missing admitted pages',async()=>{
+ const f=plannedFixture();f.marker.parts.push({...structuredClone(f.p),directory:'part_001'});f.marker.gpu_payload_bytes*=2;
+ const plan=await planPreparedSourceBundle({marker:f.marker,supported:part=>part.directory==='part_000',loadManifest:async()=>f.manifest});
+ assert.deepEqual(originalSourceBundle(plan.marker),f.marker);const subset=subsetPreparedSourcePlan(plan,['part_000']);
+ assert.equal(subset.marker.parts.length,1);assert.equal(subset.marker.gpu_payload_bytes,1568);assert.equal(subset.plan.marker.gpu_payload_bytes,572);assert.equal(subset.plan.marker.parts[0].runtime_texture.payloadSHA256,'b'.repeat(64));
+ assert.throws(()=>subsetPreparedSourcePlan(plan,['part_999']));assert.throws(()=>subsetPreparedSourcePlan(plan,['part_000','part_000']));assert.throws(()=>subsetPreparedSourcePlan({marker:plan.marker},['part_000']));
+ let allocated=false;await assert.rejects(stagePreparedSourceBundle({THREE:{Group:class{constructor(){allocated=true;throw Error('reached valid plan boundary');}}},...subset}),/valid plan boundary/);assert.equal(allocated,true);
+});
 test('descriptor preflight costs every compressed mip without reading geometry or payload',async()=>{
  const f=plannedFixture(),before=structuredClone(f.marker);let calls=0;const plan=await planPreparedSourceBundle({marker:f.marker,supported:true,loadManifest:async p=>{calls++;assert.equal(p,f.p);return f.manifest;}});
  assert.equal(calls,1);assert.equal(plan.marker.gpu_payload_bytes,572);assert.equal(plan.marker.parts[0].source_gpu_payload_bytes,1568);assert.equal(plan.marker.parts[0].runtime_texture.payloadSHA256,'b'.repeat(64));assert.deepEqual(f.marker,before);assert.ok(Object.isFrozen(plan.marker.parts[0].runtime_texture));assert.deepEqual(plan.fallbacks,[]);

@@ -15,9 +15,13 @@ import {selectDepth,prioritizeDetail,pickFocusRoot} from './lod_policy.js';
 import {resolveBaseQuality} from './base_quality.js';
 import {parseInspectionView} from './inspection_view.js';
 import {LeasedDownloads} from './lod_downloads.js';
-import {stageSourceParts,ensureSourceWanted,SourceLoadCancelled} from './lod_transaction.js';
+import {ensureSourceWanted,SourceLoadCancelled} from './lod_transaction.js';
 import {withSourceRestorations,SourceRestoreUnavailable,sourceBundleIdentity} from './source_residency.js';
 import {SourceFrontier,pickVisibleSource,visibleSourceCandidates,sourceViewPriority,sourceRefinementScore,rankSourceCandidates,planSourceBudget} from './source_frontier.js';
+import {supportsPreparedBc7} from './prepared_bc7.js';
+import {planPreparedSourceBundle,stagePreparedSourceBundle,originalSourceBundle,subsetPreparedSourcePlan,SourcePagePlanChanged} from './prepared_source_page.js';
+import {PreparedTextureIndex} from './prepared_texture_index.js';
+import {SourcePageBudget,sourceRestorationFootprint} from './source_page_budget.js';
 const $=id=>document.getElementById(id), viewport=$('viewport');
 const scene=new THREE.Scene();scene.background=new THREE.Color('#809ab0');
 const camera=new THREE.PerspectiveCamera(52,1,.5,60000);camera.up.set(0,0,1);
@@ -29,7 +33,10 @@ const loader=new GLTFLoader(),photoGroup=new THREE.Group(),contextGroup=new THRE
 const HUD=$('annotations'),ctx=HUD.getContext('2d');let layersDoc=null,businessCatalog=null,businessLoadGeneration=0,selected=null,base=null,catalog=null,width=1,height=1,lastRank=0;
 let resident=new Map(),pending=null,epoch=0,lastError='',lastStation='',frames=0,fps=0,frameClock=performance.now();
 const sourceVisibility=new SourceVisibility(renderer,scene,contextGroup);let visibilityReady=false;
-const budget=512*1024*1024;const imageCache=new Map();let markerAtlas=null;
+const budget=512*1024*1024,uploadTargetBytes=16*16*4,detailLimit=budget-uploadTargetBytes;
+const pageBudget=new SourcePageBudget(budget);pageBudget.reserve({format:'upload_target',bytes:uploadTargetBytes});
+let preparedTextures=new PreparedTextureIndex({schema:'xnby.prepared_texture_index.v1',entries:[]},location.href);
+const imageCache=new Map();let markerAtlas=null;
 let baseEdges=new Map(),baseTexels=new Map(),focusId=0;const tierEdges=new Map(),tierTexels=new Map(),residentLimit=16;
 const layerOpacities=new Map(),layerLoading=new LayerLoading();let userLayerLoad=false;
 let activeTopic='all',spatialCatalog=null,spatialFingerprint='',spatialFingerprintPromise=Promise.resolve(''),spatialLoadGeneration=0,userSpatialLoad=false,userBusinessLoad=false;
@@ -37,7 +44,7 @@ let dataMode='pending',apiBusinessState='unconfigured',businessConnection=null,o
 const activeCatalog=()=>spatialFingerprint&&spatialCatalog?.layerFingerprint===spatialFingerprint?spatialCatalog:null;
 const sceneOpacity=id=>opacityFromTransparency($(id+'-opacity').value);
 function updateSceneOpacity(){applyModelOpacity(photoGroup,sceneOpacity('photo'),$('photo').checked);applyModelOpacity(contextGroup,sceneOpacity('satellite'),$('satellite').checked);}
-const telemetry={lodRevision:'visible-pages-r1+part-cancel-r1+cpu-pages-r1+depth-bins-r1',baseRoots:0,nativeRoots:0,nativeBytes:0,stagingBytes:0,partialRootDrawn:false,requests:0,cancellations:0,context:false,photo:false,ready:false,errors:[]};
+const telemetry={lodRevision:'readonly-prepared-mixed-pages-r1',baseRoots:0,nativeRoots:0,nativeBytes:0,stagingBytes:0,partialRootDrawn:false,requests:0,cancellations:0,context:false,photo:false,ready:false,errors:[]};
 function message(text){$('message').textContent=text;}
 function fail(error){lastError=String(error.message||error);telemetry.errors.push(lastError);message(lastError);console.error(error);}
 function preset(name){visibilityReady=false;
@@ -356,8 +363,8 @@ function maintain(){const restorations=[],ranked=ranking(),wanted=new Set(ranked
   for(const r of ranked){const ready=resident.get(r.id);if(!ready?.frontier)continue;
     const restore=rollbackWebFamilies(ready);if(restore)restorations.push({id:r.id,ready,parent:restore});
   }
-  telemetry.nativeBytes=[...resident.values()].reduce((sum,r)=>sum+r.bytes,0);
-  if(new URLSearchParams(location.search).get('lodDebug')==='1'){const stats={lodRevision:telemetry.lodRevision,width,height,camera:camera.position.toArray(),target:controls.target.toArray(),visibility:telemetry.visibility,requests:telemetry.requests,familyRequests:telemetry.familyRequests??0,cancellations:telemetry.cancellations,familyCommits:telemetry.familyCommits??0,retiredCpuPages:telemetry.retiredCpuPages??0,retiredCpuPayloadBytes:telemetry.retiredCpuPayloadBytes??0,restoredCpuPages:telemetry.restoredCpuPages??0,restoreRequests:telemetry.restoreRequests??0,restoreErrors:telemetry.restoreErrors??0,cpuRestoreStagingPayloadBytes:telemetry.cpuRestoreStagingPayloadBytes??0,peakBytes:telemetry.peakBytes??0,activeBytes:telemetry.nativeBytes,stagingBytes:telemetry.stagingBytes,retainedPayloadBytes:[...resident.values()].reduce((sum,r)=>sum+(r.frontier?.retainedPayloadBytes??r.bytes),0),textures:renderer.info.memory.textures,geometries:renderer.info.memory.geometries,roots:[...resident].map(([id,r])=>({id,screenWeight:sourceVisibility.weight(id)+[...r.frontier.visible].reduce((sum,name)=>sum+sourceVisibility.weight(id,name),0),depth:r.frontier?.maxDepth??r.depth,bytes:r.bytes,visible:r.frontier?[...r.frontier.visible]:[]}))};const signature=JSON.stringify(stats);if(signature!==telemetry.lastAudit){console.info('[XNBY LOD audit] '+signature);telemetry.lastAudit=signature;}}
+  telemetry.nativeBytes=[...resident.values()].reduce((sum,r)=>sum+r.bytes,0);telemetry.pageBudget=pageBudget.snapshot();
+  if(new URLSearchParams(location.search).get('lodDebug')==='1'){const stats={pageBudget:telemetry.pageBudget,preparedBc7Pages:telemetry.preparedBc7Pages??0,preparedReplans:telemetry.preparedReplans??0,preparedTextureCount:telemetry.preparedTextureCount??0,lodRevision:telemetry.lodRevision,width,height,camera:camera.position.toArray(),target:controls.target.toArray(),visibility:telemetry.visibility,requests:telemetry.requests,familyRequests:telemetry.familyRequests??0,cancellations:telemetry.cancellations,familyCommits:telemetry.familyCommits??0,retiredCpuPages:telemetry.retiredCpuPages??0,retiredCpuPayloadBytes:telemetry.retiredCpuPayloadBytes??0,restoredCpuPages:telemetry.restoredCpuPages??0,restoreRequests:telemetry.restoreRequests??0,restoreErrors:telemetry.restoreErrors??0,cpuRestoreStagingPayloadBytes:telemetry.cpuRestoreStagingPayloadBytes??0,peakBytes:telemetry.peakBytes??0,activeBytes:telemetry.nativeBytes,stagingBytes:telemetry.stagingBytes,retainedPayloadBytes:[...resident.values()].reduce((sum,r)=>sum+(r.frontier?.retainedPayloadBytes??r.bytes),0),textures:renderer.info.memory.textures,geometries:renderer.info.memory.geometries,roots:[...resident].map(([id,r])=>({id,screenWeight:sourceVisibility.weight(id)+[...r.frontier.visible].reduce((sum,name)=>sum+sourceVisibility.weight(id,name),0),depth:r.frontier?.maxDepth??r.depth,bytes:r.bytes,visible:r.frontier?[...r.frontier.visible]:[]}))};const signature=JSON.stringify(stats);if(signature!==telemetry.lastAudit){console.info('[XNBY LOD audit] '+signature);telemetry.lastAudit=signature;}}
   if(pending||!base)return;
   if(restorations.length){loadSourceCoarsen(restorations[0]).catch(fail);return;}
   if(!ranked.length){visibilityReady=false;return;}
@@ -370,35 +377,59 @@ function maintain(){const restorations=[],ranked=ranking(),wanted=new Set(ranked
   ranked.splice(0,ranked.length,...prioritizeDetail(ranked,resident,focusId));
   for(const r of ranked){if(resident.get(r.id)?.depth===r.depth||visibilityReady&&!r.viewScore)continue;const key=`${r.id}/${r.depth}`;if(failed.has(key)||rootCosts.has(key)&&!canMakeFamilyRoom(r.id,null,r.viewScore,rootCosts.get(key),false))continue;loadFine(r).catch(fail);break;}}
 const failed=new Set(),rootCosts=new Map();
+function uploadSourceModel(model){
+ const uploadScene=new THREE.Scene(),priorTarget=renderer.getRenderTarget();uploadScene.add(model.scene);model.scene.traverse(n=>{if(n.isMesh)n.frustumCulled=false;});
+ try{renderer.setRenderTarget(familyUploadTarget);renderer.render(uploadScene,camera);}finally{renderer.setRenderTarget(priorTarget);uploadScene.remove(model.scene);}
+}
+async function stageManagedSource({marker,downloads,folder,stillWanted,admit,onReady,cancelAttempt}){
+ const forceRgbaParts=new Set();
+ for(let attempt=0;attempt<=marker.parts.length;attempt++){
+  ensureSourceWanted(stillWanted);
+  const plan=await planPreparedSourceBundle({marker,supported:part=>supportsPreparedBc7(renderer)&&preparedTextures.has(part),loadManifest:part=>preparedTextures.manifest(part),forceRgbaParts,stillWanted});
+  if(!await admit(plan.marker))return null;
+  try{
+   const staged=await stagePreparedSourceBundle({THREE,renderer,marker,plan,stillWanted,loadFile:(part,name)=>downloads.read(`native/${folder}/${part.directory}/${name}`),loadPayload:part=>preparedTextures.payload(part),reserve:request=>pageBudget.reserve(request),prepare:model=>photograph(model.scene),upload:uploadSourceModel,onReady,yieldFrame:()=>new Promise(resolve=>requestAnimationFrame(resolve))});
+   telemetry.preparedBundleLoads=(telemetry.preparedBundleLoads??0)+1;telemetry.preparedBc7Pages=(telemetry.preparedBc7Pages??0)+staged.marker.parts.filter(p=>p.runtime_texture.format==='bc7').length;
+   return staged;
+  }catch(error){
+   cancelAttempt?.();
+   if(!(error instanceof SourcePagePlanChanged)||forceRgbaParts.has(error.directory))throw error;
+   forceRgbaParts.add(error.directory);telemetry.preparedReplans=(telemetry.preparedReplans??0)+1;
+  }
+ }
+ throw Error('源页格式重新规划次数超限');
+}
 async function loadFine(request){const owner=resident.get(request.id),stillWanted=()=>resident.get(request.id)===owner&&ranking().some(r=>r.id===request.id&&r.depth===request.depth);pending=request;telemetry.requests++;let staged=new THREE.Group(),downloads=null;try{
   ensureSourceWanted(stillWanted);let response=await fetch(`api/lod/${request.id}/${request.depth}`);while(response.status===202){await new Promise(r=>setTimeout(r,300));ensureSourceWanted(stillWanted);response=await fetch(`api/lod/${request.id}/${request.depth}`);}if(!response.ok)throw Error(`细层 ${request.id}/${request.depth} 保留父层：${await response.text()}`);const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);
   if(!marker.complete_frontier||!marker.parts?.length||marker.parts.length>64||marker.gpu_payload_bytes>384*1048576||marker.texture_policy!=='original_pixels_v1'||!Number.isFinite(marker.texel_world_p90_m)||marker.texel_world_p90_m<=0)throw Error('细层数据不完整，保留父层');
   tierEdges.set(`${request.id}/${request.depth}`,marker.longest_edge_p90_m);tierTexels.set(`${request.id}/${request.depth}`,marker.texel_world_p90_m??0);
   ensureSourceWanted(stillWanted);
-  const previous=resident.get(request.id);let used=[...resident.values()].reduce((s,r)=>s+r.bytes,0);
-  await canMakeFamilyRoom(request.id,null,request.viewScore??0,marker.gpu_payload_bytes,true,stillWanted);used=[...resident.values()].reduce((sum,r)=>sum+r.bytes,0);
-  if(used+marker.gpu_payload_bytes>budget){rootCosts.set(`${request.id}/${request.depth}`,marker.gpu_payload_bytes);telemetry.budgetFallbacks=(telemetry.budgetFallbacks??0)+1;message('当前视野已分配细节预算，部分外围保留较粗层');return;}
-  telemetry.stagingBytes=marker.gpu_payload_bytes;telemetry.peakBytes=Math.max(telemetry.peakBytes??0,used+marker.gpu_payload_bytes);message(`航拍细层加载中：瓦片 ${request.id} · 深度 ${request.depth}`);await stageSourceParts({marker,downloads,urlForPart:part=>`native/tile_${request.id}_depth_${request.depth}/${part.directory}/geometry.gltf`,group:staged,prepare:model=>photograph(model.scene),stillWanted,dispose:disposeGroup,yieldFrame:()=>new Promise(resolve=>requestAnimationFrame(resolve))});
+  const previous=resident.get(request.id);
+  const loaded=await stageManagedSource({marker,downloads,folder:`tile_${request.id}_depth_${request.depth}`,stillWanted,admit:async runtime=>{
+   rootCosts.set(`${request.id}/${request.depth}`,runtime.gpu_payload_bytes);
+   if(!await canMakeFamilyRoom(request.id,null,request.viewScore??0,runtime.gpu_payload_bytes,true,stillWanted)){telemetry.budgetFallbacks=(telemetry.budgetFallbacks??0)+1;return false;}
+   const used=[...resident.values()].reduce((sum,r)=>sum+r.bytes,0);if(used+runtime.gpu_payload_bytes>detailLimit)return false;
+   telemetry.stagingBytes=runtime.gpu_payload_bytes;telemetry.peakBytes=Math.max(telemetry.peakBytes??0,used+runtime.gpu_payload_bytes+uploadTargetBytes);message(`航拍细层加载中：瓦片 ${request.id} · 深度 ${request.depth}`);return true;
+  }});if(!loaded)return;staged=loaded.group;const runtime=loaded.marker;
   ensureSourceWanted(stillWanted);
-  const meshes=sourceMeshes(staged,marker);const frontier=new SourceFrontier(marker,meshes);frontier.bundles.get('$root').group=staged;frontier.applyMasks();frontier.releaseHiddenPages();if(previous){if(request.depth<previous.depth)telemetry.coarsenings=(telemetry.coarsenings??0)+1;photoGroup.remove(previous.group);disposeGroup(previous.group);}photoGroup.add(staged);updateSceneOpacity();resident.set(request.id,{group:staged,depth:request.depth,bytes:marker.gpu_payload_bytes,marker,frontier});staged=null;baseRanges();message(`倾斜摄影细层：瓦片 ${request.id} · 深度 ${request.depth} · ${marker.parts.length} 批完整就绪`);
+  const frontier=new SourceFrontier(runtime,loaded.meshes);frontier.bundles.get('$root').group=staged;frontier.applyMasks();frontier.releaseHiddenPages();if(previous){if(request.depth<previous.depth)telemetry.coarsenings=(telemetry.coarsenings??0)+1;photoGroup.remove(previous.group);disposeGroup(previous.group);}photoGroup.add(staged);updateSceneOpacity();resident.set(request.id,{group:staged,depth:request.depth,bytes:runtime.gpu_payload_bytes,marker:runtime,frontier});staged=null;baseRanges();message(`倾斜摄影细层：瓦片 ${request.id} · 深度 ${request.depth} · ${runtime.parts.length} 批完整就绪`);
  }catch(error){if(error instanceof SourceLoadCancelled)sourceCancelled();else if(error instanceof SourceRestoreUnavailable)sourceRestoreFailed(error);else{failed.add(`${request.id}/${request.depth}`);lastError=String(error.message);message(lastError);}}finally{downloads?.release();if(staged)disposeGroup(staged);telemetry.stagingBytes=0;pending=null;}}
 
 function sourceCancelled(){telemetry.cancellations++;message($('fine').checked?'已取消本次细层加载':'细层加载已关闭，保留完整基础地景');}
 const familyFailed=new Set(),familyCosts=new Map();
-const familyUploadTarget=new THREE.WebGLRenderTarget(1,1);
-function sourceMeshes(group,marker){const meshes=new Map();if(group.children.length!==marker.parts.length)throw Error('源模型批次数不符');for(let i=0;i<marker.parts.length;i++){let mesh=null;group.children[i].traverse(n=>{if(n.isMesh){if(mesh)throw Error('源模型包含未知多网格');mesh=n;}});if(!mesh)throw Error('源模型缺失');meshes.set(marker.parts[i].directory,mesh);}return meshes;}
+const familyUploadTarget=new THREE.WebGLRenderTarget(16,16,{depthBuffer:false,stencilBuffer:false});
 function wantedWebFamily(){
  if(!$('fine').checked||!$('photo').checked||sceneOpacity('photo')<=0)return null;
  const ray=new THREE.Ray(camera.position.clone(),controls.target.clone().sub(camera.position).normalize());let closest=null;
  for(const [id,ready] of resident)if(ready.frontier){const hit=pickVisibleSource(ready.frontier,ray);if(hit&&(!closest||hit.distance<closest.distance))closest={...hit,id};}
  const candidates=[];
- for(const [id,ready] of resident)if(ready.frontier)for(const candidate of visibleSourceCandidates(ready.frontier,camera,height,closest?.id===id?closest.node.name:''))if(!familyFailed.has(`${id}/${candidate.node.name}`)){if(visibilityReady){candidate.score=visiblePriority(id,candidate.node);if(!candidate.score)continue;}const cost=familyCosts.get(`${id}/${candidate.node.name}`);if(!cost||cost<=budget-telemetry.nativeBytes||canMakeFamilyRoom(id,candidate.node.name,candidate.score,cost,false))candidates.push({...candidate,id,ready});}
+ for(const [id,ready] of resident)if(ready.frontier)for(const candidate of visibleSourceCandidates(ready.frontier,camera,height,closest?.id===id?closest.node.name:''))if(!familyFailed.has(`${id}/${candidate.node.name}`)){if(visibilityReady){candidate.score=visiblePriority(id,candidate.node);if(!candidate.score)continue;}const cost=familyCosts.get(`${id}/${candidate.node.name}`);if(!cost||cost<=detailLimit-telemetry.nativeBytes||canMakeFamilyRoom(id,candidate.node.name,candidate.score,cost,false))candidates.push({...candidate,id,ready});}
  return rankSourceCandidates(candidates)[0]??null;
 }
 // Coarsen only clearly less valuable branches; a 2x margin avoids quality ping-pong.
 function canMakeFamilyRoom(id,parent,score,cost,apply,stillWanted=()=>true){
  const priority=(root,node,names)=>restoreFailed.has(`${root}/${node.name}`)?Infinity:visibilityReady?visiblePriority(root,node,names):sourceViewPriority(node,camera,height);
- const actions=planSourceBudget(resident,{id,parent,score},cost,budget,priority,(root,names)=>priority(root,{...catalog.root_records[root-1],longest_edge_p90_m:baseEdges.get(root),texel_world_p90_m:baseTexels.get(root)??0},names));
+ const actions=planSourceBudget(resident,{id,parent,score},cost,detailLimit,priority,(root,names)=>priority(root,{...catalog.root_records[root-1],longest_edge_p90_m:baseEdges.get(root),texel_world_p90_m:baseTexels.get(root)??0},names));
  if(actions===null)return false;
  if(apply)return applySourceBudget(actions,stillWanted,cost);
  return true;
@@ -409,7 +440,7 @@ function rollbackWebFamilies(ready){
  const nodes=ready.frontier.nodes,parents=[...ready.frontier.bundles.keys()].filter(n=>n!=='$root');
  for(const parent of parents){if(!ready.frontier.bundles.has(parent))continue;const node=nodes.get(parent)?.node;if(!node?.bounds_min)continue;
    const distance=Math.max(1,new THREE.Box3(new THREE.Vector3(...node.bounds_min),new THREE.Vector3(...node.bounds_max)).distanceToPoint(camera.position)),quality=Math.max(node.longest_edge_p90_m,node.texel_world_p90_m*4)*height/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*distance);
-   if(quality<2){const used=[...resident.values()].reduce((sum,r)=>sum+r.bytes,0),plan=ready.frontier.rollbackPlan(parent),extra=Math.max(0,budget-used-telemetry.stagingBytes);if(plan.bytes>ready.bytes+extra)continue;if(plan.missingPages.length){if(!restoreFailed.has(`${plan.missingPages[0].bundle.marker.tile_id}/${parent}`))return parent;continue;}retireWebBundles(ready,ready.frontier.rollback(parent,extra));}
+   if(quality<2){const used=[...resident.values()].reduce((sum,r)=>sum+r.bytes,0),plan=ready.frontier.rollbackPlan(parent),extra=Math.max(0,detailLimit-used-telemetry.stagingBytes);if(plan.bytes>ready.bytes+extra)continue;if(plan.missingPages.length){if(sourceRestorationFootprint(resident,[{root:plan.missingPages[0].bundle.marker.tile_id,parent}])>detailLimit)continue;if(!restoreFailed.has(`${plan.missingPages[0].bundle.marker.tile_id}/${parent}`))return parent;continue;}retireWebBundles(ready,ready.frontier.rollback(parent,extra));}
  }
 }
 async function loadWebFamily(request){pending={...request,type:'family'};telemetry.familyRequests=(telemetry.familyRequests??0)+1;const requestEpoch=epoch;let staged=new THREE.Group(),ticket=null,downloads=null;
@@ -417,34 +448,36 @@ async function loadWebFamily(request){pending={...request,type:'family'};telemet
  try{
   const route=`api/lod-family/${request.id}/${encodeURIComponent(request.parent)}`;let response=await fetch(route,{cache:'no-store'});while(response.status===202){await new Promise(resolve=>setTimeout(resolve,300));if(!stillWanted()){sourceCancelled();return;}response=await fetch(route,{cache:'no-store'});}if(!response.ok)throw Error(`局部细层保留父节点：${await response.text()}`);const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);if(!stillWanted()){sourceCancelled();return;}
   if(!/^[0-9a-f]{16}$/.test(marker.family_key)||marker.tile_id!==request.id||marker.gpu_payload_bytes>256*1048576)throw Error('局部模型标记无效');
-  let used=[...resident.values()].reduce((s,r)=>s+r.bytes,0);
-  familyCosts.set(`${request.id}/${request.parent}`,marker.gpu_payload_bytes);
-  if(!(await canMakeFamilyRoom(request.id,request.parent,request.score,marker.gpu_payload_bytes,true,stillWanted))){telemetry.budgetFallbacks=(telemetry.budgetFallbacks??0)+1;message('当前视野已分配细节预算，部分外围保留较粗层');return;}
-  used=[...resident.values()].reduce((sum,r)=>sum+r.bytes,0);
-  ticket=request.ready.frontier.begin(marker,budget-used);telemetry.stagingBytes=marker.gpu_payload_bytes;telemetry.peakBytes=Math.max(telemetry.peakBytes??0,used+marker.gpu_payload_bytes);message(`航拍局部细层加载中：深度 ${Math.max(...marker.source_nodes.map(n=>n.depth))}`);
-  await stageSourceParts({marker,downloads,urlForPart:part=>`native/family_tile_${request.id}_${marker.family_key}/${part.directory}/geometry.gltf`,group:staged,prepare:model=>photograph(model.scene),stillWanted,dispose:disposeGroup,onReady:i=>request.ready.frontier.markReady(ticket,i),yieldFrame:()=>new Promise(resolve=>requestAnimationFrame(resolve)),upload:model=>{
-    const uploadScene=new THREE.Scene(),priorTarget=renderer.getRenderTarget();uploadScene.add(model.scene);model.scene.traverse(n=>{if(n.isMesh)n.frustumCulled=false;});try{renderer.setRenderTarget(familyUploadTarget);renderer.render(uploadScene,camera);}finally{renderer.setRenderTarget(priorTarget);uploadScene.remove(model.scene);}
-  }});
-  if(!stillWanted()){sourceCancelled();return;}const meshes=sourceMeshes(staged,marker);if(!request.ready.frontier.commit(ticket,meshes))throw Error('局部细层事务已取消');request.ready.frontier.bundles.get(request.parent).group=staged;request.ready.group.add(staged);applySourceMasks(request.ready);request.ready.bytes=request.ready.frontier.bytes;updateSceneOpacity();telemetry.familyCommits=(telemetry.familyCommits??0)+1;message(`航拍局部细层 ${request.ready.frontier.maxDepth} · 完整父子替换`);staged=null;
+  const loaded=await stageManagedSource({marker,downloads,folder:`family_tile_${request.id}_${marker.family_key}`,stillWanted,admit:async runtime=>{
+   familyCosts.set(`${request.id}/${request.parent}`,runtime.gpu_payload_bytes);
+   if(!await canMakeFamilyRoom(request.id,request.parent,request.score,runtime.gpu_payload_bytes,true,stillWanted)){telemetry.budgetFallbacks=(telemetry.budgetFallbacks??0)+1;message('当前视野已分配细节预算，部分外围保留较粗层');return false;}
+   ensureSourceWanted(stillWanted);const used=[...resident.values()].reduce((sum,r)=>sum+r.bytes,0);
+   ticket=request.ready.frontier.begin(runtime,detailLimit-used);telemetry.stagingBytes=runtime.gpu_payload_bytes;telemetry.peakBytes=Math.max(telemetry.peakBytes??0,used+runtime.gpu_payload_bytes+uploadTargetBytes);message(`航拍局部细层加载中：深度 ${Math.max(...runtime.source_nodes.map(n=>n.depth))}`);return true;
+  },onReady:i=>request.ready.frontier.markReady(ticket,i),cancelAttempt:()=>{if(ticket)request.ready.frontier.cancel(ticket);ticket=null;}});
+  if(!loaded)return;staged=loaded.group;
+  if(!stillWanted()){sourceCancelled();return;}if(!request.ready.frontier.commit(ticket,loaded.meshes))throw Error('局部细层事务已取消');request.ready.frontier.bundles.get(request.parent).group=staged;request.ready.group.add(staged);applySourceMasks(request.ready);request.ready.bytes=request.ready.frontier.bytes;updateSceneOpacity();telemetry.familyCommits=(telemetry.familyCommits??0)+1;message(`航拍局部细层 ${request.ready.frontier.maxDepth} · 完整父子替换`);staged=null;
  }catch(error){if(error instanceof SourceLoadCancelled)sourceCancelled();else if(error instanceof SourceRestoreUnavailable)sourceRestoreFailed(error);else{familyFailed.add(`${request.id}/${request.parent}`);message(String(error.message));}}finally{downloads?.release();if(ticket)request.ready.frontier.cancel(ticket);if(staged)disposeGroup(staged);telemetry.stagingBytes=0;pending=null;}}
 
 const restoreFailed=new Set();
 function applySourceMasks(ready){ready.frontier.applyMasks();const retired=ready.frontier.releaseHiddenPages();telemetry.retiredCpuPages=(telemetry.retiredCpuPages??0)+retired.pages;telemetry.retiredCpuPayloadBytes=(telemetry.retiredCpuPayloadBytes??0)+retired.bytes;}
 function sourceRestoreFailed(error){telemetry.restoreErrors=(telemetry.restoreErrors??0)+1;message('回退源页读取失败，保留当前完整细层');console.info('[XNBY source restore] '+error.message);}
 async function readSourcePages(need,stillWanted){
- const source=need.bundle.marker,isFamily=source.schema==='xnby.osgb_native_family.v1',route=isFamily?`api/lod-family/${need.root}/${encodeURIComponent(source.replacement_parent)}`:`api/lod/${need.root}/${need.ready.depth}`;let downloads=null,group=new THREE.Group();
+ const source=need.bundle.marker,isFamily=source.schema==='xnby.osgb_native_family.v1',route=isFamily?`api/lod-family/${need.root}/${encodeURIComponent(source.replacement_parent)}`:`api/lod/${need.root}/${need.ready.depth}`;let downloads=null,staged=null;
  try{
   telemetry.restoreRequests=(telemetry.restoreRequests??0)+1;ensureSourceWanted(stillWanted);let response=await fetch(route,{cache:'no-store'});while(response.status===202){await new Promise(resolve=>setTimeout(resolve,300));ensureSourceWanted(stillWanted);response=await fetch(route,{cache:'no-store'});}if(!response.ok)throw Error(`回退源页HTTP ${response.status}`);
-  const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);ensureSourceWanted(stillWanted);if(sourceBundleIdentity(marker)!==sourceBundleIdentity(source))throw Error('回退源包与当前场景不一致');const subset={parts:need.parts,gpu_payload_bytes:need.parts.reduce((sum,p)=>sum+p.gpu_payload_bytes,0)};
-  telemetry.cpuRestoreStagingPayloadBytes=(telemetry.cpuRestoreStagingPayloadBytes??0)+subset.gpu_payload_bytes;message('正在恢复回退源页，保留当前地景');
+  const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);ensureSourceWanted(stillWanted);if(sourceBundleIdentity(marker)!==sourceBundleIdentity(originalSourceBundle(source)))throw Error('回退源包与当前场景不一致');
+  const plan=await planPreparedSourceBundle({marker,supported:part=>supportsPreparedBc7(renderer)&&preparedTextures.has(part),loadManifest:part=>preparedTextures.manifest(part),forceRgbaParts:new Set(source.parts.filter(p=>p.runtime_texture.format==='rgba8').map(p=>p.directory)),stillWanted});
+  if(sourceBundleIdentity(plan.marker)!==sourceBundleIdentity(source))throw Error('回退源页格式或载荷身份已变化，保留当前细层');
+  const subset=subsetPreparedSourcePlan(plan,need.parts.map(p=>p.directory));
+  telemetry.cpuRestoreStagingPayloadBytes=(telemetry.cpuRestoreStagingPayloadBytes??0)+subset.plan.marker.gpu_payload_bytes;message('正在恢复回退源页，保留当前地景');
   const folder=isFamily?`family_tile_${need.root}_${marker.family_key}`:`tile_${need.root}_depth_${need.ready.depth}`;
-  await stageSourceParts({marker:subset,downloads,urlForPart:part=>`native/${folder}/${part.directory}/geometry.gltf`,group,prepare:model=>photograph(model.scene),stillWanted,dispose:disposeGroup,yieldFrame:()=>new Promise(resolve=>requestAnimationFrame(resolve))});
-  return {marker,group,meshes:sourceMeshes(group,subset),attached:false,dispose(){if(!this.attached)disposeGroup(group);}};
- }catch(error){disposeGroup(group);throw error;}finally{downloads?.release();}
+  staged=await stagePreparedSourceBundle({THREE,renderer,...subset,stillWanted,loadFile:(part,name)=>downloads.read(`native/${folder}/${part.directory}/${name}`),loadPayload:part=>preparedTextures.payload(part),reserve:request=>pageBudget.reserve(request),prepare:model=>photograph(model.scene),upload:uploadSourceModel,yieldFrame:()=>new Promise(resolve=>requestAnimationFrame(resolve))});
+  return {marker:source,group:staged.group,meshes:staged.meshes,attached:false,dispose(){if(!this.attached)staged.dispose();}};
+ }catch(error){staged?.dispose();throw error;}finally{downloads?.release();}
 }
 async function applySourceBudget(actions,stillWanted,reservedBytes=0){
  if(!actions.length)return true;if(pending)pending.restoring=true;
- try{return await withSourceRestorations({actions,residents:resident,load:readSourcePages,stillWanted,reservedBytes,limit:budget,apply:batches=>{
+ try{return await withSourceRestorations({actions,residents:resident,load:readSourcePages,stillWanted,reservedBytes,limit:detailLimit,apply:batches=>{
    for(const batch of batches){batch.ready.frontier.restorePages(batch.bundle,batch.meshes);batch.bundle.group.add(batch.group);batch.attached=true;telemetry.restoredCpuPages=(telemetry.restoredCpuPages??0)+batch.meshes.size;}
    const touched=new Set();for(const action of actions){const ready=resident.get(action.root);if(action.parent===null){photoGroup.remove(ready.group);disposeGroup(ready.group);resident.delete(action.root);}else{
     const retired=ready.frontier.rollback(action.parent);for(const bundle of retired){ready.group.remove(bundle.group);disposeGroup(bundle.group);}if(retired.length){telemetry.familyCoarsenings=(telemetry.familyCoarsenings??0)+1;familyFailed.clear();}touched.add(ready);
@@ -514,6 +547,7 @@ async function configureBusinessConnection(){
 
 async function boot(){
   await configureBusinessConnection();
+  try{const response=await fetch('api/prepared-textures',{cache:'no-store'});if(!response.ok)throw Error('纹理索引HTTP '+response.status);preparedTextures=new PreparedTextureIndex(await response.json(),location.href);telemetry.preparedTextureCount=preparedTextures.entries.size;telemetry.bc7Supported=supportsPreparedBc7(renderer);console.info('[XNBY prepared textures] '+JSON.stringify({indexed:telemetry.preparedTextureCount,supported:telemetry.bc7Supported}));}catch(error){telemetry.preparedTextureNotice='压缩纹理索引不可用，按原JPEG预算加载';telemetry.preparedTextureCount=0;}
   const atlas=new Image();atlas.src='assets/landscape/icons.png';markerAtlas=atlas;
   const catalogBytes=await(await fetch('data/showcase/zhumadian_native_hierarchy.json')).arrayBuffer();catalog=JSON.parse(new TextDecoder().decode(catalogBytes));if(catalog.base_root_count!==2346)throw Error('驻马店基础层目录不完整');telemetry.baseRoots=2346;
   await loadModel('assets/showcase/runtime/zhumadian/context/context_fused.gltf',contextGroup,'卫片地形');contextGroup.traverse(n=>{if(n.isMesh){const texture=new THREE.TextureLoader().load('assets/showcase/runtime/zhumadian/context/context_colormatched.jpg');texture.flipY=false;texture.colorSpace=THREE.SRGBColorSpace;n.material.map.dispose();n.material.map=texture;}});telemetry.context=true;

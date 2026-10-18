@@ -33,6 +33,17 @@ export async function planPreparedSourceBundle({marker,supported,loadManifest,fo
  const plan=Object.freeze({marker:immutable({...structuredClone(marker),parts,gpu_payload_bytes:parts.reduce((sum,p)=>sum+p.gpu_payload_bytes,0)}),fallbacks:immutable(fallbacks)});
  plans.set(plan,{source:JSON.stringify(marker),choices});return plan;
 }
+export function originalSourceBundle(marker){
+ const parts=marker.parts.map(part=>{const next=structuredClone(part);next.gpu_payload_bytes=part.source_gpu_payload_bytes??part.gpu_payload_bytes;delete next.source_gpu_payload_bytes;delete next.runtime_texture;return next;});
+ return {...structuredClone(marker),parts,gpu_payload_bytes:parts.reduce((sum,p)=>sum+p.gpu_payload_bytes,0)};
+}
+export function subsetPreparedSourcePlan(plan,directories){
+ const internal=plans.get(plan);require(internal&&Array.isArray(directories)&&directories.length&&new Set(directories).size===directories.length&&directories.every(n=>internal.choices.has(n)),'Invalid prepared source plan subset');
+ const original=JSON.parse(internal.source),selected=new Set(directories),parts=original.parts.filter(p=>selected.has(p.directory)),runtime=plan.marker.parts.filter(p=>selected.has(p.directory));
+ const marker={...original,parts,gpu_payload_bytes:parts.reduce((sum,p)=>sum+p.gpu_payload_bytes,0)};
+ const subset=Object.freeze({marker:immutable({...structuredClone(plan.marker),parts:structuredClone(runtime),gpu_payload_bytes:runtime.reduce((sum,p)=>sum+p.gpu_payload_bytes,0)}),fallbacks:immutable(plan.fallbacks.filter(f=>selected.has(f.directory)))});
+ plans.set(subset,{source:JSON.stringify(marker),choices:new Map([...internal.choices].filter(([name])=>selected.has(name)))});return {marker,plan:subset};
+}
 function disposeMaterials(mesh){for(const material of new Set(Array.isArray(mesh.material)?mesh.material:[mesh.material]))material?.dispose();}
 const require=(ok,message)=>{if(!ok)throw Error(message);};
 export function sourcePageTextureIdentity(texture){return identities.get(texture);}

@@ -1,15 +1,17 @@
+import {validateRuntimeSourceTexture} from './prepared_source_page.js';
+import {sourceRestorationFootprint} from './source_page_budget.js';
 import {Vector3,Box3,Frustum,Matrix4,ClampToEdgeWrapping} from 'three';
 
 export function validateSourcePart(part,mesh){if(!mesh?.geometry?.index||mesh.geometry.index.count!==part.indices||mesh.geometry.attributes.position.count!==part.vertices||!/^part_\d{3}$/.test(part.directory)||!Number.isFinite(part.gpu_payload_bytes)||part.gpu_payload_bytes<=0||part.gpu_payload_bytes>32*1048576)throw Error('源模型分批不一致');
     const side=part.atlas_size,texture=(Array.isArray(mesh.material)?mesh.material[0]:mesh.material)?.map,image=texture?.source?.data;
-    const rectangular=part.atlas_layout_policy==='edge_clamped_rect_v1';
+    const rectangular=['edge_clamped_rect_v1','edge_packed_rect_v1'].includes(part.atlas_layout_policy);
     if(Object.hasOwn(part,'atlas_extent')!==rectangular)throw Error('矩形源纹理需要显式格式');
     const extent=rectangular?part.atlas_extent:[side,side];
     const bounded=Array.isArray(extent)&&extent.length===2&&extent.every(n=>Number.isInteger(n)&&n>=16&&n<=2048&&n%8===0)&&Math.max(...extent)===side;
-    const declared=['tight_square_gutter4_v1','edge_clamped_square_v1','edge_clamped_rect_v1'].includes(part.atlas_layout_policy);
+    const declared=['tight_square_gutter4_v1','edge_clamped_square_v1','edge_clamped_rect_v1','edge_packed_rect_v1'].includes(part.atlas_layout_policy);
     if(!bounded||(![1024,2048].includes(side)&&!declared)||image?.width!==extent[0]||image?.height!==extent[1])throw Error('源纹理尺寸不一致');
-    if(['edge_clamped_square_v1','edge_clamped_rect_v1'].includes(part.atlas_layout_policy)&&(texture.wrapS!==ClampToEdgeWrapping||texture.wrapT!==ClampToEdgeWrapping))throw Error('源纹理采样方式不一致');
-    let textureBytes=0,w=extent[0],h=extent[1];for(;;){textureBytes+=w*h*4;if(w===1&&h===1)break;w=Math.max(1,Math.floor(w/2));h=Math.max(1,Math.floor(h/2));}
+    if(['edge_clamped_square_v1','edge_clamped_rect_v1','edge_packed_rect_v1'].includes(part.atlas_layout_policy)&&(texture.wrapS!==ClampToEdgeWrapping||texture.wrapT!==ClampToEdgeWrapping))throw Error('源纹理采样方式不一致');
+    let textureBytes=0,w=extent[0],h=extent[1];if(part.runtime_texture){textureBytes=validateRuntimeSourceTexture(part,texture);}else{if(part.source_gpu_payload_bytes!==undefined||texture?.isCompressedTexture)throw Error('未协商压缩源页');for(;;){textureBytes+=w*h*4;if(w===1&&h===1)break;w=Math.max(1,Math.floor(w/2));h=Math.max(1,Math.floor(h/2));}}
     if(part.gpu_payload_bytes!==part.vertices*64+part.indices*4+textureBytes)throw Error('实际纹理及几何资源账目不一致');
 }
 
@@ -138,6 +140,8 @@ export function planSourceBudget(residents,request,cost,limit,priority,rootPrior
  for(const candidate of candidates){let copy=copies.get(candidate.root);if(copy===null)continue;if(!copy){copy=residents.get(candidate.root).frontier.copyForPlanning();copies.set(candidate.root,copy);}
    if(candidate.parent===null){used-=copy.bytes;copies.set(candidate.root,null);actions.splice(0,actions.length,...actions.filter(a=>a.root!==candidate.root));actions.push({root:candidate.root,parent:null});if(used+cost<=limit)return actions;continue;}
    const plan=copy.rollbackPlan(candidate.parent);if(!plan||plan.bytes>=copy.bytes)continue;
+   const proposed=[...actions.filter(a=>a.root!==candidate.root||!plan.subtree.has(a.parent)),{root:candidate.root,parent:candidate.parent}];
+   if(sourceRestorationFootprint(residents,proposed)>limit)continue;
    used+=plan.bytes-copy.bytes;copy.rollback(candidate.parent);actions.splice(0,actions.length,...actions.filter(a=>a.root!==candidate.root||!plan.subtree.has(a.parent)));actions.push({root:candidate.root,parent:candidate.parent});if(used+cost<=limit)return actions;
  }
  return null;

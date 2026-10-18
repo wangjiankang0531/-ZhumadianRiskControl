@@ -134,6 +134,12 @@ test('restoration rejects a budget overrun before issuing reads',async()=>{
  const f=releasedParent();await assert.rejects(()=>withSourceRestorations({actions:[{root:1,parent:'P'}],residents:new Map([[1,{frontier:f.frontier}]]),stillWanted:()=>true,reservedBytes:128*1048576,limit:128*1048576,load:()=>assert.fail('budget should reject before reads'),apply:()=>assert.fail('no apply')}),SourceLoadCancelled);
 });
 
+test('a fitting final parent still needs room beside the complete live child cut',async()=>{
+ const f=releasedParent(),current=f.frontier.bytes,after=f.frontier.rollbackPlan('P').bytes,limit=Math.max(current,after),before=[...f.frontier.visible];
+ await assert.rejects(()=>withSourceRestorations({actions:[{root:1,parent:'P'}],residents:new Map([[1,{frontier:f.frontier}]]),stillWanted:()=>true,limit,load:()=>assert.fail('temporary coexistence must reject before reads'),apply:()=>assert.fail('must keep child cut')}),SourceLoadCancelled);
+ assert.deepEqual([...f.frontier.visible],before);assert.equal(f.root.meshes.size,0);
+});
+
 test('a whole-root budget eviction removes redundant descendant coarsening actions',()=>{
  const f=releasedParent(),residents=new Map([[1,{frontier:f.frontier}]]);assert.deepEqual(planSourceBudget(residents,{id:2,parent:'incoming',score:100},10*1048576,12*1048576,()=>0,()=>1),[{root:1,parent:null}]);assert.deepEqual([...f.frontier.visible],['C0','C1']);
 });
@@ -158,9 +164,9 @@ test('tight atlas accepts only declared aligned bounded dimensions with exact mi
 
 test('rectangular source pages validate real two-axis mip bytes and explicit clamp sampling',()=>{
  const chain=[[2048,520],[1024,260],[512,130],[256,65],[128,32],[64,16],[32,8],[16,4],[8,2],[4,1],[2,1],[1,1]];
- for(const [width,height] of [[2048,520],[520,2048]]){
+ for(const policy of ['edge_clamped_rect_v1','edge_packed_rect_v1']) for(const [width,height] of [[2048,520],[520,2048]]){
   const {marker,meshes}=initial(),p=marker.parts[0],m=meshes.get(p.directory);
-  p.atlas_layout_policy='edge_clamped_rect_v1';p.atlas_size=2048;p.atlas_extent=[width,height];
+  p.atlas_layout_policy=policy;p.atlas_size=2048;p.atlas_extent=[width,height];
   m.material.map.source.data.width=width;m.material.map.source.data.height=height;
   m.material.map.wrapS=m.material.map.wrapT=ClampToEdgeWrapping;
   p.gpu_payload_bytes=p.vertices*64+p.indices*4+chain.reduce((sum,[w,h])=>sum+w*h*4,0);marker.gpu_payload_bytes=p.gpu_payload_bytes;

@@ -1,6 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {leasedAssetURL,LeasedDownloads} from '../src/lod_downloads.js';
+
+test('pinned byte reads carry the reader lease and reject after release',async()=>{
+ const calls=[],token='a'.repeat(32),downloads=new LeasedDownloads(token,'http://localhost:8801/',async(url,options)=>{calls.push([url,options]);return {ok:true,arrayBuffer:async()=>new ArrayBuffer(7)};});
+ assert.equal((await downloads.read('native/tile_117_depth_3/part_000/geometry.bin')).byteLength,7);assert.match(calls[0][0],new RegExp('lease='+token));assert.equal(calls[0][1].cache,'no-store');await downloads.release();await assert.rejects(downloads.read('native/test'),/已释放/);
+});
 const token='a'.repeat(32),base='http://127.0.0.1:8767/';
 test('all native GLTF dependencies carry the same batch lease, external/base assets do not',()=>{
  for(const file of ['geometry.gltf','geometry.bin','atlas.jpg'])assert.equal(new URL(leasedAssetURL(`native/tile_141_depth_5/part_000/${file}`,token,base)).searchParams.get('lease'),token);
