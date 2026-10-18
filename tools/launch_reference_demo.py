@@ -1,16 +1,31 @@
 """Start the deployed synthetic demo without changing other services or data."""
-import hashlib,json,sys,subprocess,time,urllib.request,webbrowser
+import hashlib,json,sys,subprocess,time,urllib.request,webbrowser,sqlite3
 from pathlib import Path
 
+def backup_previous_demo(root,database):
+ # Fork the previous independent demo using SQLite online backup, including WAL.
+ previous=root.parent/'ReferenceWeb_0.8.6/Assets/Demo/reference_demo.sqlite'
+ if not database.exists() and previous.is_file():
+  from contextlib import closing
+  database.parent.mkdir(parents=True,exist_ok=True)
+  temporary=database.with_suffix('.migrating')
+  try:
+   with closing(sqlite3.connect(previous.as_uri()+'?mode=ro',uri=True)) as source,closing(sqlite3.connect(temporary)) as target:source.backup(target)
+   temporary.replace(database)
+  except Exception:
+   temporary.unlink(missing_ok=True);raise
+
+
 def main():
- root=Path(__file__).resolve().parents[1];database=root/'Assets/Demo/reference_demo.sqlite';port=8791;url=f'http://127.0.0.1:{port}/';identity=hashlib.sha256(str(database.resolve()).lower().encode()).hexdigest()
+ root=Path(__file__).resolve().parents[1];database=root/'Assets/Demo/reference_demo.sqlite';port=8792;url=f'http://127.0.0.1:{port}/';identity=hashlib.sha256(str(database.resolve()).lower().encode()).hexdigest()
  def healthy():
   try:
    with urllib.request.urlopen(url+'api/demo/health',timeout=1) as response:return json.load(response)
   except (OSError,ValueError):return None
- def matches(value):return value and value.get('schema')=='xnby.reference.demo.v1' and value.get('databaseBinding')==identity
+ def matches(value):return value and value.get('schema')=='xnby.reference.demo.v1' and value.get('databaseBinding')==identity and value.get('version')=='0.8.7'
+ backup_previous_demo(root,database)
  existing=healthy()
- if existing and not matches(existing):raise RuntimeError('Port 8791 belongs to another installation; no process was terminated.')
+ if existing and not matches(existing):raise RuntimeError('Port 8792 belongs to another installation; no process was terminated.')
  if not existing:
   import socket
   with socket.socket() as probe:probe.bind(('127.0.0.1',port))

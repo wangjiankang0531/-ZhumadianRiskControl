@@ -3,6 +3,7 @@ import json, sqlite3, uuid
 from pathlib import Path
 from contextlib import closing
 from datetime import datetime, timezone
+from services.reference_work_forms import TYPES, ENTERPRISES, normalize, synthetic_form, list_fields
 
 # Names come from the recorded read-only reference navigation and 261013 requirements.
 # They are not evidence that every corresponding reference page has been visited.
@@ -66,15 +67,19 @@ class DemoStore:
                 for i in range(1,13):
                     identity='DEMO-'+item['id'].upper()+'-'+str(i).zfill(3)
                     fields={label:self.sample(item['id'],label,i) for label in item['columns']}
-                    payload=json.dumps(dict(fields=fields,note='合成验收数据，不对应真实企业、人员或实时监测。'),ensure_ascii=False)
+                    seed=dict(fields=fields,note='合成验收数据，不对应真实企业、人员或实时监测。')
+                    if item['id']=='work-reservation':seed['workForm']=synthetic_form(i,fields)
+                    payload=json.dumps(seed,ensure_ascii=False)
                     # Add missing fixture fields without losing previous edits; audit the upgrade.
                     existing=db.execute('SELECT revision,payload FROM demo_records WHERE entity=? AND id=?',(item['id'],identity)).fetchone()
                     if existing:
                         old=json.loads(existing['payload']);missing=set(fields)-set(old['fields'])
-                        if missing:
+                        extend_work=item['id']=='work-reservation' and 'workForm' not in old
+                        if missing or extend_work:
+                            if extend_work:old['workForm']=synthetic_form(i,old['fields'])
                             old['fields'].update({key:fields[key] for key in missing});revision=existing['revision']+1
                             db.execute('UPDATE demo_records SET revision=?,payload=? WHERE entity=? AND id=?',(revision,json.dumps(old,ensure_ascii=False),item['id'],identity))
-                            db.execute('INSERT INTO demo_events VALUES (?,?,?,?,?,?)',(item['id'],identity,revision,now(),'fixture_field_extension',json.dumps(dict(added=sorted(missing)),ensure_ascii=False)))
+                            db.execute('INSERT INTO demo_events VALUES (?,?,?,?,?,?)',(item['id'],identity,revision,now(),'fixture_field_extension',json.dumps(dict(added=sorted(missing),workFormAdded=extend_work),ensure_ascii=False)))
                     # Seed each identity independently: restart preserves edits and is crash-safe.
                     db.execute('INSERT OR IGNORE INTO demo_records VALUES (?,?,?,?,?,?,?)',(item['id'],identity,1,'模拟企业'+['甲','乙','丙'][(i-1)%3],item['states'][(i-1)%4],f'2026-10-{12+(i%6):02}',payload))
                     db.execute('INSERT OR IGNORE INTO demo_events VALUES (?,?,?,?,?,?)',(item['id'],identity,1,'2026-10-17T00:00:00+00:00','seed','{"source":"synthetic_fixture_v1"}'))
@@ -94,7 +99,7 @@ class DemoStore:
         if any(k in label for k in ['数量','容量','人数','读数','用量']):return str(i*12)
         if label=='计量单位':return 'kWh（模拟）'
         if label=='能源类别':return ['电','水','气','热'][(i-1)%4]
-        if label=='作业类型':return ['动火','受限空间','高处','吊装'][(i-1)%4]
+        if label=='作业类型':return TYPES[(i-1)%len(TYPES)]
         if '渠道' in label or '接入方式' in label:return '模拟联络接口，未发送通信'
         if '频次' in label or '周期' in label:return ['每班','每日','每周','每月'][(i-1)%4]
         if '版本' in label:return 'V1.'+str(i%3)
@@ -105,6 +110,7 @@ class DemoStore:
     @staticmethod
     def record(row):
         value=json.loads(row['payload'])
+        if row['entity']=='work-reservation' and 'workForm' in value:value['fields']={**value['fields'],**list_fields(value['workForm'],row['id'])}
         for key in ('状态','隐患状态','排查状态','作业状态','巡检路线状态','排查清单状态'):
             if key in value['fields']:value['fields'][key]=row['state']
         return {**{k:row[k] for k in ('entity','id','revision','enterprise','state','date')},**value,'synthetic':True}
@@ -139,7 +145,7 @@ class DemoStore:
             row=db.execute('SELECT * FROM demo_records WHERE entity=? AND id=?',(entity,identity)).fetchone()
             if row is None:raise DemoError(404,'记录不存在')
             events=[dict(r) for r in db.execute('SELECT revision,at,kind,payload FROM demo_events WHERE entity=? AND id=? ORDER BY revision',(entity,identity))]
-        return dict(record=self.record(row),events=events,detailFields={label:self.sample(entity,label,int(identity[-3:]) if identity[-3:].isdigit() else 1) for label in MODULES.get(entity,{}).get('detailFields',[])})
+        return dict(record=self.record(row),events=events,detailFields={label:self.sample(entity,label,int(identity[-3:]) if identity[-3:].isdigit() else 1) for label in ([] if 'workForm' in json.loads(row['payload']) else MODULES.get(entity,{}).get('detailFields',[]))})
     def change(self,entity,identity,revision,note):
         if entity not in MODULES:raise DemoError(404,'未知业务模块')
         if type(revision) is not int or not isinstance(note,str) or not note.strip() or len(note)>2000:raise DemoError(400,'需提供版本号和1至2000字的模拟处理说明')
@@ -150,6 +156,9 @@ class DemoStore:
             if row['revision']!=revision:raise DemoError(409,'记录已更新，请重新打开详情')
             states=MODULES[entity]['states'];index=states.index(row['state'])
             if index==len(states)-1:raise DemoError(409,'记录已到终态')
+            if entity=='work-reservation' and index==0:
+                try:normalize(json.loads(row['payload']).get('workForm'),True)
+                except ValueError as error:raise DemoError(400,str(error))
             state=states[index+1];revision+=1
             db.execute('UPDATE demo_records SET revision=?,state=? WHERE entity=? AND id=?',(revision,state,entity,identity))
             db.execute('INSERT INTO demo_events VALUES (?,?,?,?,?,?)',(entity,identity,revision,now(),'simulation_transition',json.dumps(dict(previous=row['state'],state=state,note=note,actor='DEMO-OPERATOR'),ensure_ascii=False)))
@@ -157,6 +166,7 @@ class DemoStore:
         return self.detail(entity,identity)
     def create(self,entity,fields,enterprise,note):
         item=MODULES.get(entity)
+        if entity=='work-reservation':raise DemoError(400,'请使用八类作业预约表单')
         if not item:raise DemoError(404,'未知业务模块')
         if not isinstance(fields,dict) or set(fields)!=set(item['columns']) or any(not isinstance(v,str) or not v.strip() or len(v)>256 for v in fields.values()):raise DemoError(400,'请完整填写所有字段，每项1至256字')
         if enterprise not in ['模拟企业甲','模拟企业乙','模拟企业丙']:raise DemoError(400,'只能选择模拟企业')
@@ -165,4 +175,32 @@ class DemoStore:
         with closing(self.connect()) as db:
             db.execute('INSERT INTO demo_records VALUES (?,?,?,?,?,?,?)',(entity,identity,1,enterprise,item['states'][0],date,payload))
             db.execute('INSERT INTO demo_events VALUES (?,?,?,?,?,?)',(entity,identity,1,now(),'synthetic_create','{"actor":"DEMO-OPERATOR"}'));db.commit()
+        return self.detail(entity,identity)
+
+    def save_work_form(self,form,enterprise,note,action,identity,revision):
+        if action not in ('draft','submit'):raise DemoError(400,'作业操作无效')
+        if not isinstance(enterprise,str) or enterprise not in ENTERPRISES:raise DemoError(400,'只能选择模拟企业')
+        if not isinstance(note,str) or len(note)>2000:raise DemoError(400,'备注不超过2000字')
+        if identity is not None and (not isinstance(identity,str) or len(identity)>128):raise DemoError(400,'作业标识无效')
+        if (identity is None and revision is not None) or (identity is not None and type(revision) is not int):raise DemoError(400,'作业版本无效')
+        try:form=normalize(form,action=='submit')
+        except (ValueError,TypeError) as error:raise DemoError(400,str(error))
+        entity='work-reservation';states=MODULES[entity]['states'];at=now()
+        with closing(self.connect()) as db:
+            db.execute('BEGIN IMMEDIATE')
+            previous=states[0];payload={}
+            if identity is not None:
+                row=db.execute('SELECT * FROM demo_records WHERE entity=? AND id=?',(entity,identity)).fetchone()
+                if row is None:raise DemoError(404,'记录不存在')
+                if row['revision']!=revision:raise DemoError(409,'记录已更新，请重新打开详情')
+                if row['state']!=states[0]:raise DemoError(409,'仅草稿支持继续编辑')
+                payload=json.loads(row['payload']);previous=row['state'];revision+=1
+            else:identity='DEMO-USER-'+uuid.uuid4().hex[:16];revision=1
+            payload.update(workForm=form,fields={**payload.get('fields',{}),**list_fields(form,identity)},note=note)
+            state=states[1] if action=='submit' else states[0]
+            if revision==1:db.execute('INSERT INTO demo_records VALUES (?,?,?,?,?,?,?)',(entity,identity,revision,enterprise,state,at[:10],json.dumps(payload,ensure_ascii=False)))
+            else:db.execute('UPDATE demo_records SET revision=?,enterprise=?,state=?,payload=? WHERE entity=? AND id=?',(revision,enterprise,state,json.dumps(payload,ensure_ascii=False),entity,identity))
+            event=dict(previous=previous,state=state,jobType=form['jobType'],note=note,actor='DEMO-OPERATOR')
+            db.execute('INSERT INTO demo_events VALUES (?,?,?,?,?,?)',(entity,identity,revision,at,'work_simulated_submit' if action=='submit' else 'work_draft_save',json.dumps(event,ensure_ascii=False)))
+            db.commit()
         return self.detail(entity,identity)

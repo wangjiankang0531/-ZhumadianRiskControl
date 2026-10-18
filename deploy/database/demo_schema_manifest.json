@@ -4,6 +4,988 @@
   "schemaSHA256": "5175219cd47d8014519c162efdd7e17e7fbd8c53bd119bb8afdabd0840544a94",
   "modules": 82,
   "initialRecords": 984,
+  "workFormSchema": {
+    "schema": "xnby.work_reservation.v1",
+    "types": [
+      {
+        "name": "动火作业",
+        "fields": [
+          {
+            "key": "作业编号",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业区域",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业内容",
+            "kind": "textarea",
+            "required": true,
+            "maxLength": 200
+          },
+          {
+            "key": "位置坐标",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "是否为承包商",
+            "kind": "select",
+            "required": true,
+            "maxLength": 256,
+            "options": [
+              "否",
+              "是"
+            ]
+          },
+          {
+            "key": "作业单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业负责人",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "风险辨识结果",
+            "kind": "textarea",
+            "required": false,
+            "maxLength": 200
+          },
+          {
+            "key": "实施开始时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "实施结束时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业方案选择",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "关联作业票",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "动火级别",
+            "kind": "select",
+            "required": true,
+            "maxLength": 256,
+            "options": [
+              "特级动火作业",
+              "一级动火作业",
+              "二级动火作业"
+            ]
+          },
+          {
+            "key": "动火方式",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "动火地点及部位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          }
+        ]
+      },
+      {
+        "name": "受限空间作业",
+        "fields": [
+          {
+            "key": "作业编号",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业区域",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业内容",
+            "kind": "textarea",
+            "required": true,
+            "maxLength": 200
+          },
+          {
+            "key": "位置坐标",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "是否为承包商",
+            "kind": "select",
+            "required": true,
+            "maxLength": 256,
+            "options": [
+              "否",
+              "是"
+            ]
+          },
+          {
+            "key": "作业单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业负责人",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "风险辨识结果",
+            "kind": "textarea",
+            "required": false,
+            "maxLength": 200
+          },
+          {
+            "key": "实施开始时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "实施结束时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业方案选择",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "关联作业票",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "受限空间名称",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "受限空间内原有介质名称",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          }
+        ]
+      },
+      {
+        "name": "盲板抽堵作业",
+        "fields": [
+          {
+            "key": "作业编号",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业区域",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业内容",
+            "kind": "textarea",
+            "required": true,
+            "maxLength": 200
+          },
+          {
+            "key": "位置坐标",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "是否为承包商",
+            "kind": "select",
+            "required": true,
+            "maxLength": 256,
+            "options": [
+              "否",
+              "是"
+            ]
+          },
+          {
+            "key": "作业单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业负责人",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "风险辨识结果",
+            "kind": "textarea",
+            "required": false,
+            "maxLength": 200
+          },
+          {
+            "key": "实施开始时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "实施结束时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业方案选择",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "关联作业票",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "作业类别",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "设备、管道名称",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "管道参数介质",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "管道参数温度",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "管道参数压力",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "盲板参数材质",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "盲板参数规格",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "盲板参数编号",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "盲板位置图及编号",
+            "kind": "textarea",
+            "required": true,
+            "maxLength": 200
+          }
+        ]
+      },
+      {
+        "name": "高处作业",
+        "fields": [
+          {
+            "key": "作业编号",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业区域",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业内容",
+            "kind": "textarea",
+            "required": true,
+            "maxLength": 200
+          },
+          {
+            "key": "位置坐标",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "是否为承包商",
+            "kind": "select",
+            "required": true,
+            "maxLength": 256,
+            "options": [
+              "否",
+              "是"
+            ]
+          },
+          {
+            "key": "作业单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业负责人",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "风险辨识结果",
+            "kind": "textarea",
+            "required": false,
+            "maxLength": 200
+          },
+          {
+            "key": "实施开始时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "实施结束时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业方案选择",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "关联作业票",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "作业地点",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业高度",
+            "kind": "positive",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "高处作业级别",
+            "kind": "select",
+            "required": true,
+            "maxLength": 256,
+            "options": [
+              "一级高处作业",
+              "二级高处作业",
+              "三级高处作业",
+              "四级高处作业"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "吊装作业",
+        "fields": [
+          {
+            "key": "作业编号",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业区域",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "吊物内容",
+            "kind": "textarea",
+            "required": true,
+            "maxLength": 200
+          },
+          {
+            "key": "位置坐标",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "是否为承包商",
+            "kind": "select",
+            "required": true,
+            "maxLength": 256,
+            "options": [
+              "否",
+              "是"
+            ]
+          },
+          {
+            "key": "作业单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业负责人",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "风险辨识结果",
+            "kind": "textarea",
+            "required": false,
+            "maxLength": 200
+          },
+          {
+            "key": "实施开始时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "实施结束时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业方案选择",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "关联作业票",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "吊装地点",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "吊具名称",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "吊物质量(t)",
+            "kind": "positive",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "吊装作业级别",
+            "kind": "select",
+            "required": true,
+            "maxLength": 256,
+            "options": [
+              "一级吊装作业",
+              "二级吊装作业",
+              "三级吊装作业"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "临时用电作业",
+        "fields": [
+          {
+            "key": "作业编号",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业区域",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业内容",
+            "kind": "textarea",
+            "required": true,
+            "maxLength": 200
+          },
+          {
+            "key": "位置坐标",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "是否为承包商",
+            "kind": "select",
+            "required": true,
+            "maxLength": 256,
+            "options": [
+              "否",
+              "是"
+            ]
+          },
+          {
+            "key": "作业单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业负责人",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "风险辨识结果",
+            "kind": "textarea",
+            "required": false,
+            "maxLength": 200
+          },
+          {
+            "key": "实施开始时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "实施结束时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业方案选择",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "关联作业票",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "作业地点",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "电源接入点",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "许可用电功率",
+            "kind": "positive",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "工作电压",
+            "kind": "positive",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "用电设备名称",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "额定功率",
+            "kind": "positive",
+            "required": true,
+            "maxLength": 256
+          }
+        ]
+      },
+      {
+        "name": "动土作业",
+        "fields": [
+          {
+            "key": "作业编号",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业区域",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业内容",
+            "kind": "textarea",
+            "required": true,
+            "maxLength": 200
+          },
+          {
+            "key": "位置坐标",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "是否为承包商",
+            "kind": "select",
+            "required": true,
+            "maxLength": 256,
+            "options": [
+              "否",
+              "是"
+            ]
+          },
+          {
+            "key": "作业单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业负责人",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "风险辨识结果",
+            "kind": "textarea",
+            "required": false,
+            "maxLength": 200
+          },
+          {
+            "key": "实施开始时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "实施结束时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业方案选择",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "关联作业票",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "作业地点",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业范围、内容、方式",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          }
+        ]
+      },
+      {
+        "name": "断路作业",
+        "fields": [
+          {
+            "key": "作业编号",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业申请时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业区域",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业内容",
+            "kind": "textarea",
+            "required": true,
+            "maxLength": 200
+          },
+          {
+            "key": "位置坐标",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "是否为承包商",
+            "kind": "select",
+            "required": true,
+            "maxLength": 256,
+            "options": [
+              "否",
+              "是"
+            ]
+          },
+          {
+            "key": "作业单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业负责人",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "风险辨识结果",
+            "kind": "textarea",
+            "required": false,
+            "maxLength": 200
+          },
+          {
+            "key": "实施开始时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "实施结束时间",
+            "kind": "datetime",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "作业方案选择",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "关联作业票",
+            "kind": "text",
+            "required": false,
+            "maxLength": 256
+          },
+          {
+            "key": "涉及相关单位",
+            "kind": "text",
+            "required": true,
+            "maxLength": 256
+          },
+          {
+            "key": "断路原因",
+            "kind": "textarea",
+            "required": true,
+            "maxLength": 200
+          },
+          {
+            "key": "断路地段示意图及相关说明",
+            "kind": "textarea",
+            "required": true,
+            "maxLength": 200
+          }
+        ]
+      }
+    ],
+    "roles": [
+      "作业人员",
+      "施工方监护人",
+      "基层单位监护人"
+    ],
+    "personColumns": [
+      "姓名",
+      "工种",
+      "身份证号",
+      "联系方式",
+      "所在单位",
+      "是否承包商"
+    ],
+    "maxPeoplePerRole": 12,
+    "requiredRoles": {
+      "受限空间作业": [
+        "作业人员",
+        "基层单位监护人"
+      ]
+    },
+    "defaultRequiredRoles": [
+      "作业人员"
+    ],
+    "policy": "基础字段参考已观察页面；数值、时间及人员完整性为模拟验收规则，未接入真实审批。",
+    "timeZone": "Asia/Shanghai"
+  },
   "tables": {
     "demo_records": {
       "columns": [
