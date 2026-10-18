@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <!-- Materialize this private key only for deployment; never commit a real key. -->
+  <appSettings><add key="XnbyIngressKey" value="REPLACE_WITH_PRIVATE_64_HEX_KEY" /></appSettings>
+  <system.web>
+    <compilation debug="false" targetFramework="4.0" />
+    <httpRuntime maxRequestLength="128" executionTimeout="30" />
+    <customErrors mode="On" />
+  </system.web>
+  <system.webServer>
+    <handlers>
+      <clear />
+      <add name="XnbySyntheticOnly" path="*" verb="*" type="XnbyReferenceProxy" resourceType="Unspecified" preCondition="integratedMode,runtimeVersionv4.0" />
+    </handlers>
+    <httpErrors existingResponse="PassThrough" />
+  </system.webServer>
+</configuration>

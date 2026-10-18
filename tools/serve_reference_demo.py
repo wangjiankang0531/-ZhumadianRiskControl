@@ -49,8 +49,8 @@ class Handler(BaseHTTPRequestHandler):
         except DemoError as e:self.json(e.status,dict(error=e.message))
         except (ValueError,TypeError):self.json(400,dict(error='请求格式无效'))
 
-def make_server(port,static,database):
-    server=ThreadingHTTPServer(('127.0.0.1',port),Handler,bind_and_activate=False)
+def make_server(port,static,database,*,server_type=ThreadingHTTPServer,handler_type=Handler):
+    server=server_type(('127.0.0.1',port),handler_type,bind_and_activate=False)
     try:
         if sys.platform=='win32':
             server.allow_reuse_address=False
