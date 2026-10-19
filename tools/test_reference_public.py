@@ -123,6 +123,13 @@ class PublicHTTPTests(unittest.TestCase):
         self.assertIn('Max-Age=0', next(v for k,v in headers if k.lower()=='set-cookie'))
         self.assertEqual(self.request('/zhumadian/api/demo/catalog',headers={'Cookie':cookie})[0],401)
 
+    def test_native_login_form_keeps_same_origin_and_rejects_null_origin(self):
+        status, headers, raw = self.request('/zhumadian/auth/login')
+        self.assertEqual(status, 200)
+        self.assertEqual(next(v for k,v in headers if k.lower() == 'referrer-policy'), 'same-origin')
+        self.assertIn(b'method="post"', raw)
+        self.assertEqual(self.request('/zhumadian/auth/login','POST','x=1',{'Origin':'null','Content-Type':'application/x-www-form-urlencoded'})[0],403)
+
     def test_wrong_password_and_cross_origin_login_rejected(self):
         self.assertEqual(self.login('wrong-password')[0],401)
         self.assertEqual(self.request('/zhumadian/auth/login','POST','x=1',{'Origin':'https://bad.test'})[0],403)

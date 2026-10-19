@@ -66,8 +66,10 @@ public sealed class XnbyReferenceProxy : IHttpHandler
                 while ((n = stream.Read(buffer,0,buffer.Length)) > 0) { if (body.Length+n > 2097152) throw new IOException(); body.Write(buffer,0,n); }
                 context.Response.Clear(); context.Response.StatusCode = (int)response.StatusCode;
                 context.Response.TrySkipIisCustomErrors = true; context.Response.ContentType = response.ContentType;
-                foreach (string name in new string[] { "Cache-Control", "X-Content-Type-Options", "Content-Security-Policy", "Referrer-Policy", "X-Frame-Options", "Permissions-Policy" })
+                foreach (string name in new string[] { "Cache-Control", "X-Content-Type-Options", "Content-Security-Policy", "X-Frame-Options", "Permissions-Policy" })
                     if (response.Headers[name] != null) context.Response.AppendHeader(name,response.Headers[name]);
+                // Native same-origin form POSTs must retain Origin; no-referrer makes it null.
+                context.Response.AppendHeader("Referrer-Policy", "same-origin");
                 string[] cookies = response.Headers.GetValues("Set-Cookie");
                 if (cookies != null) foreach (string cookie in cookies) context.Response.AppendHeader("Set-Cookie",cookie);
                 string location = response.Headers["Location"];
