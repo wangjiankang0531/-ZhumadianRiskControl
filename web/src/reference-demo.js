@@ -1,3 +1,4 @@
+import {renderReferenceHome,referenceRoute} from './reference-home.js';
 import {openWorkForm,workSummary,chinaInput} from './reference-work-form.js';
 import {referenceApiURL,referenceNavigation} from './reference-deployment.js';
 const app=document.getElementById('app');
@@ -11,10 +12,12 @@ async function api(path,body){const response=await fetch(referenceApiURL(path,lo
 function message(text){const n=el('div','toast',text);n.setAttribute('role','status');document.body.append(n);setTimeout(()=>n.remove(),4500);}
 function item(){return catalog.find(m=>m.id===current);}
 function select(name,values,value){const n=el('select');n.setAttribute('aria-label',name);for(const v of ['',...values]){const o=el('option','',v||name);o.value=v;n.append(o);}n.value=value;return n;}
+async function logout(){try{const response=await fetch(new URL('auth/logout',new URL('./',location.href)),{method:'POST',headers:{'X-XNBY-CSRF':deployment.csrf}});if(!response.ok&&response.status!==401)throw Error('退出未完成，请重试');location.replace(new URL('auth/login',new URL('./',location.href)));}catch(error){message(error.message);}}
 function shell(){
- const header=el('header','header'),brand=anchor('XNBY','#dashboard','brand');brand.append(el('span','','驻马店重大风险防控'));header.append(brand);const nav=el('nav');nav.append(anchor('综合工作台','#dashboard'));for(const [label,url] of referenceNavigation(deployment))nav.append(anchor(label,url));header.append(nav,el('span','operator',deployment?.mode==='public-business'?'测试账号 '+deployment.user:'模拟操作员 · 独立验收'));if(deployment?.mode==='public-business')header.append(button('退出登录',async()=>{try{const response=await fetch(new URL('auth/logout',new URL('./',location.href)),{method:'POST',headers:{'X-XNBY-CSRF':deployment.csrf}});if(!response.ok&&response.status!==401)throw Error('退出未完成，请重试');location.replace(new URL('auth/login',new URL('./',location.href)));}catch(error){message(error.message);}},'button secondary'));const side=el('aside','sidebar');side.append(el('div','nav-label','业务应用中心'),anchor('◈  综合工作台','#dashboard','side-link'+(current==='dashboard'?' active':'')));
+ app.className='';
+ const header=el('header','header'),brand=anchor('园区风险防控','#home','brand');brand.append(el('span','','驻马店重大风险防控'));header.append(brand);const nav=el('nav');nav.append(anchor('系统首页','#home'),anchor('综合工作台','#dashboard'));for(const [label,url] of referenceNavigation(deployment))nav.append(anchor(label,url));header.append(nav,el('span','operator',deployment?.mode==='public-business'?'测试账号 '+deployment.user:'模拟操作员 · 独立验收'));if(deployment?.mode==='public-business')header.append(button('退出登录',logout,'button secondary'));const side=el('aside','sidebar');side.append(el('div','nav-label','业务应用中心'),anchor('◈  综合工作台','#dashboard','side-link'+(current==='dashboard'?' active':'')));
  for(const group of new Set(catalog.map(m=>m.group))){const section=el('details','nav-group');section.open=true;section.append(el('summary','',group));for(const m of catalog.filter(x=>x.group===group)){const a=anchor(m.name,'#'+m.id,'side-link'+(current===m.id?' active':''));if(m.id===current)a.setAttribute('aria-current','page');section.append(a);}side.append(section);}
- const work=el('main','main');work.append(el('div','breadcrumb','应用中心 / '+(item()?.group||'综合管理')+' / '+(item()?.name||'综合工作台')));const notice=el('div','demo-banner');notice.append(el('b','','模拟验收环境'),el('span','','所有企业、人员、监测值和记录均为合成样本；处理操作仅写入独立 SQLite。未连接真实审批、短信、视频或生产系统。'));work.append(notice);const content=el('div','content');work.append(content,el('footer','','信能本源 · WEB 0.8.8 模拟候选 ｜ 已记录菜单与261013需求映射，尚未逐页完成天津系统对照'));app.replaceChildren(header,side,work);return content;
+ const work=el('main','main');work.append(el('div','breadcrumb','应用中心 / '+(item()?.group||'综合管理')+' / '+(item()?.name||'综合工作台')));const notice=el('div','demo-banner');notice.append(el('b','','模拟验收环境'),el('span','','所有企业、人员、监测值和记录均为合成样本；处理操作仅保存到独立测试环境。未连接真实审批、短信、视频或生产系统。'));work.append(notice);const content=el('div','content');work.append(content,el('footer','','驻马店重大风险防控 · 模拟业务测试'));app.replaceChildren(header,side,work);return content;
 }
 function title(name,desc,action){const n=el('div','page-title'),copy=el('div');copy.append(el('h1','',name),el('p','',desc));n.append(copy);if(action)n.append(action);return n;}
 function panel(name){const n=el('section','panel');if(name)n.append(el('h2','',name));return n;}
@@ -58,7 +61,7 @@ async function refreshList(){
  }catch(error){if(generation===request){target.replaceChildren();showError(target,error);}}
 }
 async function render(){
- const requested=location.hash.slice(1)||'dashboard';if(requested!==current){current=catalog.some(x=>x.id===requested)?requested:'dashboard';page=1;filters=pendingDrilldown?.entity===current?pendingDrilldown.filters:emptyFilters();pendingDrilldown=null;}request++;listRoot=null;const content=shell();if(current==='dashboard'){try{await dashboard(content);}catch(error){showError(content,error);}return;}
+ const requested=referenceRoute(location.hash,catalog);if(requested!==current){current=requested;page=1;filters=pendingDrilldown?.entity===current?pendingDrilldown.filters:emptyFilters();pendingDrilldown=null;}request++;listRoot=null;if(current==='home'){renderReferenceHome({app,deployment,catalog,el,anchor,button,logout});return;}const content=shell();if(current==='dashboard'){try{await dashboard(content);}catch(error){showError(content,error);}return;}
  const model=item();content.append(title(model.name,'合成台账 · 查询、详情、模拟流转和持久化审计',model.layout==='statistics'?undefined:button('＋ 模拟新增',createRecord)));
  if(model.layout==='calendar'){await calendar(content,model);return;}
  const queryModel=model.layout==='statistics'?catalog.find(m=>m.id===model.sourceEntity):model;

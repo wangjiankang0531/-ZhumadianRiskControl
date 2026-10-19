@@ -30,10 +30,10 @@ class Handler(BaseHTTPRequestHandler):
                 args=dict(q=q.get('q',''),state=q.get('state',''),enterprise=q.get('enterprise',''),date_from=q.get('dateFrom',''),date_to=q.get('dateTo',''))
                 if u.path.endswith('/summary'):return self.json(200,self.server.store.summary(q.get('entity',''),**args))
                 return self.json(200,self.server.store.list(q.get('entity',''),page=int(q.get('page','1')),**args))
-            names={'/':'reference-demo.html','/reference-demo.html':'reference-demo.html','/reference-demo.js':'reference-demo.js','/reference-demo.css':'reference-demo.css'}
+            names={'/':'reference-demo.html','/reference-demo.html':'reference-demo.html','/reference-demo.js':'reference-demo.js','/reference-demo.css':'reference-demo.css','/reference-home.css':'reference-home.css','/home-access-qr.svg':'home-access-qr.svg'}
             name=names.get(u.path)
             if not name:raise DemoError(404,'资源不存在')
-            path=self.server.static/name;raw=path.read_bytes();self.send_response(200);self.send_header('Content-Type',{'html':'text/html; charset=utf-8','js':'text/javascript; charset=utf-8','css':'text/css; charset=utf-8'}[name.rsplit('.',1)[-1]]);self.send_header('Content-Length',str(len(raw)));self.send_header('Cache-Control','no-cache');self.send_header('X-Content-Type-Options','nosniff');self.end_headers();self.wfile.write(raw)
+            path=self.server.static/name;raw=path.read_bytes();self.send_response(200);self.send_header('Content-Type',{'html':'text/html; charset=utf-8','js':'text/javascript; charset=utf-8','css':'text/css; charset=utf-8','svg':'image/svg+xml'}[name.rsplit('.',1)[-1]]);self.send_header('Content-Length',str(len(raw)));self.send_header('Cache-Control','no-cache');self.send_header('X-Content-Type-Options','nosniff');self.end_headers();self.wfile.write(raw)
         except DemoError as e:self.json(e.status,dict(error=e.message))
         except (ValueError,KeyError):self.json(400,dict(error='请求参数无效'))
     def do_POST(self):

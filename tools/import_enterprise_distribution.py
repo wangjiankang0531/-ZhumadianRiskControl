@@ -134,7 +134,7 @@ def main():
     parser.add_argument("--docx", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--local-ground-z", type=float, required=True, help="Explicit display datum only; source has no measured elevations")
-    parser.add_argument("--label-height", type=float, default=60)
+    parser.add_argument("--label-height", type=float, default=0)
     args = parser.parse_args()
     before = {str(p.resolve()): {"sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "size": p.stat().st_size, "mtimeNs": p.stat().st_mtime_ns} for p in [args.html, args.docx]}
     document, business, items = build_distribution(read_points(args.html), read_enterprises(args.docx), transformer(), args.local_ground_z, args.label_height)

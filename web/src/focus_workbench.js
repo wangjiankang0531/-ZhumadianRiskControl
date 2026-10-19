@@ -12,7 +12,7 @@ const client=new FocusClient({onClear:code=>notify(code)});
 const e=(tag,cls='',text='')=>{const n=document.createElement(tag);n.className=cls;n.textContent=text;return n;};
 const button=(label,action,cls='button')=>{const n=e('button',cls,label);n.type='button';n.onclick=action;return n;};
 const anchor=(label,url,cls='button secondary')=>{const n=e('a',cls,label);n.href=url;return n;};
-const errorText=error=>{const code=typeof error?.code==='string'&&/^[A-Z_]{1,64}$/.test(error.code)?error.code:'CONNECTION_FAILED';console.info('[XNBY focus] '+code);return messages[code]??({LOGIN_INVALID:'登录事务已失效，请重新登录',LOGIN_REJECTED:'登录交换未完成，请重新登录',LOGIN_UNAVAILABLE:'登录服务暂不可用',CONFIG_INVALID:'业务连接配置无效'}[code]??'服务暂不可用，请刷新重试');};
+const errorText=error=>{const code=typeof error?.code==='string'&&/^[A-Z_]{1,64}$/.test(error.code)?error.code:'CONNECTION_FAILED';console.info('[business] '+code);return messages[code]??({LOGIN_INVALID:'登录事务已失效，请重新登录',LOGIN_REJECTED:'登录交换未完成，请重新登录',LOGIN_UNAVAILABLE:'登录服务暂不可用',CONFIG_INVALID:'业务连接配置无效'}[code]??'服务暂不可用，请刷新重试');};
 async function initialize(){
   const callback=new URL(location.href),hasCallback=['code','state','error'].some(k=>callback.searchParams.has(k));
   if(hasCallback)history.replaceState(null,'',location.pathname+'#hidden-danger');
@@ -122,7 +122,7 @@ export function mountFocus(main){
       const choose=(key,label,values,value)=>{const item=selectField(label,values,value);fields[key]=item.input;form.append(item.wrap);};
       if(action==='create'){
         choose('enterpriseId','所属企业',Object.fromEntries(session.enterprises.map(v=>[v,v])));
-        add('sourceSystem','来源系统',synthetic?'XNBY-DEMO-MANUAL':'');add('sourceId','来源问题编号',synthetic?'DEMO-'+Date.now():'');add('title','问题名称');add('description','问题描述','',true);
+        add('sourceSystem','来源系统',synthetic?'ZMD-DEMO-MANUAL':'');add('sourceId','来源问题编号',synthetic?'DEMO-'+Date.now():'');add('title','问题名称');add('description','问题描述','',true);
         choose('level','源问题等级',{major:'重大',ordinary:'一般（须有重点关注理由）',unclassified:'未分类'},'major');
         choose('focusFlag','重点关注理由',Object.fromEntries(Object.entries(flags).filter(([key])=>key!=='overdue')),'major');
         const date=add('dueDate','整改期限');date.type='date';date.required=false;

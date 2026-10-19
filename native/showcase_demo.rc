@@ -13,12 +13,12 @@ BEGIN
   BEGIN
     BLOCK "040904b0"
     BEGIN
-      VALUE "CompanyName", "XNBY / Xineng Benyuan\0"
-      VALUE "FileDescription", "XNBY Zhumadian Scene Editor\0"
+      VALUE "CompanyName", "Zhumadian Risk Control\0"
+      VALUE "FileDescription", "Zhumadian Risk Control Scene Editor\0"
       VALUE "FileVersion", "0.9.10.0\0"
       VALUE "InternalName", "xnby_zmd_editor.exe\0"
       VALUE "OriginalFilename", "xnby_zmd_editor.exe\0"
-      VALUE "ProductName", "XNBY Zhumadian Scene Editor\0"
+      VALUE "ProductName", "Zhumadian Risk Control Scene Editor\0"
       VALUE "ProductVersion", "0.9.10.0\0"
     END
   END

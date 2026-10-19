@@ -25,7 +25,7 @@ class PublicHTTPTests(unittest.TestCase):
         root = Path(self.temp.name)
         self.static = root/'static'
         self.static.mkdir()
-        for name in ('reference-demo.html', 'reference-demo.css', 'reference-demo.js'):
+        for name in ('reference-demo.html', 'reference-demo.css', 'reference-demo.js', 'reference-home.css', 'home-access-qr.svg'):
             (self.static/name).write_text('QA-' + name)
         with socket.socket() as s:
             s.bind(('127.0.0.1', 0))
@@ -80,7 +80,7 @@ class PublicHTTPTests(unittest.TestCase):
         self.assertEqual(self.request('/zhumadian/api/demo/records?'+query)[0],401)
 
     def test_every_resource_requires_fixed_ingress_and_login(self):
-        for path in ('/zhumadian/', '/zhumadian/reference-demo.js', '/zhumadian/api/demo/catalog'):
+        for path in ('/zhumadian/', '/zhumadian/reference-demo.js', '/zhumadian/reference-home.css', '/zhumadian/home-access-qr.svg', '/zhumadian/api/demo/catalog'):
             self.assertEqual(self.request(path, ingress=False)[0], 403)
         self.assertEqual(self.request('/api/demo/catalog')[0], 404)
         self.assertEqual(self.request('/zhumadian/')[0], 303)
@@ -88,6 +88,17 @@ class PublicHTTPTests(unittest.TestCase):
         self.assertEqual(self.request('/zhumadian/api/demo/health')[0], 401)
         self.assertEqual(self.request('/zhumadian/auth/login', headers={'X-XNBY-Ingress':'0'*64})[0], 403)
         self.assertEqual(self.request('/zhumadian/auth/login', headers={'Host':'bad.test'})[0], 403)
+
+    def test_portal_styles_and_qr_stay_in_authenticated_subdirectory(self):
+        cookie=self.session()
+        for name,mime in [('reference-home.css','text/css; charset=utf-8'),('home-access-qr.svg','image/svg+xml')]:
+            path='/zhumadian/'+name
+            self.assertEqual(self.request(path)[0],401)
+            status,headers,raw=self.request(path,headers={'Cookie':cookie})
+            self.assertEqual(status,200)
+            self.assertEqual(dict(headers)['Content-Type'],mime)
+            self.assertEqual(raw,('QA-'+name).encode())
+        self.assertEqual(self.request('/zhumadian/private.svg',headers={'Cookie':cookie})[0],404)
 
     def test_login_cookie_catalog_and_business_flow(self):
         cookie = self.session()

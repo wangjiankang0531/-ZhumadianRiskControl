@@ -16,24 +16,22 @@ export function labelAnchor(feature) {
   return p.at(-1);
 }
 export function labelWorldAnchor(feature) {
-  const anchor=labelAnchor(feature),options=labelOptions(feature.label);
-  return options.placement==='billboard'?anchor.clone().add(new THREE.Vector3(0,0,options.heightM)):anchor;
+  // A sign stays attached to its saved surface point. Legacy heightM does not lift the world anchor.
+  return labelAnchor(feature);
 }
-export function labelFramingPositions(feature) {
-  return feature.label?.visible&&feature.label.opacity>0&&labelOptions(feature.label).placement==='billboard'
-    ? [...feature.positions,labelWorldAnchor(feature).toArray()] : feature.positions;
-}
+export function labelFramingPositions(feature) { return feature.positions; }
 export function drawLabel(ctx,feature,project) {
   const label=feature.label;if(!label?.visible||label.opacity<=0)return;
   const options=labelOptions(label),text=label.text||feature.name,p=project(labelWorldAnchor(feature).toArray());if(!p||!text)return;
-  const x=p[0]+label.offset[0],y=p[1]+label.offset[1];ctx.save();
+  ctx.save();
   ctx.font=`${label.fontPx}px "Microsoft YaHei",sans-serif`;ctx.textBaseline='top';ctx.globalAlpha=label.opacity;
   const lines=options.placement==='billboard'?text.split(/\r?\n/u):[text];
   const width=Math.max(...lines.map(line=>ctx.measureText(line).width)),lineHeight=Math.ceil(label.fontPx*1.4),height=options.placement==='billboard'?lines.length*lineHeight:label.fontPx+4;
+  const x=p[0]+label.offset[0],y=p[1]+label.offset[1]-(options.placement==='billboard'?height:0);
   if(options.placement==='billboard') {
     const ground=project(labelAnchor(feature).toArray());
     ctx.strokeStyle=feature.style.color;ctx.lineWidth=2;
-    ctx.beginPath();if(ground){ctx.moveTo(...ground);ctx.lineTo(...p);}ctx.moveTo(...p);ctx.lineTo(x,y);ctx.stroke();
+    ctx.beginPath();if(ground){ctx.moveTo(...ground);ctx.lineTo(...p);}ctx.moveTo(...p);ctx.lineTo(x,y+height);ctx.stroke();
     ctx.fillStyle='rgba(3,23,40,.9)';ctx.fillRect(x+1,y+3,width+12,height+8);
     ctx.strokeStyle=feature.style.color;ctx.lineWidth=1;ctx.strokeRect(x-6,y-4,width+12,height+8);
   }
@@ -41,3 +39,5 @@ export function drawLabel(ctx,feature,project) {
   ctx.fillStyle=label.color;lines.forEach((line,i)=>ctx.fillText(line,x,y+i*lineHeight));
   const box=[x-6,y-4,x+width+6,y+height+4];ctx.restore();return box;
 }
+
+export function markerScreenPoint(point,style) { return point&&style.icon==='pin'?[point[0],point[1]-style.sizePx/2]:point; }

@@ -32,7 +32,7 @@ bool ShowcaseInteractiveApp::initEditorWindow() {
   RegisterClassW(&frame);
   editorFrame_ = CreateWindowExW(0,
                                  frame.lpszClassName,
-                                 L"信能本源 · 驻马店场景编辑器",
+                                 L"驻马店重大风险防控 · 场景编辑器",
                                  WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
                                  work.left,
                                  work.top,
@@ -288,7 +288,7 @@ bool ShowcaseInteractiveApp::editorResizeViewport() {
   const auto format = device_->getSwapchainFormat();
   if (!device_->resizeSwapchain({uint32_t(windowWidth_), uint32_t(windowHeight_)}) ||
       device_->getSwapchainFormat() != format || !createDepth() || !createFramebuffers()) {
-    MessageBoxW(editorFrame_, L"三维视口尺寸更新失败，请重新启动编辑器。", L"信能本源", MB_OK | MB_ICONERROR);
+    MessageBoxW(editorFrame_, L"三维视口尺寸更新失败，请重新启动编辑器。", L"驻马店重大风险防控", MB_OK | MB_ICONERROR);
     running_ = false;
     return false;
   }
@@ -427,7 +427,7 @@ bool ShowcaseInteractiveApp::editorThemeMessage(HWND hwnd, UINT message, WPARAM 
     header.left = px(16);
     header.right = frame ? std::max<LONG>(px(16), client.right - px(374)) : px(228);
     DrawTextW(dc,
-              frame ? L"XNBY  /  驻马店风险防控" : L"编辑面板 · 拖动吸附边缘",
+              frame ? L"驻马店风险防控" : L"编辑面板 · 拖动吸附边缘",
               -1,
               &header,
               DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS);
@@ -665,7 +665,7 @@ void ShowcaseInteractiveApp::editorCommand(int id) {
       if (editorDirty_ && !editorClose())
         return;
       if (id == 3001) {
-        auto path = pathDialog(false, L"XNBY 图层 (*.json)\0*.json\0\0");
+        auto path = pathDialog(false, L"驻马店图层 (*.json)\0*.json\0\0");
         if (path.empty())
           return;
         auto next = hongtu::landscape::load(path);
@@ -687,7 +687,7 @@ void ShowcaseInteractiveApp::editorCommand(int id) {
     } else if (id == 3002 || id == 3003) {
       auto path = editorFile_;
       if (id == 3003 || path.empty())
-        path = pathDialog(true, L"XNBY 图层 (*.json)\0*.json\0\0");
+        path = pathDialog(true, L"驻马店图层 (*.json)\0*.json\0\0");
       if (path.empty())
         return;
       if (!path.parent_path().empty())
@@ -736,7 +736,7 @@ void ShowcaseInteractiveApp::editorCommand(int id) {
       if (!editorDraft_.contains("provenance") || !editorDraft_["provenance"].is_object())
         editorDraft_["provenance"] = Json::object();
       editorDraft_["label"]["placement"] = "billboard";
-      editorDraft_["label"]["heightM"] = 60;
+      editorDraft_["label"]["heightM"] = 0;
       editorDraft_["provenance"]["boundaryStatus"] = "manually_traced_unverified";
       editorDraft_["provenance"]["geometrySource"] = "manual_draw_local_landscape";
       editorDraft_["provenance"]["sourceEnterprisePointId"] = source.at("id");

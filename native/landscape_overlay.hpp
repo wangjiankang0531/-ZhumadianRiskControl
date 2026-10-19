@@ -1,6 +1,7 @@
 #pragma once
 #include <hongtu/renderer/effects/billboard_renderer.hpp>
 #include <hongtu/renderer/effects/polygon_renderer.hpp>
+#include <hongtu/renderer/text/label_layout.hpp>
 
 #include "landscape_document.hpp"
 
@@ -142,6 +143,14 @@ namespace hongtu::landscape {
       glm::vec2 ndc = glm::vec2(clip) / clip.w;
       return (ndc + 1.f) * glm::vec2(width, height) * .5f;
     }
+    static std::optional<glm::vec2> projectLabel(glm::vec3 p, const glm::mat4& vp, int width, int height) {
+      // Keep the local scene near-plane convention; use the team's finite/far/offscreen guard for labels only.
+      // Geometry projection stays unchanged so large crossing lines/polygons cannot disappear at their endpoints.
+      const auto clip = vp * glm::vec4(p, 1);
+      if (clip.w <= .001f || clip.z < 0)
+        return {};
+      return hongtu::renderer::text::projectAnchor(glm::dmat4(vp), glm::dvec3(p), width, height);
+    }
     void record(const HongTu::RHI::RHICommandBufferPtr& cmd,
                 const Json& doc,
                 const glm::mat4& vp,
@@ -174,13 +183,13 @@ namespace hongtu::landscape {
                 label["text"].get<std::string>().empty() ? f.value("name", "") : label["text"].get<std::string>();
             const bool elevated = label.value("placement", "screen") == "billboard";
             const auto anchor = isDraft ? p[0] : labelAnchor(f);
-            const auto signAnchor = anchor + glm::vec3(0, 0, elevated ? label.value("heightM", 60.f) : 0.f);
-            auto pixel = project(signAnchor, vp, width, height);
+            const auto signAnchor = anchor;
+            auto pixel = projectLabel(signAnchor, vp, width, height);
             if (pixel && !text.empty()) {
               auto texture = textTexture(text, int(label["fontPx"].get<float>()), elevated);
               if (texture.slot >= 0) {
                 const glm::vec2 start =
-                    *pixel + glm::vec2(label["offset"][0].get<float>(), label["offset"][1].get<float>());
+                    *pixel + glm::vec2(label["offset"][0].get<float>(), label["offset"][1].get<float>() - (elevated ? texture.height : 0));
                 const glm::vec2 end = start + glm::vec2(texture.width, texture.height);
                 if (elevated) {
                   const auto accent = color(s.at("color"), label["opacity"].get<float>());
@@ -192,9 +201,9 @@ namespace hongtu::landscape {
                     triangle(a - side, a + side, b + side, accent);
                     triangle(a - side, b + side, b - side, accent);
                   };
-                  if (auto ground = project(anchor, vp, width, height)) {
+                  if (auto ground = projectLabel(anchor, vp, width, height)) {
                     stroke(*ground, *pixel, 2.f);
-                    stroke(*pixel, start, 2.f);
+                    stroke(*pixel, {start.x, start.y + texture.height}, 2.f);
                   }
                   // A raised, camera-facing card remains tied to its actual world anchor.
                   const auto depth = glm::vec2(5, 5);
@@ -244,7 +253,7 @@ namespace hongtu::landscape {
             slot = 4;
           hongtu::renderer::BillboardRenderer::BillboardDraw b;
           float size = s.at("sizePx");
-          b.world_pos = ndc(*pixel);
+          b.world_pos = ndc(*pixel + glm::vec2(0, icon == "pin" ? -size * .5f : 0));
           b.size_m = {2 * size / width, 2 * size / height};
           b.atlas_uv = {slot / 5.f, 0, (slot + 1) / 5.f, 1};
           b.color = col;

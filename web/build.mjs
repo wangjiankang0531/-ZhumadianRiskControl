@@ -14,7 +14,7 @@ await copyFile(join(webRoot,'node_modules/three/LICENSE'),join(outDir,'THREE-LIC
 await build({absWorkingDir:webRoot,entryPoints:['src/portal.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'portal.js')});
 for(const name of ['portal.html','portal.css'])await copyFile(join(webRoot,'src',name),join(outDir,name));
 await build({absWorkingDir:webRoot,entryPoints:['src/reference-demo.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'reference-demo.js')});
-for(const name of ['reference-demo.html','reference-demo.css'])await copyFile(join(webRoot,'src',name),join(outDir,name));
+for(const name of ['reference-demo.html','reference-demo.css','reference-home.css','home-access-qr.svg'])await copyFile(join(webRoot,'src',name),join(outDir,name));
 
 await build({absWorkingDir:webRoot,entryPoints:['src/gas_workbench.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'gas-workbench.js')});
 for(const name of ['gas.html','gas.css'])await copyFile(join(webRoot,'src',name),join(outDir,name));

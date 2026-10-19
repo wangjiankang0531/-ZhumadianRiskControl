@@ -71,7 +71,7 @@ bool ShowcaseInteractiveApp::initEditorPanel() {
       SendMessageW(c, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(n));
     SendMessageW(c, CB_SETCURSEL, 0, 0);
   };
-  label(3100, L"信能本源  /  场景编辑", 14, 12, 390);
+  label(3100, L"驻马店  /  场景编辑", 14, 12, 390);
   button(3001, L"打开", 14, 37);
   button(3002, L"保存", 114, 37);
   button(3003, L"另存为", 214, 37);
@@ -122,8 +122,8 @@ bool ShowcaseInteractiveApp::initEditorPanel() {
   SendMessageW(placement, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"普通文字标牌"));
   SendMessageW(placement, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"立体信息标牌"));
   SendMessageW(placement, CB_SETCURSEL, 0, 0);
-  label(3142, L"离锚点高度 m", 199, 609, 94);
-  edit(3140, L"60", 309, 609, 97);
+  label(3142, L"标牌固定贴地", 199, 609, 94);
+  edit(3140, L"0", 309, 609, 97);
   for (int control : {3140, 3141, 3142}) {
     editorControlRects_[control].top -= 74;
     editorControlRects_[control].bottom -= 74;
@@ -318,7 +318,8 @@ void ShowcaseInteractiveApp::editorSelectFeature() {
   SetWindowTextW(editorControls_[3075], editorWide(label["offset"][0].dump()).c_str());
   SetWindowTextW(editorControls_[3076], editorWide(label["offset"][1].dump()).c_str());
   SendMessageW(editorControls_[3141], CB_SETCURSEL, label.value("placement", "screen") == "billboard" ? 1 : 0, 0);
-  SetWindowTextW(editorControls_[3140], editorWide(label.value("heightM", Json(60)).dump()).c_str());
+  SetWindowTextW(editorControls_[3140], L"0");
+  EnableWindow(editorControls_[3140], FALSE);
   SetWindowTextW(editorControls_[3120], editorWide(f.value("id", "完成绘制后生成")).c_str());
   const auto business = f.value("business", Json::object());
   const auto& objectTypes = hongtu::landscape::businessObjectTypes();
@@ -405,7 +406,7 @@ Json ShowcaseInteractiveApp::editorLabel() {
   label["offset"] = {number(3075), number(3076)};
   if (SendMessageW(editorControls_[3141], CB_GETCURSEL, 0, 0) == 1) {
     label["placement"] = "billboard";
-    label["heightM"] = number(3140);
+    label["heightM"] = 0;
   }
   hongtu::landscape::validateLabel(label);
   return label;

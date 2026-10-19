@@ -23671,10 +23671,10 @@ namespace {
 
   void ShowcaseInteractiveApp::printControls() const {
     if (cli_.landscapeEditor) {
-      std::cout << "XNBY Zhumadian Landscape Editor | point / line / region / layers\n";
+      std::cout << "Zhumadian Landscape Editor | point / line / region / layers\n";
       return;
     }
-    std::cout << "\n=== 信能本源综合展示控制 ===\n"
+    std::cout << "\n=== 驻马店风险防控综合展示控制 ===\n"
               << "鼠标右键拖动     环视观察\n"
               << "鼠标左键拖动     沿地面平移\n"
               << "W/A/S/D          前后左右移动\n"
@@ -23783,7 +23783,7 @@ namespace {
       AdjustWindowRect(&rect, style, FALSE);
     hwnd_ = CreateWindowExW(0,
                             wc.lpszClassName,
-                            L"信能本源 - 工业园区三维展示",
+                            L"驻马店风险防控 - 工业园区三维展示",
                             style | WS_VISIBLE,
                             posX,
                             posY,
@@ -23880,7 +23880,7 @@ namespace {
     };
 
 #  if 0
-    makeLabel(L"信能本源 - 场景控制", 18, 16, 300, 24);
+    makeLabel(L"驻马店风险防控 - 场景控制", 18, 16, 300, 24);
     controlsStatus_ = makeLabel(L"", 18, 48, 315, 116);
     controlsHint_ = makeLabel(L"热键仍然可用；这里的按钮和热键共享同一套参数。", 18, 168, 315, 42);
 
@@ -23948,7 +23948,7 @@ namespace {
           return y + 36;
         };
 
-    makeLabel(L"信能本源综合展示控制", 18, 14, 410, 24);
+    makeLabel(L"驻马店风险防控综合展示控制", 18, 14, 410, 24);
     controlsStatus_ = makeLabel(L"", 18, 42, 412, 96);
     controlsHint_ = makeLabel(L"热键仍然可用；拖动滑杆可实时调整太阳、风场、天气和粒子。", 18, 142, 412, 36);
 
@@ -25663,14 +25663,14 @@ namespace {
   void ShowcaseInteractiveApp::updateTitle(float fps) {
     if (cli_.landscapeEditor) {
       std::wostringstream title;
-      title << L"信能本源 · 驻马店场景编辑器" << (editorDirty_ ? L" *" : L"") << L" | " << int(fps) << L" FPS | 细层 "
+      title << L"驻马店风险防控 · 驻马店场景编辑器" << (editorDirty_ ? L" *" : L"") << L" | " << int(fps) << L" FPS | 细层 "
             << nativePager_.payload / (1024 * 1024) << L" MiB";
       SetWindowTextW(editorFrame_, title.str().c_str());
       return;
     }
     const CameraClipPlanes cameraClip = cameraClipPlanesFor(cli_, camPos_);
     std::wostringstream ss;
-    ss << L"信能本源综合展示 | 预设 " << std::wstring(cli_.presetName.begin(), cli_.presetName.end()) << L" | FPS "
+    ss << L"驻马店风险防控综合展示 | 预设 " << std::wstring(cli_.presetName.begin(), cli_.presetName.end()) << L" | FPS "
        << std::fixed << std::setprecision(1) << fps << L" | 顶点 " << vertexCount_ << L" | 索引 " << indexCount_
        << L" | 点光源 " << settings_.pointLights << L" | 风 " << std::setprecision(0) << settings_.windDirDegrees
        << L"度 " << std::setprecision(1) << settings_.windSpeed << L"m/s" << L" | glTF " << externalModelInstances_
