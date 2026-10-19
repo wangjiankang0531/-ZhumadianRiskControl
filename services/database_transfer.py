@@ -5,11 +5,13 @@ Never overwrites an existing export, restore database or SQL file. No credential
 import argparse, base64, hashlib, json, sqlite3, tempfile, uuid
 from contextlib import closing
 from pathlib import Path
-from .database import SQLiteDatabase, SCHEMA_VERSION, SCHEMA_SQLITE, SCHEMA_SQLITE_V2
+from .database import SQLiteDatabase, SCHEMA_VERSION, SCHEMA_SQLITE, SCHEMA_SQLITE_V2, SCHEMA_SQLITE_V3
 from .common import loads
 
 LEGACY_TABLES=("issues","events","requests","dlg_documents","dlg_versions","dlg_layers","dlg_features")
-TABLES=("issues","events","requests","issue_materials","dlg_documents","dlg_versions","dlg_layers","dlg_features")
+LEGACY_TABLES_V3=("issues","events","requests","issue_materials","dlg_documents","dlg_versions","dlg_layers","dlg_features")
+GAS_TABLES=("gas_alerts","gas_history","gas_requests","gas_outbox","gas_materials","gas_delivery_attempts")
+TABLES=LEGACY_TABLES_V3+GAS_TABLES
 MAX_ROW=24*1048576
 MAX_ARCHIVE=1024*1048576
 
@@ -62,6 +64,9 @@ def validate_database(db):
             count+=len(features)
         if db.execute("SELECT count(*) FROM dlg_features WHERE tenant=? AND document_id=?",(tenant,document)).fetchone()[0]!=count:raise ValueError("orphan DLG features")
 
+    from .gas_integrity import validate_gas
+    validate_gas(db)
+
 def export_database(database,output):
     database,output=Path(database).resolve(),Path(output).resolve()
     if not database.is_file() or output.exists():raise ValueError("source missing or output already exists")
@@ -91,7 +96,7 @@ def read_archive(directory):
     raw=(directory/"manifest.json").read_bytes()
     if len(raw)>1048576:raise ValueError("manifest too large")
     manifest=loads(raw)
-    layouts={2:(LEGACY_TABLES,SCHEMA_SQLITE_V2),SCHEMA_VERSION:(TABLES,SCHEMA_SQLITE)}
+    layouts={2:(LEGACY_TABLES,SCHEMA_SQLITE_V2),3:(LEGACY_TABLES_V3,SCHEMA_SQLITE_V3),SCHEMA_VERSION:(TABLES,SCHEMA_SQLITE)}
     version=manifest.get('databaseVersion')
     if manifest.get("schema")!="xnby.business.database.transfer.v1" or version not in layouts:raise ValueError("unsupported archive")
     expected_tables,definition=layouts[version]
@@ -141,7 +146,7 @@ def upgrade_copy(database,output):
     output.parent.mkdir(parents=True,exist_ok=True)
     stage=output.with_name(output.name+'.partial-'+uuid.uuid4().hex)
     with closing(sqlite3.connect(database.as_uri()+'?mode=ro',uri=True)) as source,closing(sqlite3.connect(stage)) as target:
-        if source.execute('PRAGMA user_version').fetchone()[0] not in (1,2,SCHEMA_VERSION):raise ValueError('unsupported source version')
+        if source.execute('PRAGMA user_version').fetchone()[0] not in (1,2,3,SCHEMA_VERSION):raise ValueError('unsupported source version')
         source.backup(target)
     store=SQLiteDatabase(stage)
     with closing(store.connect()) as db:

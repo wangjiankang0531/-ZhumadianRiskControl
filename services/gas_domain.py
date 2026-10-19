@@ -97,7 +97,7 @@ def visible_event(state,principal,public_ids):
 
 def transition(state,action,payload,principal,public_ids,at,check_materials=None):
     access(state,principal,public_ids)
-    permissions={'source-update':'gas:ingest','classify':'gas:verify','verify':'gas:verify','cooperate':'gas:cooperate','handoff-request':'gas:handoff','handoff-result':'gas:ingest','archive':'gas:verify','reopen':'gas:verify'}
+    permissions={'source-update':'gas:ingest','classify':'gas:verify','verify':'gas:verify','cooperate':'gas:cooperate','material':'gas:read','handoff-request':'gas:handoff','handoff-result':'gas:ingest','archive':'gas:verify','reopen':'gas:verify'}
     if action not in permissions:raise ApiError(404,'NOT_FOUND')
     principal.require(permissions[action])
     if not isinstance(payload,dict):raise ValueError('command object required')
@@ -114,7 +114,7 @@ def transition(state,action,payload,principal,public_ids,at,check_materials=None
     elif action=='classify':
         fields(payload,{'revision','classification','note'},{'revision','classification','note'})
         if payload['classification'] not in CLASSIFICATIONS:raise ValueError('unknown classification')
-        next_state.update(classification=payload['classification'],classificationNote={'note':note(payload['note']),'actor':principal.subject,'at':stamp})
+        next_state.update(classification=payload['classification'],classificationNote={'note':note(payload['note']),'actor':principal.subject,'at':stamp},verification=None,status='attention',archive=None)
     elif action=='verify':
         required={'revision','conclusion','note','verifiedAt','location','materialRefs'};fields(payload,required,required)
         if payload['conclusion'] not in CONCLUSIONS:raise ValueError('unknown verification conclusion')
@@ -131,6 +131,21 @@ def transition(state,action,payload,principal,public_ids,at,check_materials=None
         if owner not in state['cooperation'] and len(state['cooperation'])>=64:raise ApiError(409,'COOPERATION_CAPACITY')
         if payload['state'] not in COOPERATION or not strings(payload['activities'],len(ACTIVITIES))<=ACTIVITIES:raise ValueError('invalid cooperation code')
         next_state['cooperation'][owner]={'state':payload['state'],'activities':list(payload['activities']),'statement':note(payload['statement']),'measures':note(payload['measures']),'actor':principal.subject,'at':stamp}
+    elif action=='material':
+        fields(payload,{'revision','material'},{'revision','material'});meta=payload['material']
+        required={'id','revision','name','mediaType','bytes','sha256','createdAt','actor','description','scope','enterpriseId'};fields(meta,required,required)
+        from .focus_materials import material_name,MATERIAL_LIMIT
+        if not ID.fullmatch(meta['id']) or not re.fullmatch(r'[a-f0-9]{64}',meta['sha256']):raise ValueError('invalid material identity')
+        integer(meta['bytes'],1,MATERIAL_LIMIT);material_name(meta['name'],meta['mediaType']);note(meta['description'])
+        if meta['revision']!=state['revision']+1 or meta['createdAt']!=stamp or meta['actor']!=principal.subject:raise ValueError('material journal identity differs')
+        if meta['scope']=='public':
+            principal.require('gas:verify')
+            if meta['enterpriseId'] is not None:raise ValueError('public evidence has no enterprise owner')
+        elif meta['scope']=='enterprise':
+            principal.require('gas:cooperate');text(meta['enterpriseId'],256,True)
+            if not principal.enterprise(meta['enterpriseId']):raise ApiError(404,'NOT_FOUND')
+        else:raise ValueError('unknown material scope')
+        next_state.update(verification=None,status='attention',archive=None)
     elif action=='handoff-request':
         principal.require('gas:verify');fields(payload,{'revision','requestId','reason'},{'revision','requestId','reason'})
         if not ID.fullmatch(payload['requestId']):raise ValueError('invalid handoff identity')

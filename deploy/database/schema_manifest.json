@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 3,
-  "schemaDefinitionSHA256": "4a7e36d2183b897a2b264b68c9ac8890b8e2f087ab91e66bf0488ab88bb2cd8d",
+  "schemaVersion": 4,
+  "schemaDefinitionSHA256": "13aa84895ee7c6a25b5ffb68c4fac7da6af00323eef83daadd8c71244f437489",
   "states": [
     "archived",
     "feedback",
@@ -794,6 +794,748 @@
           "NONE"
         ]
       ]
+    },
+    "gas_alerts": {
+      "description": "公共区域气体异常当前快照与公共点位索引；独立于企业重点问题，不伪造企业归属",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "source_system",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "source_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "spatial_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "source_revision",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "revision",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "updated",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "payload",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "gas_point_updated",
+          "unique": false,
+          "columns": [
+            "tenant",
+            "spatial_id",
+            "updated"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_gas_alerts_2",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "source_system",
+            "source_id"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_gas_alerts_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": []
+    },
+    "gas_history": {
+      "description": "每个气体异常连续版本的命令与结果状态SHA；保留来源浓度/单位/时区原文",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "event_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "revision",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 3,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "at",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "actor",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "policy",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "kind",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "payload",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        },
+        {
+          "name": "state_sha256",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_gas_history_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "event_id",
+            "revision"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        [
+          0,
+          0,
+          "gas_alerts",
+          "tenant",
+          "tenant",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          1,
+          "gas_alerts",
+          "event_id",
+          "id",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ]
+      ]
+    },
+    "gas_requests": {
+      "description": "气体命令幂等键与提交版本；重放仍按当前授权投影，不冒充最新版本",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "actor",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "key",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 3,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "event_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "digest",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "result",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_gas_requests_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "actor",
+            "key"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        [
+          0,
+          0,
+          "gas_alerts",
+          "tenant",
+          "tenant",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          1,
+          "gas_alerts",
+          "event_id",
+          "id",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ]
+      ]
+    },
+    "gas_outbox": {
+      "description": "同事务冻结的应急转办包、目标系统、投递租约和重试状态；发送不等于业务接收",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "event_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "revision",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "target_system",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "delivery_state",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "attempts",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "lease_sha256",
+          "sqliteType": "TEXT",
+          "notNull": false,
+          "primaryOrder": 0,
+          "mysqlType": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "lease_until",
+          "sqliteType": "TEXT",
+          "notNull": false,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "next_attempt_at",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "last_error",
+          "sqliteType": "TEXT",
+          "notNull": false,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "package_sha256",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "payload",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "gas_outbox_due",
+          "unique": false,
+          "columns": [
+            "tenant",
+            "delivery_state",
+            "next_attempt_at"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_gas_outbox_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        [
+          0,
+          0,
+          "gas_history",
+          "tenant",
+          "tenant",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          1,
+          "gas_history",
+          "event_id",
+          "event_id",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          2,
+          "gas_history",
+          "revision",
+          "revision",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ]
+      ]
+    },
+    "gas_materials": {
+      "description": "不可变公共/企业气体佐证材料BLOB；与同版本气体材料历史绑定",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "event_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 3,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "revision",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "scope",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "enterprise",
+          "sqliteType": "TEXT",
+          "notNull": false,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "name",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        },
+        {
+          "name": "media_type",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "bytes",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "sha256",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "created",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "actor",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "description",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        },
+        {
+          "name": "payload",
+          "sqliteType": "BLOB",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGBLOB"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "gas_material_scope",
+          "unique": false,
+          "columns": [
+            "tenant",
+            "event_id",
+            "scope",
+            "enterprise"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_gas_materials_2",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "event_id",
+            "revision"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_gas_materials_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "event_id",
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        [
+          0,
+          0,
+          "gas_history",
+          "tenant",
+          "tenant",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          1,
+          "gas_history",
+          "event_id",
+          "event_id",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          2,
+          "gas_history",
+          "revision",
+          "revision",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ]
+      ]
+    },
+    "gas_delivery_attempts": {
+      "description": "逐次追加投递尝试、租约摘要及完成结果；不保存明文租约令牌",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "request_id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "attempt",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 3,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "claimed_at",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "lease_sha256",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "lease_until",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "finished_at",
+          "sqliteType": "TEXT",
+          "notNull": false,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "outcome",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "error_code",
+          "sqliteType": "TEXT",
+          "notNull": false,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_gas_delivery_attempts_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "request_id",
+            "attempt"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        [
+          0,
+          0,
+          "gas_outbox",
+          "tenant",
+          "tenant",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          1,
+          "gas_outbox",
+          "request_id",
+          "id",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ]
+      ]
     }
+  },
+  "gasPolicy": {
+    "classifications": [
+      "emergency-concern",
+      "needs-verification",
+      "persistent",
+      "short-fluctuation",
+      "suspected-device"
+    ],
+    "conclusions": [
+      "continue",
+      "device-fault",
+      "emergency",
+      "false-alarm",
+      "no-obvious-anomaly",
+      "possibly-enterprise",
+      "short-anomaly"
+    ],
+    "cooperation": [
+      "explained",
+      "focus-suggested",
+      "following",
+      "measures-taken",
+      "supplement-required"
+    ],
+    "activities": [
+      "emission",
+      "loading",
+      "maintenance",
+      "pipeline",
+      "production",
+      "special-work",
+      "storage",
+      "unknown"
+    ],
+    "units": [
+      "%LEL",
+      "%vol",
+      "mg/m3",
+      "ppm"
+    ],
+    "maxMaterials": 64,
+    "maxMaterialBytes": 8388608,
+    "maxEventMaterialBytes": 134217728,
+    "maxDeliveryAttempts": 10,
+    "leaseSeconds": [
+      5,
+      300
+    ],
+    "trustedSourceAndResultSubjectsMustDiffer": true,
+    "networkDispatchImplemented": false
   }
 }

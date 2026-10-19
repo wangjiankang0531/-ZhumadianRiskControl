@@ -5,7 +5,7 @@ from contextlib import closing
 from services.tests import test_focus_api as fixture
 from services.focus import FocusStore
 from services.focus_materials import MATERIAL_LIMIT,MATERIAL_JSON_LIMIT,checked_material
-from services.database_transfer import export_database,restore_database,mysql_script,validate_database,upgrade_copy,canonical,LEGACY_TABLES
+from services.database_transfer import export_database,restore_database,mysql_script,validate_database,upgrade_copy,canonical,LEGACY_TABLES,GAS_TABLES
 from services.database import SCHEMA_SQLITE_V2,SCHEMA_VERSION
 
 PDF=b'%PDF-1.4\nSynthetic evidence only\n%%EOF\n'
@@ -77,12 +77,17 @@ class MaterialTests(unittest.TestCase):
   script=self.f.p.root/'mysql.sql';mysql_script(archive,script);sql=script.read_text('utf-8');self.assertIn('INSERT INTO `issue_materials`',sql);self.assertIn('0x'+PDF.hex(),sql)
  def test_v2_source_readonly_upgrade_copy_and_legacy_archive_restore(self):
   source=self.f.p.root/'focus.sqlite'
-  with closing(sqlite3.connect(source)) as db:db.execute('DROP TABLE issue_materials');db.execute('PRAGMA user_version=2');db.execute('PRAGMA wal_checkpoint(TRUNCATE)')
+  with closing(sqlite3.connect(source)) as db:
+   for table in reversed(GAS_TABLES):db.execute('DROP TABLE '+table)
+   db.execute('DROP TABLE issue_materials');db.execute('PRAGMA user_version=2');db.execute('PRAGMA wal_checkpoint(TRUNCATE)')
   before=hashlib.sha256(source.read_bytes()).hexdigest();target=self.f.p.root/'upgraded.sqlite';upgrade_copy(source,target);self.assertEqual(hashlib.sha256(source.read_bytes()).hexdigest(),before)
-  with closing(sqlite3.connect(target)) as db:self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],3);self.assertEqual(db.execute('SELECT count(*) FROM issues').fetchone()[0],1);self.assertEqual(db.execute('SELECT count(*) FROM issue_materials').fetchone()[0],0)
-  archive=self.f.p.root/'v2-archive';manifest=export_database(target,archive);(archive/'issue_materials.jsonl').unlink();del manifest['tables']['issue_materials'];manifest['databaseVersion']=2;manifest['schemaDefinitionSHA256']=hashlib.sha256(SCHEMA_SQLITE_V2.encode()).hexdigest();(archive/'manifest.json').write_bytes(canonical(manifest))
+  with closing(sqlite3.connect(target)) as db:self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],SCHEMA_VERSION);self.assertEqual(db.execute('SELECT count(*) FROM issues').fetchone()[0],1);self.assertEqual(db.execute('SELECT count(*) FROM issue_materials').fetchone()[0],0)
+  archive=self.f.p.root/'v2-archive';manifest=export_database(target,archive);
+  for table in ('issue_materials',*GAS_TABLES):
+   (archive/(table+'.jsonl')).unlink();del manifest['tables'][table]
+  manifest['databaseVersion']=2;manifest['schemaDefinitionSHA256']=hashlib.sha256(SCHEMA_SQLITE_V2.encode()).hexdigest();(archive/'manifest.json').write_bytes(canonical(manifest))
   restored=self.f.p.root/'v2-restored.sqlite';restore_database(archive,restored)
-  with closing(sqlite3.connect(restored)) as db:validate_database(db);self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],3)
+  with closing(sqlite3.connect(restored)) as db:validate_database(db);self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],SCHEMA_VERSION)
   with self.assertRaises(ValueError):upgrade_copy(source,target)
 
 class MaterialGatewayTests(unittest.TestCase):
