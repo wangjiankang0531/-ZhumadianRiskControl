@@ -126,6 +126,7 @@ def build(args):
             raise ValueError("tested frozen module changed: "+name)
         put(path, "application/"+name, application)
     put(ROOT/"tools/portable_source_runtime.py", "application/tools/portable_source_runtime.py", ROOT)
+    put(ROOT/"tools/portable_layer_workspace.py", "application/tools/portable_layer_workspace.py", ROOT)
     tree(application/"shared", "application/shared")
     for group in ("full", "context", "pages", "native_hierarchy"):
         tree(resources/"assets/showcase/runtime/zhumadian"/group, "resources/assets/showcase/runtime/zhumadian/"+group)

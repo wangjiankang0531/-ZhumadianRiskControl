@@ -169,6 +169,7 @@ class ReadOnlySourceGuard:
         self.protected = tuple([package["data"], *(root/name for name in PAYLOAD_DIRS),
                                 root/"source_runtime_manifest.json", root/"source_runtime_binding.json",
                                 root/"UserData/layers.json", root/"UserData/layers.origin.json"])
+        self.layer_database = root/"UserData/BusinessData/layers.sqlite"
         self.executable = root/"reader/zmd_osgb_stream_reader.exe"
         self.violations = []
     def _protected(self, value):
@@ -180,6 +181,8 @@ class ReadOnlySourceGuard:
         self.violations.append(event)
         raise PermissionError("packaged original-source runtime is read-only")
     def __call__(self, event, args):
+        if event == "sqlite3.connect" and args and str(args[0]) != ":memory:" and Path(os.fsdecode(args[0])).resolve() != self.layer_database:
+            self.deny(event)
         if event == "subprocess.Popen" and (args[0] is None or Path(args[0]).resolve() != self.executable):
             self.deny(event)
         if event in ("os.system", "os.spawn", "os.posix_spawn"):
@@ -220,6 +223,9 @@ def serve(package, *, port, owner):
     state = ready_path(root, owner)
     report = preflight(package)
     user_layers = initialize_user_layers(root)
+    from portable_layer_workspace import initialize_layer_repository
+    from services.database import SCHEMA_VERSION
+    layer_repository = initialize_layer_repository(root)
     from tools import landscape_web_server as landscape
     from readonly_source_memory_store import PinnedCatalogs, MemorySourceStore
     from osgb_cropped_pages import build_bundle, builder_identity
@@ -232,10 +238,16 @@ def serve(package, *, port, owner):
     store = MemorySourceStore(PinnedCatalogs(root/"resources"), reader, builder=build_bundle, builder_identity=builder_identity())
     class Handler(MemorySourceHTTP, landscape.Handler):
         read_only_lod = True
-        allow_local_layer_database = False
-        layer_repository = None
+        allow_local_layer_database = True
         prepared_textures = None
         memory_sources = store
+        def _database_layers(self):
+            try:
+                regular(self.layers, root)
+            except (ValueError, OSError):
+                self.send_error(422, "LAYER_SOURCE_INVALID")
+                return None
+            return super()._database_layers()
         def setup(self):
             super().setup()
             if self.connection.getsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY) != 1:
@@ -247,6 +259,7 @@ def serve(package, *, port, owner):
                     return self.send_error(400)
                 return self._memory_json({"schema":"zhumadian.source.runtime.status.v1", "identity":package["identity"],
                     "pid":os.getpid(), "port":self.server.server_port, "readOnly":True, "conversionEnabled":False,
+                    "sourceAccess":"read_only", "layerStorage":"sqlite", "layerSchemaVersion":SCHEMA_VERSION,
                     "store":store.audit(), "worker":reader.worker.audit(), "protectedWrites":len(guard.violations)})
             return super().do_GET()
         def do_POST(self):
@@ -268,6 +281,7 @@ def serve(package, *, port, owner):
             if route == "/" or route.lstrip("/") in static:
                 return str(root/"web"/(route.lstrip("/") or "index.html"))
             return super().translate_path(path)
+    Handler.layer_repository = layer_repository
     Handler.root = root/"resources"
     Handler.layers = user_layers
     Handler.business = root/"defaults/business.json"

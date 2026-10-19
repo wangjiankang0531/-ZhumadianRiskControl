@@ -128,7 +128,7 @@
 +  const bool informational=argc>1 && (std::string(argv[1])=="--help" || std::string(argv[1])=="-h" || std::string(argv[1])=="--validate-layers");
 +  const bool ownedProbe=argc==2 && std::string(argv[1])=="--owned-runtime-probe";
 +  NativeOwnedSourceRuntime ownedRuntime;
-+  ownedRuntime.initialize(!informational,ownedProbe);
++  ownedRuntime.initialize(!informational,!informational);
 +  if (ownedProbe) {std::cout<<ownedRuntime.report().dump(2)<<'\n';return 0;}
 +  if (argc==4 && (std::string(argv[1])=="--validate-source-memory" || std::string(argv[1])=="--validate-source-family")) {
 +    const int tile=std::stoi(argv[2]),depth=std::string(argv[1])=="--validate-source-family"?1:std::stoi(argv[3]);auto cpu=decodeSourceMemory(tile,depth,false,std::string(argv[1])=="--validate-source-family"?std::string(argv[3]):std::string{});
@@ -146,7 +146,15 @@
    Cli cli;
  #ifdef HT_LANDSCAPE_EDITOR
    if (argc == 1) {
-@@ -27255,6 +27296,7 @@
+@@ -27245,6 +27286,7 @@
+   cli.presetName = "zhumadian";
+   cli.zhumadianNativeGeometry = true;
+   cli.zhumadianNativeChunked = true;
++  cli.zhumadianNativeVisibility = true;
+   cli.zhumadianContext = true;
+   cli.zhumadianContextFused = true;
+   cli.zhumadianContextColorMatched = true;
+@@ -27255,6 +27297,7 @@
    if (!parseCli(argc, argv, cli)) {
      return argc > 1 && (std::string(argv[1]) == "--help" || std::string(argv[1]) == "-h") ? 0 : 1;
    }
@@ -154,7 +162,7 @@
    if (cli.landscapeEditor && (cli.preset != Preset::Zhumadian || !cli.zhumadianFullScene || !cli.zhumadianContext ||
                                !cli.zhumadianContextFused || !cli.zhumadianNativeChunked)) {
      std::cerr << "Landscape editor only supports the full Zhumadian landscape with satellite context and native "
-@@ -27281,6 +27323,9 @@
+@@ -27281,6 +27324,9 @@
      return renderShowcase(cli) ? 0 : 1;
    return runInteractiveShowcase(cli) ? 0 : 1;
  } catch (const std::exception& error) {
@@ -824,7 +832,7 @@
 +      }
 +      if (GetExitCodeProcess(process.value,&code)) journal["serviceExitCode"]=code;
 +      job.close();process.close();event("stopped");
-+    } else if (packaged && !journalPath.empty()) event("external_service_left_running");
++    } else if (packaged && !journalPath.empty()) event(journal.value("mode",std::string{})=="explicit_external_service"?"external_service_left_running":"stopped_before_service_creation");
 +    } catch (...) {
 +      if (owns && process.value) {
 +        if (assigned && job.value) TerminateJobObject(job.value,1);else TerminateProcess(process.value,1);
