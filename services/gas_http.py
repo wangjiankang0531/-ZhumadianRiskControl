@@ -55,7 +55,7 @@ def _dispatch(service,handler,stack):
             success=True
         else:
             if sizes and sizes[0]!='0':raise ApiError(400,'INVALID_REQUEST')
-            query=service.query(url.query,['offset','limit'] if event_id is None or action=='history' else [])
+            query=service.query(url.query,['offset','limit','status','classification','search'] if event_id is None else ['offset','limit'] if action=='history' else [])
             if event_id is None:
                 if query.get('limit',50)>100:raise ApiError(400,'INVALID_QUERY')
                 result=service.gas.list(principal,points,**query)

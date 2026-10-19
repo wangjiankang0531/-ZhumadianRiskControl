@@ -7,6 +7,7 @@ from urllib.parse import parse_qs, urlsplit, urlencode
 sys.path.insert(0, str(Path(__file__).parents[1]))
 from services.tests.test_api import ApiTests
 from services.api import Service
+from services.auth import PERMISSIONS
 from services.data import fingerprint
 from tools.authenticated_portal_server import PortalServer, PortalHandler
 from tools.landscape_web_server import ROOT
@@ -43,9 +44,9 @@ class QAHandler(PortalHandler):
                 if (
                     q.get("response_type") != "code"
                     or q.get("client_id") != "qa-client"
-                    or q.get("redirect_uri") not in (self.server.app_origin + "/",self.server.app_origin + "/portal.html")
+                    or q.get("redirect_uri") not in (self.server.app_origin + "/",self.server.app_origin + "/portal.html",self.server.app_origin + "/gas.html")
                     or q.get("code_challenge_method") != "S256"
-                    or not q.get("scope") or not set(q["scope"].split()) <= {"spatial:read","business:read","focus:read","focus:track","focus:feedback"}
+                    or not q.get("scope") or not set(q["scope"].split()) <= PERMISSIONS
                     or len(q.get("state", "")) > 128
                     or not q.get("state")
                     or len(q.get("code_challenge", "")) != 43
@@ -73,6 +74,7 @@ class QAHandler(PortalHandler):
                     ("QA-READER", "模拟A企业 · 只读人员", 300),
                     ("QA-A", "验收 A 企业 · 15秒有效", 15),
                 ]:
+                    if life==300:label=getattr(self.server,'qa_role_labels',{}).get(subject,label)
                     page += f'<form method="post" action="/qa/oauth/select"><input type="hidden" name="transaction" value="{html.escape(transaction)}"><input type="hidden" name="subject" value="{subject}"><input type="hidden" name="lifetime" value="{life}"><button>{label}</button></form>'
                 raw = (
                     page
@@ -167,7 +169,7 @@ class QAHandler(PortalHandler):
                 != {"grant_type", "client_id", "redirect_uri", "code_verifier", "code"}
                 or q["grant_type"] != "authorization_code"
                 or q["client_id"] != "qa-client"
-                or q["redirect_uri"] not in (self.server.app_origin + "/",self.server.app_origin + "/portal.html")
+                or q["redirect_uri"] not in (self.server.app_origin + "/",self.server.app_origin + "/portal.html",self.server.app_origin + "/gas.html")
             ):
                 raise ValueError()
             with self.server.qa_lock:

@@ -4,7 +4,7 @@ from datetime import datetime,timedelta,timezone
 import base64,hashlib,hmac,json,re,secrets,sqlite3,threading,uuid
 from .common import ApiError,fields,integer,text
 from .database import SQLiteDatabase
-from .gas_domain import access,canonical,new_event,source_event,timestamp,transition,visible_event,ID,note
+from .gas_domain import access,canonical,new_event,source_event,timestamp,transition,visible_event,ID,note,CLASSIFICATIONS
 from .focus_materials import checked_material,validate_stored_material,material_metadata,MATERIAL_LIMIT,ISSUE_MATERIAL_LIMIT,ISSUE_MATERIAL_COUNT
 
 ACTIONS={'source-update':'gas:ingest','classify':'gas:verify','verify':'gas:verify','cooperate':'gas:cooperate','handoff-request':'gas:handoff','handoff-result':'gas:ingest','archive':'gas:verify','reopen':'gas:verify','material':'gas:read'}
@@ -119,12 +119,19 @@ class GasRepository(SQLiteDatabase):
     def detail(self,principal,public_ids,event_id):
         with self.transaction() as db:return self._project(db,self._row(db,principal,event_id,public_ids),principal,public_ids)
 
-    def list(self,principal,public_ids,*,offset=0,limit=50):
+    def list(self,principal,public_ids,*,offset=0,limit=50,status=None,classification=None,search=None):
         principal.require('gas:read');integer(offset,0,1000000);integer(limit,1,100)
+        if status is not None and status not in {'attention','verified','archived'}:raise ApiError(400,'INVALID_QUERY')
+        if classification is not None and classification not in CLASSIFICATIONS:raise ApiError(400,'INVALID_QUERY')
+        if search is not None:text(search,256)
         if not principal.public_spatial or not public_ids:return {'items':[],'total':0,'offset':offset,'limit':limit}
         points=sorted(set(text(k,128,True) for k in public_ids))
-        if len(points)>1000:raise ValueError('point scope exceeds limit')
+        if len(points)>10000:raise ValueError('point scope exceeds limit')
         where='tenant=? AND spatial_id IN ('+','.join('?' for _ in points)+')';args=(principal.tenant,*points)
+        for field,value in [('status',status),('classification',classification)]:
+            if value is not None:where+=" AND json_extract(payload,'$."+field+"')=?";args+= (value,)
+        if search is not None:
+            where+=" AND (instr(lower(source_id),lower(?))>0 OR instr(lower(spatial_id),lower(?))>0 OR instr(lower(json_extract(payload,'$.source.document.area')),lower(?))>0 OR instr(lower(json_extract(payload,'$.source.document.gasCode')),lower(?))>0)";args+=(search,)*4
         with self.transaction() as db:
             total=db.execute('SELECT count(*) FROM gas_alerts WHERE '+where,args).fetchone()[0]
             items=[self._project(db,json.loads(r[0]),principal,public_ids) for r in db.execute('SELECT payload FROM gas_alerts WHERE '+where+' ORDER BY updated DESC,id LIMIT ? OFFSET ?',(*args,limit,offset))]

@@ -89,6 +89,10 @@ class GasApiTests(unittest.TestCase):
   self.assertEqual(self.call(token='invalid-token')[0],401)
   with self.service.gas.transaction() as db:self.assertEqual(db.execute('SELECT revision FROM gas_alerts').fetchone()[0],1)
 
+ def test_scoped_literal_search_status_and_classification_filters(self):
+  event=self.create();event=self.verify(event)[1]['event'];second={**self.source,'sourceEventId':'QA-%_LITERAL','area':'合成区域二'};self.assertEqual(self.call(method='POST',payload=second,subject='QA-SOURCE')[0],200)
+  self.assertEqual(self.call('?status=verified')[1]['total'],1);self.assertEqual(self.call('?status=attention')[1]['total'],1);self.assertEqual(self.call('?search=%25_')[1]['total'],1);self.assertEqual(self.call('?classification=needs-verification')[1]['total'],2);self.assertEqual(self.call('?status=bad')[0],400);self.assertEqual(self.call('?classification=bad')[0],400)
+
 class GasGatewayTests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):GasApiTests.setUpClass()

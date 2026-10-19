@@ -86,3 +86,6 @@ SQLite事务原子保存问题快照、人员/策略/命令历史、幂等结果
 `/api/v1/gas_alerts`已接JWT/策略和同源网关；须显式gas适配器配置及业务库副本才启用，默认未启用。来源和应急回执身份必须分别固定，浏览器GasClient不提供来源/回执/租约工作者路由。所有气体读写还校验当前无企业归属的公共DLG点位，企业材料/说明再按企业范围隔离。
 
 详见Document/Design/气体异常HTTP与浏览器会话合同.md。数据库仍v4；新接口不会自动部署或替换既有站点。现阶段尚无气体操作页面、真实源或实际网络投递器；MySQL/Apache仍待实机验收。
+
+
+气体独立页面：构建后打开`gas.html`。显式启动合成QA可运行`python tools/serve_gas_portal_qa.py --database <全新独立QA.sqlite> --static <已构建静态目录> --port 8822`；不对正式库运行。QA无真实密码、真实监测或应急网络发送。手测与限制见Document/Deployment/gas_ui_20261019/手动测试指南.md。

@@ -176,5 +176,12 @@ class PortalOAuthQATests(unittest.TestCase):
         self.assertEqual(status,200,raw);claims=self.probe.service.jwt.verify(json.loads(raw)['access_token']);self.assertEqual(claims['scope'],'focus:read')
 
 
+    def test_gas_callback_and_scope_keep_pkce_and_exact_redirect_binding(self):
+        params={'response_type':'code','client_id':'qa-client','redirect_uri':self.server.app_origin+'/gas.html','scope':'gas:read gas:verify','state':'QA-GAS','code_challenge':self.challenge,'code_challenge_method':'S256'}
+        self.assertEqual(self.request('/qa/oauth/authorize?'+urlencode(params))[0],200)
+        transaction=next(iter(self.server.transactions));status,raw,_=self.request('/qa/oauth/select','POST',{'transaction':transaction,'subject':'QA-A','lifetime':'300'});self.assertEqual(status,200);callback=json.loads(raw)['redirect'];self.assertEqual(urlsplit(callback).path,'/gas.html');code=parse_qs(urlsplit(callback).query)['code'][0]
+        status,raw,_=self.request('/qa/oauth/token','POST',{'grant_type':'authorization_code','client_id':'qa-client','redirect_uri':self.server.app_origin+'/gas.html','code':code,'code_verifier':self.verifier});self.assertEqual(status,200,raw);claims=self.probe.service.jwt.verify(json.loads(raw)['access_token']);self.assertEqual(claims['scope'],'gas:read gas:verify');self.assertEqual(self.exchange(code)[0],400)
+        params['scope']='gas:approve';self.assertEqual(self.request('/qa/oauth/authorize?'+urlencode(params))[0],400)
+
 if __name__ == "__main__":
     unittest.main()
