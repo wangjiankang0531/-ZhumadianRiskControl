@@ -85,7 +85,10 @@ SQLite事务原子保存问题快照、人员/策略/命令历史、幂等结果
 
 `/api/v1/gas_alerts`已接JWT/策略和同源网关；须显式gas适配器配置及业务库副本才启用，默认未启用。来源和应急回执身份必须分别固定，浏览器GasClient不提供来源/回执/租约工作者路由。所有气体读写还校验当前无企业归属的公共DLG点位，企业材料/说明再按企业范围隔离。
 
-详见Document/Design/气体异常HTTP与浏览器会话合同.md。数据库仍v4；新接口不会自动部署或替换既有站点。现阶段尚无气体操作页面、真实源或实际网络投递器；MySQL/Apache仍待实机验收。
+详见Document/Design/气体异常HTTP与浏览器会话合同.md。数据库仍v4；新接口不会自动部署或替换既有站点。已提供独立气体操作页面；尚无真实监测源或实际网络投递器；MySQL/Apache仍待实机验收。
 
 
 气体独立页面：构建后打开`gas.html`。显式启动合成QA可运行`python tools/serve_gas_portal_qa.py --database <全新独立QA.sqlite> --static <已构建静态目录> --port 8822`；不对正式库运行。QA无真实密码、真实监测或应急网络发送。手测与限制见Document/Deployment/gas_ui_20261019/手动测试指南.md。
+
+
+气体点位联动：`GET /api/v1/gas_alerts/{id}/spatial?revision={当前事件版本}` 同时要求 gas:read、spatial:read 及当前公共点位授权。事件版本必须与当前记录一致，否则409。以同一个DLG/业务文件快照解析真实无企业归属的点，返回实际坐标系、局部坐标、datasetVersion和事件版本，不接受浏览器给坐标。三维端再次核对本次已授权图层的数据版本、唯一点编号和坐标，匹配后选中定位；隐藏层不自动打开。跳转URL只包含不授予权限的事件编号和版本，短暂登录交接仅存此二项并绑定OAuth state/回调路径/五分钟有效期，令牌仍仅在内存。原生和原有inspect视角、LOD预算及验收门槛保持。

@@ -171,9 +171,12 @@ class PortalHandler(LandscapeHandler):
     def end_headers(self):
         endpoint = urlsplit(self.server.portal_config["oauth"]["tokenEndpoint"])
         token_origin = f"{endpoint.scheme}://{endpoint.netloc}"
+        # The scene loader reads its already SHA-verified geometry through a local blob URL.
+        # Other pages retain the narrower network policy; this adds no remote origin.
+        connect_sources="'self' blob:" if urlsplit(self.path).path in ('/','/index.html') else "'self'"
         self.send_header(
             "Content-Security-Policy",
-            f"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' {token_origin}; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
+            f"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src {connect_sources} {token_origin}; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
         )
         self.send_header("Referrer-Policy", "no-referrer")
         self.send_header("Cache-Control", "no-store")

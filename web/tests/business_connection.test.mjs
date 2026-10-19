@@ -42,3 +42,14 @@ test('saved layer order and hidden state survive object ID sorting',async()=>{
 });
 
 test('known gas permissions preserve the authenticated spatial workflow',async()=>{const s=setup(path=>path.endsWith('/session')?response({...session,permissions:[...session.permissions,'gas:read','gas:verify']}):response({items:[],total:0,limit:200,offset:0,policyVersion:'one',authorizationVersion:'c'.repeat(64),datasetVersion:version,coordinates,exportedAt:'2023-11-14T22:13:20Z',ttlHours:24}));assert.equal(await s.client.connect('QA_TOKEN_ONLY'),true);assert.equal(s.data.length,1);s.client.disconnect();});
+
+
+test('gas point uses current in-memory authorization and same dataset; stale data and revoked policy rejected',async()=>{
+ let changed=false,policy=false;
+ const gasSession={...session,permissions:[...session.permissions,'gas:read']};
+ const s=setup((path,options)=>{if(path.includes('/gas_alerts/')){assert.equal(options.headers.Authorization,'Bearer TEST_ACCESS');return response({datasetVersion:(changed?'b':'a').repeat(64),policyVersion:'one',authorizationVersion:(policy?'d':'c').repeat(64)});}return path.endsWith('/session')?response(gasSession):response({items:[],total:0,limit:200,offset:0,policyVersion:'one',authorizationVersion:'c'.repeat(64),datasetVersion:version,coordinates,exportedAt:'2023-11-14T22:13:20Z',ttlHours:24});});
+ assert.equal(await s.client.connect('TEST_ACCESS'),true);await s.client.gasPoint('a'.repeat(32),1,version);changed=true;await assert.rejects(s.client.gasPoint('a'.repeat(32),1,version),{code:'DATA_CHANGED'});changed=false;policy=true;await assert.rejects(s.client.gasPoint('a'.repeat(32),1,version),{code:'FORBIDDEN'});assert.equal(s.client.session,null);
+});
+test('gas location cannot be read with spatial-only session',async()=>{const s=setup();assert.equal(await s.client.connect('token'),true);await assert.rejects(s.client.gasPoint('a'.repeat(32),1,version),{code:'FORBIDDEN'});assert.ok(!s.requests.some(r=>r.path.includes('gas_alerts')));s.client.disconnect();});
+
+test('stale event revision is reported distinctly without claiming the authorized scene was cleared',async()=>{const s=setup(path=>path.includes('/gas_alerts/')?response({error:'REVISION_CONFLICT'},409):path.endsWith('/session')?response({...session,permissions:[...session.permissions,'gas:read']}):response({items:[],total:0,limit:200,offset:0,policyVersion:'one',authorizationVersion:'c'.repeat(64),datasetVersion:version,coordinates,exportedAt:'2023-11-14T22:13:20Z',ttlHours:24}));assert.equal(await s.client.connect('TOKEN'),true);await assert.rejects(s.client.gasPoint('a'.repeat(32),1,version),{code:'REVISION_CONFLICT'});assert.ok(s.client.session);s.client.disconnect();});

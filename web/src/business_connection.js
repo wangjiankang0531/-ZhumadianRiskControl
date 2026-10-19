@@ -46,7 +46,7 @@ export class BusinessConnection {
       const fetcher=this.fetcher;let response;try{response=await fetcher('/api/v1/'+path,{headers:{Authorization:'Bearer '+this.#token,Accept:'application/json'},credentials:'omit',cache:'no-store',redirect:'error',referrerPolicy:'no-referrer',signal:controller.signal});}catch{throw error('CONNECTION_FAILED');}
       if(generation!==this.#generation)throw error('CANCELLED');
       let payload;try{const parsed=await readJSON(response,16*1048576);payload=parsed.document;if(payload&&typeof payload==='object')responseBytes.set(payload,parsed.bytes);}catch{throw error('DATA_INVALID');}
-      if(!response.ok)throw error([401,403,404,503].includes(response.status)&&typeof payload.error==='string'&&/^[A-Z_]{1,64}$/.test(payload.error)?payload.error:'CONNECTION_FAILED');
+      if(!response.ok)throw error([401,403,404,409,503].includes(response.status)&&typeof payload.error==='string'&&/^[A-Z_]{1,64}$/.test(payload.error)?payload.error:'CONNECTION_FAILED');
       if(!payload||typeof payload!=='object'||Array.isArray(payload))throw error('DATA_INVALID');return payload;
     }finally{this.clearTimer(timer);this.#controllers.delete(controller);}
   }
@@ -78,6 +78,15 @@ export class BusinessConnection {
       await this.onData({...bundle,session,businessState,datasetVersion:spatial.datasetVersion});if(generation!==this.#generation)return false;
       this.onState({state:'ready',session,businessState});return true;
     }catch(e){if(generation===this.#generation)this.#failed(e.code??'DATA_INVALID');return false;}
+  }
+  async gasPoint(id,revision,datasetVersion){
+    if(!this.session||!this.session.permissions.includes('gas:read')||!this.session.permissions.includes('spatial:read'))throw error('FORBIDDEN');
+    if(!/^[a-f0-9]{32}$/.test(id)||!Number.isInteger(revision)||revision<1||revision>10000||!hash(datasetVersion))throw error('DATA_INVALID');
+    const generation=this.#generation,session=this.session;
+    const result=await this.#get('gas_alerts/'+id+'/spatial?revision='+revision,generation);
+    if(generation!==this.#generation||this.session!==session)throw error('CANCELLED');
+    if(result.authorizationVersion!==session.authorizationVersion||result.policyVersion!==session.policyVersion){this.disconnect('FORBIDDEN');throw error('FORBIDDEN');}
+    if(result.datasetVersion!==datasetVersion)throw error('DATA_CHANGED');return result;
   }
   async check(){
     if(!this.#token)return;const generation=this.#generation;

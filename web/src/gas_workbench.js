@@ -1,3 +1,4 @@
+import {gasSceneLink} from './gas_scene_focus.js';
 import {GasClient} from './gas_client.js';
 import {readPortalConfiguration,OAuthLogin} from './oauth_login.js';
 import {prepareMaterialUpload} from './focus_material_protocol.js';
@@ -48,6 +49,7 @@ function render(note=''){
    if(session.permissions.includes('gas:verify')||session.permissions.includes('gas:cooperate'))controls.append(button('添加材料',()=>edit(event,'materials',materials),'button secondary'));
    if(session.permissions.includes('gas:verify')&&session.permissions.includes('gas:handoff')){const handoff=button('转应急关注',()=>edit(event,'handoff-request',materials),'button danger');handoff.disabled=!canHandoff(event);controls.append(handoff);}
   }else if(session.permissions.includes('gas:verify'))controls.append(button('重新关注',()=>edit(event,'reopen',materials)));
+  if(session.permissions.includes('spatial:read')){const scene=link('在三维一张图查看点位',gasSceneLink(event));scene.className='button secondary';controls.append(scene);}
   detail.append(controls);
   const verification=e('section','gas-section');verification.append(e('h3','','现场核实'));if(event.verification){const v=event.verification,info=e('dl','gas-kv');kv(info,'现场结论',conclusions[v.conclusion]);kv(info,'核实说明',v.note);kv(info,'核实时间',stamp(v.verifiedAt));kv(info,'人工定位',v.location.longitude+', '+v.location.latitude+'（WGS84）');kv(info,'定位精度',v.location.accuracyMeters+' 米');kv(info,'提交人员',v.actor);verification.append(info);}else verification.append(e('p','gas-data-note','尚无当前有效的现场核实。新增材料、重新分类或来源修订后需要重新核实。'));detail.append(verification);
   const cooperation=e('section','gas-section');cooperation.append(e('h3','','企业配合'));for(const [owner,v] of Object.entries(event.cooperation)){const card=e('div','gas-subcard');card.append(e('strong','',owner+' · '+cooperationStates[v.state]),e('p','',v.activities.map(k=>activities[k]).join('、')||'尚未标注关联活动'),e('p','',v.statement),e('p','',v.measures));cooperation.append(card);}if(!Object.keys(event.cooperation).length)cooperation.append(e('p','gas-data-note','当前授权范围内没有企业配合说明。'));detail.append(cooperation);

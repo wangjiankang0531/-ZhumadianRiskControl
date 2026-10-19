@@ -16,6 +16,7 @@ import {parseBusinessRecords,businessRecordRows,businessRecordSearchText,busines
 import {matchesFeature,featureTypeNames,buildHitTarget,pickAnnotation,ClickGesture} from './annotation_interaction.js';
 import {selectDepth,prioritizeDetail,pickFocusRoot} from './lod_policy.js';
 import {resolveBaseQuality} from './base_quality.js';
+import {gasSceneRequest,rememberGasScene,resumeGasScene,gasSceneTarget} from './gas_scene_focus.js';
 import {parseInspectionView} from './inspection_view.js';
 import {LeasedDownloads} from './lod_downloads.js';
 import {ensureSourceWanted,SourceLoadCancelled} from './lod_transaction.js';
@@ -583,7 +584,9 @@ async function reload(){if(dataMode!=='local')return;return layerLoading.load(as
 $('reload').onclick=()=>{userLayerLoad=true;reload().catch(fail);};
 
 const connectionMessages={SIGNED_OUT:'已退出，授权数据已清空',UNAUTHENTICATED:'登录已失效，请重新登录',FORBIDDEN:'当前账号无访问权限',AUTH_EXPIRED:'登录已到期，授权数据已清空',CONNECTION_FAILED:'业务服务连接失败，授权数据已清空',CONFIG_INVALID:'业务连接配置无效，请联系管理员',CONFIG_UNAVAILABLE:'业务连接暂不可用，请稍后重试',LOGIN_INVALID:'登录校验失败，请重新登录',LOGIN_CANCELLED:'登录已取消',LOGIN_REJECTED:'身份平台拒绝登录，请重试',LOGIN_UNAVAILABLE:'身份平台暂不可用',LOGIN_STORAGE_UNAVAILABLE:'浏览器无法保存临时登录校验，请检查设置',DATA_CHANGED:'数据版本已变化，请刷新重试',POLICY_CHANGED:'授权范围已变化，请刷新重试',DATA_INVALID:'业务数据格式无效，请联系管理员',DATA_SOURCE_UNAVAILABLE:'业务数据源暂不可用',POLICY_UNAVAILABLE:'授权配置暂不可用'};
+function gasFocusNotice(value){$('gas-focus-status').hidden=!value;$('gas-focus-status').textContent=value;if(value)message(value);}
 function clearAuthorizedData(){
+  gasFocusNotice('');
   layerLoading.revision++;businessLoadGeneration++;spatialLoadGeneration++;
   layersDoc={schema:'hongtu.landscape.layers.v1',scene:'zhumadian',coordinates:{srs:'EPSG:32650',unit:'metre',axes:'east,north,up',origin:[225319.5,3648440.1,30.9]},layers:[]};
   businessCatalog=null;spatialCatalog=null;spatialFingerprint='';apiBusinessState='unconfigured';layerOpacities.clear();hitTargets=[];imageCache.clear();tintedCache.clear();
@@ -598,6 +601,7 @@ function connectionState(state){
 async function configureBusinessConnection(){
   const callback=new URL(location.href),hasCallback=['code','state','error'].some(key=>callback.searchParams.has(key));
   if(hasCallback)history.replaceState(null,'',location.pathname);
+  let gasFocus=null,gasFocusError=null;try{gasFocus=hasCallback?resumeGasScene(sessionStorage,callback):gasSceneRequest(callback);}catch(error){gasFocusError=error;}
   let configuration;try{configuration=await readPortalConfiguration(fetch,location.origin);}catch(error){configuration={mode:'authenticated'};dataMode='authenticated';clearAuthorizedData();connectionState({state:'error',code:error.code});}
   dataMode=configuration.mode;$('local-file-controls').hidden=dataMode!=='local';$('data-advanced').hidden=dataMode!=='local';
   for(const section of document.querySelectorAll('.business-import'))section.hidden=dataMode!=='local';
@@ -606,13 +610,23 @@ async function configureBusinessConnection(){
   userLayerLoad=userSpatialLoad=userBusinessLoad=true;clearAuthorizedData();
   if(!configuration.oauth){connectionState({state:'signed-out',code:'CONFIG_INVALID'});$('business-login').disabled=true;return;}
   oauthLogin=new OAuthLogin(configuration,{storage:sessionStorage,fetcher:fetch,redirectUri:location.origin+location.pathname});
-  businessConnection=new BusinessConnection({onClear:clearAuthorizedData,onState:connectionState,onData:data=>{
+  businessConnection=new BusinessConnection({onClear:clearAuthorizedData,onState:connectionState,onData:async data=>{
     openDocument(data.document,'业务服务 · 授权空间对象');spatialCatalog=parseSpatialCatalog(data.catalog,'业务服务空间分类');spatialFingerprint=data.catalog.layerFingerprint;
     businessCatalog=data.records?parseBusinessRecords(data.records,'业务服务 · 文件快照'):null;apiBusinessState=data.businessState;rebuildLayerUI();message(`业务数据已更新：${data.document.layers.reduce((n,l)=>n+l.features.length,0)} 个授权对象`);
+    if(gasFocusError){gasFocusNotice('气体点位定位请求无效，请返回工作台重试');gasFocusError=null;}
+    const currentGasDocument=layersDoc;
+    if(gasFocus){const request=gasFocus;gasFocus=null;try{
+      const result=await businessConnection.gasPoint(request.id,request.revision,data.datasetVersion);
+      if(layersDoc!==currentGasDocument)return;
+      const target=gasSceneTarget(result,request,layersDoc,data.datasetVersion);
+      selectFeature(target.feature,target.layer,'gas-event');locate();
+      gasFocusNotice(`已定位气体异常关联点位：${target.feature.name} · 事件版本 ${request.revision}`);
+    }catch(error){gasFocusNotice(error.code==='REVISION_CONFLICT'?'气体异常记录已更新，请返回工作台刷新后再定位':error.code==='POINT_HIDDEN'?'关联点位所在图层已隐藏，请在图层管理中开启后定位':'气体点位定位未完成：'+(connectionMessages[error.code]??'点位不可用或无访问权限'));}}
+
   }});
-  $('business-login').onclick=async()=>{businessConnection.disconnect();try{location.assign(await oauthLogin.begin());}catch(error){connectionState({state:'signed-out',code:error.code});}};
+  $('business-login').onclick=async()=>{businessConnection.disconnect();try{const authorizationUrl=await oauthLogin.begin();rememberGasScene(sessionStorage,gasFocus,authorizationUrl,location.origin+location.pathname);location.assign(authorizationUrl);}catch(error){connectionState({state:'signed-out',code:error.code});}};
   $('business-refresh').onclick=()=>businessConnection.refresh();
-  $('business-logout').onclick=()=>{oauthLogin.cancel();businessConnection.disconnect();message('已退出当前应用，授权对象与业务详情已清空');};
+  $('business-logout').onclick=()=>{gasFocus=null;rememberGasScene(sessionStorage,null);oauthLogin.cancel();businessConnection.disconnect();message('已退出当前应用，授权对象与业务详情已清空');};
   $('connection-status').textContent='尚未登录，请登录业务平台';
   if(hasCallback)try{await businessConnection.connect(await oauthLogin.complete(callback));}catch(error){businessConnection.disconnect(error.code??'LOGIN_INVALID');}
   setInterval(()=>{if(document.visibilityState==='visible')businessConnection.check();},15000);

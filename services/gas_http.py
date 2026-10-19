@@ -5,13 +5,14 @@ from urllib.parse import urlsplit,quote
 from .common import ApiError,loads
 from .focus_http import authenticate,authorization_version
 from .focus_materials import MATERIAL_JSON_LIMIT
+from .gas_spatial import resolve as resolve_spatial
 
 PREFIX='/api/v1/gas_alerts'
 WRITES={'source-update','classify','verify','cooperate','handoff-request','handoff-result','archive','reopen','materials'}
 
-def public_points(service):
+def public_points(service,snapshot=None):
     # A configuration identifier alone cannot make a private/missing DLG object public.
-    return frozenset(feature['id'] for feature,owner,*_ in service.store.snapshot()['objects'] if owner is None and feature['type']=='point' and feature['id'] in service.store.public)
+    return frozenset(feature['id'] for feature,owner,*_ in (snapshot if snapshot is not None else service.store.snapshot())['objects'] if owner is None and feature['type']=='point' and feature['id'] in service.store.public)
 
 def dispatch(service,handler):
     with ExitStack() as stack:return _dispatch(service,handler,stack)
@@ -21,12 +22,12 @@ def _dispatch(service,handler,stack):
     try:
         url=urlsplit(handler.path)
         if len(handler.path)>8192 or any(ord(ch)<32 for ch in handler.path) or url.scheme or url.netloc or url.fragment:raise ApiError(400,'INVALID_REQUEST')
-        match=re.fullmatch(PREFIX+r'(?:/([a-f0-9]{32})(?:/(history|source-update|classify|verify|cooperate|handoff-request|handoff-result|archive|reopen|materials)(?:/([a-f0-9]{32}))?)?)?',url.path)
+        match=re.fullmatch(PREFIX+r'(?:/([a-f0-9]{32})(?:/(history|spatial|source-update|classify|verify|cooperate|handoff-request|handoff-result|archive|reopen|materials)(?:/([a-f0-9]{32}))?)?)?',url.path)
         if not match:raise ApiError(404,'NOT_FOUND')
         event_id,action,material_id=match.groups()
         if material_id and action!='materials':raise ApiError(404,'NOT_FOUND')
         write=handler.command=='POST' and material_id is None and (event_id is None or action in WRITES)
-        if handler.command not in {'GET','HEAD'} and not write or handler.command in {'GET','HEAD'} and action not in {None,'history','materials'}:raise ApiError(405,'METHOD_NOT_ALLOWED')
+        if handler.command not in {'GET','HEAD'} and not write or handler.command in {'GET','HEAD'} and action not in {None,'history','materials','spatial'}:raise ApiError(405,'METHOD_NOT_ALLOWED')
         principal=authenticate(service,handler);principal.require('gas:read')
         if service.gas is None:raise ApiError(503,'GAS_NOT_CONFIGURED')
         if action=='materials' and (write or material_id is not None):
@@ -35,7 +36,8 @@ def _dispatch(service,handler,stack):
         if handler.headers.get_all('Transfer-Encoding',[]):raise ApiError(400,'INVALID_REQUEST')
         sizes=handler.headers.get_all('Content-Length',[])
         if len(sizes)>1:raise ApiError(400,'INVALID_REQUEST')
-        points=public_points(service)
+        snapshot=service.store.snapshot() if action=='spatial' else None
+        points=public_points(service,snapshot)
         if write:
             service.query(url.query,[])
             if len(sizes)!=1 or not re.fullmatch('[0-9]{1,8}',sizes[0]):raise ApiError(400,'INVALID_REQUEST')
@@ -55,10 +57,11 @@ def _dispatch(service,handler,stack):
             success=True
         else:
             if sizes and sizes[0]!='0':raise ApiError(400,'INVALID_REQUEST')
-            query=service.query(url.query,['offset','limit','status','classification','search'] if event_id is None else ['offset','limit'] if action=='history' else [])
+            query=service.query(url.query,['offset','limit','status','classification','search'] if event_id is None else ['offset','limit'] if action=='history' else ['revision'] if action=='spatial' else [])
             if event_id is None:
                 if query.get('limit',50)>100:raise ApiError(400,'INVALID_QUERY')
                 result=service.gas.list(principal,points,**query)
+            elif action=='spatial':result=resolve_spatial(service,principal,snapshot,points,event_id,query.get('revision'))
             elif action=='history':result=service.gas.history(principal,points,event_id,page=True,**query)
             elif action=='materials':
                 if material_id is None:result=service.gas.materials(principal,points,event_id)
