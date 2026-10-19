@@ -9,6 +9,9 @@ from readonly_source_memory_store import MemoryStoreBusy
 
 
 class MemorySourceHTTP:
+    # Headers and small geometry JSON are separate writes. Avoid loopback
+    # Nagle/delayed-ACK stalls without changing files, leases or budgets.
+    disable_nagle_algorithm = True
     memory_sources = None
 
     def _source_plans_enabled(self):
