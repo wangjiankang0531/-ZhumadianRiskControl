@@ -28,7 +28,7 @@ import {ensureSourceWanted,SourceLoadCancelled} from './lod_transaction.js';
 import {withSourceRestorations,SourceRestoreUnavailable,sourceBundleIdentity} from './source_residency.js';
 import {SourceFrontier,pickVisibleSource,visibleSourceCandidates,sourceViewPriority,sourceRefinementScore,rankSourceCandidates,planSourceBudget} from './source_frontier.js';
 import {supportsPreparedBc7} from './prepared_bc7.js';
-import {planPreparedSourceBundle,stagePreparedSourceBundle,originalSourceBundle,subsetPreparedSourcePlan,SourcePagePlanChanged} from './prepared_source_page.js';
+import {planPreparedSourceBundle,stagePreparedSourceBundle,originalSourceBundle,subsetPreparedSourcePlan,SourcePagePlanChanged,sourcePageTextureIdentity} from './prepared_source_page.js';
 import {PreparedTextureIndex} from './prepared_texture_index.js';
 import {SourcePageBudget,sourceRestorationFootprint} from './source_page_budget.js';
 import {planSourceRecoverySequence,applySourceRecoverySequence,sourceRecoverySnapshot} from './source_recovery_plan.js';
@@ -74,7 +74,7 @@ function preset(name){visibilityReady=false;
   else {const r=catalog?.root_records.find(r=>r.tile_id===141);const x=r?(r.bounds_min[0]+r.bounds_max[0])/2:-286.5,y=r?(r.bounds_min[1]+r.bounds_max[1])/2:-1965,z=r?r.bounds_min[2]:35;camera.position.set(x,y-80,z+100);controls.target.set(x,y,z+8);}
   controls.update();epoch++;lastStation=name;
 }
-function photograph(group){group.traverse(node=>{if(node.isMesh){const old=node.material;const map=old.map;if(map){map.anisotropy=Math.min(16,renderer.capabilities.getMaxAnisotropy());map.needsUpdate=true;}node.material=new THREE.MeshBasicMaterial({map,side:THREE.DoubleSide,color:0xffffff});old.dispose();}});return group;}
+function photograph(group){group.traverse(node=>{if(node.isMesh){const old=node.material;const map=old.map;if(map){map.anisotropy=sourcePageTextureIdentity(map)?.samplingContract?1:Math.min(16,renderer.capabilities.getMaxAnisotropy());map.needsUpdate=true;}node.material=new THREE.MeshBasicMaterial({map,side:THREE.DoubleSide,color:0xffffff});old.dispose();}});return group;}
 async function loadModel(url,group,label,keepParser=false){
   const gltf=await loader.loadAsync(url,event=>{$('progress').textContent=`${label} ${event.total?Math.round(event.loaded/event.total*100)+'%':Math.round(event.loaded/1048576)+' MiB'}`;});
   group.add(photograph(gltf.scene));updateSceneOpacity();return keepParser?gltf:gltf.scene;

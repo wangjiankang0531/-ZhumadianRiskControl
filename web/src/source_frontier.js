@@ -1,4 +1,4 @@
-import {isMemorySourcePart,memoryImageInfo,isMemoryFamily,MEMORY_SOURCE_FORMAT,MEMORY_ROOT_SCHEMA} from './source_page_format.js';
+import {isMemorySourcePart,memoryImageInfo,isMemoryFamily,isMemoryFormat,MEMORY_ROOT_SCHEMA} from './source_page_format.js';
 import {validateRuntimeSourceTexture,sourcePageGeometryBytes} from './prepared_source_page.js';
 import {webSourceGeometryBytes,validateLoadedSourceGeometry} from './source_geometry_layout.js';
 import {sourceRestorationFootprint} from './source_page_budget.js';
@@ -21,7 +21,8 @@ export function validateSourcePart(part,mesh){if(!mesh?.geometry?.index||mesh.ge
 function retireSourceGpu(mesh){if(mesh.userData.sourceGpuResident===false)return;mesh.geometry.dispose();const material=mesh.userData.sourceMaterial??(Array.isArray(mesh.material)?mesh.material[0]:mesh.material);material.map?.dispose();material.dispose();mesh.userData.sourceGpuResident=false;}
 
 export function validateSourceBundle(marker,meshes){
-  const memory=marker.source_format===MEMORY_SOURCE_FORMAT;if(memory&&!(marker.schema===MEMORY_ROOT_SCHEMA||isMemoryFamily(marker))||marker.parts?.some(p=>isMemorySourcePart(p)!==memory))throw Error('源包与物理页格式不一致');
+  if(marker.source_format!==undefined&&!isMemoryFormat(marker.source_format))throw Error("未知源页格式");
+  const memory=isMemoryFormat(marker.source_format);if(memory&&!(marker.schema===MEMORY_ROOT_SCHEMA||isMemoryFamily(marker))||marker.parts?.some(p=>isMemorySourcePart(p)!==memory||memory&&p.source_format!==marker.source_format))throw Error('源包与物理页格式不一致');
   if(!Array.isArray(marker.source_nodes)||!marker.source_nodes.length||!Array.isArray(marker.parts)||!marker.parts.length||marker.parts.length>64)throw Error('源节点信息不完整');
   const names=new Set(),ownership=new Map(marker.parts.map(p=>[p.directory,[]]));let total=0;
   for(const node of marker.source_nodes){

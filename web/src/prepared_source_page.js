@@ -10,7 +10,7 @@ const identities=new WeakMap(),plans=new WeakMap();
 export class SourcePagePlanChanged extends Error{
  constructor(directory,reason){super('Source page requires budget replanning: '+directory+' / '+reason);this.name='SourcePagePlanChanged';this.directory=directory;this.reason=reason;this.retryFormat='rgba8';}
 }
-function pageIdentity(source,geometryBytes,format,textureBytes,payloadSHA256=null,geometryLayout=WEB_SOURCE_GEOMETRY_LAYOUT){return Object.freeze({schema:'xnby.source_page.texture.v1',format,sourceSHA256:source.sha256,width:source.width,height:source.height,textureBytes,payloadSHA256,geometryLayout,geometryBytes,totalBytes:textureBytes+geometryBytes});}
+function pageIdentity(source,geometryBytes,format,textureBytes,payloadSHA256=null,geometryLayout=WEB_SOURCE_GEOMETRY_LAYOUT){return Object.freeze({schema:'xnby.source_page.texture.v1',format,sourceSHA256:source.sha256,width:source.width,height:source.height,textureBytes,payloadSHA256,geometryLayout,geometryBytes,totalBytes:textureBytes+geometryBytes,...(source.cropContract?{samplingContract:source.cropContract}:{})});}
 function immutable(value){if(value&&typeof value==='object'){for(const child of Object.values(value))immutable(child);Object.freeze(value);}return value;}
 function sameIdentity(a,b){return a&&b&&Object.keys(a).length===Object.keys(b).length&&Object.keys(a).every(k=>a[k]===b[k]);}
 // Only descriptors are read here. No geometry, image, compressed payload or GPU work.
@@ -54,9 +54,9 @@ export function sourcePageGeometryBytes(part){
  require(Number.isSafeInteger(part.vertices)&&part.vertices>0&&Number.isSafeInteger(part.indices)&&part.indices>0&&part.indices%3===0,'Invalid source page geometry');
  const bytes=part.vertices*64+part.indices*4;require(Number.isSafeInteger(bytes)&&bytes>0&&bytes<=32*1048576,'Invalid source page geometry cost');return bytes;
 }
-const originalTextureBytes=(part,source)=>isMemorySourcePart(part)?sourceImageMipBytes(source.width,source.height):rgbaMipBytes(source.width,source.height);
+const originalTextureBytes=(part,source)=>isMemorySourcePart(part)?memoryImageInfo(part).bytes:rgbaMipBytes(source.width,source.height);
 export function sourcePageSource(part){
- if(isMemorySourcePart(part)){const source=memoryImageInfo(part),geometry=sourcePageGeometryBytes(part);require((part.source_gpu_payload_bytes??part.gpu_payload_bytes)===geometry+source.bytes&&geometry+source.bytes<=32*1048576,'Original source page cost mismatch');return {width:source.width,height:source.height,sha256:source.sha256};}
+ if(isMemorySourcePart(part)){const source=memoryImageInfo(part),geometry=sourcePageGeometryBytes(part);require((part.source_gpu_payload_bytes??part.gpu_payload_bytes)===geometry+source.bytes&&geometry+source.bytes<=32*1048576,'Original source page cost mismatch');return {width:source.width,height:source.height,sha256:source.sha256,...(source.cropContract?{cropContract:source.cropContract}:{})};}
  const extent=part.atlas_extent??[part.atlas_size,part.atlas_size];
  require(Array.isArray(extent)&&extent.length===2,'Invalid source page extent');
  const [width,height]=extent;const original=rgbaMipBytes(width,height),geometry=sourcePageGeometryBytes(part);
@@ -74,7 +74,7 @@ function validPageSampler(part,sampler){
  return Object.keys(expected).every(key=>sampler[key]===expected[key]);
 }
 const wrapConstants=new Map([[10497,RepeatWrapping],[33071,ClampToEdgeWrapping],[33648,MirroredRepeatWrapping]]),filterConstants=new Map([[9728,NearestFilter],[9729,LinearFilter],[9984,NearestMipmapNearestFilter],[9985,LinearMipmapNearestFilter],[9986,NearestMipmapLinearFilter],[9987,LinearMipmapLinearFilter]]);
-function setOriginalSampling(texture,part){const s=memoryImageInfo(part).sampler;texture.wrapS=wrapConstants.get(s.wrapS);texture.wrapT=wrapConstants.get(s.wrapT);texture.minFilter=filterConstants.get(s.minFilter);texture.magFilter=filterConstants.get(s.magFilter);texture.generateMipmaps=true;}
+function setOriginalSampling(texture,part){const info=memoryImageInfo(part),s=info.sampler;texture.wrapS=wrapConstants.get(s.wrapS);texture.wrapT=wrapConstants.get(s.wrapT);texture.minFilter=filterConstants.get(s.minFilter);texture.magFilter=filterConstants.get(s.magFilter);texture.generateMipmaps=info.generateMipmaps;if(info.cropContract)texture.anisotropy=1;texture.repeat.set(info.transform[0],info.transform[1]);texture.offset.set(info.transform[2],info.transform[3]);texture.updateMatrix();}
 async function loadMemoryPhotograph({part,renderer,loadFile,reserve,stillWanted}){
  const source=memoryImageInfo(part),bytes=source.bytes;require(source.width<=renderer.capabilities.maxTextureSize&&source.height<=renderer.capabilities.maxTextureSize,'Original source image exceeds this device capability');
  const owned=await reserve({format:'rgba8',bytes});let texture,released=false;const release=()=>{if(!released){released=true;owned.release();}};
@@ -139,7 +139,7 @@ export function validateRuntimeSourceTexture(part,texture){
  const source=sourcePageSource(part);require(identity.sourceSHA256===source.sha256&&identity.width===source.width&&identity.height===source.height&&identity.geometryLayout===webSourceGeometryLayout(part)&&identity.geometryBytes===webSourceGeometryBytes(part)&&part.gpu_payload_bytes===identity.totalBytes,'Runtime source page cost mismatch');
  if(identity.format==='bc7')require(texture.isCompressedTexture===true&&/^[0-9a-f]{64}$/.test(identity.payloadSHA256)&&texture.mipmaps?.reduce((sum,m)=>sum+m.data.byteLength,0)===identity.textureBytes,'Runtime compressed mip identity mismatch');
  else require(identity.format==='rgba8'&&!texture.isCompressedTexture&&identity.payloadSHA256===null&&identity.textureBytes===originalTextureBytes(part,source),'Runtime original texture identity mismatch');
- if(isMemorySourcePart(part)){const sampler=memoryImageInfo(part).sampler;require(identity.format==='rgba8'&&texture.flipY===false&&texture.wrapS===wrapConstants.get(sampler.wrapS)&&texture.wrapT===wrapConstants.get(sampler.wrapT)&&texture.minFilter===filterConstants.get(sampler.minFilter)&&texture.magFilter===filterConstants.get(sampler.magFilter),'Runtime original source sampler mismatch');}
+ if(isMemorySourcePart(part)){const info=memoryImageInfo(part),sampler=info.sampler;require(identity.format==='rgba8'&&texture.flipY===false&&texture.wrapS===wrapConstants.get(sampler.wrapS)&&texture.wrapT===wrapConstants.get(sampler.wrapT)&&texture.minFilter===filterConstants.get(sampler.minFilter)&&texture.magFilter===filterConstants.get(sampler.magFilter),'Runtime original source sampler mismatch');require(texture.generateMipmaps===info.generateMipmaps&&texture.colorSpace===SRGBColorSpace&&texture.rotation===0&&texture.center.x===0&&texture.center.y===0&&texture.matrixAutoUpdate===true&&texture.repeat.x===info.transform[0]&&texture.repeat.y===info.transform[1]&&texture.offset.x===info.transform[2]&&texture.offset.y===info.transform[3]&&identity.samplingContract===info.cropContract&&(!info.cropContract||texture.anisotropy===1),'Runtime original source transform or mip mismatch');texture.updateMatrix();}
  return identity.textureBytes;
 }
 

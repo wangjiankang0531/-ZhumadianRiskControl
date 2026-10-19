@@ -1,0 +1,800 @@
+--- a/native/main.cpp
++++ b/native/main.cpp
+@@ -27,6 +27,10 @@
+ #  include <commdlg.h>
+ #  include <shellapi.h>
+ #  include <windows.h>
++#  include <winhttp.h>
++#  include <bcrypt.h>
++#  pragma comment(lib, "winhttp.lib")
++#  pragma comment(lib, "bcrypt.lib")
+ #endif
+ 
+ #include <stb_image.h>
+@@ -4355,6 +4359,16 @@
+     return audit;
+   }
+ 
++  // Reverse the existing Vulkan clip interval exactly: 0<=z/w<=1 becomes 0<=1-z/w<=1.
++  // X/Y/W, physical camera, near/far and visible frustum are unchanged. Compute
++  // the small depth row before GPU vertex multiplication to avoid far-depth cancellation.
++  glm::mat4 reverseSceneDepth(const glm::mat4& standard) {
++    auto result=standard;
++    for (int column=0;column<4;++column)
++      result[column][2]=static_cast<float>(double(standard[column][3])-double(standard[column][2]));
++    return result;
++  }
++
+   struct CameraClipPlanes {
+     float nearMeters = 0.1f;
+     float farMeters = kLegacyCameraFarClipMeters;
+@@ -18635,13 +18649,13 @@
+                 // Keep the camera-relative sky dome on the far plane even
+                 // when the global WGS84 camera needs kilometre-scale near/far
+                 // values. This is the Vulkan equivalent of gl_Position.xyww.
+-                clipPosition.z = clipPosition.w;
++                clipPosition.z = 0.0;
+             }
+             gl_Position = clipPosition;
+-            outColor = inColor;
++            outColor = inPbr.w > 5.5 ? vec3(1.0) : inColor;
+             outNormal = normalize(inNormal);
+             outWorld = pos;
+-            outUv = inUv;
++            outUv = inPbr.w > 5.5 ? inUv * inColor.xy + vec2(inColor.z, inPbr.y) : inUv;
+             outKind = inKind;
+             outPbr = inPbr;
+         }
+@@ -18870,6 +18884,8 @@
+             return mix(previous, current, transition);
+         }
+         vec3 materialLayerColor(vec3 color, vec2 uv, float kind, vec4 pbr) {
++            if (pbr.w > 5.5)
++                return pow(max(texture(regionalEarthContext, uv).rgb, vec3(0)), vec3(2.2));
+             if (pbr.w > 4.5)
+                 return pow(max(texture(regionalEarthContext, clamp(uv, vec2(0.00025), vec2(0.99975)), -0.35).rgb,
+                                vec3(0)), vec3(2.2));
+@@ -19955,7 +19971,7 @@
+     pd.rasterization.fillMode = FillMode::Solid;
+     pd.depthStencil.depthTestEnable = true;
+     pd.depthStencil.depthWriteEnable = true;
+-    pd.depthStencil.depthCompareOp = CompareOp::Less;
++    pd.depthStencil.depthCompareOp = CompareOp::Greater;
+     pd.renderPass = renderPass;
+     pd.pipelineLayout = pipelineLayout;
+     ColorBlendAttachmentState blend;
+@@ -23240,7 +23256,7 @@
+                                       cameraClip.nearMeters,
+                                       cameraClip.farMeters);
+     proj[1][1] *= -1.0f;
+-    const PushData push = makePushData(settings, proj * view, settings.eye, renderTimeSeconds, cli.preset);
++    const PushData push = makePushData(settings, reverseSceneDepth(proj * view), settings.eye, renderTimeSeconds, cli.preset);
+ 
+     hongtu::landscape::Overlay landscapeOverlay;
+     Json landscapeDocument = hongtu::landscape::emptyDocument();
+@@ -23266,7 +23282,7 @@
+     area.extent = {renderWidth, renderHeight};
+     const std::vector<std::array<float, 4>> clearColors = {
+         showcaseClearColor(cli.zhumadianCoverageMask ? glm::vec3(0.0f) : settings.clear, cli.screenshotSrgbTarget)};
+-    cmd->beginRenderPass(target->getRenderPass(), target->getFramebuffer(), area, clearColors, 1.0f, 0);
++    cmd->beginRenderPass(target->getRenderPass(), target->getFramebuffer(), area, clearColors, 0.0f, 0);
+     Viewport viewport;
+     viewport.x = 0.0f;
+     viewport.y = 0.0f;
+@@ -25598,7 +25614,7 @@
+                                       cameraClip.farMeters);
+     proj[1][1] *= -1.0f;
+     const float shaderTimeSeconds = (cli_.preset == Preset::Drill) ? drillScenarioTime_ : elapsedSeconds_;
+-    const PushData push = makePushData(settings_, proj * view, camPos_, shaderTimeSeconds, cli_.preset);
++    const PushData push = makePushData(settings_, reverseSceneDepth(proj * view), camPos_, shaderTimeSeconds, cli_.preset);
+ 
+     commandBuffer_->reset();
+     commandBuffer_->begin();
+@@ -25614,7 +25630,7 @@
+     area.extent = device_->getSwapchainExtent();
+     const std::vector<std::array<float, 4>> clearColors = {
+         showcaseClearColor(settings_.clear, device_->getSwapchainFormat() == Format::R8G8B8A8_SRGB)};
+-    commandBuffer_->beginRenderPass(renderPass_, framebuffers_[imageIndex], area, clearColors, 1.0f, 0);
++    commandBuffer_->beginRenderPass(renderPass_, framebuffers_[imageIndex], area, clearColors, 0.0f, 0);
+     Viewport viewport;
+     viewport.x = 0.0f;
+     viewport.y = 0.0f;
+@@ -27232,6 +27248,19 @@
+   argc = wideArgc;
+   argv = utf8Argv.data();
+ #endif
++  if (argc==4 && (std::string(argv[1])=="--validate-source-memory" || std::string(argv[1])=="--validate-source-family")) {
++    const int tile=std::stoi(argv[2]),depth=std::string(argv[1])=="--validate-source-family"?1:std::stoi(argv[3]);auto cpu=decodeSourceMemory(tile,depth,false,std::string(argv[1])=="--validate-source-family"?std::string(argv[3]):std::string{});
++    if (!cpu.valid) throw std::runtime_error(cpu.error);
++    nlohmann::json parts=nlohmann::json::array();for (const auto& part:cpu.parts) {
++      std::vector<float> positions,uv;for (const auto& vertex:part.vertices) {positions.insert(positions.end(),{vertex.position.x,vertex.position.y,vertex.position.z});uv.insert(uv.end(),{vertex.uv.x,vertex.uv.y});}
++      parts.push_back({{"vertices",part.vertices.size()},{"indices",part.indices.size()},{"width",part.image.width},{"height",part.image.height},{"payload",part.payload},
++       {"positionsSHA",sourceMemorySHA(reinterpret_cast<const uint8_t*>(positions.data()),positions.size()*4)},
++       {"uvSHA",sourceMemorySHA(reinterpret_cast<const uint8_t*>(uv.data()),uv.size()*4)},
++       {"indicesSHA",sourceMemorySHA(reinterpret_cast<const uint8_t*>(part.indices.data()),part.indices.size()*4)},
++       {"rgbaSHA",sourceMemorySHA(part.image.rgba.data(),part.image.rgba.size())},{"sampler",part.sourceSampler},{"mipLevels",part.sourceMipLevels},{"uvTransform",part.sourceUvTransform}});
++    }
++    std::cout<<nlohmann::json({{"tile",tile},{"depth",depth},{"valid",true},{"payload",cpu.payload},{"sources",cpu.sources.size()},{"parts",parts}}).dump(2)<<'\n';return 0;
++  }
+   Cli cli;
+ #ifdef HT_LANDSCAPE_EDITOR
+   if (argc == 1) {
+--- a/native/zhumadian_native_chunk_decode.inl
++++ b/native/zhumadian_native_chunk_decode.inl
+@@ -5,245 +5,5 @@
+                                                int depth,
+                                                bool buildPicking = false,
+                                                const std::string& parent = {}) {
+-  ZhumadianNativeCpu result;
+-  try {
+-#ifdef _WIN32
+-    const fs::path repo = fs::absolute(resolveProjectPath("tools/convert_zhumadian_native_chunks.py")).parent_path().parent_path();
+-    const char* configured = std::getenv("HT_NATIVE_PYTHON");
+-    const char* profile = std::getenv("USERPROFILE");
+-    const fs::path portablePython = repo / "runtime/python/python.exe";
+-    const fs::path python = configured ? fs::path(configured)
+-                            : fs::exists(portablePython)
+-                                ? portablePython
+-                                : fs::path(profile ? profile : "") /
+-                                      ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe";
+-    if (!fs::exists(python))
+-      throw std::runtime_error("Native chunk decoder Python runtime unavailable");
+-    const auto cache = repo / "work/zhumadian_native_chunk_cache";
+-    ZhumadianCacheReadLock tileLease(cache / ".locks" / ("tile_" + std::to_string(tile) + ".lock"));
+-    const bool family = !parent.empty();
+-    if (family && !std::regex_match(parent, std::regex("Tile_[0-9]+_L[0-9]+_0[0-9u]+\\.osgb")))
+-      throw std::runtime_error("Invalid source family parent");
+-    const std::string receiptName = "native_family_" + std::to_string(GetCurrentProcessId()) + "_tile_" +
+-                                    std::to_string(tile) + "_depth_" + std::to_string(depth) + ".json";
+-    const auto script = family ? "convert_zhumadian_native_family.py" : "convert_zhumadian_native_chunks.py";
+-    std::wstring command = L"\"" + python.wstring() + L"\" -X utf8 \"" + (repo / "tools" / script).wstring() +
+-                           L"\" --tile=" + std::to_wstring(tile);
+-    if (family)
+-      command += L" --parent=" + std::wstring(parent.begin(), parent.end()) + L" --receipt-name=" +
+-                 std::wstring(receiptName.begin(), receiptName.end());
+-    else
+-      command += L" --depth=" + std::to_wstring(depth);
+-    const DWORD code = runOwnedNativeChunkWorker(python, command, repo, tile, depth);
+-    fs::path folder = repo / "work/zhumadian_native_chunk_cache" /
+-                      ("tile_" + std::to_string(tile) + "_depth_" + std::to_string(depth));
+-    if (family && fs::exists(repo / "work/zhumadian_native_chunk_cache" / receiptName)) {
+-      const auto receiptFile = repo / "work/zhumadian_native_chunk_cache" / receiptName;
+-      nlohmann::json receipt;
+-      std::ifstream receiptInput(receiptFile);
+-      receiptInput >> receipt;
+-      const auto directory = receipt.at("directory").get<std::string>();
+-      if (!std::regex_match(directory, std::regex("family_tile_" + std::to_string(tile) + "_[0-9a-f]{16}")) ||
+-          receipt.at("parent") != parent)
+-        throw std::runtime_error("Invalid owned source family receipt");
+-      folder = receiptFile.parent_path() / directory;
+-      receiptInput.close();
+-      fs::remove(receiptFile);
+-    }
+-    ZhumadianCacheReadLock bundleLease(cache / ".locks" / (folder.filename().string() + ".lock"));
+-    if (code != 0) {
+-      nlohmann::json failure;
+-      std::ifstream error(folder / "failure.json");
+-      if (error) {
+-        error >> failure;
+-        throw std::runtime_error(failure.at("reason").get<std::string>());
+-      }
+-      throw std::runtime_error("Native chunk frontier conversion failed or timed out");
+-    }
+-    nlohmann::json stamp;
+-    std::ifstream input(folder / "complete.json");
+-    input >> stamp;
+-    if (stamp.at("tile_id") != tile || stamp.at("parts").empty() || stamp.at("parts").size() > 64 ||
+-        (!family && (stamp.at("schema") != "hongtu.osgb_native_chunk_bundle.v1" || stamp.at("depth") != depth ||
+-                     !stamp.at("complete_frontier").get<bool>())) ||
+-        (family && (stamp.at("schema") != "xnby.osgb_native_family.v1" || stamp.at("replacement_parent") != parent ||
+-                    !stamp.at("complete_sibling_family").get<bool>())))
+-      throw std::runtime_error("Incomplete native source bundle marker");
+-    uint64_t indices = 0;
+-    auto picking = buildPicking && !stamp.contains("source_nodes")
+-                       ? std::make_shared<hongtu::renderer::TriangleBvh>(stamp.at("indices").get<size_t>() / 3)
+-                       : nullptr;
+-    for (const auto& item : stamp.at("parts")) {
+-      const std::string directory = item.at("directory");
+-      if (!std::regex_match(directory, std::regex("part_[0-9]{3}")))
+-        throw std::runtime_error("Native part path escapes bundle");
+-      const auto partFolder = folder / directory;
+-      ZhumadianNativeCpu part;
+-      part.payload = item.at("gpu_payload_bytes");
+-      if (!part.payload || part.payload > 32ull * 1024 * 1024)
+-        throw std::runtime_error("Native part exceeds upload limit");
+-      hongtu::asset::GltfLoader loader;
+-      auto model = loader.load(gltfPathUtf8(partFolder / "geometry.gltf"));
+-      if (!model || model->meshes.size() != 1)
+-        throw std::runtime_error("Native part glTF decode failed");
+-      const auto& mesh = model->meshes.front();
+-      if (mesh.positions.size() != item.at("vertices").get<size_t>() ||
+-          mesh.indices.size() != item.at("indices").get<size_t>() || mesh.indices.empty() || mesh.indices.size() % 3 ||
+-          mesh.normals.size() != mesh.positions.size() || mesh.uvs.size() != mesh.positions.size())
+-        throw std::runtime_error("Native part attributes/counts changed");
+-      for (size_t i = 0; i < mesh.positions.size(); ++i) {
+-        const auto p = mesh.positions[i], n = mesh.normals[i];
+-        const auto uv = mesh.uvs[i];
+-        if (!std::isfinite(p.x + p.y + p.z + n.x + n.y + n.z + uv.x + uv.y))
+-          throw std::runtime_error("Nonfinite native part geometry");
+-        part.vertices.push_back({p,
+-                                 {1, 1, 1},
+-                                 glm::length(n) > .001f ? glm::normalize(n) : glm::vec3(0, 0, 1),
+-                                 uv,
+-                                 1.5f,
+-                                 {-2, 0, .92f, 5}});
+-      }
+-      part.indices = mesh.indices;
+-      const int atlasSide = item.at("atlas_size").get<int>();
+-      const auto atlasPolicy = item.value("atlas_layout_policy", std::string{});
+-      const bool rectangularAtlas = atlasPolicy == "edge_clamped_rect_v1";
+-      if (item.contains("atlas_extent") != rectangularAtlas)
+-        throw std::runtime_error("Native rectangular extent requires its explicit recipe");
+-      const auto extent = rectangularAtlas ? item.at("atlas_extent").get<std::array<int, 2>>()
+-                                           : std::array<int, 2>{atlasSide, atlasSide};
+-      const bool boundedAtlas = extent[0] >= 16 && extent[1] >= 16 && extent[0] <= 2048 &&
+-                                extent[1] <= 2048 && extent[0] % 8 == 0 && extent[1] % 8 == 0 &&
+-                                std::max(extent[0], extent[1]) == atlasSide;
+-      const bool declaredAtlas = atlasPolicy == "tight_square_gutter4_v1" ||
+-                                 atlasPolicy == "edge_clamped_square_v1" || rectangularAtlas;
+-      if (std::any_of(
+-              part.indices.begin(), part.indices.end(), [&](uint32_t i) { return i >= part.vertices.size(); }) ||
+-          !boundedAtlas || !loadRgbaImage(partFolder / "atlas.jpg", part.image) ||
+-          part.image.width != extent[0] || part.image.height != extent[1] ||
+-          (part.image.width != 1024 && part.image.width != 2048 && !declaredAtlas))
+-        throw std::runtime_error("Native part indices/image changed");
+-      if (picking)
+-        for (size_t i = 0; i < part.indices.size(); i += 3)
+-          picking->addTriangle(part.vertices[part.indices[i]].position,
+-                               part.vertices[part.indices[i + 1]].position,
+-                               part.vertices[part.indices[i + 2]].position);
+-      uint64_t textureBytes = 0;
+-      for (int width = part.image.width, height = part.image.height;;
+-           width = std::max(1, width / 2), height = std::max(1, height / 2)) {
+-        textureBytes += uint64_t(width) * height * 4;
+-        if (width == 1 && height == 1) break;
+-      }
+-      if (part.payload != part.vertices.size() * sizeof(Vertex) + part.indices.size() * sizeof(uint32_t) + textureBytes)
+-        throw std::runtime_error("Native physical upload accounting differs from marker");
+-      result.payload += part.payload;
+-      indices += part.indices.size();
+-      result.parts.push_back(std::move(part));
+-    }
+-    if (result.payload != stamp.at("gpu_payload_bytes").get<uint64_t>() ||
+-        indices != stamp.at("indices").get<uint64_t>() || result.payload > (family ? 256ull : 384ull) * 1024 * 1024)
+-      throw std::runtime_error("Native parts do not form the complete bounded frontier");
+-    result.depth = depth;
+-    result.texel = stamp.at("texel_world_p90_m");
+-    result.edge = stamp.at("longest_edge_p90_m");
+-    result.frontier = family ? stamp.at("source_nodes").size() : stamp.at("frontier_count").get<uint32_t>();
+-    result.replacementParent = parent;
+-    if (stamp.contains("source_nodes")) {
+-      std::vector<std::vector<hongtu::asset::MeshIndexRange>> ownership(result.parts.size());
+-      std::map<std::string, size_t> directories;
+-      for (size_t i = 0; i < stamp.at("parts").size(); ++i)
+-        if (!directories.emplace(stamp.at("parts").at(i).at("directory").get<std::string>(), i).second)
+-          throw std::runtime_error("Duplicate source upload part");
+-      for (const auto& record : stamp.at("source_nodes")) {
+-        ZhumadianNativeSource node;
+-        node.name = record.at("name");
+-        node.children = record.at("children").get<std::vector<std::string>>();
+-        node.depth = record.at("depth");
+-        node.triangles = record.at("triangles");
+-        node.edge = record.at("longest_edge_p90_m");
+-        node.texel = record.at("texel_world_p90_m");
+-        if (!record.at("bounds_min").is_null()) {
+-          for (int axis = 0; axis < 3; ++axis) {
+-            node.low[axis] = record.at("bounds_min").at(axis);
+-            node.high[axis] = record.at("bounds_max").at(axis);
+-            if (!std::isfinite(node.low[axis]) || !std::isfinite(node.high[axis]) || node.high[axis] < node.low[axis])
+-              throw std::runtime_error("Invalid source node bounds");
+-          }
+-          node.hasBounds = true;
+-        }
+-        auto nodePicking = buildPicking ? std::make_shared<hongtu::renderer::TriangleBvh>(node.triangles) : nullptr;
+-        uint64_t sourceIndices = 0;
+-        for (const auto& span : record.at("spans")) {
+-          const auto partId = directories.at(span.at("part").get<std::string>());
+-          const uint32_t first = span.at("first"), count = span.at("count");
+-          const auto& part = result.parts.at(partId);
+-          if (!count || first % 3 || count % 3 || uint64_t(first) + count > part.indices.size())
+-            throw std::runtime_error("Source index range escapes upload part");
+-          node.spans.push_back({partId, first, count});
+-          ownership[partId].push_back({first, count});
+-          sourceIndices += count;
+-          if (nodePicking)
+-            for (uint32_t offset = first; offset < first + count; offset += 3)
+-              nodePicking->addTriangle(part.vertices[part.indices[offset]].position,
+-                                       part.vertices[part.indices[offset + 1]].position,
+-                                       part.vertices[part.indices[offset + 2]].position);
+-        }
+-        if (sourceIndices != uint64_t(node.triangles) * 3)
+-          throw std::runtime_error("Source index ownership omits triangles");
+-        if (nodePicking) {
+-          nodePicking->build();
+-          node.picking = std::move(nodePicking);
+-        }
+-        if (!result.sources.emplace(node.name, std::move(node)).second)
+-          throw std::runtime_error("Duplicate native source node");
+-      }
+-      for (size_t i = 0; i < ownership.size(); ++i) {
+-        auto& ranges = ownership[i];
+-        std::sort(ranges.begin(), ranges.end(), [](auto a, auto b) { return a.first < b.first; });
+-        uint64_t cursor = 0;
+-        for (auto range : ranges) {
+-          if (range.first != cursor)
+-            throw std::runtime_error("Source spans overlap or leave a gap");
+-          cursor += range.count;
+-        }
+-        if (cursor != result.parts[i].indices.size())
+-          throw std::runtime_error("Source spans leave uncovered indices");
+-      }
+-      nlohmann::json master, catalog;
+-      std::ifstream masterInput(repo / "data/showcase/zhumadian_native_hierarchy.json");
+-      masterInput >> master;
+-      for (const auto& rootRecord : master.at("root_records"))
+-        if (rootRecord.at("tile_id") == tile) {
+-          std::ifstream catalogInput(repo / rootRecord.at("catalog").get<std::string>());
+-          catalogInput >> catalog;
+-          if (rootRecord.at("sha256") != stamp.at("stamp").at("catalog_sha256"))
+-            throw std::runtime_error("Source topology differs from converted data");
+-          break;
+-        }
+-      result.sourceRoot = catalog.at("root");
+-      for (const auto& record : catalog.at("nodes"))
+-        result.topology.push_back({record.at("name"), record.at("children").get<std::vector<std::string>>()});
+-    }
+-    if (!result.sources.empty()) {
+-      hongtu::renderer::NativeSourceFrontier::Cut cut;
+-      for (const auto& [name, node] : result.sources)
+-        cut.insert(name);
+-      hongtu::renderer::NativeSourceFrontier checked(
+-          result.topology, family ? parent : result.sourceRoot, cut, result.payload, 384ull * 1048576);
+-    }
+-    if (picking) {
+-      picking->build();
+-      if (picking->triangleCount() != indices / 3)
+-        throw std::runtime_error("Picking mesh omits native frontier triangles");
+-      result.picking = std::move(picking);
+-    }
+-    result.valid = std::isfinite(result.texel) && result.texel > 0 && std::isfinite(result.edge) && result.edge > 0 &&
+-                   result.frontier > 0;
+-#else
+-    throw std::runtime_error("Native chunk decoder requires Windows OSGB runtime");
+-#endif
+-  } catch (const std::exception& error) {
+-    result = {};
+-    result.error = error.what();
+-  }
+-  return result;
++  return decodeSourceMemory(tile, depth, buildPicking, parent);
+ }
+--- a/native/zhumadian_native_family_pager.inl
++++ b/native/zhumadian_native_family_pager.inl
+@@ -170,8 +170,7 @@
+   Resident part;
+   part.vertices = makeHostBuffer(device, cpu.vertices, BufferUsageFlagBits::Vertex);
+   part.indices = makeHostBuffer(device, cpu.indices, BufferUsageFlagBits::Index);
+-  const bool image = createUploadedRgbaTexture(
+-      device, cpu.image.width, cpu.image.height, cpu.image.rgba, part.texture, part.view, true);
++  const bool image = sourceMemoryUpload(device, cpu, part.texture, part.view);
+   if (part.vertices && part.indices && image) {
+     DescriptorSetDesc descriptors;
+     for (uint32_t binding = 0; binding < 13; ++binding) {
+@@ -179,7 +178,7 @@
+       d.binding = binding;
+       d.type = DescriptorType::CombinedImageSampler;
+       d.textureView = part.view;
+-      d.sampler = material.sampler;
++      d.sampler = sourceMemorySampler(device, cpu.sourceSampler, material.sampler);
+       descriptors.bindings.push_back(d);
+     }
+     part.descriptor = device->createDescriptorSet(material.layout, descriptors);
+--- a/native/zhumadian_native_pager.inl
++++ b/native/zhumadian_native_pager.inl
+@@ -26,6 +26,9 @@
+   std::vector<Vertex> vertices;
+   std::vector<uint32_t> indices;
+   LoadedRgbaImage image;
++  nlohmann::json sourceSampler;
++  uint32_t sourceMipLevels = 0;
++  nlohmann::json sourceUvTransform;
+   std::string error;
+   std::vector<ZhumadianNativeCpu> parts;
+   std::map<std::string, ZhumadianNativeSource> sources;
+@@ -34,6 +37,7 @@
+   std::shared_ptr<const hongtu::renderer::TriangleBvh> picking;
+ };
+ 
++#include "zhumadian_source_memory.inl"
+ #include "zhumadian_native_chunk_decode.inl"
+ 
+ ZhumadianNativeCpu decodeZhumadianNativeRoot(int tile, int depth, bool chunked = false, bool buildPicking = false) {
+@@ -637,8 +641,7 @@
+           Resident candidate;
+           candidate.vertices = makeHostBuffer(device, cpu.vertices, BufferUsageFlagBits::Vertex);
+           candidate.indices = makeHostBuffer(device, cpu.indices, BufferUsageFlagBits::Index);
+-          const bool image = createUploadedRgbaTexture(
+-              device, cpu.image.width, cpu.image.height, cpu.image.rgba, candidate.texture, candidate.view, true);
++          const bool image = sourceMemoryUpload(device, cpu, candidate.texture, candidate.view);
+           if (candidate.vertices && candidate.indices && image) {
+             DescriptorSetDesc descriptors;
+             for (uint32_t binding = 0; binding < 13; ++binding) {
+@@ -646,7 +649,7 @@
+               d.binding = binding;
+               d.type = DescriptorType::CombinedImageSampler;
+               d.textureView = candidate.view;
+-              d.sampler = material.sampler;
++              d.sampler = sourceMemorySampler(device, cpu.sourceSampler, material.sampler);
+               descriptors.bindings.push_back(d);
+             }
+             candidate.descriptor = device->createDescriptorSet(material.layout, descriptors);
+@@ -686,8 +689,7 @@
+         Resident part;
+         part.vertices = makeHostBuffer(device, cpu.vertices, BufferUsageFlagBits::Vertex);
+         part.indices = makeHostBuffer(device, cpu.indices, BufferUsageFlagBits::Index);
+-        const bool image = createUploadedRgbaTexture(
+-            device, cpu.image.width, cpu.image.height, cpu.image.rgba, part.texture, part.view, true);
++        const bool image = sourceMemoryUpload(device, cpu, part.texture, part.view);
+         if (part.vertices && part.indices && image) {
+           DescriptorSetDesc descriptors;
+           for (uint32_t binding = 0; binding < 13; ++binding) {
+@@ -695,7 +697,7 @@
+             d.binding = binding;
+             d.type = DescriptorType::CombinedImageSampler;
+             d.textureView = part.view;
+-            d.sampler = material.sampler;
++            d.sampler = sourceMemorySampler(device, cpu.sourceSampler, material.sampler);
+             descriptors.bindings.push_back(d);
+           }
+           part.descriptor = device->createDescriptorSet(material.layout, descriptors);
+@@ -945,7 +947,9 @@
+                          {"base_edge_pixels", projectedBaseEdges.at(id)},
+                          {"ready_edge_pixels", projectedEdges.at(id)},
+                          {"root_budget_bytes", rootBudget(id)}});
+-    return {{"visibility", visibilityStats()},
++    return {{"source_memory_checked_mip_uploads",sourceMemoryCheckedMipUploads},
++            {"source_memory_single_mip_uploads",sourceMemorySingleMipUploads},
++            {"visibility", visibilityStats()},
+             {"visibility_budget_retirements",visibilityBudgetRetirements},
+             {"visibility_deferred_roots",visibilityDeferred},
+             {"local_family_enabled", localEnabled},
+--- a/native/zhumadian_native_visibility.inl
++++ b/native/zhumadian_native_visibility.inl
+@@ -19,6 +19,8 @@
+ uint64_t visibilitySamples = 0;
+ std::set<int> visibilityDeferred;
+ double visibilityMilliseconds = 0, visibilityDeficit = 0;
++std::vector<float> visibilityMatrix, visibilityRayMatrix;
++std::array<float,2> visibilityClip{};
+ double visibilityTotalWeight = 0;
+ std::array<uint32_t, 4> visibilityAttention{};
+ 
+@@ -65,7 +67,7 @@
+       vec3 pos = position;
+       if (kind > 3.5) pos += pc.camera.xyz;
+       gl_Position = pc.mvp * vec4(pos,1);
+-      if (kind > 3.5) gl_Position.z = gl_Position.w;
++      if (kind > 3.5) gl_Position.z = 0.0;
+       viewDepth = dot(pos-pc.camera.xyz,pc.forward.xyz);
+     }
+   )glsl",
+@@ -139,7 +141,7 @@
+     pipeline.rasterization.fillMode = FillMode::Solid;
+     pipeline.depthStencil.depthTestEnable = true;
+     pipeline.depthStencil.depthWriteEnable = true;
+-    pipeline.depthStencil.depthCompareOp = CompareOp::Less;
++    pipeline.depthStencil.depthCompareOp = CompareOp::Greater;
+     pipeline.renderPass = visibilityTarget->getRenderPass();
+     pipeline.pipelineLayout = visibilityLayout;
+     ColorBlendAttachmentState blend;
+@@ -153,7 +155,7 @@
+   const auto view = glm::lookAt(camera, target, glm::vec3(0, 0, 1));
+   auto projection = glm::perspective(glm::radians(fov), aspect, clip.nearMeters, clip.farMeters);
+   projection[1][1] *= -1;
+-  VisibilityPush push{projection * view, glm::vec4(camera, 0), glm::vec4(glm::normalize(target - camera), 0),
++  VisibilityPush push{reverseSceneDepth(projection * view), glm::vec4(camera, 0), glm::vec4(glm::normalize(target - camera), 0),
+                       glm::vec4(0)};
+   auto cmd = device->createCommandBuffer();
+   auto fence = device->createFence(false);
+@@ -161,7 +163,7 @@
+   Rect2D area;
+   area.extent = {visibilityWidth, rh};
+   cmd->beginRenderPass(visibilityTarget->getRenderPass(), visibilityTarget->getFramebuffer(), area,
+-                       {{0, 0, 0, 0}}, 1, 0);
++                       {{0, 0, 0, 0}}, 0, 0);
+   Viewport viewport;
+   viewport.width = float(visibilityWidth);
+   viewport.height = float(rh);
+@@ -258,7 +260,17 @@
+   for (const auto &[key, bins] : visibilityBins)
+     visibilityDeficit += visibilitySourcePriority(key, visibilityMetrics.at(key), bins, fov, height);
+   visibilityProbes = nlohmann::json::array();
+-  const auto inverse = glm::dmat4(glm::inverse(projection * view));
++  // Invert the exact GPU float matrix in double precision, as the surface-ray probe already does.
++  // This changes reported reference rays only, never the GPU camera, cut or depth buffer.
++  const auto matrix = projection * view;
++  visibilityMatrix.clear(); visibilityRayMatrix.clear();
++  const auto gpuMatrix=reverseSceneDepth(matrix);
++  for (int column=0;column<4;++column) for (int row=0;row<4;++row) {
++    visibilityMatrix.push_back(gpuMatrix[column][row]);
++    visibilityRayMatrix.push_back(matrix[column][row]);
++  }
++  visibilityClip={clip.nearMeters,clip.farMeters};
++  const auto inverse = glm::inverse(glm::dmat4(matrix));
+   for (int row = 1; row <= 5; ++row)
+     for (int column = 1; column <= 5; ++column) {
+       const uint32_t x = rw * column / 6, y = rh * row / 6;
+@@ -316,5 +328,9 @@
+       {"score_cache_entries", visibilitySourceScores.size() + visibilityRootScores.size()},
+       {"sources", sources},
+       {"probe_pixels", visibilityProbes},
++      {"gpu_matrix_column_major",visibilityMatrix},
++      {"ray_matrix_column_major",visibilityRayMatrix},
++      {"gpu_depth_mapping","one_minus_legacy_clip_z_over_w"},
++      {"clip_planes_m",visibilityClip},
+       {"method", "depth-tested current complete source cut, logarithmic per-pixel view-depth bins"}};
+ }
+--- /dev/null
++++ b/native/zhumadian_source_memory.inl
+@@ -0,0 +1,261 @@
++uint64_t sourceMemoryMipBytes(uint32_t w,uint32_t h) {uint64_t bytes=0;for (;;) {bytes+=uint64_t(w)*h*4;if (w==1 && h==1) return bytes;w=std::max(1u,w/2);h=std::max(1u,h/2);}}
++// Read-only loopback adapter. No asset/cache creation, conversion or cleanup fallback.
++// The independent source service owns bounded OSGB decoding and complete-family leases.
++struct SourceHttpHandle {
++  HINTERNET value = nullptr;
++  explicit SourceHttpHandle(HINTERNET handle) : value(handle) { if (!value) throw std::runtime_error("Source HTTP handle failed"); }
++  ~SourceHttpHandle() { if (value) WinHttpCloseHandle(value); }
++  SourceHttpHandle(const SourceHttpHandle&) = delete;
++};
++std::string sourceMemorySHA(const uint8_t* data, size_t size) {
++  BCRYPT_ALG_HANDLE algorithm{}; BCRYPT_HASH_HANDLE hash{};
++  if (BCryptOpenAlgorithmProvider(&algorithm, BCRYPT_SHA256_ALGORITHM, nullptr, 0) < 0)
++    throw std::runtime_error("Source SHA provider unavailable");
++  DWORD bytes = 0, objectBytes = 0;
++  if (BCryptGetProperty(algorithm,BCRYPT_OBJECT_LENGTH,reinterpret_cast<PUCHAR>(&objectBytes),sizeof(objectBytes),&bytes,0)<0) {
++    BCryptCloseAlgorithmProvider(algorithm,0); throw std::runtime_error("Source SHA property failed");
++  }
++  std::vector<uint8_t> object(objectBytes); std::array<uint8_t,32> digest{};
++  const bool ok = BCryptCreateHash(algorithm,&hash,object.data(),objectBytes,nullptr,0,0)>=0 &&
++    size<=std::numeric_limits<ULONG>::max() && BCryptHashData(hash,const_cast<PUCHAR>(data),static_cast<ULONG>(size),0)>=0 &&
++    BCryptFinishHash(hash,digest.data(),static_cast<ULONG>(digest.size()),0)>=0;
++  if (hash) BCryptDestroyHash(hash); BCryptCloseAlgorithmProvider(algorithm,0);
++  if (!ok) throw std::runtime_error("Source SHA failed");
++  const char* digits="0123456789abcdef"; std::string result;
++  for (const auto n:digest) { result+=digits[n>>4]; result+=digits[n&15]; } return result;
++}
++struct SourceHttpResult { DWORD status=0; std::vector<uint8_t> data; std::string marker; };
++SourceHttpResult sourceMemoryHTTP(const std::string& route, size_t limit, bool post=false) {
++  if (route.empty() || route[0]!='/' || route.find_first_of("\r\n\\")!=std::string::npos)
++    throw std::runtime_error("Invalid source HTTP route");
++  unsigned port=8829;
++  if (const char* configured=std::getenv("ZMD_SOURCE_MEMORY_PORT")) {
++    const std::string value(configured);
++    if (!std::regex_match(value,std::regex("[0-9]{1,5}"))) throw std::runtime_error("Invalid loopback port");
++    port=std::stoul(value); if (!port || port>65535) throw std::runtime_error("Invalid loopback port");
++  }
++  SourceHttpHandle session(WinHttpOpen(L"Zhumadian readonly scene",WINHTTP_ACCESS_TYPE_NO_PROXY,nullptr,nullptr,0));
++  WinHttpSetTimeouts(session.value,3000,3000,10000,10000);
++  SourceHttpHandle connection(WinHttpConnect(session.value,L"127.0.0.1",static_cast<INTERNET_PORT>(port),0));
++  const std::wstring path(route.begin(),route.end());
++  SourceHttpHandle request(WinHttpOpenRequest(connection.value,post?L"POST":L"GET",path.c_str(),nullptr,
++                                            WINHTTP_NO_REFERER,WINHTTP_DEFAULT_ACCEPT_TYPES,0));
++  DWORD redirect=WINHTTP_OPTION_REDIRECT_POLICY_NEVER;
++  WinHttpSetOption(request.value,WINHTTP_OPTION_REDIRECT_POLICY,&redirect,sizeof(redirect));
++  if (!WinHttpSendRequest(request.value,WINHTTP_NO_ADDITIONAL_HEADERS,0,WINHTTP_NO_REQUEST_DATA,0,0,0) ||
++      !WinHttpReceiveResponse(request.value,nullptr)) throw std::runtime_error("Read-only source service unavailable");
++  SourceHttpResult result; DWORD count=sizeof(result.status);
++  if (!WinHttpQueryHeaders(request.value,WINHTTP_QUERY_STATUS_CODE|WINHTTP_QUERY_FLAG_NUMBER,nullptr,&result.status,&count,nullptr))
++    throw std::runtime_error("Source status unavailable");
++  wchar_t digest[128]{};count=sizeof(digest);
++  if (WinHttpQueryHeaders(request.value,WINHTTP_QUERY_CUSTOM,L"X-XNBY-Source-Marker-SHA256",digest,&count,nullptr))
++    for (const wchar_t c:std::wstring(digest)) result.marker+=static_cast<char>(c);
++  for (;;) {
++    DWORD available=0;
++    if (!WinHttpQueryDataAvailable(request.value,&available)) throw std::runtime_error("Source read failed");
++    if (!available) break;
++    if (available>limit || result.data.size()>limit-available) throw std::runtime_error("Source HTTP payload exceeds bound");
++    const auto offset=result.data.size();result.data.resize(offset+available);DWORD got=0;
++    if (!WinHttpReadData(request.value,result.data.data()+offset,available,&got) || !got)
++      throw std::runtime_error("Source HTTP payload truncated");
++    result.data.resize(offset+got);
++  }
++  return result;
++}
++struct SourceMemoryLease {
++  std::string token;
++  ~SourceMemoryLease() { if (!token.empty()) try { sourceMemoryHTTP("/api/lod-lease/"+token+"/release",4096,true); } catch (...) {} }
++};
++RHISamplerPtr sourceMemorySampler(RHIDevice* device,const nlohmann::json& value,const RHISamplerPtr& fallback) {
++  if (value.is_null()) return fallback;
++  SamplerDesc desc;desc.anisotropyEnable=false;
++  const auto address=[](int wrap) { switch(wrap) {case 33071:return SamplerAddressMode::ClampToEdge;
++    case 10497:return SamplerAddressMode::Repeat;case 33648:return SamplerAddressMode::MirroredRepeat;
++    default:throw std::runtime_error("Unsupported original sampler wrap");} };
++  desc.addressModeU=address(value.at("wrapS"));desc.addressModeV=address(value.at("wrapT"));
++  desc.addressModeW=SamplerAddressMode::ClampToEdge;
++  const int min=value.at("minFilter"),mag=value.at("magFilter");
++  if ((mag!=9728 && mag!=9729) || (min!=9728 && min!=9729 && (min<9984 || min>9987)))
++    throw std::runtime_error("Unsupported original sampler filter");
++  desc.magFilter=mag==9728?SamplerFilter::Nearest:SamplerFilter::Linear;
++  desc.minFilter=(min==9728 || min==9984 || min==9986)?SamplerFilter::Nearest:SamplerFilter::Linear;
++  desc.mipmapMode=(min==9984 || min==9985)?SamplerMipmapMode::Nearest:SamplerMipmapMode::Linear;
++  if (min==9728 || min==9729) desc.maxLod=0;
++  auto result=device->createSampler(desc);if (!result) throw std::runtime_error("Original sampler allocation failed");return result;
++}
++ZhumadianNativeCpu decodeSourceMemory(int tile,int depth,bool buildPicking,const std::string& parent) {
++  ZhumadianNativeCpu result;
++  try {
++    if (tile<1 || tile>2346 || depth<1 || depth>12 || (!parent.empty() &&
++        !std::regex_match(parent,std::regex("Tile_"+std::to_string(tile)+"_L[0-9]+_0[0-9u]+\\.osgb"))))
++      throw std::runtime_error("Invalid original source request");
++    const bool family=!parent.empty();
++    const std::string suffix=std::to_string(tile)+"/"+(family?parent:std::to_string(depth));
++    const auto planRoute=std::string(family?"/api/lod-family-plan/":"/api/lod-plan/")+suffix;
++    const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(120);
++    SourceHttpResult response;
++    do {
++      response=sourceMemoryHTTP(planRoute,17ull*1048576);
++      if (response.status!=202) break;
++      if (std::chrono::steady_clock::now()>deadline) throw std::runtime_error("Read-only source plan timeout");
++      std::this_thread::sleep_for(std::chrono::milliseconds(300));
++    } while (true);
++    if (response.status!=200) throw std::runtime_error("Original source plan rejected: HTTP "+std::to_string(response.status));
++    const auto plan=nlohmann::json::parse(response.data);const auto& stamp=plan.at("marker");
++    if (plan.at("schema")!="xnby.source_bundle_plan.v1" || plan.at("verification")!="metadata_only" ||
++        plan.at("availabilityVerified")!=false || (stamp.at("source_format")!="osgb_memory_png_v1" && stamp.at("source_format")!="osgb_memory_png_crop_v2") ||
++        stamp.at("tile_id")!=tile || stamp.at("texture_policy")!="original_pixels_v1" ||
++        (family?(stamp.at("schema")!="zhumadian.osgb_source_family.v2" || stamp.at("replacement_parent")!=parent || stamp.at("complete_sibling_family")!=true):
++                (stamp.at("schema")!="zhumadian.osgb_source_frontier.v2" || stamp.at("depth")!=depth || stamp.at("complete_frontier")!=true)))
++      throw std::runtime_error("Original source plan identity mismatch");
++    response=sourceMemoryHTTP(std::string(family?"/api/lod-family/":"/api/lod/")+suffix,17ull*1048576);
++    if (response.status!=200) throw std::runtime_error("Original source lease unavailable");
++    auto leased=nlohmann::json::parse(response.data);SourceMemoryLease lease;
++    const std::string token=leased.at("cache_lease");
++    if (!std::regex_match(token,std::regex("[0-9a-f]{32}"))) throw std::runtime_error("Invalid source lease");
++    lease.token=token;leased.erase("cache_lease");
++    if (leased!=stamp || response.marker!=plan.at("markerSHA256").get<std::string>()) throw std::runtime_error("Source changed between plan and lease");
++    const auto folder=family?"family_tile_"+std::to_string(tile)+"_"+sourceMemorySHA(reinterpret_cast<const uint8_t*>(parent.data()),parent.size()).substr(0,16):
++                             "tile_"+std::to_string(tile)+"_depth_"+std::to_string(depth);
++    if (stamp.at("parts").empty() || stamp.at("parts").size()>64) throw std::runtime_error("Invalid source page count");
++    std::map<std::string,size_t> directories; uint64_t indexCount=0;
++    for (const auto& item:stamp.at("parts")) {
++      const std::string directory=item.at("directory");
++      if (!std::regex_match(directory,std::regex("part_[0-9]{3}")) || !directories.emplace(directory,result.parts.size()).second)
++        throw std::runtime_error("Invalid source page directory");
++      std::map<std::string,std::vector<uint8_t>> files;
++      for (const auto& record:item.at("files")) {
++        const std::string name=record.at("name");const size_t size=record.at("bytes");
++        if ((name!="geometry.gltf" && name!="geometry.bin" && name!="texture.png") || !size || size>32ull*1048576 || files.contains(name))
++          throw std::runtime_error("Invalid source file identity");
++        auto file=sourceMemoryHTTP("/native/"+folder+"/"+directory+"/"+name+"?lease="+token,size);
++        if (file.status!=200 || file.data.size()!=size || sourceMemorySHA(file.data.data(),file.data.size())!=record.at("sha256").get<std::string>())
++          throw std::runtime_error("Source file SHA or length mismatch");
++        files.emplace(name,std::move(file.data));
++      }
++      if (files.size()!=3 || item.at("source_format")!=stamp.at("source_format") || item.at("geometry_layout")!="three_float32_pu_uint32_v1")
++        throw std::runtime_error("Invalid original page format");
++      const auto gltf=nlohmann::json::parse(files.at("geometry.gltf"));const auto& bin=files.at("geometry.bin");
++      if (gltf.at("meshes").size()!=1 || gltf.at("meshes").at(0).at("primitives").size()!=1 ||
++          gltf.at("buffers").size()!=1 || gltf.at("buffers").at(0).at("uri")!="geometry.bin" || gltf.at("buffers").at(0).at("byteLength")!=bin.size())
++        throw std::runtime_error("Invalid original glTF layout");
++      const auto& primitive=gltf.at("meshes").at(0).at("primitives").at(0);
++      const auto array=[&](size_t id,const char* type,int component,size_t width) {
++        const auto& access=gltf.at("accessors").at(id);const auto& view=gltf.at("bufferViews").at(access.at("bufferView").get<size_t>());
++        const size_t count=access.at("count"),offset=view.value("byteOffset",size_t(0))+access.value("byteOffset",size_t(0));
++        if (access.at("type")!=type || access.at("componentType")!=component || access.contains("sparse") || view.contains("byteStride") ||
++            view.at("buffer")!=0 || !count || count>6000000 || offset%4 || count>bin.size()/width || offset>bin.size()-count*width ||
++            view.at("byteLength")!=count*width) throw std::runtime_error("Invalid original glTF array");
++        return std::pair<size_t,size_t>{offset,count};
++      };
++      const auto pos=array(primitive.at("attributes").at("POSITION"),"VEC3",5126,12);
++      const auto uv=array(primitive.at("attributes").at("TEXCOORD_0"),"VEC2",5126,8);
++      const auto ind=array(primitive.at("indices"),"SCALAR",5125,4);
++      if (pos.second!=uv.second || pos.second!=item.at("vertices") || ind.second!=item.at("indices") || ind.second%3)
++        throw std::runtime_error("Original geometry count changed");
++      ZhumadianNativeCpu part;part.payload=item.at("gpu_payload_bytes");
++      for (size_t i=0;i<pos.second;++i) {
++        glm::vec3 p;glm::vec2 t;std::memcpy(&p,bin.data()+pos.first+i*12,12);std::memcpy(&t,bin.data()+uv.first+i*8,8);
++        if (!std::isfinite(p.x+p.y+p.z+t.x+t.y)) throw std::runtime_error("Nonfinite original geometry");
++        part.vertices.push_back({p,{1,1,1},{0,0,1},t,1.5f,{-2,0,0.92f,5}});
++      }
++      part.indices.resize(ind.second);std::memcpy(part.indices.data(),bin.data()+ind.first,ind.second*4);
++      for (const auto i:part.indices) if (i>=part.vertices.size()) throw std::runtime_error("Original source index escapes mesh");
++      const auto& image=item.at("source_image");int width=0,height=0,components=0;
++      const auto& png=files.at("texture.png");
++      if (image.at("row_order")!="source_storage" || image.at("opaque")!=true ||
++          (image.at("source_origin")!="bottom_left" && image.at("source_origin")!="top_left") ||
++          !stbi_info_from_memory(png.data(),static_cast<int>(png.size()),&width,&height,&components) ||
++          width<=0 || height<=0 || width>8192 || height>8192 || uint64_t(width)*height*4>32ull*1048576 ||
++          width!=image.at("width") || height!=image.at("height")) throw std::runtime_error("Invalid original PNG dimensions");
++      unsigned char* pixels=stbi_load_from_memory(png.data(),static_cast<int>(png.size()),&width,&height,&components,4);
++      if (!pixels) throw std::runtime_error("Original PNG decode failed");
++      part.image.width=width;part.image.height=height;part.image.rgba.assign(pixels,pixels+size_t(width)*height*4);stbi_image_free(pixels);
++      for (size_t a=3;a<part.image.rgba.size();a+=4) if (part.image.rgba[a]!=255) throw std::runtime_error("Original texture alpha changed");
++      part.sourceSampler=image.at("sampler");
++      if (gltf.at("samplers").size()!=1 || gltf.at("samplers").at(0)!=part.sourceSampler) throw std::runtime_error("Original sampler differs");
++      uint64_t imageBytes=sourceMemoryMipBytes(width,height);
++      if (item.at("source_format")=="osgb_memory_png_crop_v2") {
++        if (image.size()!=12 || image.at("file")!="texture.png") throw std::runtime_error("Unexpected original crop metadata");
++        const auto& rectangle=image.at("source_rect");const auto& transform=image.at("uv_transform");
++        if (!image.at("original_width").is_number_integer() || !image.at("original_height").is_number_integer() ||
++            !image.at("mip_levels").is_number_integer() || rectangle.size()!=4 || transform.size()!=4)
++          throw std::runtime_error("Invalid original crop metadata types");
++        const int ow=image.at("original_width"),oh=image.at("original_height");
++        for (const auto& v:rectangle) if (!v.is_number_integer()) throw std::runtime_error("Invalid crop rectangle type");
++        const int x=rectangle.at(0),y=rectangle.at(1),w=rectangle.at(2),h=rectangle.at(3);
++        if (ow<=0 || oh<=0 || ow>8192 || oh>8192 || x<0 || y<0 || w!=width || h!=height || x>ow-w || y>oh-h)
++          throw std::runtime_error("Original crop escapes its source image");
++        const std::array<double,4> wanted={double(ow)/w,double(oh)/h,-double(x)/w,-double(y)/h};
++        for (size_t i=0;i<4;++i) if (!transform.at(i).is_number() || transform.at(i).get<double>()!=wanted[i])
++          throw std::runtime_error("Original UV material transform mismatch");
++        uint32_t levels=1;const int filter=part.sourceSampler.at("minFilter");
++        if (filter!=9728 && filter!=9729) {
++          if (x || y || w!=ow || h!=oh) throw std::runtime_error("Mipmapped crop gutters unsupported");
++          uint32_t side=static_cast<uint32_t>(std::max(w,h));while (side>1) {side/=2;++levels;}
++        }
++        if (image.at("mip_levels")!=levels) throw std::runtime_error("Original crop mip count differs");
++        part.sourceMipLevels=levels;part.sourceUvTransform=transform;
++        if (levels==1) imageBytes=uint64_t(w)*h*4;
++        for (auto& vertex:part.vertices) {
++          vertex.color={float(wanted[0]),float(wanted[1]),float(wanted[2])};
++          vertex.pbr={-2,float(wanted[3]),0.92f,6};
++        }
++      } else if (image.size()!=7) throw std::runtime_error("Unexpected legacy image metadata");
++      const uint64_t cost=part.vertices.size()*sizeof(Vertex)+part.indices.size()*4+imageBytes;
++      if (cost!=part.payload || cost>32ull*1048576) throw std::runtime_error("Original page upload accounting mismatch");
++      result.payload+=cost;indexCount+=part.indices.size();result.parts.push_back(std::move(part));
++    }
++    if (result.payload!=stamp.at("gpu_payload_bytes") || indexCount!=stamp.at("indices") || result.payload>(family?256ull:384ull)*1048576)
++      throw std::runtime_error("Original complete cut exceeds budget");
++    result.depth=depth;result.edge=stamp.at("longest_edge_p90_m");result.texel=stamp.at("texel_world_p90_m");
++    result.frontier=static_cast<uint32_t>(stamp.at("source_nodes").size());result.replacementParent=parent;
++    std::vector<std::vector<std::pair<uint32_t,uint32_t>>> ownership(result.parts.size());
++    for (const auto& record:stamp.at("source_nodes")) {
++      ZhumadianNativeSource node;node.name=record.at("name");node.children=record.at("children").get<std::vector<std::string>>();
++      node.depth=record.at("depth");node.triangles=record.at("triangles");node.edge=record.at("longest_edge_p90_m");node.texel=record.at("texel_world_p90_m");
++      node.hasBounds=true;for (int axis=0;axis<3;++axis) {node.low[axis]=record.at("bounds_min").at(axis);node.high[axis]=record.at("bounds_max").at(axis);
++        if (!std::isfinite(node.low[axis]) || !std::isfinite(node.high[axis]) || node.high[axis]<node.low[axis]) throw std::runtime_error("Invalid source bounds");}
++      auto picking=buildPicking?std::make_shared<hongtu::renderer::TriangleBvh>(node.triangles):nullptr;uint64_t count=0;
++      for (const auto& span:record.at("spans")) {
++        const auto partId=directories.at(span.at("part").get<std::string>());const uint32_t first=span.at("first"),length=span.at("count");const auto& part=result.parts.at(partId);
++        if (!length || first%3 || length%3 || uint64_t(first)+length>part.indices.size()) throw std::runtime_error("Original source span escapes page");
++        node.spans.push_back({partId,first,length});ownership[partId].push_back({first,length});count+=length;
++        if (picking) for (uint32_t i=first;i<first+length;i+=3) picking->addTriangle(part.vertices[part.indices[i]].position,part.vertices[part.indices[i+1]].position,part.vertices[part.indices[i+2]].position);
++      }
++      if (count!=uint64_t(node.triangles)*3) throw std::runtime_error("Original source triangle ownership mismatch");
++      if (picking) {picking->build();node.picking=std::move(picking);}
++      if (!result.sources.emplace(node.name,std::move(node)).second) throw std::runtime_error("Duplicate original source");
++    }
++    for (size_t part=0;part<ownership.size();++part) {auto& spans=ownership[part];std::sort(spans.begin(),spans.end());uint64_t next=0;
++      for (const auto [first,count]:spans) {if (first!=next) throw std::runtime_error("Original spans overlap or leave gaps");next+=count;}
++      if (next!=result.parts[part].indices.size()) throw std::runtime_error("Original page triangles unowned");}
++    nlohmann::json master,catalog;std::ifstream masterInput(resolveProjectPath("data/showcase/zhumadian_native_hierarchy.json"));masterInput>>master;
++    for (const auto& root:master.at("root_records")) if (root.at("tile_id")==tile) {
++      const std::string expected="assets/showcase/runtime/zhumadian/native_hierarchy/tile_"+std::to_string(tile)+".json";
++      if (root.at("catalog")!=expected) throw std::runtime_error("Original topology path differs");
++      std::ifstream input(resolveProjectPath(expected),std::ios::binary);std::vector<uint8_t> raw((std::istreambuf_iterator<char>(input)),{});
++      if (sourceMemorySHA(raw.data(),raw.size())!=root.at("sha256").get<std::string>()) throw std::runtime_error("Original topology SHA changed");catalog=nlohmann::json::parse(raw);break;
++    }
++    result.sourceRoot=catalog.at("root");for (const auto& record:catalog.at("nodes"))
++      result.topology.push_back({record.at("name"),record.at("children").get<std::vector<std::string>>()});
++    hongtu::renderer::NativeSourceFrontier::Cut cut;for (const auto& [name,node]:result.sources) {
++      auto found=std::find_if(catalog.at("nodes").begin(),catalog.at("nodes").end(),[&](const auto& n){return n.at("name")==name;});
++      if (found==catalog.at("nodes").end() || found->at("children")!=node.children) throw std::runtime_error("Original topology differs from source");cut.insert(name);
++    }
++    hongtu::renderer::NativeSourceFrontier checked(result.topology,family?parent:result.sourceRoot,cut,result.payload,384ull*1048576);
++    result.valid=result.frontier>0 && std::isfinite(result.edge) && result.edge>0 && std::isfinite(result.texel) && result.texel>0;
++    std::cerr<<"[readonly_source_memory] tile="<<tile<<" depth="<<depth<<" pages="<<result.parts.size()<<" bytes="<<result.payload<<" parent="<<parent<<'\n';
++  } catch (const std::exception& error) {result={};result.error=error.what();}
++  return result;
++}
++
++// Actual allocation is checked immediately; changing a ledger alone cannot pass.
++uint64_t sourceMemorySingleMipUploads=0,sourceMemoryCheckedMipUploads=0;
++bool sourceMemoryUpload(RHIDevice* device,const ZhumadianNativeCpu& cpu,RHITexturePtr& texture,RHITextureViewPtr& view) {
++  if (!createUploadedRgbaTexture(device,cpu.image.width,cpu.image.height,cpu.image.rgba,texture,view,cpu.sourceMipLevels!=1)) return false;
++  uint32_t expected=cpu.sourceMipLevels;
++  if (!expected) {expected=1;uint32_t side=std::max(cpu.image.width,cpu.image.height);while(side>1){side/=2;++expected;}}
++  if (texture->getMipLevels()!=expected) throw std::runtime_error("Actual original-source GPU mip allocation differs");
++  ++sourceMemoryCheckedMipUploads;if (expected==1) ++sourceMemorySingleMipUploads;return true;
++}

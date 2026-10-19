@@ -100,15 +100,19 @@ class MemoryStoreBusy(RuntimeError):
 
 class MemorySourceStore:
     def __init__(self, catalogs, reader, *, limit=256 * MIB, build_reservation=128 * MIB,
-                 clock=time.monotonic, ttl=180, max_jobs=16, max_leases=256):
+                 clock=time.monotonic, ttl=180, max_jobs=16, max_leases=256,
+                 builder=build_bundle, builder_identity=None):
         if not 0 < build_reservation <= limit or limit > 256 * MIB or not 0 < ttl <= 180:
             raise ValueError("invalid bounded memory store policy")
+        if builder is not build_bundle and (not isinstance(builder_identity, str) or not re.fullmatch(r"[0-9a-f]{64}", builder_identity)):
+            raise ValueError("alternate page builder requires a pinned recipe identity")
+        self.builder = builder
         self.catalogs, self.reader = catalogs, reader
         self.limit, self.build_reservation, self.clock, self.ttl = limit, build_reservation, clock, ttl
         self.max_jobs, self.max_leases = max_jobs, max_leases
         if not 1 <= max_jobs <= 16 or not 1 <= max_leases <= 256:
             raise ValueError("unbounded request policy")
-        self.recipe = sha(canonical({"reader": reader.identity, "catalogs": catalogs.identity,
+        self.recipe = sha(canonical({"reader": reader.identity, "catalogs": catalogs.identity, "builder": builder_identity,
                          "code": {name: sha((Path(__file__).parent / name).read_bytes()) for name in
                                   ("osgb_memory_pages.py", "osgb_memory_gltf.py", "osgb_memory_reader.py")}}))
         self.lock = threading.RLock()
@@ -157,7 +161,7 @@ class MemorySourceStore:
                 self.stats["peakEncodedAndReservation"] = max(self.stats["peakEncodedAndReservation"],
                                                                self._bytes() + self.build_reservation)
             tile, depth, parent = key
-            bundle = build_bundle(tile, self.catalogs(tile), self.reader, depth=depth, parent=parent,
+            bundle = self.builder(tile, self.catalogs(tile), self.reader, depth=depth, parent=parent,
                                   recipe_identity=self.recipe)
             if bundle.delivery_bytes > self.build_reservation:
                 raise ValueError("source bundle exceeds reserved encoded delivery")

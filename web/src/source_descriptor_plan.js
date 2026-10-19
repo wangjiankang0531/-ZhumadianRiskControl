@@ -1,4 +1,4 @@
-import {isMemorySourcePart,isMemoryFamily,MEMORY_ROOT_SCHEMA,MEMORY_SOURCE_FORMAT} from './source_page_format.js';
+import {isMemorySourcePart,isMemoryFamily,MEMORY_ROOT_SCHEMA,isMemoryFormat} from './source_page_format.js';
 import {ensureSourceWanted} from './lod_transaction.js';
 import {sourceBundleIdentity} from './source_residency.js';
 export const SOURCE_PLAN_SCHEMA='xnby.source_bundle_plan.v1';
@@ -20,9 +20,9 @@ async function requestSourcePlan({request,fetcher=fetch,stillWanted=()=>true}){
  else{raw=new Uint8Array(await response.arrayBuffer());if(raw.byteLength>limit)throw Error('Source plan exceeds bound');}
  ensureSourceWanted(stillWanted);const value=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw)),marker=value.marker;
  if(Object.keys(value).sort().join(',')!=='availabilityVerified,marker,markerSHA256,schema,verification'||value.schema!==SOURCE_PLAN_SCHEMA||value.verification!=='metadata_only'||value.availabilityVerified!==false||!sha.test(value.markerSHA256)||!marker||Object.hasOwn(marker,'cache_lease')||marker.tile_id!==request.id||marker.texture_policy!=='original_pixels_v1'||!Array.isArray(marker.parts)||!marker.parts.length||marker.parts.length>64)throw Error('Invalid source plan identity');
- if(marker.source_format!==undefined&&marker.source_format!==MEMORY_SOURCE_FORMAT||marker.parts.some(p=>isMemorySourcePart(p)!==(marker.source_format===MEMORY_SOURCE_FORMAT)))throw Error('Invalid source plan page format');
- if(marker.source_format===MEMORY_SOURCE_FORMAT&&(request.parent!==undefined?!isMemoryFamily(marker):marker.schema!==MEMORY_ROOT_SCHEMA))throw Error('Mixed source marker schema');
- if(request.parent!==undefined?!(marker.schema==='xnby.osgb_native_family.v1'||isMemoryFamily(marker))||marker.replacement_parent!==request.parent||marker.complete_sibling_family!==true:!(marker.schema==='hongtu.osgb_native_chunk_bundle.v1'||marker.schema===MEMORY_ROOT_SCHEMA&&marker.source_format===MEMORY_SOURCE_FORMAT)||marker.depth!==request.depth||marker.complete_frontier!==true)throw Error('Plan source differs from request');
+ if(marker.source_format!==undefined&&!isMemoryFormat(marker.source_format)||marker.parts.some(p=>isMemorySourcePart(p)!==isMemoryFormat(marker.source_format)||isMemoryFormat(marker.source_format)&&p.source_format!==marker.source_format))throw Error('Invalid source plan page format');
+ if(isMemoryFormat(marker.source_format)&&(request.parent!==undefined?!isMemoryFamily(marker):marker.schema!==MEMORY_ROOT_SCHEMA))throw Error('Mixed source marker schema');
+ if(request.parent!==undefined?!(marker.schema==='xnby.osgb_native_family.v1'||isMemoryFamily(marker))||marker.replacement_parent!==request.parent||marker.complete_sibling_family!==true:!(marker.schema==='hongtu.osgb_native_chunk_bundle.v1'||marker.schema===MEMORY_ROOT_SCHEMA&&isMemoryFormat(marker.source_format))||marker.depth!==request.depth||marker.complete_frontier!==true)throw Error('Plan source differs from request');
  const result=freeze({marker,markerSHA256:value.markerSHA256});plans.set(result,{identity:sourceBundleIdentity(marker),markerSHA256:value.markerSHA256});return result;
 }
 export function verifyPlannedSource(plan,response,marker){const pinned=plans.get(plan);if(!pinned||response.headers.get('X-XNBY-Source-Marker-SHA256')!==pinned.markerSHA256||!sha.test(pinned.markerSHA256)||!/^[0-9a-f]{32}$/.test(marker?.cache_lease??'')||sourceBundleIdentity(marker)!==pinned.identity)throw new SourcePlanChanged();return true;}

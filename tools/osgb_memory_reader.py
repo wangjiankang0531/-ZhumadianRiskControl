@@ -21,7 +21,11 @@ def integer(value, name, maximum):
 
 
 def parse_frame(data, expected_node, expected_source_bytes):
-    if len(data) < 24 or data[:8] != b"ZMDOSGB1":
+    return _parse_frame(data, expected_node, expected_source_bytes)
+
+
+def _parse_frame(data, expected_node, expected_source_bytes, *, geometry_only=False):
+    if len(data) < 24 or data[:8] != (b"ZMDGEO01" if geometry_only else b"ZMDOSGB1"):
         raise ValueError("invalid OSGB memory frame magic")
     header_size, payload_size = struct.unpack_from("<QQ", data, 8)
     if not 0 < header_size <= MAX_HEADER or not 0 < payload_size <= MAX_PAYLOAD or len(data) != 24 + header_size + payload_size:
@@ -35,7 +39,7 @@ def parse_frame(data, expected_node, expected_source_bytes):
         return result
     descriptor = json.loads(data[24:24+header_size], object_pairs_hook=unique_pairs,
                             parse_constant=lambda value: (_ for _ in ()).throw(ValueError("nonfinite descriptor")))
-    if (descriptor.get("schema") != "zhumadian.osgb.memory.v1" or descriptor.get("node") != expected_node
+    if (descriptor.get("schema") != ("zhumadian.osgb.geometry.v1" if geometry_only else "zhumadian.osgb.memory.v1") or descriptor.get("node") != expected_node
         or descriptor.get("sourceBytes") != expected_source_bytes or descriptor.get("payloadBytes") != payload_size
         or type(descriptor.get("externalReadAttempts")) is not int or descriptor.get("externalReadAttempts") != 0
         or type(descriptor.get("writeAttempts")) is not int or descriptor.get("writeAttempts") != 0
@@ -62,11 +66,15 @@ def parse_frame(data, expected_node, expected_source_bytes):
     for image in images:
         width = integer(image.get("width"), "image width", 8192)
         height = integer(image.get("height"), "image height", 8192)
-        if (not width or not height or width*height*4 > 32*1024*1024 or image.get("format") != "rgba8"
+        if (not width or not height or (not geometry_only and width*height*4 > 32*1024*1024) or image.get("format") != "rgba8"
             or image.get("rowOrder") != "source_storage" or image.get("sourceOrigin") not in ("top_left", "bottom_left")
-            or image.get("bytes") != width*height*4):
+            or (not geometry_only and image.get("bytes") != width*height*4)):
             raise ValueError("invalid memory image")
-        segment(image, 1, "image")
+        if geometry_only:
+            if image.get("pixelsOmitted") is not True or any(k in image for k in ("offset", "bytes", "count")):
+                raise ValueError("geometry frame contains unexpected image payload")
+        else:
+            segment(image, 1, "image")
     vertices = triangles = 0
     for mesh in meshes:
         positions = segment(mesh["positions"], 4, "positions")

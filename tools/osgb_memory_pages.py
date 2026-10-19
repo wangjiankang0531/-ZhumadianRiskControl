@@ -78,7 +78,7 @@ def mesh_metrics(mesh, image, payload):
     return low, high, edges, texels
 
 
-def page(descriptor, payload, mesh, directory, source_name):
+def page(descriptor, payload, mesh, directory, source_name, *, metric_image=None):
     image = descriptor["images"][mesh["image"]]
     rgba = payload[image["offset"]:image["offset"] + image["bytes"]]
     if any(alpha != 255 for alpha in rgba[3::4]):
@@ -117,7 +117,7 @@ def page(descriptor, payload, mesh, directory, source_name):
         "source_spans": [{"geometry_name": geometry_name, "first": 0, "count": single["triangles"] * 3}],
         "source_face_counts": {geometry_name: single["triangles"]},
     }
-    return part, resources, mesh_metrics(mesh, image, payload)
+    return part, resources, mesh_metrics(mesh, metric_image or image, payload)
 
 
 @dataclass(frozen=True)
@@ -136,7 +136,8 @@ class SourceBundle:
         return json.loads(self.marker_json)
 
 
-def build_bundle(tile, catalog, reader, *, depth=None, parent=None, recipe_identity):
+def build_bundle(tile, catalog, reader, *, depth=None, parent=None, recipe_identity,
+                 page_builder=page, source_format=FORMAT):
     if type(tile) is not int or not 1 <= tile <= 2346 or (depth is None) == (parent is None):
         raise ValueError("one root depth or one parent is required")
     if catalog.get("tile_id") != tile or catalog.get("source_directory") != f"assets/驻马店园区/Data/Tile_{tile}":
@@ -175,7 +176,7 @@ def build_bundle(tile, catalog, reader, *, depth=None, parent=None, recipe_ident
         for mesh in descriptor["meshes"]:
             if len(parts) >= 64:
                 raise ValueError("complete source family exceeds the unchanged 64-page bound")
-            part, files, (low, high, mesh_edges, mesh_texels) = page(descriptor, payload, mesh, f"part_{len(parts):03}", name)
+            part, files, (low, high, mesh_edges, mesh_texels) = page_builder(descriptor, payload, mesh, f"part_{len(parts):03}", name)
             parts.append(part)
             resources.update({(part["directory"], key): value for key, value in files.items()})
             if sum(len(value[0]) for value in resources.values()) > 128 * MIB:
@@ -186,6 +187,8 @@ def build_bundle(tile, catalog, reader, *, depth=None, parent=None, recipe_ident
             node["bounds_max"] = [max(a, b) for a, b in zip(node["bounds_max"], high)]
             node_edges.extend(mesh_edges)
             node_texels.extend(mesh_texels)
+        if node["triangles"] != descriptor["triangles"]:
+            raise ValueError("physical pages do not preserve every source triangle")
         node["longest_edge_p90_m"] = percentile(node_edges)
         node["texel_world_p90_m"] = percentile(node_texels)
         edges.extend(node_edges)
@@ -195,12 +198,12 @@ def build_bundle(tile, catalog, reader, *, depth=None, parent=None, recipe_ident
     if not parts or total > (384 if parent is None else 256) * MIB:
         raise ValueError("complete source cut exceeds unchanged bundle budget")
     marker = {
-        "schema": ROOT_SCHEMA if parent is None else FAMILY_SCHEMA, "source_format": FORMAT,
+        "schema": ROOT_SCHEMA if parent is None else FAMILY_SCHEMA, "source_format": source_format,
         "tile_id": tile, "texture_policy": "original_pixels_v1",
         "parts": parts, "source_nodes": records, "indices": sum(p["indices"] for p in parts),
         "gpu_payload_bytes": total, "longest_edge_p90_m": percentile(edges),
         "texel_world_p90_m": percentile(texels),
-        "stamp": sha(canonical({"catalog": catalog, "recipe": recipe_identity, "format": FORMAT})),
+        "stamp": sha(canonical({"catalog": catalog, "recipe": recipe_identity, "format": source_format})),
     }
     if parent is None:
         marker.update(depth=depth, complete_frontier=True)
