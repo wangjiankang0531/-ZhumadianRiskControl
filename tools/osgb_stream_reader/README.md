@@ -30,3 +30,44 @@ python -I -B -X utf8 tools/test_osgb_memory_reader.py
 ```
 
 This reader alone does not enable application LOD. Integration still requires complete-frontier identity, original-pixel cost planning, immutable leases, bounded download/upload/residency, family replacement/retirement and display-surface attachment. Existing strict native tests and budgets must stay unchanged. Do not treat a single-source or single-tile preview as whole-scene acceptance.
+
+
+## Optional WEB source-frontier adapter
+
+The independent source adapter is opt-in; the existing landscape-server default
+does not select it automatically.
+
+- osgb_memory_pages.py seals an entire source cut or direct-child family in RAM.
+  Each source mesh keeps its original image, positions, UV and triangle indices.
+  The explicit osgb_memory_png_v1 format uses geometry.gltf, geometry.bin and
+  texture.png, with a position/UV/Uint32 layout; it is not a legacy JPEG atlas.
+- readonly_source_memory_store.py binds fixed configured catalog/Data/runtime
+  roots and pinned SHA values. One worker, at most 16 queued jobs, a 256 MiB
+  retained-encoded/build-reservation budget, a 128 MiB per-build reservation,
+  at most 256 leases and a 180 second renewable lease lifetime bound ownership.
+  Failed requests are retained, not automatically retried by each client poll.
+  This is not a hard process-RSS limit; decoded OSG and Python objects are extra.
+- source_memory_http.MemorySourceHTTP may precede the existing landscape Handler
+  in a server subclass, configured with memory_sources=MemorySourceStore(...),
+  read_only_lod=True and allow_local_layer_database=False for a file-only preview.
+  Metadata can return HTTP 202 while preparing. Payloads require the exact
+  bundle's RAM lease. Missing/invalid RAM payloads never fall back to the old
+  filesystem producer. Resolve only trusted deployment anchors at configuration
+  time; catalogue file identities and descendant paths are still checked.
+- WEB validates the new schema, PNG identity/dimensions, explicit sampler,
+  triangle ownership and actual parsed geometry. It shares the original
+  residency/upload allocator and complete-family replacement/restore logic.
+  Original RGBA full mip bytes and actual WEB geometry bytes are reserved.
+  Current GPU/page/root/family gates stay unchanged.
+- Display-only billboard height follows the visible source triangles at fixed
+  XY. User coordinates and source files are not rewritten.
+
+The current acceptance is a real local WEB integration and one near/far/near
+return, not the full native two-round/sixteen-station gate, all-enterprise
+coverage, notebook deployment or default-version release.
+
+Additional checks:
+
+    python -m unittest discover -s tools -p test_source_memory_store.py
+    python -m unittest discover -s tools -p test_source_memory_http.py
+    node --test web/tests/source_memory_format.test.mjs web/tests/source_surface_height.test.mjs

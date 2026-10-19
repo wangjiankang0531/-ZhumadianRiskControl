@@ -1,3 +1,4 @@
+import {isMemorySourcePart} from './source_page_format.js';
 // CPU-only, SHA-pinned geometry. No renderer, texture, DOM, network or file IO.
 import {Vector3,Ray,Box3,Matrix4} from 'three';
 const require=(ok,message)=>{if(!ok)throw Error(message);},shaPattern=/^[0-9a-f]{64}$/;
@@ -27,10 +28,10 @@ async function geometryPart(part,packet,sourceNodes){
  const raw=await checked(part,'geometry.gltf',packet.json);require(raw.byteLength<=1048576,'Geometry descriptor exceeds limit');const g=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));const binary=await checked(part,'geometry.bin',packet.binary);
  require(g.asset?.version==='2.0'&&g.buffers?.length===1&&g.buffers[0].uri==='geometry.bin'&&g.buffers[0].byteLength===binary.byteLength&&!g.extensionsRequired?.length&&!g.extensionsUsed?.length,'Unsupported geometry dependencies');
  require(g.nodes?.length===1&&JSON.stringify(g.nodes[0])==='{"mesh":0}'&&g.scene===0&&g.scenes?.length===1&&JSON.stringify(g.scenes[0])==='{"nodes":[0]}'&&g.meshes?.length===1&&g.meshes[0].primitives?.length===1,'Unsupported geometry transforms');
- const primitive=g.meshes[0].primitives[0];require(primitive.mode===undefined&&primitive.material===0&&Object.keys(primitive.attributes??{}).sort().join(',')==='NORMAL,POSITION,TEXCOORD_0'&&g.accessors?.length===4&&g.bufferViews?.length===4,'Unsupported geometry primitive');
- const p=accessor(g,primitive.attributes.POSITION,binary,'VEC3',5126,part.vertices),normal=accessor(g,primitive.attributes.NORMAL,binary,'VEC3',5126,part.vertices),uv=accessor(g,primitive.attributes.TEXCOORD_0,binary,'VEC2',5126,part.vertices),indices=accessor(g,primitive.indices,binary,'SCALAR',5125,part.indices);
- const ranges=[p,normal,uv,indices].sort((a,b)=>a.start-b.start);let end=0;for(const range of ranges){require(range.start===end,'Geometry views overlap or contain unexplained bytes');end=range.end;}require(end===binary.byteLength,'Geometry buffer contains trailing bytes');
- require(p.value.every(Number.isFinite)&&normal.value.every(Number.isFinite)&&uv.value.every(Number.isFinite)&&indices.value.every(i=>i<part.vertices),'Invalid geometry coordinates or indices');
+ const memory=isMemorySourcePart(part),primitive=g.meshes[0].primitives[0];require(primitive.mode===undefined&&primitive.material===0&&Object.keys(primitive.attributes??{}).sort().join(',')===(memory?'POSITION,TEXCOORD_0':'NORMAL,POSITION,TEXCOORD_0')&&g.accessors?.length===(memory?3:4)&&g.bufferViews?.length===(memory?3:4),'Unsupported geometry primitive');
+ const p=accessor(g,primitive.attributes.POSITION,binary,'VEC3',5126,part.vertices),normal=memory?null:accessor(g,primitive.attributes.NORMAL,binary,'VEC3',5126,part.vertices),uv=accessor(g,primitive.attributes.TEXCOORD_0,binary,'VEC2',5126,part.vertices),indices=accessor(g,primitive.indices,binary,'SCALAR',5125,part.indices);
+ const ranges=[p,...(normal?[normal]:[]),uv,indices].sort((a,b)=>a.start-b.start);let end=0;for(const range of ranges){require(range.start===end,'Geometry views overlap or contain unexplained bytes');end=range.end;}require(end===binary.byteLength,'Geometry buffer contains trailing bytes');
+ require(p.value.every(Number.isFinite)&&(!normal||normal.value.every(Number.isFinite))&&uv.value.every(Number.isFinite)&&indices.value.every(i=>i<part.vertices),'Invalid geometry coordinates or indices');
  const owners=new Int32Array(part.indices/3).fill(-1);
  for(let n=0;n<sourceNodes.length;n++)for(const span of sourceNodes[n].spans??[])if(span.part===part.directory){
   require(Number.isSafeInteger(span.first)&&Number.isSafeInteger(span.count)&&span.first>=0&&span.count>0&&span.first%3===0&&span.count%3===0&&span.first+span.count<=part.indices,'Invalid source triangle span');

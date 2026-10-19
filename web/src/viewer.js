@@ -1,3 +1,5 @@
+import {sourceSurfaceHeight} from './source_surface_height.js';
+import {isMemoryFamily} from './source_page_format.js';
 import {updateCommandDashboard} from './command_dashboard.js';
 import {layoutLabels,readLabelOffsets} from './label_layout.js';
 import {supportsSourcePlans,readSourcePlan,verifyPlannedSource,SourcePlanResponseError} from './source_descriptor_plan.js';
@@ -245,11 +247,24 @@ function labelObstacles(){const parent=viewport.getBoundingClientRect(),result=[
  for(const node of document.querySelectorAll('.layout>aside,#tools,#sign-tools,#message')){const r=node.getBoundingClientRect();if(r.width&&r.height&&getComputedStyle(node).visibility!=='hidden')result.push([r.left-parent.left-6,r.top-parent.top-6,r.right-parent.left+6,r.bottom-parent.top+6]);}return result;
 }
 function signMetric(feature,compact){const key=JSON.stringify([feature.name,feature.label.text,feature.label.fontPx,compact]);if(!signMetrics.has(key)){if(signMetrics.size>2000)signMetrics.clear();signMetrics.set(key,measureSign(ctx,feature,compact));}return signMetrics.get(key);}
+const surfaceAnchors=new WeakMap();let surfaceCutKey='',surfaceFrontiers=[];
+function prepareSignSurface(){
+ const entries=$('photo').checked&&sceneOpacity('photo')>0?[...resident.values()].filter(r=>r.frontier):[];
+ surfaceCutKey=entries.map(r=>r.group.uuid+':'+r.frontier.cutVersion).join('|');
+ surfaceFrontiers=entries.map(r=>r.frontier);
+}
+function displayedPoint(f){
+ if(f.type!=='point'||f.label?.placement!=='billboard')return null;
+ let cached=surfaceAnchors.get(f);
+ if(!cached||cached.key!==surfaceCutKey){const original=f.positions[0],height=sourceSurfaceHeight(surfaceFrontiers,original[0],original[1]);cached={key:surfaceCutKey,point:[original[0],original[1],height??original[2]]};surfaceAnchors.set(f,cached);}
+ return cached.point;
+}
+function displayedAnchor(f){const point=displayedPoint(f);return point?new THREE.Vector3(...point):labelWorldAnchor(f);}
 function drawAnnotations(){
-  ctx.clearRect(0,0,width,height);hitTargets=[];if(!layersDoc)return;const records=[],signs=[];
+  ctx.clearRect(0,0,width,height);hitTargets=[];if(!layersDoc)return;const records=[],signs=[];prepareSignSurface();
   for(const l of layersDoc.layers)if(l.visible)for(const f of l.features){
     const opacity=layerOpacities.get(l.id)??1;if(!matches(f,l)||opacity<=0)continue;
-    const rendered=annotationWithOpacity(f,opacity),s=rendered.style,p=f.positions.map(project);let legacyLabelBox=null;ctx.save();ctx.strokeStyle=s.color;ctx.fillStyle=s.fillColor;
+    const rendered=annotationWithOpacity(f,opacity),s=rendered.style,p=(displayedPoint(f)?[displayedPoint(f)]:f.positions).map(project);let legacyLabelBox=null;ctx.save();ctx.strokeStyle=s.color;ctx.fillStyle=s.fillColor;
     ctx.lineWidth=s.widthPx;ctx.setLineDash(s.pattern==='dash'?[12,8]:s.pattern==='dot'?[2,6]:[]);ctx.globalAlpha=s.opacity;
     if(f.type==='point'&&p[0]){
       const [x,y]=markerScreenPoint(p[0],s),size=s.sizePx;ctx.setLineDash([]);
@@ -265,7 +280,7 @@ function drawAnnotations(){
       if(f.type==='region'){ctx.closePath();ctx.globalAlpha=s.fillOpacity;ctx.fill();}
       ctx.globalAlpha=s.opacity;ctx.stroke();
     }
-    ctx.restore();const billboard=rendered.label?.visible&&rendered.label.opacity>0&&rendered.label.placement==='billboard',anchor=billboard?project(labelWorldAnchor(f).toArray()):null;
+    ctx.restore();const billboard=rendered.label?.visible&&rendered.label.opacity>0&&rendered.label.placement==='billboard',anchor=billboard?project(displayedAnchor(f).toArray()):null;
     const record={f,l,rendered,s,p,opacity,legacyLabelBox,billboard};records.push(record);
     if(anchor&&anchor[0]>=0&&anchor[0]<=width&&anchor[1]>=0&&anchor[1]<=height)signs.push({id:f.id,anchor,full:signMetric(rendered,false),compact:signMetric(rendered,true),manual:signOffsets.get(f.id),offset:f.label.offset,selected:f===selected});
   }
@@ -275,6 +290,7 @@ function drawAnnotations(){
   if(key!==signLayoutKey){signLayoutKey=key;signLayoutResult=layoutLabels(signs,{width,height,obstacles,previous:signPrevious,avoid,dragging,preferCompact});}
   const layout=signLayoutResult;
   signPlacements=layout.placements;signPrevious=signPlacements;
+  viewport.dataset.signSurface=JSON.stringify(records.filter(r=>r.f.type==='point'&&r.billboard).map(r=>({id:r.f.id,source:r.f.positions[0],displayed:displayedPoint(r.f)})));
   viewport.dataset.signCount=String(signPlacements.size);viewport.dataset.signOmitted=String(layout.omitted);viewport.dataset.signCompact=String(layout.compact);
   $('sign-status').textContent=layout.omitted?`${layout.omitted} 块牌面暂被收起，请缩放或筛选图层`:layout.compact?'密集视图 · 点选展开详情':'拖动牌面调整位置 · 不改变点位';
   // Paint ordinary labels first; selected/manual cards are painted last and get matching picking order.
@@ -572,7 +588,7 @@ const restoreFailed=new Set();
 function applySourceMasks(ready){ready.frontier.applyMasks();const retired=ready.frontier.releaseHiddenPages();telemetry.retiredCpuPages=(telemetry.retiredCpuPages??0)+retired.pages;telemetry.retiredCpuPayloadBytes=(telemetry.retiredCpuPayloadBytes??0)+retired.bytes;}
 function sourceRestoreFailed(error){telemetry.restoreErrors=(telemetry.restoreErrors??0)+1;message('回退源页读取失败，保留当前完整细层');console.info('[source restore] '+error.message);}
 async function readSourcePages(need,stillWanted){
- const source=need.bundle.marker,isFamily=source.schema==='xnby.osgb_native_family.v1',route=isFamily?`api/lod-family/${need.root}/${encodeURIComponent(source.replacement_parent)}`:`api/lod/${need.root}/${need.ready.depth}`;let downloads=null,staged=null;
+ const source=need.bundle.marker,isFamily=source.schema==='xnby.osgb_native_family.v1'||isMemoryFamily(source),route=isFamily?`api/lod-family/${need.root}/${encodeURIComponent(source.replacement_parent)}`:`api/lod/${need.root}/${need.ready.depth}`;let downloads=null,staged=null;
  try{
   telemetry.restoreRequests=(telemetry.restoreRequests??0)+1;ensureSourceWanted(stillWanted);let response=await fetch(route,{cache:'no-store'});while(response.status===202){await new Promise(resolve=>setTimeout(resolve,300));ensureSourceWanted(stillWanted);response=await fetch(route,{cache:'no-store'});}if(!response.ok)throw sourceResponseError(response,'restore',{root:need.root,parent:source.replacement_parent??null});
   const marker=await response.json();downloads=new LeasedDownloads(marker.cache_lease);ensureSourceWanted(stillWanted);if(sourceBundleIdentity(marker)!==sourceBundleIdentity(originalSourceBundle(source)))throw Error('回退源包与当前场景不一致');

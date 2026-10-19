@@ -1,16 +1,18 @@
+import {isMemorySourcePart,memoryImageInfo,isMemoryFamily,MEMORY_SOURCE_FORMAT,MEMORY_ROOT_SCHEMA} from './source_page_format.js';
 import {validateRuntimeSourceTexture,sourcePageGeometryBytes} from './prepared_source_page.js';
 import {webSourceGeometryBytes,validateLoadedSourceGeometry} from './source_geometry_layout.js';
 import {sourceRestorationFootprint} from './source_page_budget.js';
 import {Vector3,Box3,Frustum,Matrix4,ClampToEdgeWrapping} from 'three';
 
 export function validateSourcePart(part,mesh){if(!mesh?.geometry?.index||mesh.geometry.index.count!==part.indices||mesh.geometry.attributes.position.count!==part.vertices||!/^part_\d{3}$/.test(part.directory)||!Number.isFinite(part.gpu_payload_bytes)||part.gpu_payload_bytes<=0||part.gpu_payload_bytes>32*1048576)throw Error('源模型分批不一致');
-    const side=part.atlas_size,texture=(Array.isArray(mesh.material)?mesh.material[0]:mesh.material)?.map,image=texture?.source?.data;
+    const memory=isMemorySourcePart(part),side=part.atlas_size,texture=(Array.isArray(mesh.material)?mesh.material[0]:mesh.material)?.map,image=texture?.source?.data;
+    const original=memory?memoryImageInfo(part):null;
     const rectangular=['edge_clamped_rect_v1','edge_packed_rect_v1'].includes(part.atlas_layout_policy);
-    if(Object.hasOwn(part,'atlas_extent')!==rectangular)throw Error('矩形源纹理需要显式格式');
-    const extent=rectangular?part.atlas_extent:[side,side];
+    if(!memory&&Object.hasOwn(part,'atlas_extent')!==rectangular)throw Error('矩形源纹理需要显式格式');
+    const extent=memory?[original.width,original.height]:rectangular?part.atlas_extent:[side,side];
     const bounded=Array.isArray(extent)&&extent.length===2&&extent.every(n=>Number.isInteger(n)&&n>=16&&n<=2048&&n%8===0)&&Math.max(...extent)===side;
     const declared=['tight_square_gutter4_v1','edge_clamped_square_v1','edge_clamped_rect_v1','edge_packed_rect_v1'].includes(part.atlas_layout_policy);
-    if(!bounded||(![1024,2048].includes(side)&&!declared)||image?.width!==extent[0]||image?.height!==extent[1])throw Error('源纹理尺寸不一致');
+    if((!memory&&(!bounded||(![1024,2048].includes(side)&&!declared)))||image?.width!==extent[0]||image?.height!==extent[1]||memory&&!part.runtime_texture)throw Error('源纹理尺寸不一致');
     if(['edge_clamped_square_v1','edge_clamped_rect_v1','edge_packed_rect_v1'].includes(part.atlas_layout_policy)&&(texture.wrapS!==ClampToEdgeWrapping||texture.wrapT!==ClampToEdgeWrapping))throw Error('源纹理采样方式不一致');
     let textureBytes=0,w=extent[0],h=extent[1];if(part.runtime_texture){validateLoadedSourceGeometry(mesh.geometry,part);textureBytes=validateRuntimeSourceTexture(part,texture);}else{if(part.source_gpu_payload_bytes!==undefined||texture?.isCompressedTexture)throw Error('未协商压缩源页');for(;;){textureBytes+=w*h*4;if(w===1&&h===1)break;w=Math.max(1,Math.floor(w/2));h=Math.max(1,Math.floor(h/2));}}
     if(part.gpu_payload_bytes!==(part.runtime_texture?webSourceGeometryBytes(part):sourcePageGeometryBytes(part))+textureBytes)throw Error('实际纹理及几何资源账目不一致');
@@ -19,6 +21,7 @@ export function validateSourcePart(part,mesh){if(!mesh?.geometry?.index||mesh.ge
 function retireSourceGpu(mesh){if(mesh.userData.sourceGpuResident===false)return;mesh.geometry.dispose();const material=mesh.userData.sourceMaterial??(Array.isArray(mesh.material)?mesh.material[0]:mesh.material);material.map?.dispose();material.dispose();mesh.userData.sourceGpuResident=false;}
 
 export function validateSourceBundle(marker,meshes){
+  const memory=marker.source_format===MEMORY_SOURCE_FORMAT;if(memory&&!(marker.schema===MEMORY_ROOT_SCHEMA||isMemoryFamily(marker))||marker.parts?.some(p=>isMemorySourcePart(p)!==memory))throw Error('源包与物理页格式不一致');
   if(!Array.isArray(marker.source_nodes)||!marker.source_nodes.length||!Array.isArray(marker.parts)||!marker.parts.length||marker.parts.length>64)throw Error('源节点信息不完整');
   const names=new Set(),ownership=new Map(marker.parts.map(p=>[p.directory,[]]));let total=0;
   for(const node of marker.source_nodes){
@@ -55,7 +58,7 @@ export class SourceFrontier {
   get maxDepth(){const nodes=this.nodes;return Math.max(...[...this.visible].map(n=>nodes.get(n).node.depth));}
   begin(marker,remainingBytes){
     const parent=this.nodes.get(marker.replacement_parent)?.node,children=marker.source_nodes?.map(n=>n.name)??[];
-    if(this.pending||!parent||!this.visible.has(parent.name)||marker.schema!=='xnby.osgb_native_family.v1'||!marker.complete_sibling_family||marker.texture_policy!=='original_pixels_v1'||marker.parent_source_sha256!==parent.source_sha256||children.length!==parent.children.length||new Set(children).size!==children.length||children.some(n=>!parent.children.includes(n))||!marker.parts?.length||marker.parts.length>64||!Number.isSafeInteger(marker.gpu_payload_bytes)||marker.gpu_payload_bytes<=0||marker.gpu_payload_bytes>remainingBytes)throw Error('完整源节点族或资源预算不满足');
+    if(this.pending||!parent||!this.visible.has(parent.name)||!(marker.schema==='xnby.osgb_native_family.v1'||isMemoryFamily(marker))||marker.source_format!==this.nodes.get(parent.name)?.bundle.marker.source_format||!marker.complete_sibling_family||marker.texture_policy!=='original_pixels_v1'||marker.parent_source_sha256!==parent.source_sha256||children.length!==parent.children.length||new Set(children).size!==children.length||children.some(n=>!parent.children.includes(n))||!marker.parts?.length||marker.parts.length>64||!Number.isSafeInteger(marker.gpu_payload_bytes)||marker.gpu_payload_bytes<=0||marker.gpu_payload_bytes>remainingBytes)throw Error('完整源节点族或资源预算不满足');
     const ticket=++this.sequence;this.pending={ticket,marker,ready:new Set()};return ticket;
   }
   markReady(ticket,index){if(this.pending?.ticket!==ticket||index<0||index>=this.pending.marker.parts.length)return false;this.pending.ready.add(index);return true;}
