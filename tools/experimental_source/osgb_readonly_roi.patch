@@ -1,0 +1,105 @@
+--- a/tools/osgb_stream_reader/main.cpp
++++ b/tools/osgb_stream_reader/main.cpp
+@@ -19,6 +19,7 @@
+ #include <limits>
+ #include <map>
+ #include <regex>
++#include <sstream>
+ #include <stdexcept>
+ #include <vector>
+ #ifdef _WIN32
+@@ -138,10 +139,12 @@
+ };
+ class Decoded final : public osg::NodeVisitor {
+ public:
+-  Decoded() : osg::NodeVisitor(TRAVERSE_ALL_CHILDREN) {
+-  }
++  explicit Decoded(bool geometryOnly = false) : osg::NodeVisitor(TRAVERSE_ALL_CHILDREN), geometryOnly(geometryOnly) {
++  }
++  bool geometryOnly = false;
+   std::vector<std::uint8_t> payload;
+   Json meshes = Json::array(), images = Json::array();
++  std::vector<osg::ref_ptr<osg::Image>> imageRefs;
+   std::map<const osg::Image*, std::size_t> imageIds;
+   std::uint64_t triangles = 0, vertices = 0;
+   template <class T> Json append(const std::vector<T>& data) {
+@@ -167,6 +170,15 @@
+     require(format == GL_RGB || format == GL_RGBA || format == GL_BGR || format == GL_BGRA,
+             "unsupported embedded pixel format");
+     const auto pixelCount = std::size_t(image->s()) * std::size_t(image->t());
++    if (geometryOnly) {
++      require(image->s() <= 8192 && image->t() <= 8192, "source image extent exceeds inspection bound");
++      const auto id=images.size();
++      images.push_back(Json{{"width",image->s()},{"height",image->t()},{"format","rgba8"},
++        {"sourcePixelFormat",format},{"rowOrder","source_storage"},
++        {"sourceOrigin",image->getOrigin()==osg::Image::TOP_LEFT?"top_left":"bottom_left"},
++        {"sourceMipLevels",image->getNumMipmapLevels()},{"pixelsOmitted",true}});
++      imageIds.emplace(image,id);imageRefs.emplace_back(image);return id;
++    }
+     require(pixelCount <= maxImage / 4, "embedded image exceeds byte budget");
+     std::vector<std::uint8_t> rgba(pixelCount * 4);
+     const bool bgra = format == GL_BGR || format == GL_BGRA;
+@@ -285,7 +297,7 @@
+ };
+ int execute(const std::vector<fs::path>& args) {
+   try {
+-    require(args.size() == 4,
++    require(args.size() == 4 || (args.size()==5 && (args[4]=="--geometry-only" || std::regex_match(args[4].u8string(),std::regex("--crop=[0-9]{1,4},[0-9]{1,4},[0-9]{1,4},[0-9]{1,4},[0-9]{1,4}")))),
+             "usage: zmd_osgb_stream_reader DATA_ROOT Tile_N/Tile_N_Lx_0u.osgb PRIVATE_PLUGIN_DIRECTORY");
+     const auto file = sourcePath(args[1], args[2]);
+     const auto plugins = args[3];
+@@ -312,11 +324,12 @@
+     auto result = reader->readNode(source, options);
+     osg::ref_ptr<osg::Node> node = result.getNode();
+     require(node.valid(), "OSGB source decoding failed");
+-    Decoded decoded;
++    const bool geometryOnly=args.size()==5;
++    Decoded decoded(geometryOnly);
+     node->accept(decoded);
+     require(!decoded.meshes.empty() && reads->calls == 0 && writes->calls == 0,
+             "source needs an external read or attempted a write");
+-    const Json header{{"schema", "zhumadian.osgb.memory.v1"},
++    Json header{{"schema", geometryOnly?"zhumadian.osgb.geometry.v1":"zhumadian.osgb.memory.v1"},
+                       {"node", args[2].generic_u8string()},
+                       {"sourceBytes", fs::file_size(file)},
+                       {"meshes", decoded.meshes},
+@@ -329,13 +342,38 @@
+                       {"coordinates", "source_local_metres"},
+                       {"uv", "source_unchanged"},
+                       {"littleEndian", true}};
++    const bool cropMode=args.size()==5 && args[4]!="--geometry-only";
++    if (cropMode) {
++      std::vector<int> numbers;auto text=args[4].u8string().substr(7);std::stringstream input(text);std::string number;
++      while (std::getline(input,number,',')) numbers.push_back(std::stoi(number));
++      require(numbers.size()==5,"invalid image crop request");
++      const int id=numbers[0],x=numbers[1],y=numbers[2],width=numbers[3],height=numbers[4];
++      require(id>=0 && std::size_t(id)<decoded.imageRefs.size(),"crop image index is outside source");
++      const auto image=decoded.imageRefs.at(id);
++      require(width>0 && height>0 && x>=0 && y>=0 && x<=image->s()-width && y<=image->t()-height,
++              "crop rectangle escapes original image");
++      require(std::uint64_t(width)*height*4<=maxImage,"crop pixels exceed unchanged byte bound");
++      std::vector<std::uint8_t> rgba(std::size_t(width)*height*4);
++      const auto format=image->getPixelFormat();const bool bgr=format==GL_BGR || format==GL_BGRA;
++      const bool alpha=format==GL_RGBA || format==GL_BGRA;
++      for (int row=0;row<height;++row) for (int column=0;column<width;++column) {
++        const auto* src=image->data(x+column,y+row);auto* dst=rgba.data()+(std::size_t(row)*width+column)*4;
++        dst[0]=src[bgr?2:0];dst[1]=src[1];dst[2]=src[bgr?0:2];dst[3]=alpha?src[3]:255;
++      }
++      decoded.payload=std::move(rgba);
++      header=Json{{"schema","zhumadian.osgb.rgba_crop.v1"},{"node",args[2].generic_u8string()},
++        {"sourceBytes",fs::file_size(file)},{"sourceImage",id},{"sourceWidth",image->s()},{"sourceHeight",image->t()},
++        {"crop",{x,y,width,height}},{"format","rgba8"},{"rowOrder","source_storage"},
++        {"sourceOrigin",image->getOrigin()==osg::Image::TOP_LEFT?"top_left":"bottom_left"},
++        {"payloadBytes",decoded.payload.size()},{"externalReadAttempts",reads->calls},{"writeAttempts",writes->calls}};
++    }
+     const auto text = header.dump();
+     require(text.size() <= 1048576, "source metadata exceeds limit");
+     const std::uint64_t headerSize = text.size(), payloadSize = decoded.payload.size();
+ #ifdef _WIN32
+     require(_setmode(_fileno(stdout), _O_BINARY) != -1, "cannot use binary stdout");
+ #endif
+-    std::cout.write("ZMDOSGB1", 8);
++    std::cout.write(cropMode?"ZMDROI01":geometryOnly?"ZMDGEO01":"ZMDOSGB1", 8);
+     std::cout.write(reinterpret_cast<const char*>(&headerSize), 8);
+     std::cout.write(reinterpret_cast<const char*>(&payloadSize), 8);
+     std::cout.write(text.data(), text.size());

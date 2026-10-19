@@ -1,0 +1,21 @@
+{
+  "schema": "zhumadian.experimental_source_overlay.v1",
+  "name": "osgb_readonly_roi",
+  "baseFiles": {
+    "tools/osgb_stream_reader/CMakeLists.txt": "e17bf9c8be63fff9177ec58c9c83c1bc0bb4ddd57426ea6a0d6fd2c565b9cb7a",
+    "tools/osgb_stream_reader/main.cpp": "ae0e3a466b25348fc0e10ce39e0ecfcb4a9be943dd6e6d9fc72bcca63812c366"
+  },
+  "normalizeBaseLF": [
+    "tools/osgb_stream_reader/main.cpp"
+  ],
+  "restoreTargetCRLF": [
+    "tools/osgb_stream_reader/main.cpp"
+  ],
+  "targetFiles": {
+    "tools/osgb_stream_reader/CMakeLists.txt": "e17bf9c8be63fff9177ec58c9c83c1bc0bb4ddd57426ea6a0d6fd2c565b9cb7a",
+    "tools/osgb_stream_reader/main.cpp": "699f31d294795984b17c04e269985227b2a9ea49216a4f012b02f3d16ad6ac31"
+  },
+  "patch": "osgb_readonly_roi.patch",
+  "patchSHA256": "23a3fcf7f25871effa1c3b1361109693a15a5eb32c265ddaa5d7937a38e24a4b",
+  "dataFilesIncluded": false
+}
