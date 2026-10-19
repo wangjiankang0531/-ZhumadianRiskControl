@@ -257,4 +257,7 @@ class MemorySourceStore:
         with self.lock:
             self.closed = True
         self.executor.shutdown(wait=True, cancel_futures=True)
+        close_reader = getattr(self.reader, "close", None)
+        if close_reader is not None:
+            close_reader()
 

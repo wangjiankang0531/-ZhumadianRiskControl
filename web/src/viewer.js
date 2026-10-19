@@ -13,7 +13,8 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {drawLabel,drawSign,drawSignLeader,measureSign,labelWorldAnchor,labelFramingPositions,markerScreenPoint,signFootFeature} from './labels.js';
 import {LayerLoading} from './layer_loading.js';
-import {topics,categories,documentFingerprint,parseSpatialCatalog,spatialObject,inTopic,scopedObjects,topicCounts,catalogOrphans} from './spatial_catalog.js';
+import {topics,categories,documentFingerprint,parseSpatialCatalog,spatialObject,catalogOrphans} from './spatial_catalog.js';
+import {inSceneTopic as inTopic,scopedSceneObjects as scopedObjects,sceneTopicCounts as topicCounts} from './spatial_scene_scope.js';
 import {opacityFromTransparency,annotationWithOpacity,applyModelOpacity} from './view_opacity.js';
 import {businessDetailRows} from './business_binding.js';
 import {validateLandscapeDocument as validate} from './landscape_document.js';
@@ -69,10 +70,11 @@ function sourceResponseError(response,operation,source){
  const error=Error(notice+'，继续显示已有地景。');error.httpStatus=status;return error;
 }
 function preset(name){visibilityReady=false;
+  const damping=controls.enableDamping;controls.enableDamping=false;controls.update();
   if(name==='overview'){camera.position.set(-4300,-5200,6700);controls.target.set(650,200,20);}
   else if(name==='oblique'){camera.position.set(-2100,-3400,1900);controls.target.set(650,-300,35);}
   else {const r=catalog?.root_records.find(r=>r.tile_id===141);const x=r?(r.bounds_min[0]+r.bounds_max[0])/2:-286.5,y=r?(r.bounds_min[1]+r.bounds_max[1])/2:-1965,z=r?r.bounds_min[2]:35;camera.position.set(x,y-80,z+100);controls.target.set(x,y,z+8);}
-  controls.update();epoch++;lastStation=name;
+  controls.update();controls.enableDamping=damping;epoch++;lastStation=name;
 }
 function photograph(group){group.traverse(node=>{if(node.isMesh){const old=node.material;const map=old.map;if(map){map.anisotropy=sourcePageTextureIdentity(map)?.samplingContract?1:Math.min(16,renderer.capabilities.getMaxAnisotropy());map.needsUpdate=true;}node.material=new THREE.MeshBasicMaterial({map,side:THREE.DoubleSide,color:0xffffff});old.dispose();}});return group;}
 async function loadModel(url,group,label,keepParser=false){
@@ -368,7 +370,7 @@ function refreshPortal(){
   refreshEmergencyResources();const command=activeTopic==='emergency',wasCommand=document.body.classList.contains('command-view');document.body.classList.toggle('command-view',command);if(command!==wasCommand)$('layer-settings').open=!command;document.querySelector('header>strong').textContent=command?'驻马店 · 敏捷应急指挥':'驻马店重大风险防控';updateCommandDashboard(layersDoc);
   const counts=topicCounts(layersDoc?.layers,activeCatalog());
   for(const button of $('topic-nav').querySelectorAll('button')){const key=button.dataset.topic;button.setAttribute('aria-pressed',String(activeTopic===key));button.querySelector('small').textContent=counts[key];}
-  $('topic-title').textContent=topics[activeTopic]?.name??'全部图层';$('topic-description').textContent=topics[activeTopic]?.description??(dataMode==='authenticated'?'浏览当前账号获准访问的空间对象和业务详情':'浏览编辑器保存的全部点线面与图层');
+  $('topic-title').textContent=topics[activeTopic]?.name??'全部图层';$('topic-description').textContent=activeTopic==='emergency'?'企业分布作为场景参照，叠加危险源、消防和应急资源':topics[activeTopic]?.description??(dataMode==='authenticated'?'浏览当前账号获准访问的空间对象和业务详情':'浏览编辑器保存的全部点线面与图层');
   const objects=scopedObjects(layersDoc?.layers,activeTopic,$('object-category').value,activeCatalog());
   const shown=objects.filter(({feature,layer})=>visibleFeature(feature,layer)&&(layerOpacities.get(layer.id)??1)>0).length;
   const bound=objects.filter(({feature})=>feature.business).length;
