@@ -25101,7 +25101,7 @@ namespace {
     }
     if (cli_.landscapeEditor && message == WM_COMMAND) {
       const int id = LOWORD(wparam), notification = HIWORD(wparam);
-      const bool property = (id >= 3050 && id <= 3059) || (id >= 3070 && id <= 3076);
+      const bool property = (id >= 3050 && id <= 3059) || (id >= 3070 && id <= 3076) || (id >= 3140 && id <= 3141);
       if (!editorRefreshing_ && property && notification == EN_SETFOCUS) {
         editorLiveControl_ = id;
         editorLiveCheckpoint_ = false;

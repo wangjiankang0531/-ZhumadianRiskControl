@@ -226,6 +226,13 @@ namespace hongtu::landscape {
             {"offset", {12, -16}}};
   }
   inline void validateLabel(const Json& label) {
+    if (label.contains("placement") && label.at("placement") != "screen" && label.at("placement") != "billboard")
+      throw std::runtime_error("不支持的标牌显示方式");
+    if (label.contains("heightM")) {
+      const auto& height = label.at("heightM");
+      if (!height.is_number() || !std::isfinite(height.get<double>()) || height.get<double>() < 0 || height.get<double>() > 500)
+        throw std::runtime_error("立体标牌高度须为 0 到 500 米");
+    }
     label.at("visible").get<bool>();
     if (label.at("text").get<std::string>().size() > 768)
       throw std::runtime_error("文字标牌最多 256 个汉字");

@@ -1,3 +1,4 @@
+import {labelOptions} from './label_options.js';
 import * as THREE from 'three';
 export function labelAnchor(feature) {
   const p=feature.positions.map(v=>new THREE.Vector3(...v));
@@ -14,11 +15,29 @@ export function labelAnchor(feature) {
   for(let k=1;k<p.length;k++){const segment=p[k].distanceTo(p[k-1]);if(segment>.0001&&remaining<=segment)return p[k-1].clone().lerp(p[k],remaining/segment);remaining-=segment;}
   return p.at(-1);
 }
+export function labelWorldAnchor(feature) {
+  const anchor=labelAnchor(feature),options=labelOptions(feature.label);
+  return options.placement==='billboard'?anchor.clone().add(new THREE.Vector3(0,0,options.heightM)):anchor;
+}
+export function labelFramingPositions(feature) {
+  return feature.label?.visible&&feature.label.opacity>0&&labelOptions(feature.label).placement==='billboard'
+    ? [...feature.positions,labelWorldAnchor(feature).toArray()] : feature.positions;
+}
 export function drawLabel(ctx,feature,project) {
   const label=feature.label;if(!label?.visible||label.opacity<=0)return;
-  const text=label.text||feature.name,p=project(labelAnchor(feature).toArray());if(!p||!text)return;
+  const options=labelOptions(label),text=label.text||feature.name,p=project(labelWorldAnchor(feature).toArray());if(!p||!text)return;
   const x=p[0]+label.offset[0],y=p[1]+label.offset[1];ctx.save();
   ctx.font=`${label.fontPx}px "Microsoft YaHei",sans-serif`;ctx.textBaseline='top';ctx.globalAlpha=label.opacity;
-  ctx.fillStyle='rgba(9,18,26,.8)';ctx.fillRect(x-4,y-2,ctx.measureText(text).width+8,label.fontPx+8);
-  ctx.fillStyle=label.color;ctx.fillText(text,x,y);const box=[x-4,y-2,x+ctx.measureText(text).width+4,y+label.fontPx+6];ctx.restore();return box;
+  const lines=options.placement==='billboard'?text.split(/\r?\n/u):[text];
+  const width=Math.max(...lines.map(line=>ctx.measureText(line).width)),lineHeight=Math.ceil(label.fontPx*1.4),height=options.placement==='billboard'?lines.length*lineHeight:label.fontPx+4;
+  if(options.placement==='billboard') {
+    const ground=project(labelAnchor(feature).toArray());
+    ctx.strokeStyle=feature.style.color;ctx.lineWidth=2;
+    ctx.beginPath();if(ground){ctx.moveTo(...ground);ctx.lineTo(...p);}ctx.moveTo(...p);ctx.lineTo(x,y);ctx.stroke();
+    ctx.fillStyle='rgba(3,23,40,.9)';ctx.fillRect(x+1,y+3,width+12,height+8);
+    ctx.strokeStyle=feature.style.color;ctx.lineWidth=1;ctx.strokeRect(x-6,y-4,width+12,height+8);
+  }
+  ctx.fillStyle='rgba(9,18,26,.86)';ctx.fillRect(x-4,y-2,width+8,height+4);
+  ctx.fillStyle=label.color;lines.forEach((line,i)=>ctx.fillText(line,x,y+i*lineHeight));
+  const box=[x-6,y-4,x+width+6,y+height+4];ctx.restore();return box;
 }

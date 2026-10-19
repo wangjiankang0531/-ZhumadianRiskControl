@@ -235,7 +235,7 @@ void ShowcaseInteractiveApp::editorPanelLayout() {
     return MulDiv(v, editorDpi_, 96);
   };
   const int available = std::max(1L, client.bottom - px(48));
-  const int content = px(1220);
+  const int content = px(1294);
   editorScroll_ = std::clamp(editorScroll_, 0, std::max(0, content - available));
   SCROLLINFO info{sizeof(info), SIF_RANGE | SIF_PAGE | SIF_POS};
   info.nMin = 0;
@@ -699,6 +699,52 @@ void ShowcaseInteractiveApp::editorCommand(int id) {
       cli_.zhumadianView = id == 3005 ? "overview" : id == 3006 ? "oblique" : "close";
       settings_ = applyCliOverrides(cli_, settingsForPreset(cli_.preset, sceneConfig_));
       applyCameraPreset();
+    } else if (id == 3127) {
+      if (editorFeature_ < 0 || layer["locked"].get<bool>())
+        throw std::runtime_error("请先选择未锁定图层中的企业点位");
+      const auto source = features[editorFeature_];
+      if (source.at("type") != "point" || !source.contains("business") || source["business"].at("objectType") != "enterprise")
+        throw std::runtime_error("请选择已关联企业资料的点位，再绘制企业边界");
+      auto candidate = editorDocument_;
+      int target = -1;
+      for (int i = 0; i < int(candidate["layers"].size()); ++i)
+        if (candidate["layers"][i]["id"] == "customer-enterprise-boundaries") target = i;
+      if (target < 0) {
+        candidate["layers"].push_back({{"id", "customer-enterprise-boundaries"}, {"name", "企业边界（人工描绘待核实）"}, {"visible", true}, {"locked", false}, {"features", Json::array()}});
+        target = int(candidate["layers"].size()) - 1;
+      }
+      if (candidate["layers"][target]["locked"].get<bool>())
+        throw std::runtime_error("企业边界图层已锁定，请先解锁");
+      hongtu::landscape::validate(candidate);
+      if (candidate != editorDocument_) {
+        editorCheckpoint();
+        editorDocument_ = std::move(candidate);
+      }
+      editorLayer_ = target;
+      editorFeature_ = -1;
+      editorTabIndex_ = 2;
+      TabCtrl_SetCurSel(editorControls_[3102], 2);
+      editorDraft_ = source;
+      editorDraft_.erase("id");
+      editorDraft_["name"] = source.at("name").get<std::string>() + " · 边界待核实";
+      editorDraft_["type"] = "region";
+      editorDraft_["positions"] = Json::array();
+      editorDraft_["style"]["opacity"] = 1;
+      editorDraft_["style"]["fillOpacity"] = .18;
+      if (!editorDraft_.contains("label"))
+        editorDraft_["label"] = hongtu::landscape::defaultLabel();
+      if (!editorDraft_.contains("provenance") || !editorDraft_["provenance"].is_object())
+        editorDraft_["provenance"] = Json::object();
+      editorDraft_["label"]["placement"] = "billboard";
+      editorDraft_["label"]["heightM"] = 60;
+      editorDraft_["provenance"]["boundaryStatus"] = "manually_traced_unverified";
+      editorDraft_["provenance"]["geometrySource"] = "manual_draw_local_landscape";
+      editorDraft_["provenance"]["sourceEnterprisePointId"] = source.at("id");
+      editorMode_ = "region";
+      refreshEditor();
+      editorSelectFeature();
+      SetWindowTextW(editorControls_[3091], L"企业资料已带入。沿厂界落点，Enter 闭合；保存前请核实边界。草稿尚未写入文件。");
+      return;
     } else if (id == 3008 && editorFeature_ >= 0) {
       auto p = hongtu::landscape::positions(features[editorFeature_]);
       glm::vec3 center(0);
@@ -714,6 +760,8 @@ void ShowcaseInteractiveApp::editorCommand(int id) {
       editorDraft_["positions"] = Json::array();
       editorFeature_ = -1;
       editorDraft_.erase("name");
+      editorDraft_.erase("business");
+      editorDraft_.erase("provenance");
       editorSelectFeature();
     } else if (id == 3020) {
       int selection = int(SendMessageW(editorControls_[3020], LB_GETCURSEL, 0, 0));

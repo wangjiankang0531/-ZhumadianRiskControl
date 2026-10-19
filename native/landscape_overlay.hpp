@@ -25,8 +25,8 @@ namespace hongtu::landscape {
       int slot = -1, width = 0, height = 0;
     };
     std::map<std::string, TextTexture> textTextures;
-    TextTexture textTexture(const std::string& text, int fontPx) {
-      const auto key = "label:" + std::to_string(fontPx) + ":" + text;
+    TextTexture textTexture(const std::string& text, int fontPx, bool multiline = false) {
+      const auto key = std::string(multiline ? "sign:" : "label:") + std::to_string(fontPx) + ":" + text;
       if (auto found = textTextures.find(key); found != textTextures.end())
         return found->second;
       TextTexture result;
@@ -52,8 +52,14 @@ namespace hongtu::landscape {
       auto oldFont = SelectObject(dc, font);
       SIZE size{};
       GetTextExtentPoint32W(dc, wide.data(), count, &size);
+      if (multiline) {
+        RECT measured{0, 0, 480, 0};
+        DrawTextW(dc, wide.data(), count, &measured, DT_LEFT | DT_NOPREFIX | DT_WORDBREAK | DT_CALCRECT);
+        size.cx = measured.right;
+        size.cy = measured.bottom;
+      }
       result.width = std::clamp(int(size.cx) + 4, 4, 4096);
-      result.height = std::max(int(size.cy) + 4, 4);
+      result.height = std::clamp(int(size.cy) + 4, 4, 4096);
       BITMAPINFO info{};
       info.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
       info.bmiHeader.biWidth = result.width;
@@ -68,7 +74,12 @@ namespace hongtu::landscape {
         std::memset(bits, 0, size_t(result.width) * result.height * 4);
         SetBkMode(dc, TRANSPARENT);
         SetTextColor(dc, RGB(255, 255, 255));
-        TextOutW(dc, 2, 2, wide.data(), count);
+        if (multiline) {
+          RECT paint{2, 2, result.width - 2, result.height - 2};
+          DrawTextW(dc, wide.data(), count, &paint, DT_LEFT | DT_NOPREFIX | DT_WORDBREAK);
+        } else {
+          TextOutW(dc, 2, 2, wide.data(), count);
+        }
         GdiFlush();
         auto bytes = static_cast<uint8_t*>(bits);
         std::vector<uint8_t> rgba(size_t(result.width) * result.height * 4);
@@ -161,13 +172,41 @@ namespace hongtu::landscape {
           if (label["visible"].get<bool>() && label["opacity"].get<float>() > 0) {
             const auto text =
                 label["text"].get<std::string>().empty() ? f.value("name", "") : label["text"].get<std::string>();
-            auto pixel = project(isDraft ? p[0] : labelAnchor(f), vp, width, height);
+            const bool elevated = label.value("placement", "screen") == "billboard";
+            const auto anchor = isDraft ? p[0] : labelAnchor(f);
+            const auto signAnchor = anchor + glm::vec3(0, 0, elevated ? label.value("heightM", 60.f) : 0.f);
+            auto pixel = project(signAnchor, vp, width, height);
             if (pixel && !text.empty()) {
-              auto texture = textTexture(text, int(label["fontPx"].get<float>()));
+              auto texture = textTexture(text, int(label["fontPx"].get<float>()), elevated);
               if (texture.slot >= 0) {
                 const glm::vec2 start =
                     *pixel + glm::vec2(label["offset"][0].get<float>(), label["offset"][1].get<float>());
                 const glm::vec2 end = start + glm::vec2(texture.width, texture.height);
+                if (elevated) {
+                  const auto accent = color(s.at("color"), label["opacity"].get<float>());
+                  const auto stroke = [&](glm::vec2 a, glm::vec2 b, float thickness) {
+                    const auto delta = b - a;
+                    const float length = glm::length(delta);
+                    if (length <= .001f) return;
+                    const auto side = glm::vec2(-delta.y, delta.x) / length * thickness * .5f;
+                    triangle(a - side, a + side, b + side, accent);
+                    triangle(a - side, b + side, b - side, accent);
+                  };
+                  if (auto ground = project(anchor, vp, width, height)) {
+                    stroke(*ground, *pixel, 2.f);
+                    stroke(*pixel, start, 2.f);
+                  }
+                  // A raised, camera-facing card remains tied to its actual world anchor.
+                  const auto depth = glm::vec2(5, 5);
+                  const auto a = start - glm::vec2(6, 4), b = end + glm::vec2(6, 4);
+                  const auto shade = glm::vec4(.02f, .09f, .15f, .9f * label["opacity"].get<float>());
+                  triangle(a + depth, {b.x + 5, a.y + 5}, b + depth, shade);
+                  triangle(a + depth, b + depth, {a.x + 5, b.y + 5}, shade);
+                  stroke({a.x, a.y}, {b.x, a.y}, 2.f);
+                  stroke({a.x, a.y}, {a.x, b.y}, 2.f);
+                  stroke({a.x, b.y}, {b.x, b.y}, 1.f);
+                  stroke({b.x, a.y}, {b.x, b.y}, 1.f);
+                }
                 const auto background = glm::vec4(.035f, .07f, .1f, .8f * label["opacity"].get<float>());
                 triangle(start - glm::vec2(4, 2), {end.x + 4, start.y - 2}, end + glm::vec2(4, 2), background);
                 triangle(start - glm::vec2(4, 2), end + glm::vec2(4, 2), {start.x - 4, end.y + 2}, background);

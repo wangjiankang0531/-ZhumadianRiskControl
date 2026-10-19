@@ -33,6 +33,8 @@ bool ShowcaseInteractiveApp::initEditorPanel() {
                                   hinstance_,
                                   this);
   auto add = [&](int id, const wchar_t* kind, const wchar_t* name, int x, int y, int w, int h, DWORD flags = 0) {
+    if (y >= 569)
+      y += 74;
     auto control = CreateWindowExW(
         std::wstring(kind) == L"EDIT" ? WS_EX_CLIENTEDGE : 0,
         kind,
@@ -115,7 +117,17 @@ bool ShowcaseInteractiveApp::initEditorPanel() {
   label(3112, L"填充透明度", 233, 500, 76);
   edit(3059, L"0.25", 309, 497, 97);
   add(3070, L"BUTTON", L"显示文字标牌", 14, 535, 140, 24, BS_AUTOCHECKBOX);
-  edit(3071, L"", 158, 535, 248);
+  add(3071, L"EDIT", L"", 158, 535, 248, 70, ES_MULTILINE | ES_AUTOVSCROLL | WS_VSCROLL);
+  auto placement = add(3141, L"COMBOBOX", L"", 14, 609, 178, 180, CBS_DROPDOWNLIST);
+  SendMessageW(placement, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"普通文字标牌"));
+  SendMessageW(placement, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"立体信息标牌"));
+  SendMessageW(placement, CB_SETCURSEL, 0, 0);
+  label(3142, L"离锚点高度 m", 199, 609, 94);
+  edit(3140, L"60", 309, 609, 97);
+  for (int control : {3140, 3141, 3142}) {
+    editorControlRects_[control].top -= 74;
+    editorControlRects_[control].bottom -= 74;
+  }
   label(3113, L"字号 px", 14, 569, 62);
   edit(3072, L"16", 80, 567, 55);
   edit(3073, L"#FFFFFF", 143, 567, 106);
@@ -179,6 +191,7 @@ bool ShowcaseInteractiveApp::initEditorPanel() {
   edit(3124, L"", 94, 1091, 312);
   button(3125, L"应用关联", 14, 1126, 132);
   button(3126, L"解除关联", 154, 1126, 132);
+  button(3127, L"绘企业边界", 294, 1126, 112);
   label(3136, L"企业编号可留空；应用后保存。业务数据尚未接入。", 14, 1161, 392);
   for (auto item : {std::pair{3192, L"左"}, std::pair{3193, L"右"}, std::pair{3191, L"收起"}}) {
     const int x = item.first == 3192 ? 234 : item.first == 3193 ? 280 : 326;
@@ -261,7 +274,7 @@ void ShowcaseInteractiveApp::refreshEditor() {
   std::wstring status = mode + L"\n顶点数：" + std::to_wstring(count) + L"  " + editorFile_.filename().wstring() +
                         (editorDirty_ ? L"（未保存）" : L"（已保存）");
   SetWindowTextW(editorControls_[3091], status.c_str());
-  for (int id : {3121, 3122, 3123, 3124, 3125, 3126})
+  for (int id : {3121, 3122, 3123, 3124, 3125, 3126, 3127})
     EnableWindow(editorControls_[id], editorFeature_ >= 0 && !layers[editorLayer_]["locked"].get<bool>());
   editorRefreshing_ = false;
   editorVertices();
@@ -304,6 +317,8 @@ void ShowcaseInteractiveApp::editorSelectFeature() {
     SetWindowTextW(editorControls_[id], editorWide(label[key].dump()).c_str());
   SetWindowTextW(editorControls_[3075], editorWide(label["offset"][0].dump()).c_str());
   SetWindowTextW(editorControls_[3076], editorWide(label["offset"][1].dump()).c_str());
+  SendMessageW(editorControls_[3141], CB_SETCURSEL, label.value("placement", "screen") == "billboard" ? 1 : 0, 0);
+  SetWindowTextW(editorControls_[3140], editorWide(label.value("heightM", Json(60)).dump()).c_str());
   SetWindowTextW(editorControls_[3120], editorWide(f.value("id", "完成绘制后生成")).c_str());
   const auto business = f.value("business", Json::object());
   const auto& objectTypes = hongtu::landscape::businessObjectTypes();
@@ -388,6 +403,10 @@ Json ShowcaseInteractiveApp::editorLabel() {
   label["color"] = text(3073);
   label["opacity"] = number(3057);
   label["offset"] = {number(3075), number(3076)};
+  if (SendMessageW(editorControls_[3141], CB_GETCURSEL, 0, 0) == 1) {
+    label["placement"] = "billboard";
+    label["heightM"] = number(3140);
+  }
   hongtu::landscape::validateLabel(label);
   return label;
 }

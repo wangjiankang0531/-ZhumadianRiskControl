@@ -355,6 +355,15 @@ def presentation(feature, private):
         ):
             raise ValueError("invalid label offset")
         label = {name: original[name] for name in required}
+        if "placement" in original:
+            if original["placement"] not in ("screen", "billboard"):
+                raise ValueError("invalid label placement")
+            label["placement"] = original["placement"]
+        if "heightM" in original:
+            height = original["heightM"]
+            if type(height) not in (int, float) or not math.isfinite(height) or not 0 <= height <= 500:
+                raise ValueError("invalid label height")
+            label["heightM"] = height
     return style, label
 
 
