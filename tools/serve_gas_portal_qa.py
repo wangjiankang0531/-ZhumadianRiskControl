@@ -11,14 +11,18 @@ from services.gas_demo import seed
 from tools.serve_business_portal_qa import QAHandler,configure_fixture
 from tools.authenticated_portal_server import PortalServer
 
-def configure_gas_fixture(probe,path):
+def configure_gas_fixture(probe,path,*,nearby_demo=False):
     configure_fixture(probe)
     points=[]
     for i,(x,y) in enumerate([(-470,-2220),(-310,-2180),(-200,-2240)],1):
         identity='qa-gas-'+str(i);points.append(identity)
         probe.layers['layers'][0]['features'].append({'id':identity,'name':'合成公共气体监测点 '+str(i),'type':'point','positions':[[x,y,65]],'style':{'icon':'warning','color':'#23A6AD'},'label':{'text':'合成气体点 '+str(i)}})
+    context_objects=[];context_public=[]
+    if nearby_demo:
+        from tools.gas_nearby_demo import extend
+        context_objects,context_public=extend(probe)
     probe.write('layers.json',probe.layers)
-    catalog={'schema':'xnby.spatial.catalog.v1','scene':'zhumadian','layerFingerprint':fingerprint(probe.layers),'exportedAt':probe.records['exportedAt'],'objects':[{'spatialId':identity,'category':'gas-monitor','themes':['monitoring']} for identity in points]}
+    catalog={'schema':'xnby.spatial.catalog.v1','scene':'zhumadian','layerFingerprint':fingerprint(probe.layers),'exportedAt':probe.records['exportedAt'],'objects':[{'spatialId':identity,'category':'gas-monitor','themes':['monitoring']} for identity in points]+context_objects}
     probe.write('spatial.json',catalog)
     for person in probe.policy['principals']:
         subject=person['subject']
@@ -33,7 +37,7 @@ def configure_gas_fixture(probe,path):
     try:version=repository.get('QA')['revision']
     except Exception:version=0
     repository.import_bytes('QA','default',json.dumps(probe.layers,ensure_ascii=False).encode(),version)
-    probe.config['businessDatabase']=str(path);probe.config['data'].update(layerDocument='default',spatial='spatial.json',publicSpatialIds=['public',*points]);probe.config['gas']={'sourceSystem':'XNBY-GAS-DEMO','sourceSubjects':['QA-GAS-SOURCE'],'emergencySystem':'XNBY-EMERGENCY-DEMO','resultSubjects':['QA-GAS-RESULT']};probe.write('config.json',probe.config)
+    probe.config['businessDatabase']=str(path);probe.config['data'].update(layerDocument='default',spatial='spatial.json',publicSpatialIds=['public',*points,*context_public]);probe.config['gas']={'sourceSystem':'XNBY-GAS-DEMO','sourceSubjects':['QA-GAS-SOURCE'],'emergencySystem':'XNBY-EMERGENCY-DEMO','resultSubjects':['QA-GAS-RESULT']};probe.write('config.json',probe.config)
     service=Service(probe.root/'config.json');probe.service=service;probe.server.service=service
     from services.focus_demo import seed as seed_focus
     seed_focus(service.focus);seed(service.gas,points)
@@ -69,13 +73,13 @@ class GasQAServer(PortalServer):
         return super().server_bind()
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--port',type=int,default=8822);p.add_argument('--database',type=Path,required=True);p.add_argument('--static',type=Path,required=True);p.add_argument('--scene-url');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--port',type=int,default=8822);p.add_argument('--database',type=Path,required=True);p.add_argument('--static',type=Path,required=True);p.add_argument('--scene-url');p.add_argument('--nearby-demo',action='store_true');a=p.parse_args()
     if not 1<=a.port<=65535:p.error('invalid port')
     if not (a.static/'gas.html').is_file():p.error('build the gas webpage first')
     if a.scene_url:
         u=urlsplit(a.scene_url)
         if u.scheme!='http' or u.hostname not in ('127.0.0.1','localhost') or u.username or u.password or u.query or u.fragment:p.error('scene URL must be an explicit loopback URL')
-    ApiTests.setUpClass();probe=ApiTests();probe.setUp();points=configure_gas_fixture(probe,a.database.resolve());origin='http://127.0.0.1:'+str(a.port);configuration={'schema':'xnby.portal.config.v1','mode':'authenticated','development':True,'oauth':{'issuer':'https://qa.identity.invalid','clientId':'qa-client','authorizationEndpoint':origin+'/qa/oauth/authorize','tokenEndpoint':origin+'/qa/oauth/token','scope':'spatial:read business:read focus:read focus:track focus:feedback gas:read gas:verify gas:cooperate gas:handoff'}}
+    ApiTests.setUpClass();probe=ApiTests();probe.setUp();points=configure_gas_fixture(probe,a.database.resolve(),nearby_demo=a.nearby_demo);origin='http://127.0.0.1:'+str(a.port);configuration={'schema':'xnby.portal.config.v1','mode':'authenticated','development':True,'oauth':{'issuer':'https://qa.identity.invalid','clientId':'qa-client','authorizationEndpoint':origin+'/qa/oauth/authorize','tokenEndpoint':origin+'/qa/oauth/token','scope':'spatial:read business:read focus:read focus:track focus:feedback gas:read gas:verify gas:cooperate gas:handoff'}}
     GasQAHandler.static=a.static.resolve();GasQAHandler.scene_url=a.scene_url;server=GasQAServer(('127.0.0.1',a.port),probe.server.server_port,configuration,GasQAHandler);server.qa_role_labels={'QA-A':'园区核实人员（合成验收）','QA-B':'模拟B企业 · 配合人员','QA-PUBLIC':'公共点位 · 只读人员','QA-FEEDBACK':'模拟A企业 · 配合人员','QA-READER':'模拟A企业 · 只读人员'};server.probe=probe;server.qa_lock=threading.Lock();server.transactions={};server.codes={}
     print(json.dumps({'pid':__import__('os').getpid(),'port':a.port,'database':str(a.database),'schema':4,'synthetic':True,'points':points}),flush=True)
     try:server.serve_forever()

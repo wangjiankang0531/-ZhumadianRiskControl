@@ -616,11 +616,11 @@ async function configureBusinessConnection(){
     if(gasFocusError){gasFocusNotice('气体点位定位请求无效，请返回工作台重试');gasFocusError=null;}
     const currentGasDocument=layersDoc;
     if(gasFocus){const request=gasFocus;gasFocus=null;try{
-      const result=await businessConnection.gasPoint(request.id,request.revision,data.datasetVersion);
+      const result=await businessConnection.gasPoint(request.id,request.revision,data.datasetVersion,request);
       if(layersDoc!==currentGasDocument)return;
       const target=gasSceneTarget(result,request,layersDoc,data.datasetVersion);
       selectFeature(target.feature,target.layer,'gas-event');locate();
-      gasFocusNotice(`已定位气体异常关联点位：${target.feature.name} · 事件版本 ${request.revision}`);
+      gasFocusNotice(`已定位气体异常${request.objectId?'周边对象':'关联点位'}：${target.feature.name} · 事件版本 ${request.revision}`);
     }catch(error){gasFocusNotice(error.code==='REVISION_CONFLICT'?'气体异常记录已更新，请返回工作台刷新后再定位':error.code==='POINT_HIDDEN'?'关联点位所在图层已隐藏，请在图层管理中开启后定位':'气体点位定位未完成：'+(connectionMessages[error.code]??'点位不可用或无访问权限'));}}
 
   }});

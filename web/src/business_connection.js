@@ -79,11 +79,13 @@ export class BusinessConnection {
       this.onState({state:'ready',session,businessState});return true;
     }catch(e){if(generation===this.#generation)this.#failed(e.code??'DATA_INVALID');return false;}
   }
-  async gasPoint(id,revision,datasetVersion){
+  async gasPoint(id,revision,datasetVersion,target=null){
     if(!this.session||!this.session.permissions.includes('gas:read')||!this.session.permissions.includes('spatial:read'))throw error('FORBIDDEN');
     if(!/^[a-f0-9]{32}$/.test(id)||!Number.isInteger(revision)||revision<1||revision>10000||!hash(datasetVersion))throw error('DATA_INVALID');
     const generation=this.#generation,session=this.session;
-    const result=await this.#get('gas_alerts/'+id+'/spatial?revision='+revision,generation);
+    if(target?.objectId!==undefined&&(typeof target.objectId!=='string'||!target.objectId.trim()||target.objectId.length>128||!Number.isInteger(target.radius)||target.radius<1||target.radius>5000))throw error('DATA_INVALID');
+    const query=new URLSearchParams({revision:String(revision),...(target?.objectId!==undefined?{objectId:target.objectId,radius:String(target.radius)}:{})});
+    const result=await this.#get('gas_alerts/'+id+'/spatial?'+query,generation);
     if(generation!==this.#generation||this.session!==session)throw error('CANCELLED');
     if(result.authorizationVersion!==session.authorizationVersion||result.policyVersion!==session.policyVersion){this.disconnect('FORBIDDEN');throw error('FORBIDDEN');}
     if(result.datasetVersion!==datasetVersion)throw error('DATA_CHANGED');return result;

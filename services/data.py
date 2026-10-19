@@ -459,9 +459,9 @@ class FileStore:
         except (OSError, ValueError, KeyError, TypeError, OverflowError):
             raise ApiError(503, "DATA_SOURCE_UNAVAILABLE") from None
 
-    def spatial(self, principal, query):
+    def spatial(self, principal, query, *, snapshot=None):
         principal.require("spatial:read")
-        snapshot = self.snapshot()
+        snapshot = self.snapshot() if snapshot is None else snapshot
         items = []
         grouped = {}
         for f, owner, category, themes, layer in snapshot["objects"]:
@@ -545,11 +545,11 @@ class FileStore:
             "source": "file_snapshot",
         }
 
-    def business(self, principal, query, record_key=None):
+    def business(self, principal, query, record_key=None, *, snapshot=None):
         principal.require("business:read")
         if "business" not in self.paths:
             raise ApiError(503, "BUSINESS_SOURCE_NOT_CONFIGURED")
-        snapshot = self.snapshot()
+        snapshot = self.snapshot() if snapshot is None else snapshot
         document = snapshot["business"]
         items = []
         now = time.time()

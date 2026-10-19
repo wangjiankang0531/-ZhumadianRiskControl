@@ -20,7 +20,7 @@ export class GasClient {
     return session;
   }
   async request(route,{method='GET',body,key,binary}={}){
-    if(!/^(session|gas_alerts(?:\/[a-f0-9]{32}(?:\/(history|classify|verify|cooperate|handoff-request|archive|reopen|materials(?:\/[a-f0-9]{32})?))?)?)(\?[^#]*)?$/.test(route))throw fail('INVALID_ROUTE');
+    if(!/^(session|gas_alerts(?:\/[a-f0-9]{32}(?:\/(history|nearby|classify|verify|cooperate|handoff-request|archive|reopen|materials(?:\/[a-f0-9]{32})?))?)?)(\?[^#]*)?$/.test(route))throw fail('INVALID_ROUTE');
     const path=route.split('?')[0],write=method==='POST';
     if(!['GET','HEAD','POST'].includes(method)||write&&(!/^gas_alerts\/[a-f0-9]{32}\/(classify|verify|cooperate|handoff-request|archive|reopen|materials)$/.test(path)||body===undefined||typeof key!=='string'||!/^[a-f0-9]{32}$/.test(key))||!write&&(body!==undefined||/\/(classify|verify|cooperate|handoff-request|archive|reopen)$/.test(path)))throw fail('INVALID_ROUTE');
     if(!this.#token)throw fail('SIGNED_OUT');
@@ -36,7 +36,7 @@ export class GasClient {
       if(binary&&response.ok){
         if(this.session&&response.headers.get('X-XNBY-Authorization-Version')!==this.session.authorizationVersion){this.disconnect('POLICY_CHANGED');throw fail('POLICY_CHANGED');}
         data=await readMaterialResponse(response,binary,()=>generation===this.#generation);
-      }else data=(await readJSON(response,8*1048576)).document;
+      }else data=(await readJSON(response,(route.includes('/nearby')?16:8)*1048576)).document;
       if(generation!==this.#generation)throw fail('CANCELLED');
       if(!response.ok){const code=typeof data?.error==='string'&&/^[A-Z_]{1,64}$/.test(data.error)?data.error:'CONNECTION_FAILED';if([401,403].includes(response.status))this.disconnect(code);throw fail(code);}
       if(!data||typeof data!=='object'||Array.isArray(data))throw fail('DATA_INVALID');
@@ -61,6 +61,7 @@ export class GasClient {
     catch(error){if(this.session)this.disconnect(error.code);}
   }
   list(query={}){return this.request('gas_alerts?'+new URLSearchParams(query));}
+  nearby(id,query){return this.request('gas_alerts/'+id+'/nearby?'+new URLSearchParams(query));}
   detail(id){return this.request('gas_alerts/'+id);}
   history(id,offset=0){return this.request('gas_alerts/'+id+'/history?limit=20&offset='+offset);}
   materials(id){return this.request('gas_alerts/'+id+'/materials');}

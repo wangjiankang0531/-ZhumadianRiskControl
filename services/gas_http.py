@@ -5,7 +5,7 @@ from urllib.parse import urlsplit,quote
 from .common import ApiError,loads
 from .focus_http import authenticate,authorization_version
 from .focus_materials import MATERIAL_JSON_LIMIT
-from .gas_spatial import resolve as resolve_spatial
+from .gas_spatial import resolve as resolve_spatial,nearby as nearby_spatial
 
 PREFIX='/api/v1/gas_alerts'
 WRITES={'source-update','classify','verify','cooperate','handoff-request','handoff-result','archive','reopen','materials'}
@@ -22,13 +22,14 @@ def _dispatch(service,handler,stack):
     try:
         url=urlsplit(handler.path)
         if len(handler.path)>8192 or any(ord(ch)<32 for ch in handler.path) or url.scheme or url.netloc or url.fragment:raise ApiError(400,'INVALID_REQUEST')
-        match=re.fullmatch(PREFIX+r'(?:/([a-f0-9]{32})(?:/(history|spatial|source-update|classify|verify|cooperate|handoff-request|handoff-result|archive|reopen|materials)(?:/([a-f0-9]{32}))?)?)?',url.path)
+        match=re.fullmatch(PREFIX+r'(?:/([a-f0-9]{32})(?:/(history|spatial|nearby|source-update|classify|verify|cooperate|handoff-request|handoff-result|archive|reopen|materials)(?:/([a-f0-9]{32}))?)?)?',url.path)
         if not match:raise ApiError(404,'NOT_FOUND')
         event_id,action,material_id=match.groups()
         if material_id and action!='materials':raise ApiError(404,'NOT_FOUND')
         write=handler.command=='POST' and material_id is None and (event_id is None or action in WRITES)
-        if handler.command not in {'GET','HEAD'} and not write or handler.command in {'GET','HEAD'} and action not in {None,'history','materials','spatial'}:raise ApiError(405,'METHOD_NOT_ALLOWED')
+        if handler.command not in {'GET','HEAD'} and not write or handler.command in {'GET','HEAD'} and action not in {None,'history','materials','spatial','nearby'}:raise ApiError(405,'METHOD_NOT_ALLOWED')
         principal=authenticate(service,handler);principal.require('gas:read')
+        if action in {'spatial','nearby'}:principal.require('spatial:read')
         if service.gas is None:raise ApiError(503,'GAS_NOT_CONFIGURED')
         if action=='materials' and (write or material_id is not None):
             if not service.gas.http_material_slots.acquire(blocking=False):raise ApiError(429,'MATERIAL_BUSY')
@@ -36,7 +37,7 @@ def _dispatch(service,handler,stack):
         if handler.headers.get_all('Transfer-Encoding',[]):raise ApiError(400,'INVALID_REQUEST')
         sizes=handler.headers.get_all('Content-Length',[])
         if len(sizes)>1:raise ApiError(400,'INVALID_REQUEST')
-        snapshot=service.store.snapshot() if action=='spatial' else None
+        snapshot=service.store.snapshot() if action in {'spatial','nearby'} else None
         points=public_points(service,snapshot)
         if write:
             service.query(url.query,[])
@@ -57,11 +58,12 @@ def _dispatch(service,handler,stack):
             success=True
         else:
             if sizes and sizes[0]!='0':raise ApiError(400,'INVALID_REQUEST')
-            query=service.query(url.query,['offset','limit','status','classification','search'] if event_id is None else ['offset','limit'] if action=='history' else ['revision'] if action=='spatial' else [])
+            query=service.query(url.query,['offset','limit','status','classification','search'] if event_id is None else ['offset','limit'] if action=='history' else ['revision','objectId','radius'] if action=='spatial' else ['revision','radius','category','offset','limit','datasetVersion'] if action=='nearby' else [])
             if event_id is None:
                 if query.get('limit',50)>100:raise ApiError(400,'INVALID_QUERY')
                 result=service.gas.list(principal,points,**query)
-            elif action=='spatial':result=resolve_spatial(service,principal,snapshot,points,event_id,query.get('revision'))
+            elif action=='spatial':result=resolve_spatial(service,principal,snapshot,points,event_id,query.get('revision'),query.get('objectId'),query.get('radius'))
+            elif action=='nearby':result=nearby_spatial(service,principal,snapshot,points,event_id,query)
             elif action=='history':result=service.gas.history(principal,points,event_id,page=True,**query)
             elif action=='materials':
                 if material_id is None:result=service.gas.materials(principal,points,event_id)
