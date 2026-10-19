@@ -134,7 +134,8 @@ def transition(state,action,payload,principal,public_ids,at,check_materials=None
     elif action=='handoff-request':
         principal.require('gas:verify');fields(payload,{'revision','requestId','reason'},{'revision','requestId','reason'})
         if not ID.fullmatch(payload['requestId']):raise ValueError('invalid handoff identity')
-        if state['handoff'] is not None:raise ApiError(409,'HANDOFF_ALREADY_EXISTS')
+        previous=state['handoff']
+        if previous is not None and (previous['state'] not in {'rejected','completed'} or previous['id']==payload['requestId']):raise ApiError(409,'HANDOFF_ALREADY_EXISTS')
         if state['verification'] is None:raise ApiError(409,'VERIFICATION_REQUIRED')
         package={'schema':'xnby.gas.handoff.v1','eventId':state['id'],'eventRevision':state['revision'],'source':deepcopy(state['source']),'verification':deepcopy(state['verification']),'cooperation':deepcopy(state['cooperation']),'reason':note(payload['reason'])}
         next_state['handoff']={'id':payload['requestId'],'state':'pending-delivery','actor':principal.subject,'at':stamp,'package':package,'packageSHA256':hashlib.sha256(canonical(package).encode('utf8')).hexdigest(),'result':None}
