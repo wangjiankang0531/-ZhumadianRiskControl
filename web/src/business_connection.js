@@ -1,3 +1,4 @@
+import {knownPermissions} from './api_permissions.js';
 import {readJSON} from './http_json.js';
 // Only same-origin business APIs receive the in-memory access token.
 import {documentFingerprint,categories,topics} from './spatial_catalog.js';
@@ -5,7 +6,7 @@ const error=code=>Object.assign(Error(code),{code});
 const responseBytes=new WeakMap();
 const hash=v=>typeof v==='string'&&/^[0-9a-f]{64}$/.test(v);
 function profile(value,now){
-  if(!value||typeof value.subject!=='string'||!value.subject||typeof value.tenant!=='string'||!hash(value.authorizationVersion)||typeof value.policyVersion!=='string'||!value.policyVersion||!Array.isArray(value.permissions)||value.permissions.some(p=>!['spatial:read','business:read','focus:read','focus:track','focus:feedback'].includes(p))||new Set(value.permissions).size!==value.permissions.length||!Array.isArray(value.enterprises)||value.enterprises.some(e=>typeof e!=='string'||!e)||new Set(value.enterprises).size!==value.enterprises.length||typeof value.allEnterprises!=='boolean'||typeof value.publicSpatial!=='boolean'||!Number.isInteger(value.expiresAt)||value.expiresAt*1000<=now)throw error('AUTH_EXPIRED');
+  if(!value||typeof value.subject!=='string'||!value.subject||typeof value.tenant!=='string'||!hash(value.authorizationVersion)||typeof value.policyVersion!=='string'||!value.policyVersion||!knownPermissions(value.permissions)||!Array.isArray(value.enterprises)||value.enterprises.some(e=>typeof e!=='string'||!e)||new Set(value.enterprises).size!==value.enterprises.length||typeof value.allEnterprises!=='boolean'||typeof value.publicSpatial!=='boolean'||!Number.isInteger(value.expiresAt)||value.expiresAt*1000<=now)throw error('AUTH_EXPIRED');
   return JSON.stringify({subject:value.subject,tenant:value.tenant,permissions:[...value.permissions].sort(),enterprises:[...value.enterprises].sort(),allEnterprises:value.allEnterprises,publicSpatial:value.publicSpatial,policyVersion:value.policyVersion,authorizationVersion:value.authorizationVersion,expiresAt:value.expiresAt});
 }
 export async function viewerBundle(spatial,business){

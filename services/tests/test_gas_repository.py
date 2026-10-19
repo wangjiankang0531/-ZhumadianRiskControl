@@ -65,8 +65,8 @@ class GasRepositoryTests(unittest.TestCase):
   with self.store.transaction() as db:owner=db.execute('SELECT event_id FROM gas_materials').fetchone()[0]
   self.event=self.store.detail(self.op,self.points,owner)
   with self.store.transaction(write=True) as db:db.execute('UPDATE gas_materials SET payload=?',(b'X'*len(PDF),))
-  with self.assertRaises(ValueError):self.store.material(self.op,self.points,owner,meta['id'])
-  with self.assertRaises(ValueError):self.verify([meta['id']])
+  self.error('MATERIAL_UNAVAILABLE',lambda:self.store.material(self.op,self.points,owner,meta['id']))
+  self.error('MATERIAL_UNAVAILABLE',lambda:self.verify([meta['id']]))
  def test_material_failure_rolls_back_all_four_tables(self):
   before=self.counts();revision=self.event['revision']
   with self.store.transaction(write=True) as db:db.execute("CREATE TRIGGER fail_material BEFORE INSERT ON gas_materials BEGIN SELECT RAISE(ABORT,'synthetic failure'); END")

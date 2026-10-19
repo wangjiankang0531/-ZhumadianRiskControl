@@ -1,7 +1,7 @@
+import {knownPermissions} from './api_permissions.js';
 import {readMaterialResponse} from './focus_material_protocol.js';
 import {readJSON} from './http_json.js';
 const fail=code=>Object.assign(new Error(code),{code});
-const permissions=new Set(['spatial:read','business:read','focus:read','focus:track','focus:feedback']);
 export class FocusClient {
   #token=null;#generation=0;#controllers=new Set();#expiry=null;#poll=null;
   constructor({fetcher=fetch,now=()=>Date.now(),setTimer=(...args)=>setTimeout(...args),clearTimer=(...args)=>clearTimeout(...args),onClear=()=>{}}={}){
@@ -15,7 +15,7 @@ export class FocusClient {
     this.#expiry=this.#poll=null;this.onClear(code);
   }
   #valid(session){
-    if(!session||typeof session.subject!=='string'||!session.subject||!Array.isArray(session.enterprises)||session.enterprises.some(e=>typeof e!=='string'||!e)||!Array.isArray(session.permissions)||session.permissions.some(p=>!permissions.has(p))||!session.permissions.includes('focus:read')||typeof session.allEnterprises!=='boolean'||typeof session.authorizationVersion!=='string'||!/^[a-f0-9]{64}$/.test(session.authorizationVersion)||!Number.isInteger(session.expiresAt)||session.expiresAt*1000<=this.now())throw fail('FORBIDDEN');
+    if(!session||typeof session.subject!=='string'||!session.subject||!Array.isArray(session.enterprises)||session.enterprises.some(e=>typeof e!=='string'||!e)||!knownPermissions(session.permissions)||!session.permissions.includes('focus:read')||typeof session.allEnterprises!=='boolean'||typeof session.authorizationVersion!=='string'||!/^[a-f0-9]{64}$/.test(session.authorizationVersion)||!Number.isInteger(session.expiresAt)||session.expiresAt*1000<=this.now())throw fail('FORBIDDEN');
     return session;
   }
   async request(route,{method='GET',body,key,binary}={}){

@@ -5,12 +5,13 @@ from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs, unquote
-from .common import ApiError, fields, read_json, text, relative
+from .common import ApiError, fields, read_json, text, relative, strings
 from .auth import JwtVerifier, Policy
 from .data import FileStore, CATEGORIES, TOPICS, BUSINESS
 from .focus import FocusStore
 from .layers import LayerRepository
-from . import focus_http
+from . import focus_http, gas_http
+from .gas_repository import GasRepository
 
 
 class Service:
@@ -19,7 +20,7 @@ class Service:
         c = read_json(path, 1024 * 1024)
         fields(
             c,
-            ["schema", "jwt", "policyFile", "data", "auditFile", "businessDatabase"],
+            ["schema", "jwt", "policyFile", "data", "auditFile", "businessDatabase", "gas"],
             ["schema", "jwt", "policyFile", "data", "auditFile"],
         )
         if c["schema"] != "xnby.api.config.v1":
@@ -29,6 +30,11 @@ class Service:
         self.store = FileStore(c["data"], path.parent)
         self.audit_file = relative(path.parent, c["auditFile"])
         self.focus = FocusStore(relative(path.parent,c["businessDatabase"])) if "businessDatabase" in c else None
+        self.gas=None
+        if 'gas' in c:
+            if self.focus is None:raise ValueError('gas requires a business database')
+            g=c['gas'];fields(g,['sourceSystem','sourceSubjects','emergencySystem','resultSubjects'],['sourceSystem','sourceSubjects','emergencySystem','resultSubjects'])
+            self.gas=GasRepository(self.focus.path,source_system=g['sourceSystem'],source_subjects=strings(g['sourceSubjects'],100),emergency_system=g['emergencySystem'],result_subjects=strings(g['resultSubjects'],100))
         if self.focus and "layerDocument" in c["data"]:
             self.store.layer_repository=LayerRepository(self.focus.path)
             self.store.layer_tenant=self.jwt.tenant
@@ -102,6 +108,8 @@ class Service:
             raise ApiError(400, "INVALID_QUERY") from None
 
     def dispatch(self, handler):
+        if handler.path.startswith(gas_http.PREFIX):
+            return gas_http.dispatch(self,handler)
         if handler.path.startswith(focus_http.PREFIX):
             return focus_http.dispatch(self,handler)
         request_id = uuid.uuid4().hex
@@ -163,6 +171,7 @@ class Service:
                         "publicSpatial": principal.public_spatial,
                         "policyVersion": principal.policy_version,
                         "expiresAt": claims["exp"],
+                        "gasWorkflow": self.gas is not None,
                         "focusMaterials": self.focus is not None and callable(getattr(self.focus,"add_material",None)),
                     }
                 elif route == "spatial_objects":

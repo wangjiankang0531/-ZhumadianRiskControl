@@ -40,3 +40,5 @@ test('saved layer order and hidden state survive object ID sorting',async()=>{
  const a={...feature('z'),layer:{id:'FIRST',name:'First saved',order:0,visible:false}},b={...feature('a'),layer:{id:'SECOND',name:'Second saved',order:1,visible:true}};
  const bundle=await viewerBundle({items:[b,a],coordinates},null);assert.deepEqual(bundle.document.layers.map(l=>l.id),['FIRST','SECOND']);assert.equal(bundle.document.layers[0].visible,false);
 });
+
+test('known gas permissions preserve the authenticated spatial workflow',async()=>{const s=setup(path=>path.endsWith('/session')?response({...session,permissions:[...session.permissions,'gas:read','gas:verify']}):response({items:[],total:0,limit:200,offset:0,policyVersion:'one',authorizationVersion:'c'.repeat(64),datasetVersion:version,coordinates,exportedAt:'2023-11-14T22:13:20Z',ttlHours:24}));assert.equal(await s.client.connect('QA_TOKEN_ONLY'),true);assert.equal(s.data.length,1);s.client.disconnect();});

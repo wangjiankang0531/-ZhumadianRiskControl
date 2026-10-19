@@ -80,3 +80,9 @@ GET /api/v1/focus_issues支持enterpriseId、status、flag、search、offset、l
 SQLite事务原子保存问题快照、人员/策略/命令历史、幂等结果。外部审计失败在写入前拒绝；成功后的权威写入历史在同库events，不以外部JSONL补记失败误报提交失败。当前不是防篡改审计。无附件上传、无生产身份，也未完成容量长稳验收。
 
 模型与恢复说明见Document/Database；仓库deploy/database保存目标MySQL DDL和结构指纹。请勿把SQLite数据库、导出文件或真实授权配置提交Git。正式MySQL驱动及目标实例验收尚未实现。
+
+## 公共气体异常接口（隔离候选）
+
+`/api/v1/gas_alerts`已接JWT/策略和同源网关；须显式gas适配器配置及业务库副本才启用，默认未启用。来源和应急回执身份必须分别固定，浏览器GasClient不提供来源/回执/租约工作者路由。所有气体读写还校验当前无企业归属的公共DLG点位，企业材料/说明再按企业范围隔离。
+
+详见Document/Design/气体异常HTTP与浏览器会话合同.md。数据库仍v4；新接口不会自动部署或替换既有站点。现阶段尚无气体操作页面、真实源或实际网络投递器；MySQL/Apache仍待实机验收。

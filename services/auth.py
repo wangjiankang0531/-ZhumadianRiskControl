@@ -7,7 +7,7 @@ import jwt
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPublicKey
 from .common import ApiError, fields, read_json, loads, text, integer, boolean, strings
 
-PERMISSIONS = {"spatial:read", "business:read", "focus:read", "focus:track", "focus:feedback"}
+PERMISSIONS = {"spatial:read", "business:read", "focus:read", "focus:track", "focus:feedback", "gas:read", "gas:ingest", "gas:verify", "gas:cooperate", "gas:handoff"}
 
 
 @dataclass(frozen=True)

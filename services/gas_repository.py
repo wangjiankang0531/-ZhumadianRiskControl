@@ -16,6 +16,10 @@ def identity(value):
     return value
 
 def metadata(row):return material_metadata(row)|{'scope':row['scope'],'enterpriseId':row['enterprise']}
+def checked_stored(row):
+    try:return validate_stored_material(row)
+    except (ValueError,TypeError):raise ApiError(503,'MATERIAL_UNAVAILABLE') from None
+
 def material_visible(row,principal):return 'gas:verify' in principal.permissions or row['scope']=='public' or principal.enterprise(row['enterprise'])
 
 class GasRepository(SQLiteDatabase):
@@ -27,6 +31,7 @@ class GasRepository(SQLiteDatabase):
         if self.source_subjects & self.result_subjects:raise ValueError('source and result adapter identities must differ')
         self.clock=clock or (lambda:datetime.now(timezone.utc).isoformat())
         self.material_slots=threading.BoundedSemaphore(2)
+        self.http_material_slots=threading.BoundedSemaphore(2)
         super().__init__(path)
 
     def _time(self):return utc(self.clock())
@@ -139,7 +144,7 @@ class GasRepository(SQLiteDatabase):
             for material_id in refs:
                 row=db.execute('SELECT * FROM gas_materials WHERE tenant=? AND event_id=? AND id=?',(actor.tenant,event,material_id)).fetchone()
                 if row is None or row['revision']>state['revision'] or not material_visible(row,actor):raise ApiError(404,'NOT_FOUND')
-                validate_stored_material(row)
+                checked_stored(row)
         updated,event=transition(state,action,payload,principal,public_ids,at or self._time(),check_materials)
         # Compare-and-swap remains explicit, even with SQLite's single writer.
         changed=db.execute('UPDATE gas_alerts SET source_revision=?,revision=?,updated=?,payload=? WHERE tenant=? AND id=? AND revision=?',(updated['source']['document']['sourceRevision'],updated['revision'],updated['updatedAt'],canonical(updated),principal.tenant,event_id,state['revision'])).rowcount
@@ -193,12 +198,13 @@ class GasRepository(SQLiteDatabase):
             self._row(db,principal,event_id,public_ids)
             row=db.execute('SELECT * FROM gas_materials WHERE tenant=? AND event_id=? AND id=?',(principal.tenant,event_id,material_id)).fetchone()
             if row is None or not material_visible(row,principal):raise ApiError(404,'NOT_FOUND')
-            return metadata(row),validate_stored_material(row)
+            return metadata(row),checked_stored(row)
 
-    def history(self,principal,public_ids,event_id):
+    def history(self,principal,public_ids,event_id,*,offset=0,limit=200,page=False):
+        integer(offset,0,10000);integer(limit,1,200)
         with self.transaction() as db:
-            self._row(db,principal,event_id,public_ids);items=[]
-            for row in db.execute('SELECT * FROM gas_history WHERE tenant=? AND event_id=? ORDER BY revision',(principal.tenant,event_id)):
+            state=self._row(db,principal,event_id,public_ids);items=[]
+            for row in db.execute('SELECT * FROM gas_history WHERE tenant=? AND event_id=? ORDER BY revision LIMIT ? OFFSET ?',(principal.tenant,event_id,limit,offset)):
                 data=json.loads(row['payload']);restricted=False
                 if 'gas:verify' not in principal.permissions:
                     restricted=row['kind']=='cooperate' and not principal.enterprise(data['enterpriseId']) or row['kind']=='material' and not material_visible({'scope':data['material']['scope'],'enterprise':data['material']['enterpriseId']},principal)
@@ -209,7 +215,7 @@ class GasRepository(SQLiteDatabase):
                 allowed={r['id'] for r in db.execute('SELECT id,scope,enterprise FROM gas_materials WHERE tenant=? AND event_id=?',(principal.tenant,event_id)) if material_visible(r,principal)}
                 for item in items:
                     if item['kind']=='verify':item['data']['materialRefs']=[k for k in item['data']['materialRefs'] if k in allowed]
-            return items
+            return {'items':items,'total':state['revision'],'revision':state['revision'],'offset':offset,'limit':limit} if page else items
 
     def _outbox(self,db,principal,public_ids,request_id):
         identity(request_id);principal.require('gas:read');principal.require('gas:handoff');principal.require('gas:verify')
