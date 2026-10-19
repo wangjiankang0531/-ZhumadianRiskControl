@@ -5,10 +5,11 @@ Never overwrites an existing export, restore database or SQL file. No credential
 import argparse, base64, hashlib, json, sqlite3, tempfile, uuid
 from contextlib import closing
 from pathlib import Path
-from .database import SQLiteDatabase, SCHEMA_VERSION, SCHEMA_SQLITE
+from .database import SQLiteDatabase, SCHEMA_VERSION, SCHEMA_SQLITE, SCHEMA_SQLITE_V2
 from .common import loads
 
-TABLES=("issues","events","requests","dlg_documents","dlg_versions","dlg_layers","dlg_features")
+LEGACY_TABLES=("issues","events","requests","dlg_documents","dlg_versions","dlg_layers","dlg_features")
+TABLES=("issues","events","requests","issue_materials","dlg_documents","dlg_versions","dlg_layers","dlg_features")
 MAX_ROW=24*1048576
 MAX_ARCHIVE=1024*1048576
 
@@ -35,6 +36,12 @@ def validate_database(db):
         if (issue["id"],issue["revision"],issue["enterpriseId"],issue["sourceSystem"],issue["sourceId"])!=(issue_id,revision,owner,system,source):raise ValueError("issue snapshot mismatch")
         n,low,high=db.execute("SELECT count(*),min(revision),max(revision) FROM events WHERE tenant=? AND issue=?",(tenant,issue_id)).fetchone()
         if (n,low,high)!=(revision,1,revision):raise ValueError("incomplete issue history")
+    from .focus_materials import validate_stored_material,material_metadata
+    db.row_factory=sqlite3.Row
+    for material in db.execute('SELECT * FROM issue_materials'):
+        validate_stored_material(material)
+        event=db.execute('SELECT kind,payload FROM events WHERE tenant=? AND issue=? AND revision=?',(material['tenant'],material['issue'],material['revision'])).fetchone()
+        if event is None or event['kind']!='material' or json.loads(event['payload']).get('material')!=material_metadata(material):raise ValueError('material journal differs')
     for table in ("dlg_documents","dlg_versions"):
         for raw,digest in db.execute(f"SELECT payload,source_sha256 FROM {table}"):
             if not isinstance(raw,bytes) or hashlib.sha256(raw).hexdigest()!=digest:raise ValueError("DLG checksum mismatch")
@@ -84,10 +91,14 @@ def read_archive(directory):
     raw=(directory/"manifest.json").read_bytes()
     if len(raw)>1048576:raise ValueError("manifest too large")
     manifest=loads(raw)
-    if manifest.get("schema")!="xnby.business.database.transfer.v1" or manifest.get("databaseVersion")!=SCHEMA_VERSION or set(manifest.get("tables",{}))!=set(TABLES):raise ValueError("unsupported archive")
-    if manifest.get("schemaDefinitionSHA256")!=hashlib.sha256(SCHEMA_SQLITE.encode()).hexdigest():raise ValueError("schema definition mismatch")
+    layouts={2:(LEGACY_TABLES,SCHEMA_SQLITE_V2),SCHEMA_VERSION:(TABLES,SCHEMA_SQLITE)}
+    version=manifest.get('databaseVersion')
+    if manifest.get("schema")!="xnby.business.database.transfer.v1" or version not in layouts:raise ValueError("unsupported archive")
+    expected_tables,definition=layouts[version]
+    if set(manifest.get('tables',{}))!=set(expected_tables):raise ValueError('archive tables differ')
+    if manifest.get("schemaDefinitionSHA256")!=hashlib.sha256(definition.encode()).hexdigest():raise ValueError("schema definition mismatch")
     # Validate all bytes before any target database write.
-    for table in TABLES:
+    for table in expected_tables:
         path=directory/(table+".jsonl");m=manifest["tables"][table]
         if path.is_symlink() or path.stat().st_size!=m["bytes"] or not 0<=m["bytes"]<=MAX_ARCHIVE:raise ValueError("archive size mismatch")
         digest=hashlib.sha256()
@@ -112,6 +123,7 @@ def restore_database(directory,database):
     store=SQLiteDatabase(stage)
     with store.transaction(write=True) as db:
         for table in TABLES:
+            if table not in manifest["tables"]:continue
             names=columns(db,table);meta=manifest["tables"][table]
             if names!=meta["columns"]:raise ValueError("schema columns mismatch")
             count=0
@@ -122,6 +134,20 @@ def restore_database(directory,database):
     with closing(store.connect()) as db:db.execute("PRAGMA wal_checkpoint(TRUNCATE)")
     stage.rename(database)
     return manifest
+
+def upgrade_copy(database,output):
+    database,output=Path(database).resolve(),Path(output).resolve()
+    if not database.is_file() or output.exists():raise ValueError('source missing or output already exists')
+    output.parent.mkdir(parents=True,exist_ok=True)
+    stage=output.with_name(output.name+'.partial-'+uuid.uuid4().hex)
+    with closing(sqlite3.connect(database.as_uri()+'?mode=ro',uri=True)) as source,closing(sqlite3.connect(stage)) as target:
+        if source.execute('PRAGMA user_version').fetchone()[0] not in (1,2,SCHEMA_VERSION):raise ValueError('unsupported source version')
+        source.backup(target)
+    store=SQLiteDatabase(stage)
+    with closing(store.connect()) as db:
+        validate_database(db);db.execute('PRAGMA wal_checkpoint(TRUNCATE)')
+    stage.rename(output)
+    return {'databaseVersion':SCHEMA_VERSION,'tables':{}}
 
 def mysql_script(directory,output):
     directory,manifest=read_archive(directory);output=Path(output).resolve()
@@ -148,10 +174,12 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);sub=p.add_subparsers(dest="command",required=True)
     e=sub.add_parser("export");e.add_argument("--database",required=True);e.add_argument("--output",required=True)
     r=sub.add_parser("restore");r.add_argument("--archive",required=True);r.add_argument("--database",required=True)
+    u=sub.add_parser("upgrade-copy");u.add_argument("--database",required=True);u.add_argument("--output",required=True)
     m=sub.add_parser("mysql-script");m.add_argument("--archive",required=True);m.add_argument("--output",required=True)
     a=p.parse_args()
     if a.command=="export":result=export_database(a.database,a.output)
     elif a.command=="restore":result=restore_database(a.archive,a.database)
+    elif a.command=="upgrade-copy":result=upgrade_copy(a.database,a.output)
     else:result=mysql_script(a.archive,a.output)
-    print(json.dumps({"schemaVersion":result["databaseVersion"],"rows":{k:v["rows"] for k,v in result["tables"].items()}},ensure_ascii=False))
+    print(json.dumps({"schemaVersion":SCHEMA_VERSION,"sourceArchiveVersion":result["databaseVersion"],"rows":{k:v["rows"] for k,v in result["tables"].items()}},ensure_ascii=False))
 if __name__=="__main__":main()

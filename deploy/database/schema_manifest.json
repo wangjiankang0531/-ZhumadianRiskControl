@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 2,
-  "schemaDefinitionSHA256": "0345db86c84b827ca89a23a00893343fe83d5c940bb1ab7c40f47d823c5919ad",
+  "schemaVersion": 3,
+  "schemaDefinitionSHA256": "4a7e36d2183b897a2b264b68c9ac8890b8e2f087ab91e66bf0488ab88bb2cd8d",
   "states": [
     "archived",
     "feedback",
@@ -25,6 +25,18 @@
     "rectified",
     "special-inspection"
   ],
+  "materialPolicy": {
+    "maxBytes": 8388608,
+    "maxJsonBytes": 11217580,
+    "maxIssueBytes": 134217728,
+    "maxIssueCount": 64,
+    "mediaTypes": [
+      "application/pdf",
+      "image/jpeg",
+      "image/png"
+    ],
+    "immutable": true
+  },
   "tables": {
     "issues": {
       "description": "园区重点问题当前快照；不替代企业一般隐患台账",
@@ -269,6 +281,156 @@
         }
       ],
       "foreignKeys": []
+    },
+    "issue_materials": {
+      "description": "不可变照片/截图/PDF材料与摘要；通过问题版本外键绑定成功审计事件，载荷存于SQLite BLOB",
+      "columns": [
+        {
+          "name": "tenant",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 1,
+          "mysqlType": "VARBINARY(128)"
+        },
+        {
+          "name": "issue",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 2,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "id",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 3,
+          "mysqlType": "CHAR(32) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "revision",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "name",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        },
+        {
+          "name": "media_type",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "bytes",
+          "sqliteType": "INTEGER",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "INT UNSIGNED"
+        },
+        {
+          "name": "sha256",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "created",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin"
+        },
+        {
+          "name": "actor",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "VARBINARY(256)"
+        },
+        {
+          "name": "description",
+          "sqliteType": "TEXT",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+        },
+        {
+          "name": "payload",
+          "sqliteType": "BLOB",
+          "notNull": true,
+          "primaryOrder": 0,
+          "mysqlType": "LONGBLOB"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "material_issue_revision",
+          "unique": false,
+          "columns": [
+            "tenant",
+            "issue",
+            "revision"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_issue_materials_2",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "issue",
+            "revision"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_issue_materials_1",
+          "unique": true,
+          "columns": [
+            "tenant",
+            "issue",
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        [
+          0,
+          0,
+          "events",
+          "tenant",
+          "tenant",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          1,
+          "events",
+          "issue",
+          "issue",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ],
+        [
+          0,
+          2,
+          "events",
+          "revision",
+          "revision",
+          "NO ACTION",
+          "NO ACTION",
+          "NONE"
+        ]
+      ]
     },
     "dlg_documents": {
       "description": "当前用户DLG文档及原始UTF8字节",

@@ -1,3 +1,4 @@
+import {readMaterialResponse} from './focus_material_protocol.js';
 import {readJSON} from './http_json.js';
 const fail=code=>Object.assign(new Error(code),{code});
 const permissions=new Set(['spatial:read','business:read','focus:read','focus:track','focus:feedback']);
@@ -17,24 +18,28 @@ export class FocusClient {
     if(!session||typeof session.subject!=='string'||!session.subject||!Array.isArray(session.enterprises)||session.enterprises.some(e=>typeof e!=='string'||!e)||!Array.isArray(session.permissions)||session.permissions.some(p=>!permissions.has(p))||!session.permissions.includes('focus:read')||typeof session.allEnterprises!=='boolean'||typeof session.authorizationVersion!=='string'||!/^[a-f0-9]{64}$/.test(session.authorizationVersion)||!Number.isInteger(session.expiresAt)||session.expiresAt*1000<=this.now())throw fail('FORBIDDEN');
     return session;
   }
-  async request(route,{method='GET',body,key}={}){
-    if(!/^(session|focus_issues(?:\/[a-f0-9]{32}(?:\/(events|feedback|track|review|archive|reopen))?)?)(\?[^#]*)?$/.test(route))throw fail('INVALID_ROUTE');
+  async request(route,{method='GET',body,key,binary}={}){
+    if(!/^(session|focus_issues(?:\/[a-f0-9]{32}(?:\/(events|feedback|track|review|archive|reopen|materials(?:\/[a-f0-9]{32})?))?)?)(\?[^#]*)?$/.test(route))throw fail('INVALID_ROUTE');
     if(!this.#token)throw fail('SIGNED_OUT');
     const generation=this.#generation,c=new AbortController();this.#controllers.add(c);
-    const timer=this.setTimer(()=>c.abort(),15000);
+    const timer=this.setTimer(()=>c.abort(),binary||route.includes('/materials')?60000:15000);
     try{
-      const headers={Authorization:'Bearer '+this.#token,Accept:'application/json'};
+      const headers={Authorization:'Bearer '+this.#token,Accept:binary?'application/octet-stream':'application/json'};
       if(body!==undefined){headers['Content-Type']='application/json';headers['Idempotency-Key']=key;}
       const fetcher=this.fetcher;
       const response=await fetcher('/api/v1/'+route,{method,body:body===undefined?undefined:JSON.stringify(body),headers,credentials:'omit',cache:'no-store',redirect:'error',referrerPolicy:'no-referrer',signal:c.signal});
       if(generation!==this.#generation)throw fail('CANCELLED');
-      const data=(await readJSON(response,8*1048576)).document;
+      let data;
+      if(binary&&response.ok){
+        if(this.session&&response.headers.get('X-XNBY-Authorization-Version')!==this.session.authorizationVersion){this.disconnect('POLICY_CHANGED');throw fail('POLICY_CHANGED');}
+        data=await readMaterialResponse(response,binary,()=>generation===this.#generation);
+      }else data=(await readJSON(response,8*1048576)).document;
       if(generation!==this.#generation)throw fail('CANCELLED');
       if(!response.ok){const code=typeof data?.error==='string'&&/^[A-Z_]{1,64}$/.test(data.error)?data.error:'CONNECTION_FAILED';if([401,403].includes(response.status))this.disconnect(code);throw fail(code);}
       if(!data||typeof data!=='object'||Array.isArray(data))throw fail('DATA_INVALID');
       if(this.session&&data.authorizationVersion!==this.session.authorizationVersion){this.disconnect('POLICY_CHANGED');throw fail('POLICY_CHANGED');}
       return data;
-    }catch(error){throw error.code?error:fail('CONNECTION_FAILED');}
+    }catch(error){if(generation!==this.#generation&&!error.code)throw fail('CANCELLED');throw error.code?error:fail('CONNECTION_FAILED');}
     finally{this.clearTimer(timer);this.#controllers.delete(c);}
   }
   async connect(token){
@@ -55,5 +60,7 @@ export class FocusClient {
   list(query={}){return this.request('focus_issues?'+new URLSearchParams(query));}
   detail(id){return this.request('focus_issues/'+id);}
   events(id,offset=0){return this.request('focus_issues/'+id+'/events?limit=20&offset='+offset);}
+  materials(id){return this.request('focus_issues/'+id+'/materials?limit=64');}
+  downloadMaterial(id,metadata){return this.request('focus_issues/'+id+'/materials/'+metadata.id,{binary:metadata});}
   write(id,action,body,key){return this.request('focus_issues'+(id?'/'+id+'/'+action:''),{method:'POST',body,key});}
 }

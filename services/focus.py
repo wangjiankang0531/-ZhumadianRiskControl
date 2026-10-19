@@ -4,6 +4,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from .common import ApiError, fields, text, integer, strings
 from .database import SQLiteDatabase
+from .focus_materials import MaterialsMixin
 
 STATES = {"pending", "feedback", "supplement", "onsite", "following", "inspection", "archived"}
 FLAGS = {"major", "spillover", "repeated", "high-risk", "special-inspection", "supervision"}
@@ -26,7 +27,7 @@ def date_value(value):
     date.fromisoformat(value)
     return value
 
-class FocusStore(SQLiteDatabase):
+class FocusStore(MaterialsMixin,SQLiteDatabase):
 
 
 

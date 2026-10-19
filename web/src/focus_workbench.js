@@ -1,11 +1,12 @@
 import {readPortalConfiguration,OAuthLogin} from './oauth_login.js';
+import {prepareMaterialUpload,materialMaxBytes} from './focus_material_protocol.js';
 import {FocusClient} from './focus_client.js';
 export const states={pending:'待关注',feedback:'企业已反馈',supplement:'需补充材料',onsite:'需现场核查',following:'继续关注',inspection:'纳入专项检查',archived:'已归档'};
 const flags={major:'重大',spillover:'外溢',repeated:'重复','high-risk':'高风险','special-inspection':'专项检查',supervision:'上级督办',overdue:'超期'};
 const methods={phone:'电话核实',online:'线上查看',onsite:'现场核查',communication:'企业沟通',supplement:'材料补充'};
 const conclusions={rectified:'已整改',inadequate:'整改不到位',continue:'需继续关注','special-inspection':'建议专项检查',emergency:'建议转应急关注'};
-const kinds={create:'登记重点问题',feedback:'企业反馈',track:'园区跟踪',review:'复查记录',archive:'园区归档',reopen:'重新关注'};
-const messages={SIGNED_OUT:'请登录后查看本人企业范围内的重点问题',AUTH_EXPIRED:'登录已到期，业务内容已清空',FORBIDDEN:'当前账号没有此项权限，业务内容已清空',POLICY_CHANGED:'权限发生变化，请重新登录',REVISION_CONFLICT:'其他人员已经修改此记录，请刷新详情后再操作',SOURCE_ALREADY_REGISTERED:'该企业的来源问题编号已登记，请搜索已有记录',REVIEW_REQUIRED:'请先记录“已整改”的复查结论，再归档',ISSUE_ARCHIVED:'该问题已归档，请先重新关注',SPATIAL_REFERENCE_UNAVAILABLE:'关联点位不存在，或不属于当前企业',FOCUS_NOT_CONFIGURED:'服务尚未配置业务数据库',INVALID_BODY:'请检查必填内容、日期和重点关注理由',CONNECTION_FAILED:'连接失败，请稍后刷新；重试不会覆盖其他人的更新'};
+const kinds={material:'材料提交',create:'登记重点问题',feedback:'企业反馈',track:'园区跟踪',review:'复查记录',archive:'园区归档',reopen:'重新关注'};
+const messages={MATERIAL_INVALID:'请选择有效PNG/JPEG/PDF材料，每个不超过8MiB，并填写材料说明',MATERIAL_CAPACITY:'当前问题的材料数量或总量已达上限',MATERIAL_BUSY:'材料服务正在处理其他请求，请稍后重试',MATERIAL_UNAVAILABLE:'材料完整性校验未通过，请联系维护人员',DATA_INVALID:'返回的材料或数据校验未通过，下载已停止',SIGNED_OUT:'请登录后查看本人企业范围内的重点问题',AUTH_EXPIRED:'登录已到期，业务内容已清空',FORBIDDEN:'当前账号没有此项权限，业务内容已清空',POLICY_CHANGED:'权限发生变化，请重新登录',REVISION_CONFLICT:'其他人员已经修改此记录，请刷新详情后再操作',SOURCE_ALREADY_REGISTERED:'该企业的来源问题编号已登记，请搜索已有记录',REVIEW_REQUIRED:'请先记录“已整改”的复查结论，再归档',ISSUE_ARCHIVED:'该问题已归档，请先重新关注',SPATIAL_REFERENCE_UNAVAILABLE:'关联点位不存在，或不属于当前企业',FOCUS_NOT_CONFIGURED:'服务尚未配置业务数据库',INVALID_BODY:'请检查必填内容、日期和重点关注理由',CONNECTION_FAILED:'连接失败，请稍后刷新；重试不会覆盖其他人的更新'};
 let notify=()=>{},configuration=null,oauth=null,initialization=null,synthetic=false;
 const client=new FocusClient({onClear:code=>notify(code)});
 const e=(tag,cls='',text='')=>{const n=document.createElement(tag);n.className=cls;n.textContent=text;return n;};
@@ -70,10 +71,10 @@ export function mountFocus(main){
     }
     async function showDetail(id){
       const request=++detailRequest;
-      try{const data=await client.detail(id),events=await client.events(id);if(!live(mount,generation)||request!==detailRequest)return;if(events.revision!==data.issue.revision)throw Object.assign(Error(),{code:'REVISION_CONFLICT'});selected=data.issue;drawDetail(selected,events);detail.scrollIntoView({behavior:'smooth',block:'start'});}
+      try{const data=await client.detail(id),events=await client.events(id),materials=session.focusMaterials===true?await client.materials(id):null;if(!live(mount,generation)||request!==detailRequest)return;if(events.revision!==data.issue.revision||materials&&materials.revision!==data.issue.revision)throw Object.assign(Error(),{code:'REVISION_CONFLICT'});selected=data.issue;drawDetail(selected,events,materials);detail.scrollIntoView({behavior:'smooth',block:'start'});}
       catch(error){if(live(mount,generation)&&request===detailRequest){detail.hidden=true;status.textContent=errorText(error);}}
     }
-    function drawDetail(issue,events){
+    function drawDetail(issue,events,materials){
       detail.hidden=false;detail.replaceChildren();detail.append(e('h2','',issue.title));const meta=e('dl','focus-description');for(const [label,value] of [['企业',issue.enterpriseId],['来源',issue.sourceSystem+' / '+issue.sourceId],['关注状态',states[issue.status]],['问题描述',issue.description],['整改期限',issue.dueDate],['更新时间',issue.updatedAt],['记录版本',String(issue.revision)]])kv(meta,label,value);detail.append(meta);
       const controls=e('div','focus-actions');controls.append(button('刷新详情',()=>showDetail(issue.id),'button secondary'));
       if(issue.spatialId)controls.append(anchor('查看关联图层','/?'+new URLSearchParams({topic:'portrait',category:'hidden-danger',spatial:issue.spatialId}),'button secondary'));
@@ -83,9 +84,36 @@ export function mountFocus(main){
       }else if(session.permissions.includes('focus:track'))controls.append(button('重新关注',()=>editIssue(issue,'reopen')));detail.append(controls);
       if(issue.latestFeedback){const box=e('div','focus-evidence');box.append(e('h3','','企业最新反馈'));const values=e('dl');for(const [key,label] of [['cause','原因说明'],['measures','整改措施'],['plan','整改计划'],['completion','完成情况'],['improvement','后续改进'],['materialVersion','材料版本'],['actor','反馈人员'],['at','反馈时间']])kv(values,label,issue.latestFeedback[key]);box.append(values);detail.append(box);}
       if(issue.latestReview)detail.append(e('p','notice','最新复查：'+conclusions[issue.latestReview.result]+' · '+issue.latestReview.note));
+      const materialBox=e('section','focus-materials');materialBox.append(e('h3','','现场与复查材料'));
+      if(materials===null)materialBox.append(e('p','panel-note','当前服务尚未启用附件接口。'));
+      else{
+        materialBox.append(e('p','panel-note','材料与提交版本一同保存；新增材料后需重新复查，旧复查结论保留在历史中。'));
+        if(issue.status!=='archived'&&(session.permissions.includes('focus:track')||session.permissions.includes('focus:feedback')))materialBox.append(button('添加材料',()=>editMaterial(issue)));
+        if(!materials.items.length)materialBox.append(e('p','panel-note','当前问题暂无材料。'));
+        for(const material of materials.items){
+          const card=e('article','focus-material'),copy=e('div');copy.append(e('strong','',material.name),e('small','',`${(material.bytes/1024).toFixed(1)} KiB · ${material.actor} · ${material.createdAt} · 版本 ${material.revision}`),e('p','',material.description),e('code','','SHA256 '+material.sha256));
+          const download=button('下载材料',async()=>{download.disabled=true;try{const value=await client.downloadMaterial(issue.id,material);if(!live(mount,generation)||selected?.id!==issue.id)return;const url=URL.createObjectURL(new Blob([value.data],{type:value.mediaType}));try{const a=e('a');a.href=url;a.download=value.name;document.body.append(a);a.click();a.remove();}finally{setTimeout(()=>URL.revokeObjectURL(url),1000);}status.textContent='材料已校验，下载已开始';}catch(error){if(live(mount,generation))status.textContent=errorText(error);}finally{download.disabled=false;}},'button secondary');card.append(copy,download);materialBox.append(card);
+        }
+      }
+      detail.append(materialBox);
       const history=e('div','focus-history');history.append(e('h3','','跟踪与复查历史'));detail.append(history);let nextOffset=0;
-      const appendEvents=page=>{for(const event of page.items){const card=e('article','focus-event');card.append(e('strong','',kinds[event.kind]??event.kind),e('small','',event.at+' · '+event.actor+' · 版本 '+event.revision));const note=event.data.note??event.data.completion??event.data.description;if(note)card.append(e('p','',note));if(event.data.result)card.append(e('span','focus-tag',conclusions[event.data.result]??event.data.result));history.append(card);}nextOffset+=page.items.length;};appendEvents(events);
+      const appendEvents=page=>{for(const event of page.items){const card=e('article','focus-event');card.append(e('strong','',kinds[event.kind]??event.kind),e('small','',event.at+' · '+event.actor+' · 版本 '+event.revision));const note=event.data.note??event.data.completion??event.data.description??event.data.material?.description;if(note)card.append(e('p','',note));if(event.data.result)card.append(e('span','focus-tag',conclusions[event.data.result]??event.data.result));history.append(card);}nextOffset+=page.items.length;};appendEvents(events);
       const more=button('加载更多历史',async()=>{more.disabled=true;try{const page=await client.events(issue.id,nextOffset);if(!live(mount,generation)||selected?.id!==issue.id)return;if(page.revision!==issue.revision)throw Object.assign(Error(),{code:'REVISION_CONFLICT'});appendEvents(page);more.hidden=nextOffset>=page.total;}catch(error){status.textContent=errorText(error);}finally{more.disabled=false;}},'button secondary');more.hidden=nextOffset>=events.total;detail.append(more);
+    }
+    function editMaterial(issue){
+      if(busy)return;const dialog=e('dialog','focus-dialog'),form=e('form'),ownerSession=client.session;
+      form.append(e('h2','','添加现场与复查材料'),e('p','panel-note','支持PNG/JPEG/PDF，每个不超过8MiB。保存后需重新复查；材料不可覆盖。'));
+      const label=e('label','focus-field'),file=e('input');file.type='file';file.accept='.pdf,.png,.jpg,.jpeg';file.required=true;label.append(e('span','','选择材料文件'),file);form.append(label);
+      const note=inputField('材料说明','',true);form.append(note.wrap);const feedback=e('p','focus-status');feedback.setAttribute('role','alert');form.append(feedback);
+      const actions=e('div','focus-actions'),save=e('button','button','保存材料');save.type='submit';actions.append(button('取消',()=>dialog.close(),'button secondary'),save);form.append(actions);dialog.append(form);mount.append(dialog);dialog.addEventListener('close',()=>dialog.remove());
+      let pendingSignature='',pendingKey='';
+      form.onsubmit=async event=>{event.preventDefault();if(busy)return;save.disabled=true;busy=true;try{
+        const selectedFile=file.files?.[0];if(!selectedFile||selectedFile.size>materialMaxBytes)throw Object.assign(Error(),{code:'MATERIAL_INVALID'});
+        const prepared=await prepareMaterialUpload(selectedFile,issue.revision,note.input.value.trim());if(!live(mount,generation)||!dialog.isConnected||client.session!==ownerSession)return;
+        const {base64,...metadata}=prepared.payload,signature=JSON.stringify({...metadata,sha256:prepared.sha256});if(signature!==pendingSignature){pendingSignature=signature;pendingKey=crypto.randomUUID().replaceAll('-','');}
+        await client.write(issue.id,'materials',prepared.payload,pendingKey);if(!live(mount,generation)||!dialog.isConnected)return;dialog.close();status.textContent='材料已保存，请重新复查';await load();await showDetail(issue.id);
+      }catch(error){if(dialog.isConnected)feedback.textContent=errorText(error);}finally{busy=false;save.disabled=false;}};
+      dialog.showModal();
     }
     function editIssue(issue,action){
       if(busy)return;const dialog=e('dialog','focus-dialog'),form=e('form'),fields={},labels={create:'登记重点问题',feedback:'填写企业反馈',track:'添加跟踪记录',review:'记录现场复查',archive:'园区跟踪归档',reopen:'重新关注'};

@@ -81,7 +81,7 @@ class DatabaseLayerTests(unittest.TestCase):
         from tools.generate_database_docs import generate
         target=self.p.root/'generated';generate(target)
         tracked=Path(__file__).resolve().parents[2]/'deploy/database'
-        for name in ['schema_mysql_v2.sql','schema_manifest.json']:
+        for name in ['schema_mysql_v'+str(SCHEMA_VERSION)+'.sql','schema_manifest.json']:
             self.assertEqual((target/name).read_bytes(),(tracked/name).read_bytes(),name)
 
 if __name__=='__main__':unittest.main()

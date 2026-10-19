@@ -163,6 +163,7 @@ class Service:
                         "publicSpatial": principal.public_spatial,
                         "policyVersion": principal.policy_version,
                         "expiresAt": claims["exp"],
+                        "focusMaterials": self.focus is not None and callable(getattr(self.focus,"add_material",None)),
                     }
                 elif route == "spatial_objects":
                     result = self.store.spatial(

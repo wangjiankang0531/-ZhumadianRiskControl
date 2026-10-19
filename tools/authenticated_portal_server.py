@@ -1,11 +1,12 @@
 """Loopback same-origin gateway for configured OAuth/public-client portal integration."""
 
-import argparse, http.client, http.server, json, re, sys
+import argparse, http.client, http.server, json, re, sys, threading
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
 from services.common import read_json, fields, text
+from services.focus_materials import MATERIAL_JSON_LIMIT
 from tools.landscape_web_server import Handler as LandscapeHandler, ROOT
 
 
@@ -67,7 +68,17 @@ class PortalHandler(LandscapeHandler):
             self.wfile.write(data)
 
     def proxy(self):
-        mutation = self.command == "POST" and re.fullmatch(r"/api/v1/focus_issues(?:/[a-f0-9]{32}/(?:feedback|track|review|archive|reopen))?",urlsplit(self.path).path)
+        material=re.fullmatch(r'/api/v1/focus_issues/[a-f0-9]{32}/materials(?:/[a-f0-9]{32})?',urlsplit(self.path).path)
+        slot=None
+        if material:
+            if not self.server.material_slots.acquire(blocking=False):return self.output(429,{'error':'MATERIAL_BUSY'})
+            slot=self.server.material_slots
+        try:return self._proxy_body()
+        finally:
+            if slot is not None:slot.release()
+
+    def _proxy_body(self):
+        mutation = self.command == "POST" and re.fullmatch(r"/api/v1/focus_issues(?:/[a-f0-9]{32}/(?:feedback|track|review|archive|reopen|materials))?",urlsplit(self.path).path)
         if self.command not in ("GET", "HEAD") and not mutation:
             return self.output(405, {"error": "METHOD_NOT_ALLOWED"})
         body = None
@@ -75,9 +86,11 @@ class PortalHandler(LandscapeHandler):
             if self.headers.get_all("Origin",[]) != [self.server.app_origin]:
                 return self.output(403,{"error":"ORIGIN_REQUIRED"})
             sizes = self.headers.get_all("Content-Length",[])
-            if self.headers.get("Transfer-Encoding") or len(sizes)!=1 or not re.fullmatch(r"[0-9]{1,6}",sizes[0]):
+            if self.headers.get("Transfer-Encoding") or len(sizes)!=1 or not re.fullmatch(r"[0-9]{1,8}",sizes[0]):
                 return self.output(400,{"error":"INVALID_REQUEST"})
-            if not 1<=int(sizes[0])<=32768:return self.output(413,{"error":"BODY_TOO_LARGE"})
+            material_upload=bool(re.fullmatch(r'/api/v1/focus_issues/[a-f0-9]{32}/materials',urlsplit(self.path).path))
+            if not 1<=int(sizes[0])<=(MATERIAL_JSON_LIMIT if material_upload else 32768):return self.output(413,{"error":"BODY_TOO_LARGE"})
+            if material_upload and (len(self.headers.get_all('Authorization',[]))!=1 or not self.headers['Authorization'].startswith('Bearer ') or len(self.headers['Authorization'])>16400):return self.output(401,{'error':'UNAUTHENTICATED'})
             if self.headers.get_all("Content-Type",[]) not in (["application/json"],["application/json; charset=utf-8"]):
                 return self.output(415,{"error":"JSON_REQUIRED"})
             if len(self.headers.get_all("Idempotency-Key",[]))!=1:return self.output(400,{"error":"IDEMPOTENCY_KEY_REQUIRED"})
@@ -105,7 +118,7 @@ class PortalHandler(LandscapeHandler):
             if len(data) > 16 * 1048576:
                 return self.output(503, {"error": "DATA_TOO_LARGE"})
             self.send_response(response.status)
-            for name in ("Content-Type", "WWW-Authenticate", "X-Request-Id", "Allow"):
+            for name in ("Content-Type", "WWW-Authenticate", "X-Request-Id", "Allow", "Content-Disposition", "X-XNBY-Material-SHA256", "X-XNBY-Authorization-Version", "Retry-After"):
                 value = response.getheader(name)
                 if value:
                     self.send_header(name, value)
@@ -136,7 +149,7 @@ class PortalHandler(LandscapeHandler):
         return super().do_HEAD()
 
     def do_POST(self):
-        if self.command=="POST" and re.fullmatch(r"/api/v1/focus_issues(?:/[a-f0-9]{32}/(?:feedback|track|review|archive|reopen))?",urlsplit(self.path).path):
+        if self.command=="POST" and re.fullmatch(r"/api/v1/focus_issues(?:/[a-f0-9]{32}/(?:feedback|track|review|archive|reopen|materials))?",urlsplit(self.path).path):
             return self.proxy()
         if self.command == "POST" and re.fullmatch(r"/api/lod-lease/[0-9a-f]{32}/release",urlsplit(self.path).path):
             return super().do_POST()
@@ -167,6 +180,7 @@ class PortalServer(http.server.ThreadingHTTPServer):
     daemon_threads = True
 
     def __init__(self, address, api_port, configuration, handler=PortalHandler):
+        self.material_slots=threading.BoundedSemaphore(2)
         self.api_port = api_port
         self.portal_config = configuration
         super().__init__(address, handler)
