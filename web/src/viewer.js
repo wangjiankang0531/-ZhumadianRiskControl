@@ -1,3 +1,5 @@
+import {updateCommandDashboard} from './command_dashboard.js';
+import {layoutLabels,readLabelOffsets} from './label_layout.js';
 import {supportsSourcePlans,readSourcePlan,verifyPlannedSource,SourcePlanResponseError} from './source_descriptor_plan.js';
 import {OrbitActivity} from './orbit_activity.js';
 import {chooseRefinementCandidate} from './source_allocation.js';
@@ -7,7 +9,7 @@ import {readPortalConfiguration,OAuthLogin} from './oauth_login.js';
 import {BusinessConnection} from './business_connection.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {drawLabel,labelFramingPositions,markerScreenPoint} from './labels.js';
+import {drawLabel,drawSign,drawSignLeader,measureSign,labelWorldAnchor,labelFramingPositions,markerScreenPoint,signFootFeature} from './labels.js';
 import {LayerLoading} from './layer_loading.js';
 import {topics,categories,documentFingerprint,parseSpatialCatalog,spatialObject,inTopic,scopedObjects,topicCounts,catalogOrphans} from './spatial_catalog.js';
 import {opacityFromTransparency,annotationWithOpacity,applyModelOpacity} from './view_opacity.js';
@@ -49,6 +51,8 @@ const imageCache=new Map();let markerAtlas=null;
 let baseEdges=new Map(),baseTexels=new Map(),focusId=0;const tierEdges=new Map(),tierTexels=new Map(),residentLimit=16;
 const layerOpacities=new Map(),layerLoading=new LayerLoading();let userLayerLoad=false;
 let activeTopic='all',spatialCatalog=null,spatialFingerprint='',spatialFingerprintPromise=Promise.resolve(''),spatialLoadGeneration=0,userSpatialLoad=false,userBusinessLoad=false;
+let signOffsets=new Map(),signPrevious=new Map(),signPlacements=new Map(),signDrag=null,signPreferenceKey='',signLayoutKey='',signLayoutResult=null;
+const signMetrics=new Map();
 let dataMode='pending',apiBusinessState='unconfigured',businessConnection=null,oauthLogin=null;
 const activeCatalog=()=>spatialFingerprint&&spatialCatalog?.layerFingerprint===spatialFingerprint?spatialCatalog:null;
 const sceneOpacity=id=>opacityFromTransparency($(id+'-opacity').value);
@@ -74,10 +78,10 @@ async function loadModel(url,group,label,keepParser=false){
   group.add(photograph(gltf.scene));updateSceneOpacity();return keepParser?gltf:gltf.scene;
 }
 function openDocument(doc,name){
-  validate(doc);layersDoc=structuredClone(doc);layerOpacities.clear();selected=null;selectedLayer=null;hitTargets=[];
+  cancelSignDrag();signOffsets.clear();signPrevious.clear();signLayoutKey='';signMetrics.clear();signPlacements.clear();signLayoutResult=null;signPreferenceKey='';validate(doc);layersDoc=structuredClone(doc);layerOpacities.clear();selected=null;selectedLayer=null;hitTargets=[];
   tintedCache.clear();imageCache.clear();$('feature-search').value='';$('feature-type').value='all';
   $('file-name').textContent=name;clearSelection(false);spatialNotice('');spatialFingerprint='';const current=layersDoc;
-  spatialFingerprintPromise=documentFingerprint(current).then(value=>{if(current===layersDoc){spatialFingerprint=value;rebuildLayerUI();}return value;});
+  spatialFingerprintPromise=documentFingerprint(current).then(value=>{if(current===layersDoc){spatialFingerprint=value;loadSignPreferences();rebuildLayerUI();}return value;});
   spatialFingerprintPromise.catch(error=>spatialNotice(error.message));rebuildLayerUI();
   message('图层已打开，点击画面中的标注查看信息');
 }
@@ -95,10 +99,10 @@ function clearSelection(rebuild=true){
   $('details-title').textContent='标注信息';detailRows([['选择标注查看详情','可点击三维画面中的图标、线或区域']]);
   document.body.classList.remove('details-open');if(rebuild)rebuildLayerUI();
 }
-function selectFeature(f,l,source='list'){
+function selectFeature(f,l,source='list',details=true){
   if(!visibleFeature(f,l))return;
   selected=f;selectedLayer=null;viewport.dataset.selectedFeature=f.id;viewport.dataset.selectionSource=source;
-  rebuildLayerUI();showDetails(f,l);message(`已选中${featureTypeNames[f.type]}标注：${f.name}`);
+  rebuildLayerUI();if(details)showDetails(f,l);message(`已选中${featureTypeNames[f.type]}标注：${f.name}`);
 }
 function rebuildLayerUI(){
   if(!layersDoc)return;
@@ -230,16 +234,29 @@ function drawSelection(f,p,labelBox,opacity=1){
   ctx.restore();
 }
 let hitTargets=[],selectedLayer=null;
+function loadSignPreferences(){
+ signPreferenceKey=dataMode==='local'&&spatialFingerprint?`landscape.sign-layout.v1:${spatialFingerprint}`:'';signOffsets.clear();signPrevious.clear();
+ if(signPreferenceKey)try{signOffsets=readLabelOffsets(localStorage.getItem(signPreferenceKey));}catch{}
+}
+function saveSignPreferences(){if(signPreferenceKey)try{localStorage.setItem(signPreferenceKey,JSON.stringify([...signOffsets].slice(0,1000)));}catch{message('标牌位置已调整，本次浏览器无法保存布局');}}
+function labelObstacles(){const parent=viewport.getBoundingClientRect(),result=[],panels=[...document.querySelectorAll('.layout>aside')].map(n=>n.getBoundingClientRect()).filter(r=>r.width&&r.height);
+ const left=panels.filter(r=>r.left<parent.left+parent.width/2).reduce((v,r)=>Math.max(v,r.right-parent.left+12),12),right=panels.filter(r=>r.left>=parent.left+parent.width/2).reduce((v,r)=>Math.max(v,parent.right-r.left+12),12);
+ $('sign-tools').style.left=`${left}px`;$('sign-tools').style.right=`${right}px`;
+ for(const node of document.querySelectorAll('.layout>aside,#tools,#sign-tools,#message')){const r=node.getBoundingClientRect();if(r.width&&r.height&&getComputedStyle(node).visibility!=='hidden')result.push([r.left-parent.left-6,r.top-parent.top-6,r.right-parent.left+6,r.bottom-parent.top+6]);}return result;
+}
+function signMetric(feature,compact){const key=JSON.stringify([feature.name,feature.label.text,feature.label.fontPx,compact]);if(!signMetrics.has(key)){if(signMetrics.size>2000)signMetrics.clear();signMetrics.set(key,measureSign(ctx,feature,compact));}return signMetrics.get(key);}
 function drawAnnotations(){
-  ctx.clearRect(0,0,width,height);hitTargets=[];if(!layersDoc)return;
+  ctx.clearRect(0,0,width,height);hitTargets=[];if(!layersDoc)return;const records=[],signs=[];
   for(const l of layersDoc.layers)if(l.visible)for(const f of l.features){
     const opacity=layerOpacities.get(l.id)??1;if(!matches(f,l)||opacity<=0)continue;
     const rendered=annotationWithOpacity(f,opacity),s=rendered.style,p=f.positions.map(project);let legacyLabelBox=null;ctx.save();ctx.strokeStyle=s.color;ctx.fillStyle=s.fillColor;
     ctx.lineWidth=s.widthPx;ctx.setLineDash(s.pattern==='dash'?[12,8]:s.pattern==='dot'?[2,6]:[]);ctx.globalAlpha=s.opacity;
     if(f.type==='point'&&p[0]){
       const [x,y]=markerScreenPoint(p[0],s),size=s.sizePx;ctx.setLineDash([]);
-      const image=s.icon==='custom'?iconImage(s.iconData):tintedIcon(s);
-      if(image&&(s.icon!=='custom'||image.complete&&image.naturalWidth))ctx.drawImage(image,x-size/2,y-size/2,size,size);
+      const signFoot=f.label?.placement==='billboard';
+      const image=signFoot?null:s.icon==='custom'?iconImage(s.iconData):tintedIcon(s);
+      if(signFoot){ctx.beginPath();ctx.fillStyle=s.color;ctx.arc(p[0][0],p[0][1],3,0,Math.PI*2);ctx.fill();}
+      else if(image&&(s.icon!=='custom'||image.complete&&image.naturalWidth))ctx.drawImage(image,x-size/2,y-size/2,size,size);
       ctx.globalAlpha=f.label?0:s.opacity;ctx.fillStyle='#f1f6fa';ctx.font='12px "Microsoft YaHei",sans-serif';
       ctx.shadowColor='#061521';ctx.shadowBlur=4;ctx.fillText(f.name,x+size*.6,y+4);
       if(!f.label&&s.opacity>0&&f.name)legacyLabelBox=[x+size*.6,y-12,x+size*.6+ctx.measureText(f.name).width,y+5];
@@ -248,31 +265,65 @@ function drawAnnotations(){
       if(f.type==='region'){ctx.closePath();ctx.globalAlpha=s.fillOpacity;ctx.fill();}
       ctx.globalAlpha=s.opacity;ctx.stroke();
     }
-    ctx.restore();const labelBox=drawLabel(ctx,rendered,project)||legacyLabelBox;drawSelection(f,p,labelBox,opacity);
-    const target=buildHitTarget(rendered,l,f.type==='point'?[markerScreenPoint(p[0],s)]:p,labelBox);if(target){target.feature=f;hitTargets.push(target);}
+    ctx.restore();const billboard=rendered.label?.visible&&rendered.label.opacity>0&&rendered.label.placement==='billboard',anchor=billboard?project(labelWorldAnchor(f).toArray()):null;
+    const record={f,l,rendered,s,p,opacity,legacyLabelBox,billboard};records.push(record);
+    if(anchor&&anchor[0]>=0&&anchor[0]<=width&&anchor[1]>=0&&anchor[1]<=height)signs.push({id:f.id,anchor,full:signMetric(rendered,false),compact:signMetric(rendered,true),manual:signOffsets.get(f.id),offset:f.label.offset,selected:f===selected});
+  }
+  const obstacles=labelObstacles(),avoid=$('sign-avoid').checked,dragging=signDrag?.moved?signDrag.feature.id:null;
+  const preferCompact=document.body.classList.contains('command-view');
+  const key=JSON.stringify([width,height,obstacles,avoid,dragging,preferCompact,signs.map(i=>[i.id,i.anchor.map(v=>Math.round(v*2)/2),i.manual,i.offset,i.selected,i.full,i.compact])]);
+  if(key!==signLayoutKey){signLayoutKey=key;signLayoutResult=layoutLabels(signs,{width,height,obstacles,previous:signPrevious,avoid,dragging,preferCompact});}
+  const layout=signLayoutResult;
+  signPlacements=layout.placements;signPrevious=signPlacements;
+  viewport.dataset.signCount=String(signPlacements.size);viewport.dataset.signOmitted=String(layout.omitted);viewport.dataset.signCompact=String(layout.compact);
+  $('sign-status').textContent=layout.omitted?`${layout.omitted} 块牌面暂被收起，请缩放或筛选图层`:layout.compact?'密集视图 · 点选展开详情':'拖动牌面调整位置 · 不改变点位';
+  // Paint ordinary labels first; selected/manual cards are painted last and get matching picking order.
+  records.sort((a,b)=>Number(!!signOffsets.get(a.f.id))-Number(!!signOffsets.get(b.f.id))||Number(a.f===selected)-Number(b.f===selected));
+  for(const {f,rendered,p,opacity,billboard} of records)if(billboard){if(f.type!=='point')drawSelection(f,p,null,opacity);const placement=signPlacements.get(f.id);if(placement)drawSignLeader(ctx,rendered,placement.anchor,placement);}
+  for(const {f,l,rendered,s,p,opacity,legacyLabelBox,billboard} of records){const placement=signPlacements.get(f.id);
+    const labelBox=billboard?(placement?drawSign(ctx,rendered,placement.anchor,placement,{selected:f===selected,manual:signOffsets.has(f.id),leader:false}):null):drawLabel(ctx,rendered,project)||legacyLabelBox;
+    if(!billboard)drawSelection(f,p,labelBox,opacity);
+    const target=buildHitTarget(signFootFeature(rendered),l,f.type==='point'?[f.label?.placement==='billboard'?p[0]:markerScreenPoint(p[0],s)]:p,labelBox);if(target){target.feature=f;hitTargets.push(target);}
   }
 }
+
 const gesture=new ClickGesture(),canvas=renderer.domElement;
 canvas.tabIndex=0;canvas.setAttribute('aria-label','驻马店三维场景');canvas.dataset.scene='zhumadian';
 function eventPoint(event){const r=canvas.getBoundingClientRect();return [event.clientX-r.left,event.clientY-r.top];}
-canvas.addEventListener('pointerdown',event=>gesture.begin(event),true);
+function cardAt(point){const target=pickAnnotation(hitTargets,point),b=target?.labelBox;return b&&target.feature.label?.placement==='billboard'&&point[0]>=b[0]&&point[0]<=b[2]&&point[1]>=b[1]&&point[1]<=b[3]?target:null;}
+function cancelSignDrag(){if(!signDrag)return;const d=signDrag;signDrag=null;if(d.before)signOffsets.set(d.feature.id,d.before);else signOffsets.delete(d.feature.id);controls.enabled=d.controlsEnabled;try{canvas.releasePointerCapture(d.id);}catch{}canvas.style.cursor='';}
+canvas.addEventListener('pointerdown',event=>{
+ if(signDrag){if(event.pointerId!==signDrag.id)cancelSignDrag();return;}
+ const target=event.button===0&&event.isPrimary&&event.pointerType!=='touch'?cardAt(eventPoint(event)):null;
+ if(target){const placement=signPlacements.get(target.feature.id);if(!placement)return;
+  signDrag={id:event.pointerId,feature:target.feature,layer:target.layer,start:eventPoint(event),box:[...placement.box],anchor:[...placement.anchor],before:signOffsets.get(target.feature.id),controlsEnabled:controls.enabled,moved:false};
+  canvas.setPointerCapture(event.pointerId);event.preventDefault();event.stopImmediatePropagation();
+ }else gesture.begin(event);
+},true);
 canvas.addEventListener('pointermove',event=>{
-  gesture.move(event);
-  if(!event.buttons)canvas.style.cursor=pickAnnotation(hitTargets,eventPoint(event))?'pointer':'';
+ if(signDrag?.id===event.pointerId){const p=eventPoint(event),d=signDrag,dx=p[0]-d.start[0],dy=p[1]-d.start[1];
+  if(Math.hypot(dx,dy)>5)d.moved=true;
+  if(d.moved){controls.enabled=false;signOffsets.set(d.feature.id,[d.box[0]+dx-d.anchor[0],d.box[1]+dy-d.anchor[1]]);canvas.style.cursor='grabbing';}
+  event.preventDefault();event.stopImmediatePropagation();return;
+ }
+ gesture.move(event);if(!event.buttons)canvas.style.cursor=cardAt(eventPoint(event))?'grab':pickAnnotation(hitTargets,eventPoint(event))?'pointer':'';
 },true);
-canvas.addEventListener('pointercancel',event=>gesture.cancel(event),true);
+canvas.addEventListener('pointercancel',event=>{if(signDrag?.id===event.pointerId)cancelSignDrag();gesture.cancel(event);},true);
 canvas.addEventListener('pointerup',event=>{
-  if(!gesture.end(event))return;
-  camera.updateMatrixWorld();drawAnnotations();const target=pickAnnotation(hitTargets,eventPoint(event));
-  if(target)selectFeature(target.feature,target.layer,'scene');else clearSelection();
+ if(signDrag?.id===event.pointerId){const d=signDrag;signDrag=null;controls.enabled=d.controlsEnabled;try{canvas.releasePointerCapture(d.id);}catch{}
+  if(d.moved){saveSignPreferences();selectFeature(d.feature,d.layer,'sign-drag',false);message('标牌位置已调整，企业地面坐标保持不变');}else selectFeature(d.feature,d.layer,'scene');
+  canvas.style.cursor='grab';event.preventDefault();event.stopImmediatePropagation();return;
+ }
+ if(!gesture.end(event))return;camera.updateMatrixWorld();drawAnnotations();const target=pickAnnotation(hitTargets,eventPoint(event));
+ if(target)selectFeature(target.feature,target.layer,'scene');else clearSelection();
 },true);
-canvas.addEventListener('dblclick',event=>{
-  if(event.button!==0)return;
-  const target=pickAnnotation(hitTargets,eventPoint(event));
-  if(target){selectFeature(target.feature,target.layer,'scene');locate();}
-});
-window.addEventListener('blur',()=>gesture.cancel());
-document.addEventListener('keydown',event=>{if(event.key==='Escape')clearSelection();});
+canvas.addEventListener('lostpointercapture',event=>{if(signDrag?.id===event.pointerId)cancelSignDrag();});
+canvas.addEventListener('dblclick',event=>{if(event.button!==0)return;const target=pickAnnotation(hitTargets,eventPoint(event));if(target){selectFeature(target.feature,target.layer,'scene');locate();}});
+window.addEventListener('blur',()=>{gesture.cancel();cancelSignDrag();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'){if(signDrag){cancelSignDrag();message('已取消本次标牌拖拽');}else clearSelection();}});
+$('sign-reset').onclick=()=>{cancelSignDrag();signOffsets.clear();signPrevious.clear();signLayoutKey='';saveSignPreferences();message('已恢复标牌自动布局，企业点位未改变');};
+$('command-panels').onclick=()=>{const collapsed=document.body.classList.toggle('command-panels-collapsed');$('command-panels').textContent=collapsed?'展开仪表盘':'收起仪表盘';$('command-panels').setAttribute('aria-pressed',String(collapsed));signPrevious.clear();signLayoutKey='';};
+$('sign-avoid').onchange=()=>{signPrevious.clear();signLayoutKey='';};
 for(const id of ['feature-search','feature-type','object-category'])$(id).addEventListener(id==='feature-search'?'input':'change',()=>rebuildLayerUI());
 $('reset-filter').onclick=()=>{$('feature-search').value='';$('feature-type').value='all';$('object-category').value='all';rebuildLayerUI();};
 $('details-close').onclick=()=>document.body.classList.remove('details-open');
@@ -298,7 +349,7 @@ function refreshEmergencyResources(){
   for(const [id,category] of Object.entries(mapping))$(id).textContent=layersDoc?objects.filter(o=>o.category===category).length:'—';
 }
 function refreshPortal(){
-  refreshEmergencyResources();
+  refreshEmergencyResources();const command=activeTopic==='emergency',wasCommand=document.body.classList.contains('command-view');document.body.classList.toggle('command-view',command);if(command!==wasCommand)$('layer-settings').open=!command;document.querySelector('header>strong').textContent=command?'驻马店 · 敏捷应急指挥':'驻马店重大风险防控';updateCommandDashboard(layersDoc);
   const counts=topicCounts(layersDoc?.layers,activeCatalog());
   for(const button of $('topic-nav').querySelectorAll('button')){const key=button.dataset.topic;button.setAttribute('aria-pressed',String(activeTopic===key));button.querySelector('small').textContent=counts[key];}
   $('topic-title').textContent=topics[activeTopic]?.name??'全部图层';$('topic-description').textContent=topics[activeTopic]?.description??(dataMode==='authenticated'?'浏览当前账号获准访问的空间对象和业务详情':'浏览编辑器保存的全部点线面与图层');
@@ -570,6 +621,7 @@ $('reload').onclick=()=>{userLayerLoad=true;reload().catch(fail);};
 const connectionMessages={SIGNED_OUT:'已退出，授权数据已清空',UNAUTHENTICATED:'登录已失效，请重新登录',FORBIDDEN:'当前账号无访问权限',AUTH_EXPIRED:'登录已到期，授权数据已清空',CONNECTION_FAILED:'业务服务连接失败，授权数据已清空',CONFIG_INVALID:'业务连接配置无效，请联系管理员',CONFIG_UNAVAILABLE:'业务连接暂不可用，请稍后重试',LOGIN_INVALID:'登录校验失败，请重新登录',LOGIN_CANCELLED:'登录已取消',LOGIN_REJECTED:'身份平台拒绝登录，请重试',LOGIN_UNAVAILABLE:'身份平台暂不可用',LOGIN_STORAGE_UNAVAILABLE:'浏览器无法保存临时登录校验，请检查设置',DATA_CHANGED:'数据版本已变化，请刷新重试',POLICY_CHANGED:'授权范围已变化，请刷新重试',DATA_INVALID:'业务数据格式无效，请联系管理员',DATA_SOURCE_UNAVAILABLE:'业务数据源暂不可用',POLICY_UNAVAILABLE:'授权配置暂不可用'};
 function gasFocusNotice(value){$('gas-focus-status').hidden=!value;$('gas-focus-status').textContent=value;if(value)message(value);}
 function clearAuthorizedData(){
+  cancelSignDrag();signOffsets.clear();signPrevious.clear();signLayoutKey='';signMetrics.clear();signPlacements.clear();signLayoutResult=null;signPreferenceKey='';
   gasFocusNotice('');
   layerLoading.revision++;businessLoadGeneration++;spatialLoadGeneration++;
   layersDoc={schema:'hongtu.landscape.layers.v1',scene:'zhumadian',coordinates:{srs:'EPSG:32650',unit:'metre',axes:'east,north,up',origin:[225319.5,3648440.1,30.9]},layers:[]};
@@ -635,7 +687,7 @@ async function boot(){
   reloadSpatial(true).catch(error=>spatialNotice(error.message));
   reloadBusinessRecords(true).catch(error=>businessNotice(`发布台账读取失败：${error.message}`));
 }
-function animate(now){requestAnimationFrame(animate);orbitActivity.update();renderer.render(scene,camera);drawAnnotations();frames++;if(now-frameClock>1000){fps=frames*1000/(now-frameClock);frames=0;frameClock=now;$('status').textContent=`${Math.round(fps)} FPS · 2346 基础瓦片 · 细层 ${resident.size}/${telemetry.nativeDesired??0} 块 / ${Math.round(telemetry.nativeBytes/1048576)} MiB · 已加载最高层级 ${resident.size?Math.max(...[...resident.values()].map(r=>r.frontier?.maxDepth??r.depth)):"基础层"}`;}
+function animate(now){requestAnimationFrame(animate);if(!signDrag?.moved)orbitActivity.update();renderer.render(scene,camera);drawAnnotations();frames++;if(now-frameClock>1000){$('command-clock').textContent=new Date().toLocaleTimeString('zh-CN',{hour12:false});fps=frames*1000/(now-frameClock);frames=0;frameClock=now;$('status').textContent=`${Math.round(fps)} FPS · 2346 基础瓦片 · 细层 ${resident.size}/${telemetry.nativeDesired??0} 块 / ${Math.round(telemetry.nativeBytes/1048576)} MiB · 已加载最高层级 ${resident.size?Math.max(...[...resident.values()].map(r=>r.frontier?.maxDepth??r.depth)):"基础层"}`;}
   if(now-lastRank>700&&telemetry.ready){lastRank=now;maintain();}}
 requestAnimationFrame(animate);boot().catch(error=>{$('loading').style.display='none';fail(error);});
 // Read-only QA observation and reproducible camera controls; no private files.

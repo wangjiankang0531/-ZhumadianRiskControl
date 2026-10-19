@@ -1,0 +1,15 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {layoutLabels,overlaps,readLabelOffsets} from '../src/label_layout.js';
+const items=(n=14)=>Array.from({length:n},(_,i)=>({id:`enterprise-${i}`,anchor:[490+i*3,260+i*8],full:{width:236,height:152},compact:{width:208,height:52},selected:false}));
+function verify(result,obstacles=[]){const boxes=[...result.placements.values()].map(v=>v.box);for(let i=0;i<boxes.length;i++){for(let j=i+1;j<boxes.length;j++)assert.equal(overlaps(boxes[i],boxes[j],6),false);for(const o of obstacles)assert.equal(overlaps(boxes[i],o),false);}}
+test('fourteen crowded cards fit without overlap, preserving every ground anchor',()=>{const input=items(),raw=JSON.stringify(input),r=layoutLabels(input,{width:1057,height:600});assert.equal(r.omitted,0);verify(r);assert.equal(JSON.stringify(input),raw);for(const i of input)assert.deepEqual(r.placements.get(i.id).anchor,i.anchor);});
+test('narrow viewport avoids sidebar and toolbar; selected card remains full',()=>{const input=items();input[0].selected=true;const obstacles=[[0,0,226,500],[470,0,764,45],[260,552,740,600]],r=layoutLabels(input,{width:764,height:650,obstacles});assert.equal(r.omitted,0);verify(r,obstacles);assert.equal(r.placements.get(input[0].id).compact,false);});
+test('manual card has priority and other cards avoid its chosen position',()=>{const input=items(5);input[0].manual=[-240,-180];const r=layoutLabels(input,{width:1057,height:650});assert.deepEqual(r.placements.get(input[0].id).box.slice(0,2),[250,80]);verify(r);});
+test('stable frame produces identical layout and only screen positions change with camera',()=>{const input=items(4),a=layoutLabels(input,{width:1057,height:650}),b=layoutLabels(input,{width:1057,height:650,previous:a.placements});assert.deepEqual(a,b);});
+test('impossible viewport reports omitted cards rather than overlapping them',()=>{const r=layoutLabels(items(),{width:240,height:120});assert.ok(r.omitted>0);verify(r);});
+test('saved offsets reject malformed, oversized and nonfinite preferences',()=>{assert.equal(readLabelOffsets('invalid').size,0);assert.equal(readLabelOffsets(JSON.stringify(Array(1001).fill(['x',[0,0]]))).size,0);assert.deepEqual([...readLabelOffsets(JSON.stringify([['ok',[20,-30]],['bad',[null,0]],['huge',[10001,0]]]))],[['ok',[20,-30]]]);});
+
+test('automatic cards never cover ground feet',()=>{const input=items(8),r=layoutLabels(input,{width:1057,height:700,preferCompact:true});assert.equal(r.omitted,0);for(const placement of r.placements.values())for(const i of input)assert.equal(overlaps(placement.box,[i.anchor[0]-6,i.anchor[1]-6,i.anchor[0]+6,i.anchor[1]+6]),false);});
+
+test('large layers bound card work and keep a selected card in the priority set',()=>{const input=items(100);input[99].selected=true;const r=layoutLabels(input,{width:1920,height:1080,preferCompact:true});assert.ok(r.placements.size<=32);assert.ok(r.placements.has(input[99].id));assert.equal(r.placements.size+r.omitted,100);});

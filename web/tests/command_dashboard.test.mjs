@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {commandEnterpriseStats} from '../src/command_dashboard.js';
+const enterprise=(id,source='local')=>({business:{objectType:'enterprise',businessId:id,sourceSystem:source}});
+test('enterprise dashboard counts reference identities, not every point or resource',()=>{const layers=[{name:'生产企业（估算）',features:[enterprise('1'),enterprise('1'),{business:{objectType:'medical',businessId:'r'}}]},{name:'医药企业',features:[enterprise('2'),enterprise('1','other')]}],raw=JSON.stringify(layers);assert.deepEqual(commandEnterpriseStats(layers),{count:3,groups:[{name:'生产企业',count:1},{name:'医药企业',count:2}]});assert.equal(JSON.stringify(layers),raw);});
+test('empty or unbound documents display zero registered enterprise references',()=>{assert.deepEqual(commandEnterpriseStats(),{count:0,groups:[]});assert.equal(commandEnterpriseStats([{name:'区域',features:[{type:'region'},{}]}]).count,0);});
