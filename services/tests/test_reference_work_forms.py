@@ -80,7 +80,7 @@ class WorkFormTests(unittest.TestCase):
   try:
    with self.assertRaises(OSError):make_server(server.server_port,static,self.path)
    host='127.0.0.1:'+str(server.server_port);client=http.client.HTTPConnection(host)
-   client.request('GET','/api/demo/catalog');response=client.getresponse();catalog=json.loads(response.read());self.assertEqual(len(catalog['workFormSchema']['types']),8);self.assertEqual(catalog['version'],'0.8.8')
+   client.request('GET','/api/demo/catalog');response=client.getresponse();catalog=json.loads(response.read());self.assertEqual(len(catalog['workFormSchema']['types']),8);self.assertEqual(catalog['version'],'0.8.9')
    body=json.dumps(dict(form=synthetic_form(8),enterprise='模拟企业甲',note='',action='submit',identity=None,revision=None))
    client.request('POST','/api/demo/work-reservation',body,{'Content-Type':'application/json','Origin':'http://'+host,'X-XNBY-Demo':catalog['token']});response=client.getresponse();value=json.loads(response.read());self.assertEqual(response.status,200);self.assertEqual(value['record']['workForm']['jobType'],'断路作业')
    client.request('POST','/api/demo/work-reservation',body,{'Content-Type':'application/json','Origin':'http://evil.invalid','X-XNBY-Demo':catalog['token']});response=client.getresponse();response.read();self.assertEqual(response.status,403);client.close()

@@ -1,38 +1,58 @@
-"""Generate isolated demo DB physical schema and portable MySQL target DDL."""
-import json,sqlite3,tempfile,sys,hashlib
+"""Generate actual isolated SQLite schema and explicit MySQL target preparation."""
+import argparse,json,sqlite3,tempfile,sys,hashlib,shutil
 from contextlib import closing
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from services.reference_demo import SCHEMA,MODULES,DemoStore
 from services.reference_work_forms import catalog_schema
+from services.reference_plans import plan_schema,PLAN_TABLES
+TABLES=('demo_records','demo_events')+PLAN_TABLES
+
+def mysql_type(c):
+ n=c['name']
+ if c['type']=='BLOB':return 'LONGBLOB'
+ if c['type']=='INTEGER':return 'INT UNSIGNED'
+ if n in ('entity','id'):return 'VARBINARY(128)'
+ if n=='form_sha256':return 'CHAR(64) CHARACTER SET ascii COLLATE ascii_bin'
+ if n in ('enterprise','state','kind','date','at','status','decision','created_at','published_at'):return 'VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin'
+ return 'LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin'
 
 def generate(out):
- out.mkdir(parents=True,exist_ok=True);manifest={'scope':'isolated synthetic demo only','version':1,'schemaSHA256':hashlib.sha256(SCHEMA.encode()).hexdigest(),'modules':len(MODULES),'initialRecords':12*len(MODULES),'workFormSchema':catalog_schema(),'tables':{}}
- rows=['# 模拟业务库概念与物理模型','','本文件由 tools/generate_reference_demo_docs.py 根据实际SQLite结构生成。','','此库只保存合成验收数据。它与正式业务库 issues/events/requests 及 DLG 空间业务库分开；不能作为生产业务域建模已完成的证据。','','概念关系：业务模块（entity）包含多条模拟记录（entity,id）；记录以 revision 乐观并发控制，状态推进与逐版本处理事件处于同一事务。记录负载保留模块字段字典，便于继续对照参考页面。真实身份、权限及各业务专有约束仍在既定正式服务范围继续研发。','']
- mysql=['-- Synthetic demo only; MySQL target preparation, NOT MySQL-server validated.','SET NAMES utf8mb4;']
- with tempfile.TemporaryDirectory() as temporary:
-  store=DemoStore(Path(temporary)/'demo.sqlite')
+ out=Path(out);out.mkdir(parents=True,exist_ok=True)
+ model=dict(scope='isolated synthetic demo only',version=2,schemaSHA256=hashlib.sha256(SCHEMA.encode()).hexdigest(),modules=len(MODULES),initialRecords=len(MODULES)*12,workFormSchema=catalog_schema(),planSchema=plan_schema(),tables={})
+ rows=['# 模拟业务库概念与物理模型','','由 tools/generate_reference_demo_docs.py 根据实际 SQLite 生成。当前 user_version=2；v1 SQL 文件保留作历史，当前使用 v2 文件。','','本库与正式风险问题/DLG/气体业务库独立，只用于合成验收；正式库 schema v4 不变。','','业务记录(entity,id)与逐记录revision审计同事务。预案新增四个独立关系表：版本(1:N)、当前/有效版本指针(1:1)、有序处置阶段(1:N)、评审(1:N)。版本、阶段、评审业务字段各自有列；不把这些关系塞入通用payload。每次评审另保留该次审阅表单的规范UTF8原字节BLOB与SHA256，草稿退回重编仍能核对当时内容。','']
+ mysql=['-- Synthetic demo schema v2. MySQL 8.4/InnoDB target; NOT server-validated.','-- Apply to an empty isolated staging database. Do not overwrite production databases.','SET NAMES utf8mb4;']
+ with tempfile.TemporaryDirectory() as tmp:
+  store=DemoStore(Path(tmp)/'schema.sqlite')
   with closing(store.connect()) as db:
-   for table in ('demo_records','demo_events'):
-    columns=list(db.execute('PRAGMA table_info('+table+')'));indices=[];definitions=[]
-    rows+=['## '+table,'','| 字段 | SQLite类型 | 非空 | 主键序号 | MySQL目标 |','| --- | --- | --- | --- | --- |']
-    types={}
-    for c in columns:
-     name=c['name'];kind=('INT UNSIGNED' if name=='revision' else 'VARBINARY(128)' if name in ('entity','id') else 'VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin' if name in ('enterprise','state','kind','date','at') else 'LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin');types[name]=kind
-     rows.append(f"| {name} | {c['type']} | 是 | {c['pk']} | {kind} |")
-     definitions.append('  `'+name+'` '+kind+' NOT NULL')
-    primary=[c['name'] for c in sorted(columns,key=lambda x:x['pk']) if c['pk']];definitions.append('  PRIMARY KEY ('+','.join('`'+x+'`' for x in primary)+')')
-    if table=='demo_records':definitions.append('  KEY `demo_query` (`entity`,`enterprise`,`state`,`date`)')
-    else:definitions.append('  CONSTRAINT `fk_demo_record` FOREIGN KEY (`entity`,`id`) REFERENCES `demo_records` (`entity`,`id`)')
-    definitions.append('  CHECK (JSON_VALID(`payload`))');mysql.append('CREATE TABLE `'+table+'` (\n'+',\n'.join(definitions)+'\n) ENGINE=InnoDB;')
-    manifest['tables'][table]={'columns':[dict(c) for c in columns],'mysqlTypes':types};rows+=['','payload 为UTF8 JSON，时间统一UTC ISO8601；所有状态推进与新增均以事务写入，并追加事件。','']
- rows+=['## 维护与迁移说明','','默认库：候选根目录 Assets/Demo/reference_demo.sqlite；仅绑定127.0.0.1的8791端口。程序重启保留新增/已处理数据，种子按模块及ID去重；字段扩展追加事件，不删除旧字段。','','备份应使用SQLite在线backup，或者停止服务后复制sqlite及其配套WAL；不要在运行中只复制主文件。备份/恢复已在单元测试中实际核对。不得用此库覆盖正式业务或用户DLG库。','','Linux/Apache：Python服务与静态文件均无Windows专用依赖；Apache可通过同源反向代理托管。Windows快捷方式仅用于本机测试入口。真实Apache部署、HTTPS、身份适配、MySQL驱动与事务并发尚待环境验收。目标DDL不等于MySQL已运行；迁移需导出独立演示数据、按entity/id/revision导入、检查行数/状态/审计链，再切换驱动。','','HTTP接口：GET /api/demo/catalog；GET /api/demo/records?entity=...&q=...&state=...&enterprise=...&page=...；GET加id查询详情；POST /api/demo/create 和 /api/demo/transition。写入要求同源Origin和本进程临时demo令牌，非生产登录凭据。默认只允许localhost/127.0.0.1及实际端口Host。']
- rows+=['','## 记录日期筛选与统计口径（0.8.8）','','records与summary支持q、state、enterprise、dateFrom、dateTo；日期为严格YYYY-MM-DD，起止均包含，单边可用，逆序或不存在日期拒绝。记录日期对应demo_records.date，新建取UTC登记日期，初始样本为固定合成日期；它不是作业开始/报警发生/值班日期，不用于声称按这些业务时间完成统计。界面统一显示“记录日期”。','','列表总数及分页采用全部筛选；状态卡数量采用同一企业/字面搜索/日期范围，但忽略当前选中state，以支持切换状态。统计页的全部指标采用完整筛选范围，下钻保留同一条件。详情查询只能entity+id，不能混用筛选造成误解。物理字段、索引和schema版本均不变。']
- rows+=['','## 八类特殊作业预约负载（0.8.7）','','物理表结构与 user_version=1 不变；demo_records.payload.workForm.schema 为 xnby.work_reservation.v1，包含 jobType、values 和 people。字段字典、八种类型及可选值由 demo_schema_manifest.json 的 workFormSchema 自动发布；展示字段直接由该负载生成，详情不再填充未保存的模拟值。','','people 按作业人员、施工方监护人、基层单位监护人分组，每组最多12人，姓名/工种/身份证号/联系方式/所在单位/是否承包商为合成验收字段。不得导入参考系统中的个人资料。受限空间要求作业人员与基层监护人，其余要求作业人员；数值为有限正数、起止时间先后为模拟策略，并非已经验证的源审批制度。','','POST /api/demo/work-reservation 的完整参数为 form、enterprise、note、action、identity、revision。action=draft 允许缺失必填项，但拒绝未知字段与非法非空值；action=submit 完整校验后从草稿进入待核验。新建 identity/revision 均为 null，已有草稿按版本 CAS 修改；已提交记录不能继续编辑。状态和 work_draft_save/work_simulated_submit 审计事件同事务更新。通用 create 不允许绕过专用表单，通用草稿状态推进也执行完整校验。请求上限128KiB。','','输入日期按北京时间（Asia/Shanghai、+08:00）解释，保存 UTC ISO8601；浏览器重开按北京时间显示，不依赖 Windows/Linux 本机时区。旧种子只补缺少的 workForm 并增加一次审计版本，保留备注与旧字段；普通用户记录不自动改写。','','备份恢复须逐项比较 workForm/人员组、revision、state 与事件链。MySQL 迁移时负载保持 UTF8 JSON，entity/id/revision 唯一性与原子事务一致；目标 DDL 未改变，MySQL 与 Apache 仍为待实际环境验收。']
- (out/'模拟业务库模型与维护说明.md').write_text('\n'.join(rows)+'\n',encoding='utf-8');(out/'demo_schema_sqlite_v1.sql').write_text(SCHEMA+'\nPRAGMA user_version=1;\n',encoding='utf-8');(out/'demo_schema_mysql_v1.sql').write_text('\n\n'.join(mysql)+'\n',encoding='utf-8');(out/'demo_schema_manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
- return manifest
+   for table in TABLES:
+    cols=[dict(r) for r in db.execute('PRAGMA table_info('+table+')')];foreign=[dict(r) for r in db.execute('PRAGMA foreign_key_list('+table+')')];indices=[];defs=[]
+    rows+=['## '+table,'','| 字段 | SQLite | 非空 | 主键序号 | MySQL目标 |','| --- | --- | --- | --- | --- |']
+    for c in cols:
+     target=mysql_type(c);nullable=not(c['notnull'] or c['pk']);defs.append('  `'+c['name']+'` '+target+(' NULL' if nullable else ' NOT NULL'))
+     rows.append(f"| {c['name']} | {c['type']} | {'否' if nullable else '是'} | {c['pk']} | {target} |")
+    pk=[c['name'] for c in sorted(cols,key=lambda c:c['pk']) if c['pk']];defs.append('  PRIMARY KEY ('+','.join('`'+n+'`' for n in pk)+')')
+    for index in db.execute('PRAGMA index_list('+table+')'):
+     names=[r['name'] for r in db.execute('PRAGMA index_info('+index['name']+')')];indices.append(dict(name=index['name'],unique=bool(index['unique']),columns=names))
+     if index['origin']!='pk':defs.append('  '+('UNIQUE KEY' if index['unique'] else 'KEY')+' `'+index['name']+'` ('+','.join('`'+n+'`' for n in names)+')')
+    groups={}
+    for f in foreign:groups.setdefault(f['id'],[]).append(f)
+    for n,group in groups.items():
+     group.sort(key=lambda f:f['seq']);defs.append('  CONSTRAINT `fk_'+table+'_'+str(n)+'` FOREIGN KEY ('+','.join('`'+f['from']+'`' for f in group)+') REFERENCES `'+group[0]['table']+'` ('+','.join('`'+f['to']+'`' for f in group)+')')
+    if table in ('demo_records','demo_events'):defs.append('  CHECK (JSON_VALID(`payload`))')
+    if table=='demo_plan_versions':defs+=['  CHECK (`entity` = BINARY \'plans\')','  CHECK (`version` > 0)',"  CHECK (`status` IN ('draft','review','approved','published','historical'))"]
+    if table=='demo_plan_steps':defs.append('  CHECK (`position` >= 0)')
+    if table=='demo_plan_reviews':defs.append("  CHECK (`decision` IN ('approve','reject'))")
+    mysql.append('CREATE TABLE `'+table+'` (\n'+',\n'.join(defs)+'\n) ENGINE=InnoDB;')
+    model['tables'][table]=dict(columns=cols,mysqlTypes={c['name']:mysql_type(c) for c in cols},indexes=indices,foreignKeys=foreign)
+    rows+=['','索引：'+json.dumps(indices,ensure_ascii=False),'','外键：'+json.dumps(foreign,ensure_ascii=False),'']
+ rows+=['## 状态与事务','','draft编制→review提交→approved模拟通过→published发布；review可reject退回draft。退回保留评审记录和审阅快照。所有动作以demo_records.revision做CAS，BEGIN IMMEDIATE串行化并发，记录/版本/步骤/评审/指针/审计同事务。approve仍在列表待评审组，版本详情明确待发布，不冒充已发布。','','published创建修订草稿时原published_version保持；新版通过且显式publish时，旧版status转historical，新版才成为published_version。历史版本不提供编辑入口。旧v1种子仅作历史合成列表样本保留，不制造评审历史，不自动迁入新版本链。通用create/transition拒绝plans，不能绕过专用流程。','','## 模型维护、迁移与恢复','','SQLite 0/1自动创建新表并以事务升级user_version=2，2可重开，其它版本拒绝。旧记录、备注和事件保留。升级前由部署工具在线backup到新独立版本库；先在副本验收，不能原位覆盖正在使用的业务库。运行中备份使用SQLite backup（含WAL）；恢复须核对6表所有行及审阅BLOB/SHA、当前/有效版本、事件连续性和PRAGMA foreign_key_check。','','MySQL目标使用VARBINARY标识、InnoDB外键/事务、整数版本、LONGBLOB审阅原字节；业务文本保持UTF8，不做大小写折叠。迁移先导记录/事件，再版本/头/阶段/评审，保留NULL有效版本指针；校验指针状态、单一有效版本和BLOB SHA。DDL/数据导入器与真实MySQL并发/死锁重试尚未环境验收。Linux/Apache仍需同源HTTPS反代实际验证。','','HTTP专用：POST /api/demo/plan(form,enterprise,note,action,identity,revision)，action=draft/submit；POST /api/demo/plan-action(identity,revision,action,note,review)，action=approve/reject/publish/revise。GET详情包含plan的currentVersion/publishedVersion/versions/steps/reviews。仍由现有同源token或公网测试登录适配器保护，没有新增匿名写口。','','未完成范围：预案附件上传/下载、资源关系、正式权限/真实审批制度、独立预案业务日期筛选、删除/撤销、上级及企业预案独立视图、预案驱动应急事件和通信调度。不得用本阶段宣称261013预案全需求完成。','','八类作业workForm及记录日期统计延续原语义。payload为通用列表快照，workForm包含八类作业字段和人员组；未声称作业领域关系建模已全部完成。dateFrom/dateTo仍按记录UTC日期，而非编制或评审日期；列表状态facet保持其它筛选，summary采用完整筛选。']
+ outputs={'模拟业务库模型与维护说明.md':'\n'.join(rows)+'\n','demo_schema_sqlite_v2.sql':SCHEMA+'\nPRAGMA user_version=2;\n','demo_schema_mysql_v2.sql':'\n\n'.join(mysql)+'\n','demo_schema_manifest.json':json.dumps(model,ensure_ascii=False,indent=2)+'\n'}
+ for name,value in outputs.items():(out/name).write_text(value,encoding='utf8')
+ return model
 if __name__=='__main__':
- root=Path(__file__).resolve().parents[1];manifest=generate(root.parent/'Document/Database');source=root/'deploy/database';source.mkdir(parents=True,exist_ok=True)
- import shutil
- for name in ('demo_schema_mysql_v1.sql','demo_schema_manifest.json'):shutil.copy2(root.parent/'Document/Database'/name,source/name)
- print(json.dumps(dict(modules=manifest['modules'],initialRecords=manifest['initialRecords'],sha256=manifest['schemaSHA256'])))
+ p=argparse.ArgumentParser();p.add_argument('--publish-source',action='store_true');args=p.parse_args();root=Path(__file__).resolve().parents[1];m=generate(root.parent/'Document/Database')
+ if args.publish_source:
+  target=root/'deploy/database';target.mkdir(parents=True,exist_ok=True)
+  for name in ('demo_schema_mysql_v2.sql','demo_schema_manifest.json'):shutil.copy2(root.parent/'Document/Database'/name,target/name)
+ print(json.dumps(dict(version=m['version'],tables=len(m['tables']),sha256=m['schemaSHA256'])))

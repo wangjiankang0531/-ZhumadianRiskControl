@@ -1,7 +1,7 @@
 {
   "scope": "isolated synthetic demo only",
-  "version": 1,
-  "schemaSHA256": "5175219cd47d8014519c162efdd7e17e7fbd8c53bd119bb8afdabd0840544a94",
+  "version": 2,
+  "schemaSHA256": "e1e10280f4c917103a0ed8ed234eee823b20516ef2aaddd4c3a53c049dc3043b",
   "modules": 82,
   "initialRecords": 984,
   "workFormSchema": {
@@ -986,6 +986,42 @@
     "policy": "基础字段参考已观察页面；数值、时间及人员完整性为模拟验收规则，未接入真实审批。",
     "timeZone": "Asia/Shanghai"
   },
+  "planSchema": {
+    "schema": "zhumadian.emergency_plan.v1",
+    "fields": {
+      "name": "预案名称",
+      "category": "预案类别",
+      "level": "预案等级",
+      "compiledDate": "编制日期",
+      "authorUnit": "编制单位",
+      "accidentType": "事故类型",
+      "scope": "适用场景",
+      "commander": "指挥长",
+      "contact": "模拟联系渠道"
+    },
+    "categories": [
+      "综合应急预案",
+      "专项应急预案",
+      "现场处置预案",
+      "特殊时期/重大活动应急预案"
+    ],
+    "reviewFields": {
+      "reviewDate": "评审日期",
+      "opinion": "评审意见",
+      "notified": "风险是否告知周边单位",
+      "noticeUnits": "风险告知单位资料",
+      "filingDepartment": "备案部门",
+      "filingKind": "备案部门性质",
+      "evaluationStatus": "预案评估状态",
+      "evaluationCycle": "定期评估周期",
+      "evaluationOpinion": "评估意见",
+      "lastFiledDate": "最近备案日期",
+      "firstFiledDate": "初次备案日期",
+      "lastEvaluatedDate": "最近定期评估日期"
+    },
+    "maxSteps": 24,
+    "policy": "独立模拟评审，不代表真实权限或审批制度；附件、资源关联与正式身份仍待接续。"
+  },
   "tables": {
     "demo_records": {
       "columns": [
@@ -1054,7 +1090,28 @@
         "state": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
         "date": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
         "payload": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
-      }
+      },
+      "indexes": [
+        {
+          "name": "demo_query",
+          "unique": false,
+          "columns": [
+            "entity",
+            "enterprise",
+            "state",
+            "date"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_demo_records_1",
+          "unique": true,
+          "columns": [
+            "entity",
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": []
     },
     "demo_events": {
       "columns": [
@@ -1114,7 +1171,700 @@
         "at": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
         "kind": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
         "payload": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
-      }
+      },
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_demo_events_1",
+          "unique": true,
+          "columns": [
+            "entity",
+            "id",
+            "revision"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "demo_records",
+          "from": "entity",
+          "to": "entity",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 1,
+          "table": "demo_records",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ]
+    },
+    "demo_plan_versions": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "entity",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "version",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 3
+        },
+        {
+          "cid": 3,
+          "name": "status",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "category",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "level",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "compiled_date",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "author_unit",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "accident_type",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "scope",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "commander",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "contact",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "created_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "published_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "mysqlTypes": {
+        "entity": "VARBINARY(128)",
+        "id": "VARBINARY(128)",
+        "version": "INT UNSIGNED",
+        "status": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "name": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "category": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "level": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "compiled_date": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "author_unit": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "accident_type": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "scope": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "commander": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "contact": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "created_at": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "published_at": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+      },
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_demo_plan_versions_1",
+          "unique": true,
+          "columns": [
+            "entity",
+            "id",
+            "version"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "demo_records",
+          "from": "entity",
+          "to": "entity",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 1,
+          "table": "demo_records",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ]
+    },
+    "demo_plan_heads": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "entity",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "current_version",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "published_version",
+          "type": "INTEGER",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "mysqlTypes": {
+        "entity": "VARBINARY(128)",
+        "id": "VARBINARY(128)",
+        "current_version": "INT UNSIGNED",
+        "published_version": "INT UNSIGNED"
+      },
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_demo_plan_heads_1",
+          "unique": true,
+          "columns": [
+            "entity",
+            "id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "demo_plan_versions",
+          "from": "entity",
+          "to": "entity",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 1,
+          "table": "demo_plan_versions",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 2,
+          "table": "demo_plan_versions",
+          "from": "published_version",
+          "to": "version",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "demo_plan_versions",
+          "from": "entity",
+          "to": "entity",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 1,
+          "table": "demo_plan_versions",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 2,
+          "table": "demo_plan_versions",
+          "from": "current_version",
+          "to": "version",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ]
+    },
+    "demo_plan_steps": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "entity",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "version",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 3
+        },
+        {
+          "cid": 3,
+          "name": "position",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 4
+        },
+        {
+          "cid": 4,
+          "name": "title",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "department",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "content",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "mysqlTypes": {
+        "entity": "VARBINARY(128)",
+        "id": "VARBINARY(128)",
+        "version": "INT UNSIGNED",
+        "position": "INT UNSIGNED",
+        "title": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "department": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "content": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin"
+      },
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_demo_plan_steps_1",
+          "unique": true,
+          "columns": [
+            "entity",
+            "id",
+            "version",
+            "position"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "demo_plan_versions",
+          "from": "entity",
+          "to": "entity",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 1,
+          "table": "demo_plan_versions",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 2,
+          "table": "demo_plan_versions",
+          "from": "version",
+          "to": "version",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ]
+    },
+    "demo_plan_reviews": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "entity",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "version",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "record_revision",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 3
+        },
+        {
+          "cid": 4,
+          "name": "at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "decision",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "review_date",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "opinion",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "notified",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "notice_units",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "filing_department",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "filing_kind",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "evaluation_status",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "evaluation_cycle",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "evaluation_opinion",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "last_filed_date",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 16,
+          "name": "first_filed_date",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 17,
+          "name": "last_evaluated_date",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 18,
+          "name": "reviewed_form",
+          "type": "BLOB",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 19,
+          "name": "form_sha256",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "mysqlTypes": {
+        "entity": "VARBINARY(128)",
+        "id": "VARBINARY(128)",
+        "version": "INT UNSIGNED",
+        "record_revision": "INT UNSIGNED",
+        "at": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "decision": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "review_date": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "opinion": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "notified": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "notice_units": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "filing_department": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "filing_kind": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "evaluation_status": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "evaluation_cycle": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "evaluation_opinion": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "last_filed_date": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "first_filed_date": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "last_evaluated_date": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "reviewed_form": "LONGBLOB",
+        "form_sha256": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin"
+      },
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_demo_plan_reviews_1",
+          "unique": true,
+          "columns": [
+            "entity",
+            "id",
+            "record_revision"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "demo_events",
+          "from": "entity",
+          "to": "entity",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 1,
+          "table": "demo_events",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 2,
+          "table": "demo_events",
+          "from": "record_revision",
+          "to": "revision",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "demo_plan_versions",
+          "from": "entity",
+          "to": "entity",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 1,
+          "table": "demo_plan_versions",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 2,
+          "table": "demo_plan_versions",
+          "from": "version",
+          "to": "version",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ]
     }
   }
 }

@@ -5,9 +5,10 @@ from pathlib import Path
 APP_FILES = (
     'services/__init__.py', 'services/reference_demo.py',
     'services/reference_work_forms.py', 'services/reference_demo_catalog.json',
+    'services/reference_plans.py', 'services/reference_errors.py',
     'tools/serve_reference_demo.py',
 )
-STATIC_FILES = ('reference-demo.html', 'reference-demo.js', 'reference-demo.css')
+STATIC_FILES = ('reference-demo.html', 'reference-demo.js', 'reference-demo.css', 'reference-home.css', 'home-access-qr.svg')
 RUNTIME_ROOT = ('python.exe', 'python3.dll', 'python312.dll', 'vcruntime140.dll', 'vcruntime140_1.dll', 'LICENSE.txt')
 
 VERIFY = r'''"""Verify packaged immutable files; data and logs are intentionally separate."""
@@ -54,9 +55,9 @@ def main():
 if __name__=='__main__':main()
 '''
 
-README = """信能本源模拟业务 0.8.7 独立运行包（本机验收候选）
+README = """驻马店模拟业务 0.8.9 独立运行包（本机验收候选）
 
-本包含 Python 3.12 运行时、82 模拟业务模块和八类作业表单；首次启动在 data/synthetic.sqlite 新建984条合成数据。没有复制任何现有数据库、GIS、三维模型、DLG或凭据。不扫描相邻安装或迁移相邻业务库。
+本包含 Python 3.12 运行时、82 模拟业务模块、八类作业表单和结构化预案编制/评审/版本流程；首次启动在 data/synthetic.sqlite 新建984条合成数据。没有复制任何现有数据库、GIS、三维模型、DLG或凭据。不扫描相邻安装或迁移相邻业务库。
 
 解压到新的版本目录。请先运行：
   runtime\\python\\python.exe -I -B verify_package.py
@@ -99,7 +100,7 @@ def build(app,static,output,*,public=False):
         items['iis/web.config.template']=checked(app/'deploy/iis_reference/web.config.template',app)
         items['README_PUBLIC.txt']=PUBLIC_README.encode('utf-8')
     # Config is editable and is checked semantically at startup, outside immutable hashes.
-    manifest={'schema':'xnby.synthetic.business.package.v1','version':'0.8.7-public.1' if public else '0.8.7-standalone.2','includesDatabase':False,'includes3D':False,'publicReady':False,
+    manifest={'schema':'xnby.synthetic.business.package.v1','version':'0.8.9-public.1' if public else '0.8.9-standalone.1','includesDatabase':False,'includes3D':False,'publicReady':False,
               'files':[dict(path=name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()) for name,raw in sorted(items.items()) if name!='config/local.json']}
     output.parent.mkdir(parents=True,exist_ok=True)
     with output.open('xb') as stream,zipfile.ZipFile(stream,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as archive:
@@ -122,7 +123,7 @@ try:server.serve_forever()
 finally:server.server_close()
 '''
 
-PUBLIC_README = '''公网模拟业务 0.8.7-public.1 候选
+PUBLIC_README = '''公网模拟业务 0.8.9-public.1 候选
 
 目标 https://www.joinlinksmart.com/zhumadian/ 。此包的运行时和业务代码可搬迁，三维/GIS/DLG/生产库/账号密码/入口密钥均未打包。
 run_public.py 仅绑定127.0.0.1:18873。必须单独提供 config/public.json（仅密码散列和随机入口密钥），并在 iis/web.config 中填入相同入口密钥。默认不配置账号、不自动发布公网、不修改原网站。

@@ -4,6 +4,8 @@ from pathlib import Path
 from contextlib import closing
 from datetime import date, datetime, timezone
 from services.reference_work_forms import TYPES, ENTERPRISES, normalize, synthetic_form, list_fields
+from services.reference_errors import DemoError
+from services.reference_plans import PlanMixin, PLAN_SCHEMA
 
 # Names come from the recorded read-only reference navigation and 261013 requirements.
 # They are not evidence that every corresponding reference page has been visited.
@@ -51,17 +53,16 @@ SCHEMA='CREATE TABLE IF NOT EXISTS demo_records (\n entity TEXT NOT NULL, id TEX
 
 def now(): return datetime.now(timezone.utc).isoformat()
 
-class DemoError(Exception):
-    def __init__(self,status,message): self.status,self.message=status,message
+SCHEMA += PLAN_SCHEMA
 
-class DemoStore:
+class DemoStore(PlanMixin):
     def __init__(self,path):
         self.path=path
         path.parent.mkdir(parents=True,exist_ok=True)
         with closing(self.connect()) as db:
             db.execute('PRAGMA journal_mode=WAL')
-            if db.execute('PRAGMA user_version').fetchone()[0] not in (0,1):raise ValueError('unsupported demo schema')
-            db.executescript(SCHEMA);db.execute('PRAGMA user_version=1')
+            if db.execute('PRAGMA user_version').fetchone()[0] not in (0,1,2):raise ValueError('unsupported demo schema')
+            db.executescript('BEGIN IMMEDIATE;\n'+SCHEMA+'\nPRAGMA user_version=2;\nCOMMIT;')
             db.execute('BEGIN IMMEDIATE')
             for item in MODULES.values():
                 for i in range(1,13):
@@ -160,11 +161,14 @@ class DemoStore:
         return dict(total=len(data),states=counts,dates=dates,enterprises=enterprises,groups=groups,synthetic=True,dateBasis='record_date_utc')
     def detail(self,entity,identity):
         with closing(self.connect()) as db:
+            db.execute('BEGIN')
             row=db.execute('SELECT * FROM demo_records WHERE entity=? AND id=?',(entity,identity)).fetchone()
             if row is None:raise DemoError(404,'记录不存在')
             events=[dict(r) for r in db.execute('SELECT revision,at,kind,payload FROM demo_events WHERE entity=? AND id=? ORDER BY revision',(entity,identity))]
-        return dict(record=self.record(row),events=events,detailFields={label:self.sample(entity,label,int(identity[-3:]) if identity[-3:].isdigit() else 1) for label in ([] if 'workForm' in json.loads(row['payload']) else MODULES.get(entity,{}).get('detailFields',[]))})
+            plan=self._plan_load(db,identity) if entity=='plans' else None
+        return dict(plan=plan,record=self.record(row),events=events,detailFields={label:self.sample(entity,label,int(identity[-3:]) if identity[-3:].isdigit() else 1) for label in ([] if plan or 'workForm' in json.loads(row['payload']) else MODULES.get(entity,{}).get('detailFields',[]))})
     def change(self,entity,identity,revision,note):
+        if entity=='plans':raise DemoError(400,'请使用结构化预案评审发布操作')
         if entity not in MODULES:raise DemoError(404,'未知业务模块')
         if type(revision) is not int or not isinstance(note,str) or not note.strip() or len(note)>2000:raise DemoError(400,'需提供版本号和1至2000字的模拟处理说明')
         with closing(self.connect()) as db:
@@ -184,6 +188,7 @@ class DemoStore:
         return self.detail(entity,identity)
     def create(self,entity,fields,enterprise,note):
         item=MODULES.get(entity)
+        if entity=='plans':raise DemoError(400,'请使用结构化预案表单')
         if entity=='work-reservation':raise DemoError(400,'请使用八类作业预约表单')
         if not item:raise DemoError(404,'未知业务模块')
         if not isinstance(fields,dict) or set(fields)!=set(item['columns']) or any(not isinstance(v,str) or not v.strip() or len(v)>256 for v in fields.values()):raise DemoError(400,'请完整填写所有字段，每项1至256字')

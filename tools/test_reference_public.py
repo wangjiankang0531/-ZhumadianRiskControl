@@ -52,6 +52,20 @@ class PublicHTTPTests(unittest.TestCase):
         c.close()
         return result
 
+    def test_structured_plan_endpoint_uses_existing_public_gate(self):
+        from services.tests.test_reference_plans import form,review
+        cookie=self.session()
+        code,headers,raw=self.request('/zhumadian/api/demo/catalog',headers={'Cookie':cookie})
+        catalog=json.loads(raw);self.assertEqual(catalog['demoSchemaVersion'],2)
+        body=dict(form=form(),enterprise='模拟企业甲',note='公网适配器本地合成验收',action='submit',identity=None,revision=None)
+        headers={'Cookie':cookie,'Origin':self.config['origin'],'X-XNBY-Demo':catalog['token'],'Content-Type':'application/json'}
+        self.assertEqual(self.request('/zhumadian/api/demo/plan','POST',json.dumps(body),{k:v for k,v in headers.items() if k!='Cookie'})[0],401)
+        code,_,raw=self.request('/zhumadian/api/demo/plan','POST',json.dumps(body),headers)
+        self.assertEqual(code,200);record=json.loads(raw)['record']
+        command=dict(identity=record['id'],revision=record['revision'],action='approve',note='模拟通过',review=review())
+        code,_,raw=self.request('/zhumadian/api/demo/plan-action','POST',json.dumps(command),headers)
+        self.assertEqual(code,200);self.assertEqual(json.loads(raw)['plan']['versions'][0]['status'],'approved')
+
     def login(self, password=None):
         status, headers, raw = self.request('/zhumadian/auth/login')
         self.assertEqual(status, 200)
