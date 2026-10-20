@@ -132,6 +132,7 @@ def build(args):
         put(path, "application/"+name, application)
     put(ROOT/"tools/portable_source_runtime.py", "application/tools/portable_source_runtime.py", ROOT)
     put(ROOT/"tools/portable_layer_workspace.py", "application/tools/portable_layer_workspace.py", ROOT)
+    put(ROOT/"tools/portable_web_entry.py", "application/tools/portable_web_entry.py", ROOT)
     tree(application/"shared", "application/shared")
     for group in ("full", "context", "pages", "native_hierarchy"):
         tree(resources/"assets/showcase/runtime/zhumadian"/group, "resources/assets/showcase/runtime/zhumadian/"+group)
