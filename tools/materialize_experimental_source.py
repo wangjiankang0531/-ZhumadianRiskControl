@@ -15,7 +15,7 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 OVERLAYS = ROOT / "tools/experimental_source"
-NAMES = ("native_readonly_depth", "osgb_readonly_roi", "native_readonly_crop", "osgb_readonly_stdio", "native_owned_runtime")
+NAMES = ("native_readonly_depth", "osgb_readonly_roi", "native_readonly_crop", "osgb_readonly_stdio", "native_owned_runtime", "native_level_index", "osgb_readonly_indexed")
 
 
 def digest(raw):

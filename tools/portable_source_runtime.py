@@ -256,7 +256,15 @@ def serve(package, *, port, owner):
     sys.addaudithook(guard)
     landscape.POOL.submit = lambda *a, **k: guard.deny("legacy producer submit")
     reader = PinnedPersistentCropReader(root/"reader/zmd_osgb_stream_reader.exe", package["data"], package["manifest"]["readerFiles"])
-    store = MemorySourceStore(PinnedCatalogs(root/"resources"), reader, builder=build_bundle, builder_identity=builder_identity())
+    level_directory = root/"resources/data/showcase/level_index"
+    if (level_directory/"index_manifest.json").is_file():
+        from indexed_family_source import LevelIndexProvider, IndexedFamilyStore, IndexedFamilyHTTP
+        catalogs = PinnedCatalogs(root/"resources")
+        provider = LevelIndexProvider(level_directory, catalogs)
+        store = IndexedFamilyStore(catalogs, reader, provider)
+        MemorySourceHTTP = IndexedFamilyHTTP
+    else:
+        store = MemorySourceStore(PinnedCatalogs(root/"resources"), reader, builder=build_bundle, builder_identity=builder_identity())
     class Handler(MemorySourceHTTP, landscape.Handler):
         read_only_lod = True
         allow_local_layer_database = True

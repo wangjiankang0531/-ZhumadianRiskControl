@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from types import MappingProxyType
 
 from osgb_memory_gltf import MemoryGltf
+from osgb_memory_reader import MAX_SOURCE
 from native_source_frontier import SourceForest
 
 FORMAT = "osgb_memory_png_v1"
@@ -137,9 +138,13 @@ class SourceBundle:
 
 
 def build_bundle(tile, catalog, reader, *, depth=None, parent=None, recipe_identity,
-                 page_builder=page, source_format=FORMAT):
-    if type(tile) is not int or not 1 <= tile <= 2346 or (depth is None) == (parent is None):
+                 page_builder=page, source_format=FORMAT, selection=None):
+    if type(tile) is not int or not 1 <= tile <= 2346:
+        raise ValueError("invalid source tile")
+    if selection is None and (depth is None) == (parent is None):
         raise ValueError("one root depth or one parent is required")
+    if selection is not None and depth is not None:
+        raise ValueError("indexed cuts cannot also request a uniform depth")
     if catalog.get("tile_id") != tile or catalog.get("source_directory") != f"assets/驻马店园区/Data/Tile_{tile}":
         raise ValueError("catalog belongs to a different source directory")
     forest = SourceForest(catalog)
@@ -147,9 +152,36 @@ def build_bundle(tile, catalog, reader, *, depth=None, parent=None, recipe_ident
     for name in forest.depths:
         node = forest.nodes[name]
         if (not pattern.fullmatch(name) or not re.fullmatch(r"[0-9a-f]{64}", node.get("sha256", ""))
-                or type(node.get("bytes")) is not int or not 0 < node["bytes"] <= 32 * MIB):
+                or type(node.get("bytes")) is not int or not 0 < node["bytes"] <= MAX_SOURCE):
             raise ValueError("invalid reachable source identity")
-    if parent is None:
+    if selection is not None:
+        if not isinstance(selection, (list, tuple)) or not 1 <= len(selection) <= 64 or any(not isinstance(n, str) for n in selection):
+            raise ValueError("indexed cut exceeds bounded source count")
+        names = sorted(selection)
+        selected = set(names)
+        if len(selected) != len(names):
+            raise ValueError("duplicate indexed source")
+        if parent is None:
+            forest.validate_cut(names)
+        else:
+            if parent not in forest.depths or parent in selected:
+                raise ValueError("indexed refinement needs strict descendants")
+            consumed = set()
+            def cover(name):
+                if name in selected:
+                    consumed.add(name)
+                    return
+                if not forest.nodes[name]["children"]:
+                    raise ValueError("indexed descendant cut leaves a coverage hole")
+                for child in forest.nodes[name]["children"]:
+                    cover(child)
+            cover(parent)
+            if consumed != selected:
+                raise ValueError("indexed source outside branch or ancestor overlap")
+        cut_key = sha(canonical(names))
+        family_key = sha(parent.encode()+b"\n"+canonical(names))[:16] if parent is not None else None
+        folder = f"tile_{tile}_cut_{cut_key[:16]}" if parent is None else f"family_tile_{tile}_{family_key}"
+    elif parent is None:
         if type(depth) is not int or not 1 <= depth <= max(forest.depths.values()) or depth > 12:
             raise ValueError("requested frontier is outside this source forest")
         cut = {forest.root}
@@ -205,7 +237,14 @@ def build_bundle(tile, catalog, reader, *, depth=None, parent=None, recipe_ident
         "texel_world_p90_m": percentile(texels),
         "stamp": sha(canonical({"catalog": catalog, "recipe": recipe_identity, "format": source_format})),
     }
-    if parent is None:
+    if selection is not None:
+        marker.update(schema="zhumadian.osgb_source_cut.v3" if parent is None else "zhumadian.osgb_source_descendants.v3",
+                      complete_source_cut=True, source_cut_key=cut_key,
+                      min_depth=min(forest.depths[n] for n in names), max_depth=max(forest.depths[n] for n in names))
+        if parent is not None:
+            marker.update(replacement_parent=parent, parent_source_sha256=forest.nodes[parent]["sha256"],
+                          family_key=family_key)
+    elif parent is None:
         marker.update(depth=depth, complete_frontier=True)
     else:
         marker.update(replacement_parent=parent, complete_sibling_family=True,

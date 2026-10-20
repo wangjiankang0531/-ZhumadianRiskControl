@@ -1,0 +1,221 @@
+--- a/tools/osgb_stream_reader/main.cpp
++++ b/tools/osgb_stream_reader/main.cpp
+@@ -19,6 +19,7 @@
+ #include <limits>
+ #include <map>
+ #include <regex>
++#include <sstream>
+ #include <stdexcept>
+ #include <vector>
+ #ifdef _WIN32
+@@ -28,7 +29,8 @@
+ #endif
+ namespace fs = std::filesystem;
+ using Json = nlohmann::json;
+-constexpr std::size_t maxSource = 32ull << 20;
++// Source file bytes are independent of decoded page/upload limits.
++constexpr std::size_t maxSource = 128ull << 20;
+ constexpr std::size_t maxPayload = 128ull << 20;
+ constexpr std::size_t maxImage = 32ull << 20;
+ constexpr std::size_t maxVertices = 2000000;
+@@ -138,10 +140,12 @@
+ };
+ class Decoded final : public osg::NodeVisitor {
+ public:
+-  Decoded() : osg::NodeVisitor(TRAVERSE_ALL_CHILDREN) {
+-  }
++  explicit Decoded(bool geometryOnly = false) : osg::NodeVisitor(TRAVERSE_ALL_CHILDREN), geometryOnly(geometryOnly) {
++  }
++  bool geometryOnly = false;
+   std::vector<std::uint8_t> payload;
+   Json meshes = Json::array(), images = Json::array();
++  std::vector<osg::ref_ptr<osg::Image>> imageRefs;
+   std::map<const osg::Image*, std::size_t> imageIds;
+   std::uint64_t triangles = 0, vertices = 0;
+   template <class T> Json append(const std::vector<T>& data) {
+@@ -167,6 +171,15 @@
+     require(format == GL_RGB || format == GL_RGBA || format == GL_BGR || format == GL_BGRA,
+             "unsupported embedded pixel format");
+     const auto pixelCount = std::size_t(image->s()) * std::size_t(image->t());
++    if (geometryOnly) {
++      require(image->s() <= 8192 && image->t() <= 8192, "source image extent exceeds inspection bound");
++      const auto id=images.size();
++      images.push_back(Json{{"width",image->s()},{"height",image->t()},{"format","rgba8"},
++        {"sourcePixelFormat",format},{"rowOrder","source_storage"},
++        {"sourceOrigin",image->getOrigin()==osg::Image::TOP_LEFT?"top_left":"bottom_left"},
++        {"sourceMipLevels",image->getNumMipmapLevels()},{"pixelsOmitted",true}});
++      imageIds.emplace(image,id);imageRefs.emplace_back(image);return id;
++    }
+     require(pixelCount <= maxImage / 4, "embedded image exceeds byte budget");
+     std::vector<std::uint8_t> rgba(pixelCount * 4);
+     const bool bgra = format == GL_BGR || format == GL_BGRA;
+@@ -283,9 +296,12 @@
+     traverse(geode);
+   }
+ };
++struct RequestCacheGuard {
++  ~RequestCacheGuard() { osgDB::Registry::instance()->clearObjectCache(); }
++};
+ int execute(const std::vector<fs::path>& args) {
+   try {
+-    require(args.size() == 4,
++    require(args.size() == 4 || (args.size()==5 && (args[4]=="--geometry-only" || std::regex_match(args[4].u8string(),std::regex("--crop=[0-9]{1,4},[0-9]{1,4},[0-9]{1,4},[0-9]{1,4},[0-9]{1,4}")))),
+             "usage: zmd_osgb_stream_reader DATA_ROOT Tile_N/Tile_N_Lx_0u.osgb PRIVATE_PLUGIN_DIRECTORY");
+     const auto file = sourcePath(args[1], args[2]);
+     const auto plugins = args[3];
+@@ -294,6 +310,7 @@
+     require(SetDefaultDllDirectories(LOAD_LIBRARY_SEARCH_DEFAULT_DIRS) != 0, "cannot restrict library search");
+ #endif
+     auto* registry = osgDB::Registry::instance();
++    RequestCacheGuard requestCacheGuard;
+     registry->setLibraryFilePathList(osgDB::FilePathList{plugins.u8string()});
+     registry->getDataFilePathList().clear();
+     registry->setFileCache(nullptr);
+@@ -312,11 +329,12 @@
+     auto result = reader->readNode(source, options);
+     osg::ref_ptr<osg::Node> node = result.getNode();
+     require(node.valid(), "OSGB source decoding failed");
+-    Decoded decoded;
++    const bool geometryOnly=args.size()==5;
++    Decoded decoded(geometryOnly);
+     node->accept(decoded);
+     require(!decoded.meshes.empty() && reads->calls == 0 && writes->calls == 0,
+             "source needs an external read or attempted a write");
+-    const Json header{{"schema", "zhumadian.osgb.memory.v1"},
++    Json header{{"schema", geometryOnly?"zhumadian.osgb.geometry.v1":"zhumadian.osgb.memory.v1"},
+                       {"node", args[2].generic_u8string()},
+                       {"sourceBytes", fs::file_size(file)},
+                       {"meshes", decoded.meshes},
+@@ -329,13 +347,38 @@
+                       {"coordinates", "source_local_metres"},
+                       {"uv", "source_unchanged"},
+                       {"littleEndian", true}};
++    const bool cropMode=args.size()==5 && args[4]!="--geometry-only";
++    if (cropMode) {
++      std::vector<int> numbers;auto text=args[4].u8string().substr(7);std::stringstream input(text);std::string number;
++      while (std::getline(input,number,',')) numbers.push_back(std::stoi(number));
++      require(numbers.size()==5,"invalid image crop request");
++      const int id=numbers[0],x=numbers[1],y=numbers[2],width=numbers[3],height=numbers[4];
++      require(id>=0 && std::size_t(id)<decoded.imageRefs.size(),"crop image index is outside source");
++      const auto image=decoded.imageRefs.at(id);
++      require(width>0 && height>0 && x>=0 && y>=0 && x<=image->s()-width && y<=image->t()-height,
++              "crop rectangle escapes original image");
++      require(std::uint64_t(width)*height*4<=maxImage,"crop pixels exceed unchanged byte bound");
++      std::vector<std::uint8_t> rgba(std::size_t(width)*height*4);
++      const auto format=image->getPixelFormat();const bool bgr=format==GL_BGR || format==GL_BGRA;
++      const bool alpha=format==GL_RGBA || format==GL_BGRA;
++      for (int row=0;row<height;++row) for (int column=0;column<width;++column) {
++        const auto* src=image->data(x+column,y+row);auto* dst=rgba.data()+(std::size_t(row)*width+column)*4;
++        dst[0]=src[bgr?2:0];dst[1]=src[1];dst[2]=src[bgr?0:2];dst[3]=alpha?src[3]:255;
++      }
++      decoded.payload=std::move(rgba);
++      header=Json{{"schema","zhumadian.osgb.rgba_crop.v1"},{"node",args[2].generic_u8string()},
++        {"sourceBytes",fs::file_size(file)},{"sourceImage",id},{"sourceWidth",image->s()},{"sourceHeight",image->t()},
++        {"crop",{x,y,width,height}},{"format","rgba8"},{"rowOrder","source_storage"},
++        {"sourceOrigin",image->getOrigin()==osg::Image::TOP_LEFT?"top_left":"bottom_left"},
++        {"payloadBytes",decoded.payload.size()},{"externalReadAttempts",reads->calls},{"writeAttempts",writes->calls}};
++    }
+     const auto text = header.dump();
+     require(text.size() <= 1048576, "source metadata exceeds limit");
+     const std::uint64_t headerSize = text.size(), payloadSize = decoded.payload.size();
+ #ifdef _WIN32
+     require(_setmode(_fileno(stdout), _O_BINARY) != -1, "cannot use binary stdout");
+ #endif
+-    std::cout.write("ZMDOSGB1", 8);
++    std::cout.write(cropMode?"ZMDROI01":geometryOnly?"ZMDGEO01":"ZMDOSGB1", 8);
+     std::cout.write(reinterpret_cast<const char*>(&headerSize), 8);
+     std::cout.write(reinterpret_cast<const char*>(&payloadSize), 8);
+     std::cout.write(text.data(), text.size());
+@@ -348,18 +391,88 @@
+     return 1;
+   }
+ }
++
++// One owned process consumes serial bounded requests. The original per-request
++// read/write denial and source validation remain inside execute(), unchanged.
++class CappedErrorBuffer final : public std::streambuf {
++public:
++  std::string text;
++protected:
++  std::streamsize xsputn(const char* data,std::streamsize size) override {
++    if (size>0) text.append(data,std::min<std::size_t>(std::size_t(size),8192-text.size()));
++    return size;
++  }
++  int_type overflow(int_type value) override {
++    if (!traits_type::eq_int_type(value,traits_type::eof()) && text.size()<8192)
++      text.push_back(traits_type::to_char_type(value));
++    return traits_type::not_eof(value);
++  }
++};
++void controlFrame(const char* magic,const Json& value) {
++  const auto text=value.dump();require(text.size()<=1048576,"worker control header exceeds bound");
++  const std::uint64_t size=text.size(),zero=0;
++  std::cout.write(magic,8);std::cout.write(reinterpret_cast<const char*>(&size),8);
++  std::cout.write(reinterpret_cast<const char*>(&zero),8);std::cout.write(text.data(),text.size());
++  std::cout.flush();require(bool(std::cout),"worker output pipe failed");
++}
++int worker(const std::vector<fs::path>& fixed) {
++  try {
++    require(fixed.size()==4,"invalid worker launch");ordinary(fixed[1],true);ordinary(fixed[3],true);
++#ifdef _WIN32
++    require(_setmode(_fileno(stdout),_O_BINARY)!=-1 && _setmode(_fileno(stdin),_O_BINARY)!=-1,
++            "worker binary pipe unavailable");
++#endif
++    controlFrame("ZMDWRK01",Json{{"schema","zhumadian.osgb.worker.v1"},{"readOnly",true},
++                 {"maxHeaderBytes",1048576},{"maxPayloadBytes",maxPayload},{"requestLimitBytes",4096}});
++    for (;;) {
++      std::string line;char c=0;
++      while (std::cin.get(c) && c!='\n') {
++        require(line.size()<4096,"worker request exceeds bound");line.push_back(c);
++      }
++      if (line.empty() && !std::cin) return 0;
++      require(bool(std::cin),"worker request is incomplete");
++      const auto request=Json::parse(line);
++      require(request.is_object() && request.size()==2 && request.contains("node") && request.contains("mode") &&
++              request.at("node").is_string() && (request.at("mode").is_null() || request.at("mode").is_string()),
++              "invalid worker request shape");
++      const auto node=request.at("node").get<std::string>();
++      require(node.size()<=256 && std::all_of(node.begin(),node.end(),[](unsigned char n){return n>=32 && n<127;}),
++              "invalid worker node text");
++      std::vector<fs::path> args={fixed[0],fixed[1],fs::u8path(node),fixed[3]};
++      if (!request.at("mode").is_null()) {
++        const auto mode=request.at("mode").get<std::string>();require(mode.size()<=128,"worker mode exceeds bound");
++        args.push_back(fs::u8path(mode));
++      }
++      CappedErrorBuffer errors;auto* previous=std::cerr.rdbuf(&errors);
++      const int status=execute(args);std::cerr.rdbuf(previous);
++      if (status) {
++        while (!errors.text.empty() && (errors.text.back()=='\n' || errors.text.back()=='\r')) errors.text.pop_back();
++        const bool imageBudget=request.at("mode").is_null() && errors.text=="embedded image exceeds byte budget";
++        controlFrame("ZMDERR01",Json{{"schema","zhumadian.osgb.worker_error.v1"},{"node",node},
++                     {"mode",request.at("mode")},{"returnCode",status},
++                     {"reason",imageBudget?"full_image_budget":"decode_refused"},{"message",errors.text}});
++      }
++    }
++  } catch (const std::exception& error) {
++    std::cerr<<error.what()<<'\n';return 1;
++  }
++}
++int dispatch(const std::vector<fs::path>& args) {
++  return args.size()==4 && args[2]=="--stdio-worker-v1"?worker(args):execute(args);
++}
++
+ #ifdef _WIN32
+ int wmain(int argc, wchar_t** argv) {
+   std::vector<fs::path> args;
+   for (int i = 0; i < argc; ++i)
+     args.emplace_back(argv[i]);
+-  return execute(args);
++  return dispatch(args);
+ }
+ #else
+ int main(int argc, char** argv) {
+   std::vector<fs::path> args;
+   for (int i = 0; i < argc; ++i)
+     args.emplace_back(fs::u8path(argv[i]));
+-  return execute(args);
+-}
+-#endif
++  return dispatch(args);
++}
++#endif

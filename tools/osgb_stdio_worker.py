@@ -13,6 +13,7 @@ import subprocess
 import threading
 from osgb_cropped_pages import PinnedCropReader, SourceImageNeedsCrop, unique_pairs
 from osgb_memory_pages import canonical, sha, MIB
+from osgb_memory_reader import MAX_SOURCE
 from readonly_source_memory_store import ordinary
 
 
@@ -154,7 +155,7 @@ class PinnedPersistentCropReader(PinnedCropReader):
         self.verify_runtime()
         if not re.fullmatch(r'(Tile_[0-9]+)/\1_L[0-9]+_0[0-9u]+\.osgb',node):raise ValueError('invalid original source node')
         source=ordinary(self.source_root/node,self.source_root);stat=source.stat();before=(stat.st_size,stat.st_mtime_ns,sha(source.read_bytes()))
-        if not 0<before[0]<=32*MIB or before[0]!=record['bytes'] or before[2]!=record['sha256']:raise ValueError('source differs from pinned catalog')
+        if not 0<before[0]<=MAX_SOURCE or before[0]!=record['bytes'] or before[2]!=record['sha256']:raise ValueError('source differs from pinned catalog')
         raw=self.worker.request(node,mode)
         stat=source.stat()
         if before!=(stat.st_size,stat.st_mtime_ns,sha(source.read_bytes())):self.worker._hold();raise RuntimeError('source changed while reading')

@@ -74,7 +74,9 @@ def plan_mesh(mesh, image, payload):
     def split(ids):
         refs, low, high = footprint(ids)
         full_cost = len(refs)*64 + len(ids)*12 + mip_bytes(width, height)
-        if full_cost <= 32*MIB and width*height*4 <= 32*MIB:
+        # A large mesh can split while retaining its complete bounded image.
+        # Mipmapped crop refusal applies only when the image itself is too large.
+        if mip_bytes(width,height) <= 32*MIB and width*height*4 <= 32*MIB:
             crop = (0, 0, width, height)
         else:
             if not no_mips:

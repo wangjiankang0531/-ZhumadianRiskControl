@@ -11,7 +11,8 @@ import subprocess
 
 MAX_PAYLOAD = 128 * 1024 * 1024
 MAX_HEADER = 1024 * 1024
-MAX_SOURCE = 32 * 1024 * 1024
+# Original input bytes are distinct from decoded frames and GPU upload pages.
+MAX_SOURCE = 128 * 1024 * 1024
 
 
 def integer(value, name, maximum):
