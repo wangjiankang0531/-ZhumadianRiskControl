@@ -11,7 +11,7 @@ test('login root opens navigation home while direct MIS routes remain reachable'
  assert.equal(referenceRoute('#not-an-app',catalog),'home');
 });
 test('shortcuts cannot navigate to absent modules',()=>{
- assert.deepEqual(homeShortcuts(catalog).map(v=>v[1]),['risk-unit','special-work','events','approval-todo']);
+ assert.deepEqual(homeShortcuts(catalog).map(v=>v[1]),['risk-unit','special-work','events','dashboard']);
 });
 test('local scene destination contains only the fixed scenario, never a public login token',()=>{
  assert.equal(referenceCommandURL({mode:'public-business',csrf:'private'}),'http://127.0.0.1:8767/?topic=emergency&mode=command');
