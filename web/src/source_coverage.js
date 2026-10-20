@@ -1,3 +1,4 @@
+import {coverageRegion} from './source_coverage_region.js';
 import {WebGLRenderTarget,MeshBasicMaterial,DoubleSide,NoBlending,Color,NearestFilter} from 'three';
 import {ensureSourceWanted} from './lod_transaction.js';
 
@@ -24,23 +25,29 @@ export function coverageGroups(groups,targets,indexCount,{singleMaterial=false}=
 }
 
 export class SourceCoverageGuard{
- constructor({renderer,scene,photoGroup,contextGroup,reserve}){Object.assign(this,{renderer,scene,photoGroup,contextGroup,reserve});this.target=null;this.reservation=null;this.width=0;this.height=0;this.bytes=0;this.black=new MeshBasicMaterial({color:0,side:DoubleSide,toneMapped:false,blending:NoBlending,fog:false});this.white=new MeshBasicMaterial({color:0xffffff,side:DoubleSide,toneMapped:false,blending:NoBlending,fog:false});}
+ constructor({renderer,scene,photoGroup,contextGroup,reserve,reference=false}){Object.assign(this,{renderer,scene,photoGroup,contextGroup,reserve,reference});this.referenceChecks=0;this.referenceMismatches=0;this.target=null;this.reservation=null;this.width=0;this.height=0;this.bytes=0;this.black=new MeshBasicMaterial({color:0,side:DoubleSide,toneMapped:false,blending:NoBlending,fog:false});this.white=new MeshBasicMaterial({color:0xffffff,side:DoubleSide,toneMapped:false,blending:NoBlending,fog:false});}
  resize(width,height){const d=coverageDimensions(width,height);if(this.target&&this.width===width&&this.height===height)return;this.release();const reservation=this.reserve({format:'coverage_target',bytes:d.bytes});try{this.target=new WebGLRenderTarget(width,height,{minFilter:NearestFilter,magFilter:NearestFilter,depthBuffer:true,stencilBuffer:false,generateMipmaps:false});this.reservation=reservation;this.width=width;this.height=height;this.bytes=d.bytes;}catch(error){reservation.release();throw error;}}
  release(){this.target?.dispose();this.target=null;this.reservation?.release();this.reservation=null;this.width=0;this.height=0;this.bytes=0;}
  dispose(){this.release();this.black.dispose();this.white.dispose();}
- check({camera,candidate,parentSpans,stillWanted=()=>true}){
+ check(args){
+  const {camera,candidate,parentSpans,stillWanted=()=>true}=args;if(!this.target||candidate.parent)throw Error('Source coverage staging identity differs');ensureSourceWanted(stillWanted);
+  this.scene.updateMatrixWorld(true);const region=coverageRegion({camera,parentSpans,width:this.width,height:this.height}),result=this.checkRegion(args,region);
+  if(this.reference){const reference=this.checkRegion(args,{x:0,y:0,width:this.width,height:this.height,pixels:this.width*this.height,fullPixels:this.width*this.height,reason:'full_viewport_reference'});this.referenceChecks++;if(reference.loss!==result.loss||reference.parentPixels!==result.parentPixels){this.referenceMismatches++;throw Error('Regional source coverage differs from full viewport');}result.fullReference={loss:reference.loss,parentPixels:reference.parentPixels};}
+  return result;
+ }
+ checkRegion({camera,candidate,parentSpans,stillWanted=()=>true},region){
   if(!this.target||candidate.parent)throw Error('Source coverage staging identity differs');ensureSourceWanted(stillWanted);
   const renderer=this.renderer,scene=this.scene,saved=[],priorContext=this.contextGroup.visible,background=scene.background,priorTarget=renderer.getRenderTarget(),color=renderer.getClearColor(new Color()).clone(),alpha=renderer.getClearAlpha(),autoClear=renderer.autoClear;
   const save=mesh=>{if(!mesh.isMesh)return;const groups=coverageGroups(mesh.geometry.groups,parentSpans.get(mesh)??[],mesh.geometry.index.count,{singleMaterial:!Array.isArray(mesh.material)});saved.push({mesh,material:mesh.material,groups:mesh.geometry.groups,visible:mesh.visible,split:groups});mesh.geometry.groups=groups;mesh.material=[this.black,this.white];};
-  const before=new Uint8Array(this.width*this.height*4),after=new Uint8Array(before.length);
+  const before=new Uint8Array(region.pixels*4),after=new Uint8Array(before.length),scissor=this.target.scissor.clone(),scissorTest=this.target.scissorTest;
   let added=false;try{
-   this.photoGroup.traverse(save);this.contextGroup.visible=false;scene.background=null;renderer.autoClear=true;renderer.setRenderTarget(this.target);renderer.setClearColor(0,0);renderer.clear();renderer.render(scene,camera);renderer.readRenderTargetPixels(this.target,0,0,this.width,this.height,before);
+   this.target.scissor.set(region.x,region.y,region.width,region.height);this.target.scissorTest=true;this.photoGroup.traverse(save);this.contextGroup.visible=false;scene.background=null;renderer.autoClear=true;renderer.setRenderTarget(this.target);renderer.setClearColor(0,0);renderer.clear();renderer.render(scene,camera);renderer.readRenderTargetPixels(this.target,region.x,region.y,region.width,region.height,before);
    for(const state of saved){state.mesh.geometry.groups=state.split.filter(g=>g.materialIndex===0).map(g=>({...g,materialIndex:0}));state.mesh.material=[this.white];state.mesh.visible=state.visible&&state.mesh.geometry.groups.length>0;}
    candidate.traverse(mesh=>{if(!mesh.isMesh)return;saved.push({mesh,material:mesh.material,groups:mesh.geometry.groups,visible:mesh.visible,candidate:true});const groups=coverageGroups(mesh.geometry.groups,[],mesh.geometry.index.count,{singleMaterial:!Array.isArray(mesh.material)});mesh.geometry.groups=groups.map(g=>({...g,materialIndex:0}));mesh.material=[this.white];});
-   this.photoGroup.add(candidate);added=true;renderer.clear();renderer.render(scene,camera);renderer.readRenderTargetPixels(this.target,0,0,this.width,this.height,after);ensureSourceWanted(stillWanted);
-   return {...coverageInteriorLoss(before,after,this.width,this.height),width:this.width,height:this.height,targetBytes:this.bytes,tolerance:2,scope:'visible_parent_vs_complete_original_landscape_no_context'};
+   this.photoGroup.add(candidate);added=true;renderer.clear();renderer.render(scene,camera);renderer.readRenderTargetPixels(this.target,region.x,region.y,region.width,region.height,after);ensureSourceWanted(stillWanted);
+   return {...coverageInteriorLoss(before,after,region.width,region.height),region,readbackBytes:before.length+after.length,width:this.width,height:this.height,targetBytes:this.bytes,tolerance:2,scope:'visible_parent_vs_complete_original_landscape_no_context'};
   }finally{
-   if(added)this.photoGroup.remove(candidate);for(const s of saved){s.mesh.material=s.material;s.mesh.geometry.groups=s.groups;s.mesh.visible=s.visible;}this.contextGroup.visible=priorContext;scene.background=background;renderer.setRenderTarget(priorTarget);renderer.setClearColor(color,alpha);renderer.autoClear=autoClear;
+   if(added)this.photoGroup.remove(candidate);for(const s of saved){s.mesh.material=s.material;s.mesh.geometry.groups=s.groups;s.mesh.visible=s.visible;}this.target.scissor.copy(scissor);this.target.scissorTest=scissorTest;this.contextGroup.visible=priorContext;scene.background=background;renderer.setRenderTarget(priorTarget);renderer.setClearColor(color,alpha);renderer.autoClear=autoClear;
   }
  }
 }

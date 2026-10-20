@@ -96,14 +96,14 @@ function validateGltf(json,part){
 }
 // loadFile serves only the three SHA-pinned source files. Prepared loads are read-only.
 // Caller must provide the same budget allocator used by all live/staged pages.
-export async function loadPreparedSourcePage({THREE,renderer,part,supported,loadFile,loadManifest,loadPayload,reserve,stillWanted=()=>true,expectedIdentity}){
+export async function loadPreparedSourcePage({THREE,renderer,part,supported,loadFile,loadManifest,loadPayload,reserve,stillWanted=()=>true,expectedIdentity,metrics=null}){
  require(typeof reserve==='function','A shared page budget is required');
  const source=sourcePageSource(part),geometryBytes=webSourceGeometryBytes(part);let geometryLease,photo,model,objectURL;
  const wanted=()=>{if(!stillWanted())throw new PreparedTextureCancelled('Source page is no longer wanted');};
  let released=false;const releaseGeometry=()=>{if(!released){released=true;geometryLease?.release();}};
  try{
-  wanted();const jsonBytes=await checkedFile(part,'geometry.gltf',loadFile);wanted();const json=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(jsonBytes));validateGltf(json,part);
-  const binary=await checkedFile(part,'geometry.bin',loadFile);wanted();require(json.buffers[0].byteLength===binary.byteLength,'GLTF buffer length mismatch');validateSourceGltfGeometry(json,part,binary);
+  wanted();const jsonBytes=await checkedFile(part,'geometry.gltf',loadFile);wanted();const json=metrics?metrics.measure('source_json',()=>{const value=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(jsonBytes));validateGltf(value,part);return value;}):JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(jsonBytes));if(!metrics)validateGltf(json,part);
+  const binary=await checkedFile(part,'geometry.bin',loadFile);wanted();require(json.buffers[0].byteLength===binary.byteLength,'GLTF buffer length mismatch');if(metrics)metrics.measure('source_geometry',()=>validateSourceGltfGeometry(json,part,binary));else validateSourceGltfGeometry(json,part,binary);
   geometryLease=await reserve({format:'geometry',bytes:geometryBytes});require(typeof geometryLease?.release==='function','Invalid geometry budget lease');wanted();
   photo=isMemorySourcePart(part)?await loadMemoryPhotograph({part,renderer,loadFile,reserve,stillWanted}):await loadPreparedPhotograph({supported,source,loadManifest,loadPayload,reserve:async request=>{require(geometryBytes+request.bytes<=32*1048576,'Source page exceeds upload limit');return reserve(request);},stillWanted,
    upload:prepared=>uploadPreparedBc7(THREE,renderer,prepared),
@@ -116,7 +116,7 @@ export async function loadPreparedSourcePage({THREE,renderer,part,supported,load
   wanted();objectURL=URL.createObjectURL(new Blob([binary],{type:'application/octet-stream'}));
   const manager=new LoadingManager();manager.setURLModifier(url=>{require(url==='geometry.bin','Unexpected source page dependency');return objectURL;});
   const loader=new GLTFLoader(manager);loader.register(parser=>({name:'XNBY_prepared_source_photograph',loadTexture(index){require(index===0,'Unexpected source texture index');parser.associations.set(photo.texture,{textures:index});return Promise.resolve(photo.texture);}}));
-  model=await loader.parseAsync(json,'');wanted();
+  model=await (metrics?metrics.measureAsync('source_model_wait',()=>loader.parseAsync(json,'')):loader.parseAsync(json,''));wanted();
   const meshes=[];model.scene.traverse(node=>{if(node.isMesh)meshes.push(node);});require(meshes.length===1,'Unexpected source page mesh count');
   const mesh=meshes[0];require(mesh.geometry.index.count===part.indices&&mesh.geometry.attributes.position.count===part.vertices&&mesh.material.map===photo.texture,'Loaded source page mismatch');validateLoadedSourceGeometry(mesh.geometry,part);
   mesh.geometry.addEventListener('dispose',releaseGeometry);
@@ -145,16 +145,16 @@ export function validateRuntimeSourceTexture(part,texture){
 
 // A staged bundle owns every page until the caller atomically commits the whole cut.
 // Failure/cancellation cannot attach a partial family to the live scene.
-export async function stagePreparedSourceBundle({THREE,renderer,marker,plan,supported,loadFile,loadManifest,loadPayload,reserve,stillWanted=()=>true,prepare=()=>{},upload,onReady,yieldFrame=()=>Promise.resolve()}){
+export async function stagePreparedSourceBundle({THREE,renderer,marker,plan,supported,loadFile,loadManifest,loadPayload,reserve,stillWanted=()=>true,prepare=()=>{},upload,onReady,yieldFrame=()=>Promise.resolve(),metrics=null}){
  const planned=plan&&plans.get(plan);if(plan)require(planned&&planned.source===JSON.stringify(marker),'Source bundle plan identity mismatch');
  const group=new THREE.Group(),meshes=new Map(),pages=[];let disposed=false;
  const dispose=()=>{if(disposed)return;disposed=true;try{for(const page of pages)page.dispose();}finally{group.removeFromParent();group.clear();}};
  try{
-  await stageSourceParts({marker,group,stillWanted,prepare,upload:async(model,index)=>{const part=marker.parts[index],page=pages.find(p=>p.model===model);require(page,'Unknown prepared upload');validateLoadedSourceGeometry(page.mesh.geometry,part);await upload?.(model,index);},onReady,yieldFrame,urlForPart:part=>part.directory,
+  await stageSourceParts({marker,group,stillWanted,prepare,upload:async(model,index)=>{const part=marker.parts[index],page=pages.find(p=>p.model===model);require(page,'Unknown prepared upload');if(metrics)metrics.measure('source_loaded_geometry',()=>validateLoadedSourceGeometry(page.mesh.geometry,part));else validateLoadedSourceGeometry(page.mesh.geometry,part);await upload?.(model,index);},onReady,yieldFrame,urlForPart:part=>part.directory,
    downloads:{load:async directory=>{
     const part=marker.parts.find(p=>p.directory===directory);require(part,'Unknown staged source page');
     const choice=planned?.choices.get(directory);
-    const page=await loadPreparedSourcePage({THREE,renderer,part,supported:choice?choice.identity.format==='bc7':typeof supported==='function'?supported(part):supported,expectedIdentity:choice?.identity,loadFile:name=>loadFile(part,name),loadManifest:()=>choice?choice.manifest:loadManifest(part),loadPayload:()=>loadPayload(part),reserve,stillWanted});
+    const load=()=>loadPreparedSourcePage({THREE,renderer,part,metrics,supported:choice?choice.identity.format==='bc7':typeof supported==='function'?supported(part):supported,expectedIdentity:choice?.identity,loadFile:name=>loadFile(part,name),loadManifest:()=>choice?choice.manifest:loadManifest(part),loadPayload:()=>loadPayload(part),reserve,stillWanted});const page=await (metrics?metrics.measureAsync('source_load_wait',load):load());
     pages.push(page);meshes.set(directory,page.mesh);return page.model;
    }},
    dispose:scene=>{const page=pages.find(p=>p.model.scene===scene);page?.dispose();}});

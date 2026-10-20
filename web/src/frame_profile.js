@@ -1,0 +1,22 @@
+const stages=new Set(['frame_interval','frame_cpu','orbit','render_submit','annotations','maintain','coverage','source_upload','source_json','source_geometry','source_loaded_geometry','source_model_wait','source_load_wait','source_retire','gpu_scene','budget_probe']);
+export class FrameProfile{
+ constructor({enabled=false,clock=()=>performance.now(),capacity=256}={}){if(!Number.isInteger(capacity)||capacity<8||capacity>1024)throw Error('Invalid frame profile bound');Object.assign(this,{enabled,clock,capacity});this.reset();}
+ reset(label='initial'){this.label=String(label).slice(0,80);this.stages=new Map();this.previousFrame=null;}
+ record(name,milliseconds){if(!this.enabled)return;if(!stages.has(name)||!Number.isFinite(milliseconds)||milliseconds<0)throw Error('Invalid frame profile sample');let s=this.stages.get(name);if(!s){s={count:0,total:0,max:0,over16:0,over50:0,values:[],cursor:0};this.stages.set(name,s);}s.count++;s.total+=milliseconds;s.max=Math.max(s.max,milliseconds);s.over16+=milliseconds>16.67;s.over50+=milliseconds>50;if(s.values.length<this.capacity)s.values.push(milliseconds);else{s.values[s.cursor]=milliseconds;s.cursor=(s.cursor+1)%this.capacity;}}
+ measure(name,fn){if(!this.enabled)return fn();const start=this.clock();try{return fn();}finally{this.record(name,Math.max(0,this.clock()-start));}}
+ measureAsync(name,fn){if(!this.enabled)return fn();const start=this.clock();let value;try{value=fn();}catch(error){this.record(name,Math.max(0,this.clock()-start));throw error;}return Promise.resolve(value).finally(()=>this.record(name,Math.max(0,this.clock()-start)));}
+ frame(timestamp){if(!this.enabled)return;if(this.previousFrame!==null)this.record('frame_interval',Math.max(0,timestamp-this.previousFrame));this.previousFrame=timestamp;}
+ snapshot(){const result={schema:'zhumadian.web.frame_profile.v1',phase:this.label,enabled:this.enabled,capacityPerStage:this.capacity,stages:{}};for(const [name,s] of this.stages){const v=[...s.values].sort((a,b)=>a-b);result.stages[name]={count:s.count,totalMs:s.total,meanMs:s.total/s.count,maxMs:s.max,p50RecentMs:v[Math.ceil(v.length*.5)-1],p95RecentMs:v[Math.ceil(v.length*.95)-1],recentSamples:v.length,over16:s.over16,over50:s.over50};}return result;}
+}
+
+export function webglDeviceInfo(gl){let renderer=null,vendor=null;try{const ext=gl.getExtension('WEBGL_debug_renderer_info');if(ext){renderer=gl.getParameter(ext.UNMASKED_RENDERER_WEBGL);vendor=gl.getParameter(ext.UNMASKED_VENDOR_WEBGL);}}catch{}return {renderer:typeof renderer==='string'?renderer.slice(0,512):null,vendor:typeof vendor==='string'?vendor.slice(0,256):null,source:'current_webgl_context',notOperatingSystemAdapterList:true};}
+
+export class SceneGpuTimer{
+ constructor(gl,profile){this.gl=gl;this.profile=profile;this.pending=[];this.dropped=0;this.disjoint=0;this.error=null;try{this.extension=profile.enabled?gl.getExtension('EXT_disjoint_timer_query_webgl2'):null;}catch(error){this.error=String(error.message);}this.supported=!!this.extension;}
+ poll(){if(!this.supported)return;const g=this.gl;try{if(g.getParameter(this.extension.GPU_DISJOINT_EXT)){this.disjoint++;this.clear();return;}while(this.pending.length&&g.getQueryParameter(this.pending[0],g.QUERY_RESULT_AVAILABLE)){const q=this.pending.shift();try{const ns=g.getQueryParameter(q,g.QUERY_RESULT);if(Number.isFinite(ns)&&ns>=0)this.profile.record('gpu_scene',ns/1e6);}finally{g.deleteQuery(q);}}}catch(error){this.error=String(error.message);this.clear();this.supported=false;}}
+ measure(fn){if(!this.supported)return fn();this.poll();if(!this.supported)return fn();if(this.pending.length>=8){this.dropped++;return fn();}const g=this.gl;let q;try{q=g.createQuery();if(q)g.beginQuery(this.extension.TIME_ELAPSED_EXT,q);}catch(error){if(q)g.deleteQuery(q);q=null;this.error=String(error.message);this.supported=false;}if(!q){this.dropped++;return fn();}try{return fn();}finally{try{g.endQuery(this.extension.TIME_ELAPSED_EXT);this.pending.push(q);}catch(error){g.deleteQuery(q);this.error=String(error.message);this.supported=false;}}}
+ clear(){for(const q of this.pending)this.gl.deleteQuery(q);this.pending=[];}
+ reset(){this.clear();this.dropped=0;this.disjoint=0;}
+ snapshot(){return {supported:this.supported,pending:this.pending.length,dropped:this.dropped,disjoint:this.disjoint,error:this.error,scope:'asynchronous_GPU_time_for_main_scene_only_not_entire_frame'};}
+ dispose(){this.clear();this.supported=false;}
+}

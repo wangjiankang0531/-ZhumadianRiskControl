@@ -1,3 +1,4 @@
+import {chooseFeasibleSourceCandidate} from '../src/source_allocation.js';
 import {chooseIndexedCoverageCandidate} from '../src/source_allocation.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -25,3 +26,10 @@ test('indexed visible coverage is seeded before high-detail families without pre
  const root={key:'root/1/1',kind:'root',id:1,score:.5,cost:null},other={key:'root/2/1',kind:'root',id:2,score:.2,cost:null},family={key:'family/3/parent',kind:'family',id:3,score:.9,cost:null};
  assert.equal(chooseIndexedCoverageCandidate([root,other,family],id=>id===3),root);root.cost=1048576;assert.equal(chooseIndexedCoverageCandidate([root,other,family],id=>id===3),root);assert.equal(chooseIndexedCoverageCandidate([root,other,family],id=>id===1||id===3),other);assert.equal(chooseIndexedCoverageCandidate([family],()=>true),family);
 });
+
+test('ordered lazy feasibility matches exhaustive indexed and legacy selection over 4000 random candidate sets',()=>{
+ let seed=18319;const random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/2**32);
+ for(let trial=0;trial<4000;trial++){const list=Array.from({length:1+Math.floor(random()*80)},(_,i)=>({key:`candidate/${i}`,id:i+1,kind:random()<.5?'root':'family',score:Math.floor(random()*9),cost:random()<.2?null:1+Math.floor(random()*8)})),truth=new Map(list.map(c=>[c.key,random()<.5])),roots=new Set(list.filter(()=>random()<.5).map(c=>c.id)),hasRoot=id=>roots.has(id),filtered=list.filter(c=>c.cost===null||truth.get(c.key)),indexed=trial%2===0,expected=indexed?chooseIndexedCoverageCandidate(filtered,hasRoot):choose(filtered),actual=chooseFeasibleSourceCandidate(list,{indexed,hasRoot,feasible:c=>truth.get(c.key)});assert.equal(actual,expected);}
+});
+test('lazy selection never probes lower-priority candidates after the exact winning candidate fits',()=>{const list=Array.from({length:128},(_,i)=>({key:`family/${i}`,id:i+1,kind:'family',score:128-i,cost:32}));let probes=0;assert.equal(chooseFeasibleSourceCandidate(list,{indexed:true,hasRoot:()=>true,feasible:()=>{probes++;return true;}}),choose(list));assert.equal(probes,1);const unknown={key:'unknown',score:.01,cost:null};assert.equal(chooseFeasibleSourceCandidate([...list,unknown],{feasible:()=>{throw Error('unknown metadata must not reserve');}}),unknown);});
+test('lazy selection validates the whole candidate list and fails closed on a nonboolean probe',()=>{assert.throws(()=>chooseFeasibleSourceCandidate([{key:'a',score:1,cost:1},{key:'bad',score:1,cost:0}],{feasible:()=>true}));assert.throws(()=>chooseFeasibleSourceCandidate([{key:'a',score:1,cost:1}],{feasible:()=>Promise.resolve(true)}));});

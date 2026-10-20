@@ -23,3 +23,12 @@ export function chooseIndexedCoverageCandidate(candidates,hasRoot){
  for(const c of candidates)if(c.kind==='root'&&!hasRoot(c.id)&&c.score>0&&(!coverage||c.score>coverage.score||c.score===coverage.score&&c.key<coverage.key))coverage=c;
  return coverage??refinement;
 }
+
+// Sorting is independent of feasibility. Probe in exactly the previous winner
+// order and stop at its first admissible candidate, avoiding exhaustive plans.
+export function chooseFeasibleSourceCandidate(candidates,{indexed=false,hasRoot=()=>false,feasible}){
+ chooseRefinementCandidate(candidates);if(typeof feasible!=='function')throw Error('Missing source feasibility probe');
+ const coverage=c=>indexed&&c.kind==='root'&&!hasRoot(c.id),lex=(a,b)=>a.key<b.key?-1:a.key>b.key?1:0;
+ const ordered=candidates.filter(c=>c.score>0).sort((a,b)=>{const ac=coverage(a),bc=coverage(b);if(ac!==bc)return ac?-1:1;if(ac)return b.score-a.score||lex(a,b);const au=a.cost===null,bu=b.cost===null;if(au!==bu)return au?-1:1;return (au?0:b.score/b.cost-a.score/a.cost)||b.score-a.score||lex(a,b);});
+ for(const c of ordered){if(c.cost===null)return c;const ok=feasible(c);if(typeof ok!=='boolean')throw Error('Invalid source feasibility result');if(ok)return c;}return null;
+}

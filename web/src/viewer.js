@@ -1,3 +1,5 @@
+import {AllocationFeasibilityMemo,allocationBudgetState} from './source_allocation_memo.js';
+import {FrameProfile,SceneGpuTimer,webglDeviceInfo} from './frame_profile.js';
 import {uploadSourceScene} from './source_upload.js';
 import {sourceSurfaceHeight} from './source_surface_height.js';
 import {loadSourceLevelIndex,initialIndexedCoverageDepth,indexedResidentCapacity} from './source_level_index.js';
@@ -7,7 +9,7 @@ import {updateCommandDashboard} from './command_dashboard.js';
 import {layoutLabels,readLabelOffsets} from './label_layout.js';
 import {supportsSourcePlans,readSourcePlan,verifyPlannedSource,SourcePlanResponseError,SourcePlanCache,IndexedSourceQualityLimit,SourcePlanChanged} from './source_descriptor_plan.js';
 import {OrbitActivity} from './orbit_activity.js';
-import {chooseRefinementCandidate,chooseIndexedCoverageCandidate} from './source_allocation.js';
+import {chooseRefinementCandidate,chooseIndexedCoverageCandidate,chooseFeasibleSourceCandidate} from './source_allocation.js';
 import {SourceVisibility,visiblePixelPriority,matchesVisibilityCamera} from './source_visibility.js';
 import * as THREE from 'three';
 import {readPortalConfiguration,OAuthLogin} from './oauth_login.js';
@@ -43,6 +45,10 @@ const camera=new THREE.PerspectiveCamera(52,1,.5,60000);camera.up.set(0,0,1);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NoToneMapping;
 viewport.insertBefore(renderer.domElement,viewport.firstChild);
+const frameProfile=new FrameProfile({enabled:new URLSearchParams(location.search).get('qa')==='1'&&new URLSearchParams(location.search).get('profile')==='1'}),sceneGpuTimer=new SceneGpuTimer(renderer.getContext(),frameProfile),frameDevice=frameProfile.enabled?webglDeviceInfo(renderer.getContext()):null;let profilePanel=null,lastProfilePublish=0;
+if(frameProfile.enabled){const section=document.createElement('section'),title=document.createElement('h3'),summary=document.createElement('p'),details=document.createElement('details'),label=document.createElement('summary'),pre=document.createElement('pre');section.setAttribute('aria-label','本机性能验收采样');title.textContent='性能采样（验收模式）';summary.dataset.testid='frame-profile-summary';label.textContent='查看性能采样明细';pre.dataset.testid='frame-profile-json';pre.style.cssText='white-space:pre-wrap;font-size:10px;max-height:320px;overflow:auto';details.append(label,pre);section.append(title,summary,details);$('information').append(section);profilePanel={summary,pre};window.addEventListener('pagehide',()=>sceneGpuTimer.dispose());}
+function publishFrameProfile(){if(!frameProfile.enabled)return;const r={...frameProfile.snapshot(),device:frameDevice,gpu:sceneGpuTimer.snapshot(),allocationFeasibility:allocationFeasibilityMemo.snapshot(),scene:{drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,roots:resident.size,pending:pending?.type??null,pageBudget:pageBudget.snapshot()}};profilePanel.summary.textContent=`GPU: ${frameDevice.renderer??'不可读取'} · CPU帧P95 ${(r.stages.frame_cpu?.p95RecentMs??0).toFixed(2)}ms · GPU场景P95 ${r.stages.gpu_scene?(r.stages.gpu_scene.p95RecentMs.toFixed(2)+'ms'):'不可用'} · 调度最大 ${(r.stages.maintain?.maxMs??0).toFixed(2)}ms`;profilePanel.pre.textContent=JSON.stringify(r,null,2);console.info('[frame profile] '+JSON.stringify(r));}
+
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.12;controls.maxDistance=40000;controls.minDistance=8;controls.maxPolarAngle=Math.PI*.49;
 const orbitActivity=new OrbitActivity(controls);
 const loader=new GLTFLoader(),photoGroup=new THREE.Group(),contextGroup=new THREE.Group();scene.add(photoGroup,contextGroup);
@@ -55,7 +61,7 @@ let sourcePlansEnabled=false,sourceLevelIndex=null;
 const sourcePlanCache=new SourcePlanCache();
 const indexedRootsRequested=new URLSearchParams(location.search).get('levelIndex')==='1',indexedCutsRequested=new URLSearchParams(location.search).get('levelCut')==='1';
 function sourceResidentLimit(){return sourceLevelIndex?indexedCutsRequested?indexedResidentCapacity(sourceLevelIndex.index.records.length):residentLimit:Infinity;}
-const coverageGuard=new SourceCoverageGuard({renderer,scene,photoGroup,contextGroup,reserve:request=>pageBudget.reserve(request)}),coverageRejected=new Set();
+const coverageGuard=new SourceCoverageGuard({renderer,scene,photoGroup,contextGroup,reserve:request=>pageBudget.reserve(request),reference:new URLSearchParams(location.search).get('qa')==='1'&&new URLSearchParams(location.search).get('coverageReference')==='1'}),coverageRejected=new Set();
 let preparedTextures=new PreparedTextureIndex({schema:'xnby.prepared_texture_index.v1',entries:[]},location.href);
 const imageCache=new Map();let markerAtlas=null;
 let baseEdges=new Map(),baseTexels=new Map(),focusId=0;const tierEdges=new Map(),tierTexels=new Map(),residentLimit=16;
@@ -439,7 +445,7 @@ function maintain(){const restorations=[],ranked=ranking();if(indexedCutsRequest
     const restore=rollbackWebFamilies(ready);if(restore)restorations.push({id:r.id,ready,parent:restore});
   }
   telemetry.nativeBytes=[...resident.values()].reduce((sum,r)=>sum+r.bytes,0);telemetry.pageBudget=pageBudget.snapshot();
-  if(new URLSearchParams(location.search).get('lodDebug')==='1'){const stats={sourcePlanCache:sourcePlanCache.snapshot(),indexedFamilyCommits:telemetry.indexedFamilyCommits??0,indexedQualityLimits:telemetry.indexedQualityLimits??0,coverageChecks:telemetry.coverageChecks??0,coverageRejections:telemetry.coverageRejections??0,lastCoverage:telemetry.lastCoverage??null,coverageTargetBytes:coverageGuard.bytes,levelIndexMode:telemetry.levelIndexMode,sourceGainCancelReason:telemetry.sourceGainCancelReason??null,sourceGainJobs:telemetry.sourceGainJobs??0,sourceGainErrors:telemetry.sourceGainErrors??0,sourceGainCancelled:telemetry.sourceGainCancelled??0,sourceGainCpuBytes:telemetry.sourceGainCpuBytes??0,sourceGainCpuPeak:telemetry.sourceGainCpuPeak??0,sourceGainWorkerMs:telemetry.sourceGainWorkerMs??0,recoverySequencePlans:telemetry.recoverySequencePlans??0,recoverySequenceSteps:telemetry.recoverySequenceSteps??0,recoverySequencePeak:telemetry.recoverySequencePeak??0,lastGainEstimate:telemetry.lastGainEstimate??null,pageBudget:telemetry.pageBudget,preparedBc7Pages:telemetry.preparedBc7Pages??0,preparedReplans:telemetry.preparedReplans??0,preparedTextureCount:telemetry.preparedTextureCount??0,lodRevision:telemetry.lodRevision,width,height,camera:camera.position.toArray(),target:controls.target.toArray(),visibility:telemetry.visibility,requests:telemetry.requests,familyRequests:telemetry.familyRequests??0,cancellations:telemetry.cancellations,familyCommits:telemetry.familyCommits??0,retiredCpuPages:telemetry.retiredCpuPages??0,retiredCpuPayloadBytes:telemetry.retiredCpuPayloadBytes??0,restoredCpuPages:telemetry.restoredCpuPages??0,restoreRequests:telemetry.restoreRequests??0,restoreErrors:telemetry.restoreErrors??0,cpuRestoreStagingPayloadBytes:telemetry.cpuRestoreStagingPayloadBytes??0,peakBytes:telemetry.peakBytes??0,activeBytes:telemetry.nativeBytes,stagingBytes:telemetry.stagingBytes,retainedPayloadBytes:[...resident.values()].reduce((sum,r)=>sum+(r.frontier?.retainedPayloadBytes??r.bytes),0),textures:renderer.info.memory.textures,geometries:renderer.info.memory.geometries,roots:[...resident].map(([id,r])=>({id,screenWeight:sourceVisibility.weight(id)+[...r.frontier.visible].reduce((sum,name)=>sum+sourceVisibility.weight(id,name),0),depth:r.frontier?.maxDepth??r.depth,bytes:r.bytes,visible:r.frontier?[...r.frontier.visible]:[]}))};const signature=JSON.stringify(stats);if(signature!==telemetry.lastAudit){console.info('[LOD audit] '+signature);telemetry.lastAudit=signature;}}
+  if(new URLSearchParams(location.search).get('lodDebug')==='1'){const stats={sourcePlanCache:sourcePlanCache.snapshot(),indexedFamilyCommits:telemetry.indexedFamilyCommits??0,indexedQualityLimits:telemetry.indexedQualityLimits??0,coverageReferenceChecks:coverageGuard.referenceChecks,coverageReferenceMismatches:coverageGuard.referenceMismatches,coverageRegionPixels:telemetry.coverageRegionPixels??0,coverageFullPixels:telemetry.coverageFullPixels??0,coverageChecks:telemetry.coverageChecks??0,coverageRejections:telemetry.coverageRejections??0,lastCoverage:telemetry.lastCoverage??null,coverageTargetBytes:coverageGuard.bytes,levelIndexMode:telemetry.levelIndexMode,sourceGainCancelReason:telemetry.sourceGainCancelReason??null,sourceGainJobs:telemetry.sourceGainJobs??0,sourceGainErrors:telemetry.sourceGainErrors??0,sourceGainCancelled:telemetry.sourceGainCancelled??0,sourceGainCpuBytes:telemetry.sourceGainCpuBytes??0,sourceGainCpuPeak:telemetry.sourceGainCpuPeak??0,sourceGainWorkerMs:telemetry.sourceGainWorkerMs??0,recoverySequencePlans:telemetry.recoverySequencePlans??0,recoverySequenceSteps:telemetry.recoverySequenceSteps??0,recoverySequencePeak:telemetry.recoverySequencePeak??0,lastGainEstimate:telemetry.lastGainEstimate??null,pageBudget:telemetry.pageBudget,preparedBc7Pages:telemetry.preparedBc7Pages??0,preparedReplans:telemetry.preparedReplans??0,preparedTextureCount:telemetry.preparedTextureCount??0,lodRevision:telemetry.lodRevision,width,height,camera:camera.position.toArray(),target:controls.target.toArray(),visibility:telemetry.visibility,requests:telemetry.requests,familyRequests:telemetry.familyRequests??0,cancellations:telemetry.cancellations,familyCommits:telemetry.familyCommits??0,retiredCpuPages:telemetry.retiredCpuPages??0,retiredCpuPayloadBytes:telemetry.retiredCpuPayloadBytes??0,restoredCpuPages:telemetry.restoredCpuPages??0,restoreRequests:telemetry.restoreRequests??0,restoreErrors:telemetry.restoreErrors??0,cpuRestoreStagingPayloadBytes:telemetry.cpuRestoreStagingPayloadBytes??0,peakBytes:telemetry.peakBytes??0,activeBytes:telemetry.nativeBytes,stagingBytes:telemetry.stagingBytes,retainedPayloadBytes:[...resident.values()].reduce((sum,r)=>sum+(r.frontier?.retainedPayloadBytes??r.bytes),0),textures:renderer.info.memory.textures,geometries:renderer.info.memory.geometries,roots:[...resident].map(([id,r])=>({id,screenWeight:sourceVisibility.weight(id)+[...r.frontier.visible].reduce((sum,name)=>sum+sourceVisibility.weight(id,name),0),depth:r.frontier?.maxDepth??r.depth,bytes:r.bytes,visible:r.frontier?[...r.frontier.visible]:[]}))};const signature=JSON.stringify(stats);if(signature!==telemetry.lastAudit){console.info('[LOD audit] '+signature);telemetry.lastAudit=signature;}}
   if(pending||!base)return;
   if(indexedCutsRequested){if(ranked.length){try{coverageGuard.resize(width,height);detailLimit=budget-uploadTargetBytes-coverageGuard.bytes;}catch(error){telemetry.coverageUnavailable=error.message;return;}}else{coverageGuard.release();detailLimit=budget-uploadTargetBytes;}}
   if(restorations.length){loadSourceCoarsen(restorations[0]).catch(fail);return;}
@@ -498,12 +504,12 @@ function sourceParentSpans(id,parent,ready){
 }
 function acceptsSourceCoverage({id,parent=null,ready,candidate,stillWanted}){
  if(!indexedCutsRequested)return true;ensureSourceWanted(stillWanted);
- const result=coverageGuard.check({camera,candidate,parentSpans:sourceParentSpans(id,parent,ready),stillWanted});telemetry.coverageChecks=(telemetry.coverageChecks??0)+1;telemetry.lastCoverage={root:id,parent,...result};console.info('[source coverage] '+JSON.stringify(telemetry.lastCoverage));
+ const result=frameProfile.measure('coverage',()=>coverageGuard.check({camera,candidate,parentSpans:sourceParentSpans(id,parent,ready),stillWanted}));telemetry.coverageChecks=(telemetry.coverageChecks??0)+1;telemetry.coverageRegionPixels=(telemetry.coverageRegionPixels??0)+result.region.pixels;telemetry.coverageFullPixels=(telemetry.coverageFullPixels??0)+result.region.fullPixels;telemetry.lastCoverage={root:id,parent,...result};console.info('[source coverage] '+JSON.stringify(telemetry.lastCoverage));
  if(result.loss){const key=parent===null?`root/${id}`:`family/${id}/${parent}`;coverageRejected.add(key);telemetry.coverageRejections=(telemetry.coverageRejections??0)+1;message('原始细层存在可见几何缺口，保留完整父层');return false;}return true;
 }
 function verifySourceAllocation(allocation,response,marker){try{return verifyPlannedSource(allocation.plan,response,marker);}catch(error){sourcePlanCache.invalidate(allocation.plan);telemetry.sourcePlanCache=sourcePlanCache.snapshot();throw error;}}
 function uploadSourceModel(model){
- uploadSourceScene({scene:model.scene,renderer,camera,target:familyUploadTarget});
+ frameProfile.measure('source_upload',()=>uploadSourceScene({scene:model.scene,renderer,camera,target:familyUploadTarget}));
 }
 async function stageManagedSource({marker,downloads,folder,stillWanted,admit,onReady,cancelAttempt}){
  const forceRgbaParts=new Set();
@@ -512,7 +518,7 @@ async function stageManagedSource({marker,downloads,folder,stillWanted,admit,onR
   const plan=await planPreparedSourceBundle({marker,supported:part=>supportsPreparedBc7(renderer)&&preparedTextures.has(part),loadManifest:part=>preparedTextures.manifest(part),forceRgbaParts,stillWanted});
   if(!await admit(plan.marker))return null;
   try{
-   const staged=await stagePreparedSourceBundle({THREE,renderer,marker,plan,stillWanted,loadFile:(part,name)=>downloads.read(`native/${folder}/${part.directory}/${name}`),loadPayload:part=>preparedTextures.payload(part),reserve:request=>pageBudget.reserve(request),prepare:model=>photograph(model.scene),upload:uploadSourceModel,onReady,yieldFrame:()=>new Promise(resolve=>requestAnimationFrame(resolve))});
+   const staged=await stagePreparedSourceBundle({THREE,renderer,metrics:frameProfile,marker,plan,stillWanted,loadFile:(part,name)=>downloads.read(`native/${folder}/${part.directory}/${name}`),loadPayload:part=>preparedTextures.payload(part),reserve:request=>pageBudget.reserve(request),prepare:model=>photograph(model.scene),upload:uploadSourceModel,onReady,yieldFrame:()=>new Promise(resolve=>requestAnimationFrame(resolve))});
    telemetry.preparedBundleLoads=(telemetry.preparedBundleLoads??0)+1;telemetry.preparedBc7Pages=(telemetry.preparedBc7Pages??0)+staged.marker.parts.filter(p=>p.runtime_texture.format==='bc7').length;
    return staged;
   }catch(error){
@@ -547,21 +553,23 @@ function sourceCancelled(){telemetry.cancellations++;message($('fine').checked?'
 const familyFailed=new Set(),familyCosts=new Map();
 // Compare roots and local families in one queue. Cost is immutable per negotiated
 // source layout, while actual geometry gains expire with the visible camera/cut.
+const allocationFeasibilityMemo=new AllocationFeasibilityMemo();
 function allocationCandidates(ranked=ranking()){
+ if(indexedCutsRequested)allocationFeasibilityMemo.setContext(allocationBudgetState({residents:resident,visibility:sourceVisibility.visibleSnapshot,camera,width,height,limit:detailLimit,maxResidents:sourceResidentLimit(),held:pageBudget.held,stagingBytes:telemetry.stagingBytes,restoreFailed,visibilityReady}));
  const candidates=[];
  for(const r of ranked){
   if(resident.get(r.id)?.depth===r.depth||failed.has(`${r.id}/${r.depth}`)||coverageRejected.has(`root/${r.id}`))continue;
   const bounds=catalog.root_records[r.id-1],score=rootGainEstimates.get(`${r.id}/${r.depth}`)??visiblePriority(r.id,{...bounds,longest_edge_p90_m:baseEdges.get(r.id),texel_world_p90_m:baseTexels.get(r.id)??0}),cost=rootCosts.get(`${r.id}/${r.depth}`)??null;
-  if(score>0&&(cost===null||canMakeFamilyRoom(r.id,null,score,cost,false)))candidates.push({key:`root/${r.id}/${r.depth}`,kind:'root',id:r.id,request:r,score,cost});
+  if(score>0&&(indexedCutsRequested||cost===null||canMakeFamilyRoom(r.id,null,score,cost,false)))candidates.push({key:`root/${r.id}/${r.depth}`,kind:'root',id:r.id,request:r,score,cost});
  }
  for(const [id,ready] of resident)if(ready.frontier)for(const c of visibleSourceCandidates(ready.frontier,camera,height)){
   const parent=c.node.name;if(familyFailed.has(`${id}/${parent}`)||coverageRejected.has(`family/${id}/${parent}`))continue;
   const score=familyGainEstimates.get(`${id}/${parent}`)??visiblePriority(id,c.node),cost=familyCosts.get(`${id}/${parent}`)??null;
-  if(score>0&&(cost===null||canMakeFamilyRoom(id,parent,score,cost,false)))candidates.push({...c,key:`family/${id}/${parent}`,kind:'family',id,ready,score,cost});
+  if(score>0&&(indexedCutsRequested||cost===null||canMakeFamilyRoom(id,parent,score,cost,false)))candidates.push({...c,key:`family/${id}/${parent}`,kind:'family',id,ready,score,cost});
  }
  return candidates;
 }
-function chooseSourceCandidate(candidates){return indexedCutsRequested?chooseIndexedCoverageCandidate(candidates,id=>resident.has(id)):chooseRefinementCandidate(candidates);}
+function chooseSourceCandidate(candidates){return indexedCutsRequested?chooseFeasibleSourceCandidate(candidates,{indexed:true,hasRoot:id=>resident.has(id),feasible:c=>allocationFeasibilityMemo.resolve({id:c.id,parent:c.kind==='family'?c.node.name:null,score:c.score,cost:c.cost},()=>frameProfile.measure('budget_probe',()=>canMakeFamilyRoom(c.id,c.kind==='family'?c.node.name:null,c.score,c.cost,false)))}):chooseRefinementCandidate(candidates);}
 function allocationStillBest(key){if(!visibilityReady)return true;if(indexedCutsRequested&&pending){const active=pending.type==='family'?`family/${pending.id}/${pending.parent}`:`root/${pending.id}/${pending.depth}`;if(active===key)return true;}const best=chooseSourceCandidate(allocationCandidates());if(best?.key===key)return true;telemetry.allocationReorders=(telemetry.allocationReorders??0)+1;return false;}
 async function learnAllocationCost(marker,costs,key,stillWanted){
  const plan=await planPreparedSourceBundle({marker,supported:part=>supportsPreparedBc7(renderer)&&preparedTextures.has(part),loadManifest:part=>preparedTextures.manifest(part),stillWanted});
@@ -631,7 +639,7 @@ async function readSourcePages(need,stillWanted){
   const subset=subsetPreparedSourcePlan(plan,need.parts.map(p=>p.directory));
   telemetry.cpuRestoreStagingPayloadBytes=(telemetry.cpuRestoreStagingPayloadBytes??0)+subset.plan.marker.gpu_payload_bytes;message('正在恢复回退源页，保留当前地景');
   const folder=isFamily?`family_tile_${need.root}_${marker.family_key}`:`tile_${need.root}_depth_${need.ready.depth}`;
-  staged=await stagePreparedSourceBundle({THREE,renderer,...subset,stillWanted,loadFile:(part,name)=>downloads.read(`native/${folder}/${part.directory}/${name}`),loadPayload:part=>preparedTextures.payload(part),reserve:request=>pageBudget.reserve(request),prepare:model=>photograph(model.scene),upload:uploadSourceModel,yieldFrame:()=>new Promise(resolve=>requestAnimationFrame(resolve))});
+  staged=await stagePreparedSourceBundle({THREE,renderer,metrics:frameProfile,...subset,stillWanted,loadFile:(part,name)=>downloads.read(`native/${folder}/${part.directory}/${name}`),loadPayload:part=>preparedTextures.payload(part),reserve:request=>pageBudget.reserve(request),prepare:model=>photograph(model.scene),upload:uploadSourceModel,yieldFrame:()=>new Promise(resolve=>requestAnimationFrame(resolve))});
   return {marker:source,group:staged.group,meshes:staged.meshes,attached:false,dispose(){if(!this.attached)staged.dispose();}};
  }catch(error){staged?.dispose();throw error;}finally{downloads?.release();}
 }
@@ -659,7 +667,7 @@ try{const inspection=parseInspectionView(location.search);if(inspection)inspecti
 // renderer, changing annotations, or reading application internals via automation.
 if(new URLSearchParams(location.search).get('qa')==='1'){
  const bar=document.createElement('div');bar.className='tools';bar.style.cssText='position:absolute;top:58px;left:50%;transform:translateX(-50%);z-index:8;display:flex;gap:8px;white-space:nowrap';bar.setAttribute('aria-label','场景验收机位');
- for(const [name,point,height] of [['园区近景100米',[-317,-1988,43],100],['园区中景350米',[-317,-1988,43],350],['园区远景1000米',[-317,-1988,43],1000],['园区道路近景',[494.65185546875,3184.25146484375,28.058813095092773],10]]){const button=document.createElement('button');button.textContent=name;button.onclick=()=>inspectionCamera({point,height});bar.append(button);}viewport.append(bar);
+ for(const [name,point,height] of [['园区近景100米',[-317,-1988,43],100],['园区中景350米',[-317,-1988,43],350],['园区远景1000米',[-317,-1988,43],1000],['园区道路近景',[494.65185546875,3184.25146484375,28.058813095092773],10]]){const button=document.createElement('button');button.textContent=name;button.onclick=()=>{if(frameProfile.enabled){frameProfile.reset(name);sceneGpuTimer.reset();}inspectionCamera({point,height});};bar.append(button);}viewport.append(bar);
 }
 
 controls.addEventListener('change',()=>{visibilityReady=false;});
@@ -747,8 +755,8 @@ async function boot(){
   reloadSpatial(true).catch(error=>spatialNotice(error.message));
   reloadBusinessRecords(true).catch(error=>businessNotice(`发布台账读取失败：${error.message}`));
 }
-function animate(now){requestAnimationFrame(animate);if(!signDrag?.moved)orbitActivity.update();renderer.render(scene,camera);drawAnnotations();frames++;if(now-frameClock>1000){$('command-clock').textContent=new Date().toLocaleTimeString('zh-CN',{hour12:false});fps=frames*1000/(now-frameClock);frames=0;frameClock=now;$('status').textContent=`${Math.round(fps)} FPS · 2346 基础瓦片 · 细层 ${resident.size}/${telemetry.nativeDesired??0} 块 / ${Math.round(telemetry.nativeBytes/1048576)} MiB · 已加载最高层级 ${resident.size?Math.max(...[...resident.values()].map(r=>r.frontier?.maxDepth??r.depth)):"基础层"}`;}
-  if(now-lastRank>700&&telemetry.ready){lastRank=now;maintain();}}
+function animate(now){requestAnimationFrame(animate);frameProfile.frame(now);frameProfile.measure('frame_cpu',()=>{if(!signDrag?.moved)frameProfile.measure('orbit',()=>orbitActivity.update());frameProfile.measure('render_submit',()=>sceneGpuTimer.measure(()=>renderer.render(scene,camera)));frameProfile.measure('annotations',drawAnnotations);frames++;if(now-frameClock>1000){$('command-clock').textContent=new Date().toLocaleTimeString('zh-CN',{hour12:false});fps=frames*1000/(now-frameClock);frames=0;frameClock=now;$('status').textContent=`${Math.round(fps)} FPS · 2346 基础瓦片 · 细层 ${resident.size}/${telemetry.nativeDesired??0} 块 / ${Math.round(telemetry.nativeBytes/1048576)} MiB · 已加载最高层级 ${resident.size?Math.max(...[...resident.values()].map(r=>r.frontier?.maxDepth??r.depth)):"基础层"}`;}
+  if(now-lastRank>700&&telemetry.ready){lastRank=now;frameProfile.measure('maintain',maintain);}});if(frameProfile.enabled&&now-lastProfilePublish>1000){lastProfilePublish=now;publishFrameProfile();}}
 requestAnimationFrame(animate);boot().catch(error=>{$('loading').style.display='none';fail(error);});
 // Read-only QA observation and reproducible camera controls; no private files.
 window.hongtuViewer={telemetry,validate,openDocument,preset,locate,get document(){return layersDoc;},get selected(){return selected;},get residents(){return [...resident].map(([id,r])=>({id,depth:r.depth,parts:r.marker.parts.length}));},get camera(){return camera.position.toArray();}};
