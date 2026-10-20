@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from portable_source_runtime import (SCHEMA, BINDING, PAYLOAD_DIRS, load_package,
-                                     payload_name, ReadOnlySourceGuard, ready_path, object_pairs, initialize_user_layers)
+                                     payload_name, ReadOnlySourceGuard, ready_path, object_pairs, initialize_user_layers, publish_owner_ready)
 
 class RuntimePackage(unittest.TestCase):
     def setUp(self):
@@ -116,6 +116,38 @@ class RuntimePackage(unittest.TestCase):
         guard("open",(str(self.root/"UserData/Run/log.txt"),"wb",os.O_WRONLY))
         guard("subprocess.Popen",(str(self.reader),))
         self.assertEqual(len(guard.violations),4)
+
+
+    def test_ready_publication_is_complete_before_concurrent_reader_can_open_it(self):
+        import threading,time
+        from unittest.mock import patch
+        target=ready_path(self.root,'d'*32);started=threading.Event();errors=[]
+        result={'state':'ready','launchId':'d'*32,'preflight':{'values':list(range(32))}}
+        def slow_dump(value,stream,**kwargs):
+            for chunk in json.JSONEncoder(indent=2).iterencode(value):
+                stream.write(chunk);stream.flush();started.set();time.sleep(.001)
+        def writer():
+            try:publish_owner_ready(target,result)
+            except BaseException as error:errors.append(error)
+        with patch('portable_source_runtime.json.dump',slow_dump):
+            thread=threading.Thread(target=writer);thread.start();self.assertTrue(started.wait(2))
+            self.assertFalse(target.exists())
+            observations=0
+            while thread.is_alive():
+                if target.exists():
+                    self.assertEqual(json.loads(target.read_text('utf8')),result);observations+=1
+                time.sleep(.001)
+            thread.join()
+        self.assertFalse(errors);self.assertEqual(json.loads(target.read_text('utf8')),result)
+        self.assertFalse(target.with_name(target.stem+'.ready.pending.json').exists())
+    def test_ready_publication_never_overwrites_existing_or_interrupted_owner_state(self):
+        target=ready_path(self.root,'e'*32);target.write_bytes(b'previous run retained')
+        with self.assertRaises(FileExistsError):publish_owner_ready(target,{'state':'ready'})
+        self.assertEqual(target.read_bytes(),b'previous run retained');target.unlink()
+        pending=target.with_name(target.stem+'.ready.pending.json');pending.write_bytes(b'interrupted retained')
+        with self.assertRaises(FileExistsError):publish_owner_ready(target,{'state':'ready'})
+        self.assertFalse(target.exists());self.assertEqual(pending.read_bytes(),b'interrupted retained')
+
 
 if __name__ == "__main__":
     unittest.main()

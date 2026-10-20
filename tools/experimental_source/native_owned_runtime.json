@@ -28,6 +28,7 @@
   ],
   "restoreTargetCRLF": [
     "native/landscape_editor.inl",
+    "native/landscape_project_probe.inl",
     "native/main.cpp",
     "native/zhumadian_native_chunk_decode.inl",
     "native/zhumadian_native_family_pager.inl",
@@ -39,10 +40,11 @@
   "targetFiles": {
     "native/CMakeLists.txt": "1eed1d2ec3c53f3637de395f1f97d8f7cdca5f35dd752d54f1cbeaa895beafdb",
     "native/landscape_document.hpp": "3aadb14f6f1ea185954644af83d0624cbcea9a2777a0fbf2ff7aec6577436dae",
-    "native/landscape_editor.inl": "2c42cba5bc27b0eef5451c742fd650d18dc12cffb32813575fb7db4b1396b398",
+    "native/landscape_editor.inl": "94bed0e25edd4c7f7286384747dea39a505f24d0b4a45b0dd47d539e5fbcef4c",
     "native/landscape_editor_panel.inl": "60e1ac365ec87412a1dd0e3643ade11e9f20be13c8ecc53980027fa3937bd509",
     "native/landscape_overlay.hpp": "7933c8203e058d8afe6b5b1d8318cf0a35684727ef07886b7a62e335666afc59",
-    "native/main.cpp": "6dd526f4d22dbbb6bc2bea87c5a266b195a922696cd763a13d7da6689fedb865",
+    "native/landscape_project_probe.inl": "cfaa5367bd967a1f7ece9719456d38b1d513bc768d780882b03e5ef1f6b5c960",
+    "native/main.cpp": "00d0ddd9f0a1e8a6534a4fb06b6bd49143366befb946ea7cd8eb0aa4e9ba5526",
     "native/mesh_sun_shadow.h": "154856372acc0d56ca9a742b442de20590fff0333de4eac9bf3d8a91229c1be2",
     "native/showcase_demo.manifest": "db468fabdec4d53cde5aa60bac43ae385da273564818416ddd5d364b170c1966",
     "native/showcase_demo.rc": "e205d05e07dc049452d27cc41d93c9ee108d94c1b9cfb3fad0c8856f8fa813e0",
@@ -54,11 +56,11 @@
     "native/zhumadian_native_visibility.md": "d23d341a777068302f4f5bb411fc944ea8215f49d874c7d21b2310dd8426081d",
     "native/zhumadian_native_visibility_budget.inl": "0643eb64c54c3899c9c01a251b58eefaae2b4c540a195793b9dac10d76597bfb",
     "native/zhumadian_native_visibility_scores.inl": "93520abd4eab15a8869183f827b67996259a20f072b56aac6e036d10d35fbb8d",
-    "native/zhumadian_owned_runtime.inl": "1de4f762b063d5fd1606cf84b6e03ef7ddaca90fb4f5f3a5b86bfe9794b0fb98",
+    "native/zhumadian_owned_runtime.inl": "2986e200622627b86953a25377334c5803e66e251841d0e306fcc40380d0e458",
     "native/zhumadian_owned_worker.inl": "d97d8fb914ca637b8a2274b0af3fd94f2b700138281af82694c4983ed802f136",
     "native/zhumadian_source_memory.inl": "59f8d90fd16495a473f46da51f3f156ce312cbf4637723bb8827b58a8e965ce7"
   },
   "patch": "native_owned_runtime.patch",
-  "patchSHA256": "c7bc6b75cdb63f91cdb2616024c34995db78b3e765114d3896609a1770f504ee",
+  "patchSHA256": "e064540a38b0c66091a2e50755452c3bbf79d6e118a82ac71f8d7c20f3230610",
   "dataFilesIncluded": false
 }

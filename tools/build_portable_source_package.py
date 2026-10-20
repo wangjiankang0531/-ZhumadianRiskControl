@@ -81,6 +81,10 @@ def build(args):
         source = regular(Path(source), Path(anchor))
         destination = payload_name(destination)
         target = output/destination
+        if destination in copied:
+            if file_sha(source)!=copied[destination]["sha256"] or file_sha(target)!=copied[destination]["sha256"]:
+                raise ValueError("conflicting duplicate package payload: "+destination)
+            return
         target.parent.mkdir(parents=True, exist_ok=True)
         before = source.stat()
         with source.open("rb") as src, target.open("xb") as dst:
@@ -118,6 +122,7 @@ def build(args):
     if len(reader_files) > 32:
         raise ValueError("private reader exceeds unchanged runtime file bound")
     tree(editor, "editor")
+    tree(ROOT/"runtime/shaderc", "editor/runtime/shaderc")
     tree(web, "web")
     for name, sha in imported.items():
         name = name.replace("\\", "/")

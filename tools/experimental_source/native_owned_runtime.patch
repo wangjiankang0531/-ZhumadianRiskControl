@@ -1,3 +1,111 @@
+--- a/native/landscape_editor.inl
++++ b/native/landscape_editor.inl
+@@ -644,6 +644,11 @@
+     return editorUtf8(b);
+   };
+   auto pathDialog = [&](bool saving, const wchar_t* filter) -> fs::path {
++    if (cli_.editorProjectProbe) {
++      auto& selected=saving?editorProbeSaveAsPath_:editorProbeOpenPath_;
++      if (selected.empty()) throw std::runtime_error("Project probe did not provide a dialog result");
++      auto value=selected;selected.clear();return value;
++    }
+     wchar_t file[32768]{};
+     if (saving)
+       wcsncpy_s(file, editorFile_.c_str(), _TRUNCATE);
+@@ -673,9 +678,10 @@
+           throw std::runtime_error("编辑项目至少应有一个图层");
+         editorDocument_ = std::move(next);
+         editorFile_ = path;
++        if (nativeEditorSaved) nativeEditorSaved(path);
+       } else {
+         editorDocument_ = hongtu::landscape::emptyDocument();
+-        editorFile_ = resolveProjectPath("projects") / L"未命名图层.json";
++        editorFile_ = nativeNewEditorProject ? nativeNewEditorProject() : (cli_.landscapeLayers.empty() ? resolveProjectPath("projects") : cli_.landscapeLayers.parent_path()) / L"未命名图层.json";
+       }
+       editorDirty_ = id == 3004;
+       editorUndo_.clear();
+@@ -690,11 +696,13 @@
+         path = pathDialog(true, L"驻马店图层 (*.json)\0*.json\0\0");
+       if (path.empty())
+         return;
++      if (nativePrepareEditorSave) nativePrepareEditorSave(path);
+       if (!path.parent_path().empty())
+         fs::create_directories(path.parent_path());
+       hongtu::landscape::save(path, editorDocument_);
+       editorFile_ = path;
+       editorDirty_ = false;
++      if (nativeEditorSaved) nativeEditorSaved(path);
+     } else if (id >= 3005 && id <= 3007) {
+       cli_.zhumadianView = id == 3005 ? "overview" : id == 3006 ? "oblique" : "close";
+       settings_ = applyCliOverrides(cli_, settingsForPreset(cli_.preset, sceneConfig_));
+@@ -967,6 +975,7 @@
+       editorSelectFeature();
+     SetFocus(hwnd_);
+   } catch (const std::exception& e) {
++    if (cli_.editorProjectProbe) throw;
+     MessageBoxW(editorFrame_, editorWide(e.what()).c_str(), L"编辑操作未完成", MB_OK | MB_ICONWARNING);
+   }
+ }
+--- /dev/null
++++ b/native/landscape_project_probe.inl
+@@ -0,0 +1,57 @@
++// Internal application command regression; no input is sent to another process.
++// File-dialog return values are fixtures, not a claim of manual dialog testing.
++void ShowcaseInteractiveApp::editorProjectProbe() {
++  auto require=[](bool valid,const char* message){if(!valid)throw std::runtime_error(message);};
++  require(bool(nativeNewEditorProject)&&bool(nativePrepareEditorSave)&&bool(nativeEditorSaved),"Project probe requires the owned packaged runtime");
++  const auto original=editorDocument_;const auto originalFile=editorFile_;
++  wchar_t image[32768]{};require(GetModuleFileNameW(nullptr,image,32768)>0,"Cannot locate probe package");
++  const auto root=fs::path(image).parent_path().parent_path();
++  auto read=[](const fs::path& path){std::ifstream input(path,std::ios::binary);if(!input)throw std::runtime_error("Cannot read project probe file");return std::vector<uint8_t>((std::istreambuf_iterator<char>(input)),{});};
++  auto hash=[&](const fs::path& path){const auto raw=read(path);return sourceMemorySHA(raw.data(),raw.size());};
++  auto text=[](const fs::path& path){const auto value=path.generic_u8string();return std::string(value.begin(),value.end());};
++  const auto originalSHA=hash(originalFile);editorDirty_=false;editorStylePending_=false;
++  editorCommand(3004);const auto firstFile=editorFile_;
++  const auto relative=firstFile.lexically_relative(root/L"UserData"/L"Projects");
++  require(!relative.empty() && !relative.is_absolute() && *relative.begin()!=L".." && !fs::exists(firstFile),"New project escaped user data or wrote before Save");
++  auto document=hongtu::landscape::emptyDocument();document["layers"][0]["name"]="QA工程A";
++  auto style=hongtu::landscape::defaultStyle();style["pattern"]="dash";style["widthPx"]=7;style["opacity"]=0.6;style["fillOpacity"]=0.25;
++  auto label=hongtu::landscape::defaultLabel();label["visible"]=true;label["text"]="QA标牌";
++  document["layers"][0]["features"]=Json::array({
++    {{"id","qa-point"},{"name","QA点"},{"type","point"},{"positions",{{1,2,3}}},{"style",style},{"label",label},
++     {"business",{{"sourceSystem","DEMO"},{"objectType","enterprise"},{"businessId","QA-E"},{"enterpriseId","QA-E"}}}},
++    {{"id","qa-line"},{"name","QA线"},{"type","line"},{"positions",{{1,2,3},{5,6,3}}},{"style",style}},
++    {{"id","qa-region"},{"name","QA面"},{"type","region"},{"positions",{{0,0,0},{10,0,0},{0,10,0}}},{"style",style}}
++  });
++  hongtu::landscape::validate(document);editorDocument_=document;editorLayer_=0;editorFeature_=-1;editorDirty_=true;
++  editorCommand(3002);require(!editorDirty_ && fs::exists(firstFile) && hongtu::landscape::load(firstFile)==document,"New/Save command failed");
++  auto publication=sourceMemoryHTTP("/layers/default.json",16*1048576);require(publication.status==200 && publication.data==read(firstFile),"New project was not published exactly");
++  const auto firstSHA=hash(firstFile);const auto firstDocument=document;
++  const auto savedAs=fs::u8path(cli_.stats).parent_path()/L"另存为工程.json";
++  require(!fs::exists(savedAs),"Save As fixture already exists");
++  document["layers"][0]["name"]="QA工程B";document["layers"][0]["features"][0]["label"]["text"]="QA另存为标牌";
++  editorDocument_=document;editorDirty_=true;editorProbeSaveAsPath_=savedAs;editorCommand(3003);
++  require(editorProbeSaveAsPath_.empty() && editorFile_==savedAs && !editorDirty_ && hongtu::landscape::load(savedAs)==document,"Save As command failed");
++  publication=sourceMemoryHTTP("/layers/default.json",16*1048576);require(publication.status==200 && publication.data==read(savedAs),"Save As published the old project");
++  require(hash(firstFile)==firstSHA,"Save As overwrote the previous project");
++  const auto savedAsSHA=hash(savedAs);editorProbeOpenPath_=firstFile;editorCommand(3001);
++  require(editorProbeOpenPath_.empty() && editorDocument_==firstDocument && editorFile_==firstFile,"Open command did not switch to saved project");
++  publication=sourceMemoryHTTP("/layers/default.json",16*1048576);require(publication.status==200 && publication.data==read(firstFile),"Open left the old published project selected");
++  require(hash(originalFile)==originalSHA && hash(savedAs)==savedAsSHA,"Project switch changed an earlier working file");
++  std::ifstream bindingInput(root/L"source_runtime_binding.json");Json binding;bindingInput>>binding;
++  const auto data=fs::weakly_canonical(root/fs::u8path(binding.at("dataRoot").get<std::string>()));int refused=0;
++  for (const auto& path:{root/L"resources"/L"forbidden_project.json",root/L"defaults"/L"forbidden_project.json",
++      root/L"UserData"/L"PublishedLayers"/L"forbidden_project.json",data/L"forbidden_project.json"}) {
++    require(!fs::exists(path),"Forbidden target fixture already exists");
++    try {nativePrepareEditorSave(path);}catch(const std::exception&) {++refused;}
++    require(!fs::exists(path),"Save boundary check wrote a forbidden target");
++  }
++  require(refused==4,"Save preparation allowed a managed/original resource target");
++  Json report={{"passed",true},{"new_save_command",true},{"save_as_command",true},{"open_switch_command",true},
++    {"new_file",text(firstFile)},{"saved_as_file",text(savedAs)},{"original_file_unchanged",true},
++    {"new_sha256",firstSHA},{"saved_as_sha256",savedAsSHA},{"published_sha256",hash(firstFile)},
++    {"preserved_types",{"point","line","region"}},{"protected_targets_refused",refused},
++    {"dialog_result_fixture",true},{"manual_file_dialog_verified",false},{"input_injected_to_other_programs",false}};
++  std::ofstream output(fs::u8path(cli_.stats));output<<report.dump(2);output.close();
++  editorDocument_=original;editorFile_=originalFile;editorDirty_=false;editorUndo_.clear();editorRedo_.clear();
++  PostMessageW(editorFrame_,WM_CLOSE,0,0);
++}
 --- a/native/main.cpp
 +++ b/native/main.cpp
 @@ -27,6 +27,10 @@
@@ -11,17 +119,37 @@
  #endif
  
  #include <stb_image.h>
-@@ -2131,7 +2135,9 @@
+@@ -45,6 +49,8 @@
+ #include <cstdlib>
+ #include <cstring>
+ #include <filesystem>
++#include <functional>
++#include <cwctype>
+ #include <fstream>
+ #include <future>
+ #include <iomanip>
+@@ -1685,6 +1691,7 @@
+     bool landscapeEditor = false;
+     bool editorShellProbe = false;
+     bool editorBusinessProbe = false;
++    bool editorProjectProbe = false;
+     bool landscapeValidate = false;
+     fs::path landscapeLayers;
+     std::string scene = "industrial_park";
+@@ -2131,7 +2138,12 @@
      return std::string(value.begin(), value.end());
    }
  
 +  fs::path nativePortableResourceRoot;
++  std::function<fs::path()> nativeNewEditorProject;
++  std::function<void(const fs::path&)> nativePrepareEditorSave;
++  std::function<void(const fs::path&)> nativeEditorSaved;
    fs::path resolveProjectPath(const fs::path& relative) {
 +    if (!nativePortableResourceRoot.empty()) return nativePortableResourceRoot / relative;
  #ifdef _WIN32
      wchar_t executable[32768]{};
      if (GetModuleFileNameW(nullptr, executable, 32768)) {
-@@ -4353,6 +4359,16 @@
+@@ -4353,6 +4365,16 @@
      }
      audit.levelsVisited = static_cast<int>(std::count(levels.begin(), levels.end(), true));
      return audit;
@@ -38,7 +166,7 @@
    }
  
    struct CameraClipPlanes {
-@@ -18635,13 +18651,13 @@
+@@ -18635,13 +18657,13 @@
                  // Keep the camera-relative sky dome on the far plane even
                  // when the global WGS84 camera needs kilometre-scale near/far
                  // values. This is the Vulkan equivalent of gl_Position.xyww.
@@ -55,7 +183,7 @@
              outKind = inKind;
              outPbr = inPbr;
          }
-@@ -18870,6 +18886,8 @@
+@@ -18870,6 +18892,8 @@
              return mix(previous, current, transition);
          }
          vec3 materialLayerColor(vec3 color, vec2 uv, float kind, vec4 pbr) {
@@ -64,7 +192,7 @@
              if (pbr.w > 4.5)
                  return pow(max(texture(regionalEarthContext, clamp(uv, vec2(0.00025), vec2(0.99975)), -0.35).rgb,
                                 vec3(0)), vec3(2.2));
-@@ -19955,7 +19973,7 @@
+@@ -19955,7 +19979,7 @@
      pd.rasterization.fillMode = FillMode::Solid;
      pd.depthStencil.depthTestEnable = true;
      pd.depthStencil.depthWriteEnable = true;
@@ -73,7 +201,7 @@
      pd.renderPass = renderPass;
      pd.pipelineLayout = pipelineLayout;
      ColorBlendAttachmentState blend;
-@@ -23240,7 +23258,7 @@
+@@ -23240,7 +23264,7 @@
                                        cameraClip.nearMeters,
                                        cameraClip.farMeters);
      proj[1][1] *= -1.0f;
@@ -82,7 +210,7 @@
  
      hongtu::landscape::Overlay landscapeOverlay;
      Json landscapeDocument = hongtu::landscape::emptyDocument();
-@@ -23266,7 +23284,7 @@
+@@ -23266,7 +23290,7 @@
      area.extent = {renderWidth, renderHeight};
      const std::vector<std::array<float, 4>> clearColors = {
          showcaseClearColor(cli.zhumadianCoverageMask ? glm::vec3(0.0f) : settings.clear, cli.screenshotSrgbTarget)};
@@ -91,7 +219,23 @@
      Viewport viewport;
      viewport.x = 0.0f;
      viewport.y = 0.0f;
-@@ -25598,7 +25616,7 @@
+@@ -23578,6 +23602,7 @@
+     void editorShellProbeStep(int frame);
+     void editorBusinessAction(int id);
+     void editorBusinessProbe();
++    void editorProjectProbe();
+     void editorPanelLayout();
+     void editorShellCommand(int id);
+     bool editorThemeMessage(HWND hwnd, UINT message, WPARAM w, LPARAM l, LRESULT& result);
+@@ -23609,6 +23634,7 @@
+     Json editorDraft_ = {{"type", "line"}, {"positions", Json::array()}, {"style", hongtu::landscape::defaultStyle()}};
+     std::vector<Json> editorUndo_, editorRedo_;
+     fs::path editorFile_;
++    fs::path editorProbeSaveAsPath_, editorProbeOpenPath_;
+     size_t editorLayer_ = 0;
+     int editorFeature_ = -1;
+     int editorTabIndex_ = 0, editorVertex_ = -1, editorLiveControl_ = 0;
+@@ -25598,7 +25624,7 @@
                                        cameraClip.farMeters);
      proj[1][1] *= -1.0f;
      const float shaderTimeSeconds = (cli_.preset == Preset::Drill) ? drillScenarioTime_ : elapsedSeconds_;
@@ -100,7 +244,7 @@
  
      commandBuffer_->reset();
      commandBuffer_->begin();
-@@ -25614,7 +25632,7 @@
+@@ -25614,7 +25640,7 @@
      area.extent = device_->getSwapchainExtent();
      const std::vector<std::array<float, 4>> clearColors = {
          showcaseClearColor(settings_.clear, device_->getSwapchainFormat() == Format::R8G8B8A8_SRGB)};
@@ -109,7 +253,32 @@
      Viewport viewport;
      viewport.x = 0.0f;
      viewport.y = 0.0f;
-@@ -27199,6 +27217,8 @@
+@@ -25990,6 +26016,8 @@
+         editorShellProbeStep(limitedFrames);
+       if (cli_.editorBusinessProbe && limitedFrames == 8)
+         editorBusinessProbe();
++      if (cli_.editorProjectProbe && limitedFrames == 8)
++        editorProjectProbe();
+       if (cli_.zhumadianNativeProbe) {
+         const bool abandon = cli_.zhumadianNativeChunked
+                                  ? (nativePager_.stagingResident.payload > 0 || nativePager_.familyGpu.payload > 0)
+@@ -26559,6 +26587,7 @@
+ 
+ #ifdef _WIN32
+ #  include "landscape_editor.inl"
++#  include "landscape_project_probe.inl"
+ #endif
+ 
+   bool parsePreset(const std::string& value, Preset& out) {
+@@ -26778,6 +26807,7 @@
+         cli.landscapeLayers = fs::u8path(arg.substr(9));
+         continue;
+       }
++      if (arg == "--editor-project-probe") {cli.editorProjectProbe=true;continue;}
+       if (arg == "--editor-business-probe") {
+         cli.editorBusinessProbe = true;
+         continue;
+@@ -27199,6 +27229,8 @@
      return true;
    }
  
@@ -118,7 +287,7 @@
  } // namespace
  
  int main(int argc, char** argv) try {
-@@ -27232,6 +27252,27 @@
+@@ -27232,6 +27264,32 @@
    argc = wideArgc;
    argv = utf8Argv.data();
  #endif
@@ -129,7 +298,12 @@
 +  const bool ownedProbe=argc==2 && std::string(argv[1])=="--owned-runtime-probe";
 +  NativeOwnedSourceRuntime ownedRuntime;
 +  ownedRuntime.initialize(!informational,!informational);
-+  if (ownedProbe) {std::cout<<ownedRuntime.report().dump(2)<<'\n';return 0;}
++  if (ownedProbe) {
++    const auto path=ownedRuntime.defaultLayers();auto report=ownedRuntime.report();
++    report["shaderCompiler"]=ownedRuntime.probeCompiler();
++    report["editorLayersFile"]=ownedRuntimeUtf8(path);report["editorLayersSHA256"]=NativeOwnedSourceRuntime::sha(NativeOwnedSourceRuntime::bytes(path,16*1048576));
++    std::cout<<report.dump(2)<<'\n';return 0;
++  }
 +  if (argc==4 && (std::string(argv[1])=="--validate-source-memory" || std::string(argv[1])=="--validate-source-family")) {
 +    const int tile=std::stoi(argv[2]),depth=std::string(argv[1])=="--validate-source-family"?1:std::stoi(argv[3]);auto cpu=decodeSourceMemory(tile,depth,false,std::string(argv[1])=="--validate-source-family"?std::string(argv[3]):std::string{});
 +    if (!cpu.valid) throw std::runtime_error(cpu.error);
@@ -146,7 +320,7 @@
    Cli cli;
  #ifdef HT_LANDSCAPE_EDITOR
    if (argc == 1) {
-@@ -27245,6 +27286,7 @@
+@@ -27245,6 +27303,7 @@
    cli.presetName = "zhumadian";
    cli.zhumadianNativeGeometry = true;
    cli.zhumadianNativeChunked = true;
@@ -154,22 +328,29 @@
    cli.zhumadianContext = true;
    cli.zhumadianContextFused = true;
    cli.zhumadianContextColorMatched = true;
-@@ -27255,6 +27297,7 @@
+@@ -27255,6 +27314,14 @@
    if (!parseCli(argc, argv, cli)) {
      return argc > 1 && (std::string(argv[1]) == "--help" || std::string(argv[1]) == "-h") ? 0 : 1;
    }
 +  if (ownedRuntime.packaged && cli.landscapeLayers.empty()) cli.landscapeLayers=ownedRuntime.defaultLayers();
++  struct ResetEditorCallbacks {~ResetEditorCallbacks(){nativeNewEditorProject={};nativePrepareEditorSave={};nativeEditorSaved={};}} resetEditorCallbacks;
++  if (ownedRuntime.packaged) {
++    nativeNewEditorProject=[&ownedRuntime](){return ownedRuntime.newEditorProject();};
++    nativePrepareEditorSave=[&ownedRuntime](const fs::path& path){ownedRuntime.prepareEditorSave(path);};
++    if (ownedRuntime.owns) nativeEditorSaved=[&ownedRuntime](const fs::path& path){ownedRuntime.publishSavedLayers(path);};
++  }
++
    if (cli.landscapeEditor && (cli.preset != Preset::Zhumadian || !cli.zhumadianFullScene || !cli.zhumadianContext ||
                                !cli.zhumadianContextFused || !cli.zhumadianNativeChunked)) {
      std::cerr << "Landscape editor only supports the full Zhumadian landscape with satellite context and native "
-@@ -27281,6 +27324,9 @@
+@@ -27281,6 +27348,9 @@
      return renderShowcase(cli) ? 0 : 1;
    return runInteractiveShowcase(cli) ? 0 : 1;
  } catch (const std::exception& error) {
 -  std::cerr << "[showcase_demo] " << error.what() << '\n';
 +  std::cerr << "[landscape_editor] " << error.what() << '\n';
 +#ifdef HT_LANDSCAPE_EDITOR
-+  if (argc==1) MessageBoxW(nullptr,L"�ؾ���������ʧ�ܣ��༭����ֹͣ����鿴 UserData\\Run �е�������־�����򲻻��Զ��ظ�������",L"פ���곡���༭��",MB_OK|MB_ICONERROR);
++  if (argc==1) MessageBoxW(nullptr,L"地景服务启动失败，编辑器已停止。请查看 UserData\\Run 中的启动日志；程序不会自动重复启动。",L"驻马店场景编辑器",MB_OK|MB_ICONERROR);
 +#endif
    return 1;
  }
@@ -590,7 +771,7 @@
  }
 --- /dev/null
 +++ b/native/zhumadian_owned_runtime.inl
-@@ -0,0 +1,252 @@
+@@ -0,0 +1,362 @@
 +// Packaged source runtime ownership. No asset production or process restart.
 +struct OwnedRuntimeHandle {
 +  HANDLE value = nullptr;
@@ -609,7 +790,10 @@
 +  result.append(slashes*2,L'\\');result+=L'"';return result;
 +}
 +struct NativeOwnedSourceRuntime {
-+  fs::path root, journalPath;
++  fs::path root, journalPath, originalDataRoot;
++  unsigned documentSequence=0;
++  bool nativeTempInstalled=false;std::wstring previousTemp,previousTmp;
++  std::string shaderCompilerSHA;
 +  nlohmann::json journal=nlohmann::json::object();
 +  OwnedRuntimeHandle process, job;
 +  DWORD pid=0; unsigned port=0;
@@ -639,14 +823,19 @@
 +    return current;
 +  }
 +  static std::vector<uint8_t> bytes(const fs::path& path,uint64_t maximum) {
-+    const auto size=fs::file_size(path);
-+    if (size>maximum || size>size_t(-1)) throw std::runtime_error("Owned runtime file exceeds bound");
-+    std::ifstream input(path,std::ios::binary);
-+    if (!input) throw std::runtime_error("Owned runtime cannot read file");
-+    std::vector<uint8_t> raw(static_cast<size_t>(size));
-+    if (size) {input.read(reinterpret_cast<char*>(raw.data()),static_cast<std::streamsize>(size));
-+      if (input.gcount()!=static_cast<std::streamsize>(size)) throw std::runtime_error("Owned runtime file truncated");}
-+    if (input.peek()!=std::char_traits<char>::eof()) throw std::runtime_error("Owned runtime file grew while reading");
++    OwnedRuntimeHandle file;file.value=CreateFileW(path.c_str(),GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_DELETE,nullptr,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,nullptr);
++    winCheck(file.value!=INVALID_HANDLE_VALUE,"Owned runtime cannot open file");
++    LARGE_INTEGER measured{};winCheck(GetFileSizeEx(file.value,&measured)!=0,"Owned runtime cannot size file");
++    if (measured.QuadPart<0 || uint64_t(measured.QuadPart)>maximum || uint64_t(measured.QuadPart)>size_t(-1))
++      throw std::runtime_error("Owned runtime file exceeds bound");
++    std::vector<uint8_t> raw(static_cast<size_t>(measured.QuadPart));size_t offset=0;
++    while (offset<raw.size()) {
++      DWORD got=0;const auto count=static_cast<DWORD>(std::min<size_t>(1048576,raw.size()-offset));
++      winCheck(ReadFile(file.value,raw.data()+offset,count,&got,nullptr)!=0,"Owned runtime file read failed");
++      if (!got) throw std::runtime_error("Owned runtime file truncated");offset+=got;
++    }
++    uint8_t extra=0;DWORD got=0;winCheck(ReadFile(file.value,&extra,1,&got,nullptr)!=0,"Owned runtime EOF read failed");
++    if (got) throw std::runtime_error("Owned runtime file grew while reading");
 +    return raw;
 +  }
 +  static std::string sha(const std::vector<uint8_t>& raw) {
@@ -699,7 +888,7 @@
 +        ++checked;
 +      }
 +    }
-+    for (const auto* name:{"runtime/python/python.exe","runtime/python/python312.dll","application/tools/portable_source_runtime.py","reader/zmd_osgb_stream_reader.exe","defaults/editor_layers.json"})
++    for (const auto* name:{"runtime/python/python.exe","runtime/python/python312.dll","application/tools/portable_source_runtime.py","reader/zmd_osgb_stream_reader.exe","defaults/editor_layers.json","editor/runtime/shaderc/glslc.exe"})
 +      if (!manifest.at("files").contains(name)) throw std::runtime_error("Missing critical owned runtime declaration");
 +    journal["criticalFilesChecked"]=checked;
 +  }
@@ -722,6 +911,24 @@
 +      journalPath=root/L"UserData"/L"Run"/fs::u8path(owner+".native.json");
 +      journal={{"schema","zhumadian.native.owned_runtime.v1"},{"nativePid",GetCurrentProcessId()},{"launchId",owner},{"identity",identity},{"restartEnabled",false}};event("verifying");
 +      verifyCritical(manifest);event("critical_verified");
++      const auto binding=nlohmann::json::parse(bytes(payload("source_runtime_binding.json"),16384));
++      if (binding.at("schema")!="zhumadian.source.runtime.binding.v1" || !binding.at("dataRoot").is_string())
++        throw std::runtime_error("Invalid original Data binding");
++      originalDataRoot=fs::weakly_canonical(root/fs::u8path(binding.at("dataRoot").get<std::string>()));
++      ordinary(originalDataRoot,true);
++      const auto compiler=payload("editor/runtime/shaderc/glslc.exe");
++      if (fs::weakly_canonical(ShaderCompiler::executablePath())!=fs::weakly_canonical(compiler))
++        throw std::runtime_error("Shader compiler escaped private runtime; development fallback is forbidden");
++      shaderCompilerSHA=sha(bytes(compiler,64*1048576));journal["shaderCompilerPrivate"]=true;journal["shaderCompilerSHA256"]=shaderCompilerSHA;
++      const auto temp=(root/L"UserData"/L"Temp").wstring();
++      for (auto pair:{std::pair{L"TEMP",&previousTemp},std::pair{L"TMP",&previousTmp}}) {
++        wchar_t prior[32768]{};const auto length=GetEnvironmentVariableW(pair.first,prior,32768);if (length && length<32768) *pair.second=prior;
++      }
++      nativeTempInstalled=true;
++      if (_wputenv_s(L"TEMP",temp.c_str())!=0 || _wputenv_s(L"TMP",temp.c_str())!=0)
++        throw std::runtime_error("Cannot select private temporary shader directory");
++
++
 +      if (const char* external=std::getenv("ZMD_SOURCE_MEMORY_PORT")) {
 +        const std::string configured(external);
 +        if (!std::regex_match(configured,std::regex("[0-9]{1,5}")) || !(port=std::stoul(configured)) || port>65535)
@@ -804,11 +1011,94 @@
 +    journal["jobOwned"]=true;journal["jobLimitFlags"]=applied.BasicLimitInformation.LimitFlags;
 +    winCheck(ResumeThread(thread.value)!=DWORD(-1),"Cannot resume private source runtime");event("resumed");
 +  }
++  static bool within(const fs::path& path,const fs::path& parent) {
++    const auto relative=path.lexically_relative(parent);
++    if (relative.empty() || relative.is_absolute()) return false;
++    for (const auto& component:relative) if (component==L"..") return false;
++    return true;
++  }
++  void prepareEditorSave(const fs::path& path) {
++    const auto lexical=fs::absolute(path).lexically_normal(), canonical=fs::weakly_canonical(lexical);
++    if (path.filename().wstring().find(L':')!=std::wstring::npos)
++      throw std::runtime_error("请使用普通的工程文件名");
++    auto extension=path.extension().wstring();std::transform(extension.begin(),extension.end(),extension.begin(),[](wchar_t c){return wchar_t(std::towlower(c));});
++    if (extension!=L".json") throw std::runtime_error("工程文件请使用 .json 扩展名");
++    const auto fixedRoot=fs::weakly_canonical(root);
++    for (const auto* folder:{L"runtime",L"reader",L"editor",L"application",L"resources",L"web",L"defaults"})
++      if (within(canonical,fixedRoot/folder) || within(lexical,root/folder)) throw std::runtime_error("此位置用于应用运行资源，请选择用户工程目录");
++    if (canonical==fixedRoot/L"source_runtime_manifest.json" || canonical==fixedRoot/L"source_runtime_binding.json" ||
++        within(canonical,fs::weakly_canonical(root/L"UserData"/L"PublishedLayers")))
++      throw std::runtime_error("发布快照和运行配置为只读，请选择用户工程目录");
++    if (!originalDataRoot.empty() && within(canonical,originalDataRoot))
++      throw std::runtime_error("原始地景目录只读，请选择用户工程目录");
++    const auto user=(root/L"UserData").lexically_normal();
++    if (fs::exists(lexical)) ordinary(lexical,false);
++    if (within(lexical,user)) {
++      directory(user);auto parent=user;
++      for (const auto& component:lexical.lexically_relative(user).parent_path()) {
++        if (component==L"." || component.empty()) continue;
++        parent/=component;directory(parent);
++      }
++      if (fs::exists(lexical)) ordinary(lexical,false);
++    }
++  }
++  fs::path newEditorProject() {
++    if (!packaged || owner.empty()) throw std::runtime_error("编辑器运行包尚未就绪");
++    return root/L"UserData"/L"Projects"/fs::u8path(owner+"_"+std::to_string(++documentSequence))/L"未命名图层.json";
++  }
++  std::vector<uint8_t> publishedLayers() {
++    const auto folder=root/L"UserData"/L"PublishedLayers";
++    if (!fs::exists(folder)) return {};
++    ordinary(folder,true);const auto current=folder/L"current.json";
++    if (!fs::exists(current)) return {};
++    ordinary(current,false);const auto record=nlohmann::json::parse(bytes(current,4096));
++    if (!record.is_object() || record.size()!=3 || record.at("schema")!="zhumadian.layers.publication.v1" ||
++        !record.at("sha256").is_string() || !std::regex_match(record.at("sha256").get<std::string>(),std::regex("[0-9a-f]{64}")) ||
++        !record.at("bytes").is_number_unsigned() || record.at("bytes").get<uint64_t>()==0 || record.at("bytes").get<uint64_t>()>16*1048576)
++      throw std::runtime_error("已发布工程的身份清单无效");
++    const auto path=folder/fs::u8path(record.at("sha256").get<std::string>()+".json");ordinary(path,false);
++    auto raw=bytes(path,16*1048576);
++    if (raw.size()!=record.at("bytes").get<uint64_t>() || sha(raw)!=record.at("sha256").get<std::string>())
++      throw std::runtime_error("已发布工程内容与身份不一致");
++    hongtu::landscape::validate(nlohmann::json::parse(raw));return raw;
++  }
++  void publishSavedLayers(const fs::path& path) {
++    if (!owns || !portInstalled) throw std::runtime_error("文件已保存，但当前没有自管的图层发布服务");
++    ordinary(path,false);const auto raw=bytes(path,16*1048576);hongtu::landscape::validate(nlohmann::json::parse(raw));
++    const auto contentSHA=sha(raw);directory(root/L"UserData");const auto folder=root/L"UserData"/L"PublishedLayers";directory(folder);
++    const auto snapshot=folder/fs::u8path(contentSHA+".json");
++    if (fs::exists(snapshot)) {ordinary(snapshot,false);const auto old=bytes(snapshot,16*1048576);
++      if (old!=raw) throw std::runtime_error("既有发布快照损坏，已保留且未覆盖");}
++    else writeNew(snapshot,std::string(raw.begin(),raw.end()));
++    const auto current=folder/L"current.json";
++    if (fs::exists(current)) ordinary(current,false);
++    const auto pending=folder/fs::u8path("current_"+owner+"_"+std::to_string(++documentSequence)+".pending.json");
++    writeNew(pending,nlohmann::json({{"schema","zhumadian.layers.publication.v1"},{"sha256",contentSHA},{"bytes",raw.size()}}).dump(2));
++    winCheck(MoveFileExW(pending.c_str(),current.c_str(),MOVEFILE_REPLACE_EXISTING|MOVEFILE_WRITE_THROUGH)!=0,"Cannot publish current editor snapshot");
++    const auto response=sourceMemoryHTTP("/layers/default.json",16*1048576);
++    if (response.status!=200 || response.data!=raw) throw std::runtime_error("文件已保存，但网页图层发布尚未完成；请保留工程并重试保存");
++    journal["publishedLayerSHA256"]=contentSHA;journal["publishedLayerBytes"]=raw.size();event("layers_published");
++  }
 +  fs::path defaultLayers() {
 +    if (!packaged) return {};
-+    directory(root/L"UserData");const auto path=root/L"UserData"/L"layers.json";
-+    if (!fs::exists(path)) {const auto raw=bytes(payload("defaults/editor_layers.json"),16*1048576);writeNew(path,std::string(raw.begin(),raw.end()));}
++    directory(root/L"UserData");const auto published=publishedLayers();fs::path path;
++    if (!published.empty()) {
++      directory(root/L"UserData"/L"Working");const auto folder=root/L"UserData"/L"Working"/fs::u8path(sha(published));directory(folder);
++      path=folder/L"驻马店图层.json";
++      if (!fs::exists(path)) writeNew(path,std::string(published.begin(),published.end()));
++    } else {
++      path=root/L"UserData"/L"layers.json";
++      if (!fs::exists(path)) {const auto raw=bytes(payload("defaults/editor_layers.json"),16*1048576);writeNew(path,std::string(raw.begin(),raw.end()));}
++    }
 +    ordinary(path,false);(void)hongtu::landscape::load(path);return path;
++  }
++  nlohmann::json probeCompiler() {
++    ShaderCompiler compiler;const auto result=compiler.compileGLSLToSPIRV("void main(){gl_Position=vec4(0.0);}","main","vertex");
++    if (!result.success || result.spirvCode.size()<5 || result.spirvCode.front()!=0x07230203)
++      throw std::runtime_error("Private shader compiler roundtrip failed: "+result.errorMessage);
++    return {{"private",true},{"sha256",shaderCompilerSHA},{"words",result.spirvCode.size()},
++      {"spirvSHA256",sourceMemorySHA(reinterpret_cast<const uint8_t*>(result.spirvCode.data()),result.spirvCode.size()*sizeof(uint32_t))},
++      {"cleanupWarning",result.warningMessage}};
 +  }
 +  nlohmann::json report() const {
 +    return {{"schema","zhumadian.native.owned_runtime_probe.v1"},{"packaged",packaged},{"ownsService",owns},
@@ -841,6 +1131,7 @@
 +      job.close();process.close();
 +    }
 +    if (portInstalled) {_putenv_s("ZMD_SOURCE_MEMORY_PORT","");portInstalled=false;}
++    if (nativeTempInstalled) {_wputenv_s(L"TEMP",previousTemp.c_str());_wputenv_s(L"TMP",previousTmp.c_str());nativeTempInstalled=false;}
 +  }
 +};
 --- /dev/null

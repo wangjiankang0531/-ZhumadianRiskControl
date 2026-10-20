@@ -147,6 +147,10 @@ def initialize_user_layers(root):
         user.mkdir()
     regular(user, root, directory=True)
     target = user/"layers.json"
+    from portable_layer_workspace import publication_marker, read_editor_publication
+    if publication_marker(root) is not None:
+        read_editor_publication(root, target)
+        return target
     if target.exists():
         document, _ = json_file(regular(target, root), 16*1048576)
         validate_layers(document)
@@ -168,7 +172,7 @@ class ReadOnlySourceGuard:
         root = package["root"]
         self.protected = tuple([package["data"], *(root/name for name in PAYLOAD_DIRS),
                                 root/"source_runtime_manifest.json", root/"source_runtime_binding.json",
-                                root/"UserData/layers.json", root/"UserData/layers.origin.json"])
+                                root/"UserData/layers.json", root/"UserData/layers.origin.json", root/"UserData/PublishedLayers"])
         self.layer_database = root/"UserData/BusinessData/layers.sqlite"
         self.executable = root/"reader/zmd_osgb_stream_reader.exe"
         self.violations = []
@@ -216,6 +220,21 @@ def ready_path(root, name):
     return path
 
 
+def publish_owner_ready(path, result):
+    """Windows atomic no-overwrite publication: readers never see partial JSON."""
+    path = Path(path)
+    if os.path.lexists(path):
+        raise FileExistsError("owner ready identity already exists")
+    pending = path.with_name(path.stem+".ready.pending.json")
+    with pending.open("x", encoding="utf8") as stream:
+        json.dump(result, stream, indent=2)
+        stream.flush()
+        os.fsync(stream.fileno())
+    # Windows rename refuses an existing destination. Interrupted pending state
+    # is retained and an owner launch identity is never automatically reused.
+    pending.rename(path)
+
+
 def serve(package, *, port, owner):
     if type(port) is not int or not 0 <= port <= 65535 or port and port < 1024:
         raise ValueError("invalid loopback runtime port")
@@ -223,7 +242,9 @@ def serve(package, *, port, owner):
     state = ready_path(root, owner)
     report = preflight(package)
     user_layers = initialize_user_layers(root)
-    from portable_layer_workspace import initialize_layer_repository
+    from portable_layer_workspace import initialize_layer_repository, read_editor_publication, publish_layer_bytes
+    from services.common import ApiError
+    import io
     from services.database import SCHEMA_VERSION
     layer_repository = initialize_layer_repository(root)
     from tools import landscape_web_server as landscape
@@ -243,11 +264,23 @@ def serve(package, *, port, owner):
         memory_sources = store
         def _database_layers(self):
             try:
-                regular(self.layers, root)
-            except (ValueError, OSError):
+                raw = read_editor_publication(root, self.layers)
+                stored = publish_layer_bytes(self.layer_repository, raw)
+                data = stored["raw"]
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.send_header("Content-Length", str(len(data)))
+                self.send_header("X-XNBY-Layer-Storage", "sqlite")
+                self.send_header("X-XNBY-Layer-Revision", str(stored["revision"]))
+                self.end_headers()
+                return io.BytesIO(data)
+            except ApiError as error:
+                self.send_error(error.status, error.code)
+            except (ValueError, OSError, KeyError, TypeError):
                 self.send_error(422, "LAYER_SOURCE_INVALID")
-                return None
-            return super()._database_layers()
+            except Exception:
+                self.send_error(503, "LAYER_DATABASE_UNAVAILABLE")
+            return None
         def setup(self):
             super().setup()
             if self.connection.getsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY) != 1:
@@ -292,8 +325,7 @@ def serve(package, *, port, owner):
     try:
         server = http.server.ThreadingHTTPServer(("127.0.0.1", port), Handler)
         result.update(state="ready", port=server.server_port, preflight=report)
-        with state.open("x", encoding="utf8") as stream:
-            json.dump(result, stream, indent=2)
+        publish_owner_ready(state, result)
         print(json.dumps({"ready":True, "pid":os.getpid(), "port":server.server_port}), flush=True)
         server.serve_forever()
     finally:
