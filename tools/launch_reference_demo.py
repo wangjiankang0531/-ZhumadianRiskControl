@@ -22,7 +22,7 @@ def main():
   try:
    with urllib.request.urlopen(url+'api/demo/health',timeout=1) as response:return json.load(response)
   except (OSError,ValueError):return None
- def matches(value):return value and value.get('schema')=='xnby.reference.demo.v1' and value.get('databaseBinding')==identity and value.get('version')=='0.8.9'
+ def matches(value):return value and value.get('schema')=='xnby.reference.demo.v1' and value.get('databaseBinding')==identity and value.get('version')=='0.8.10'
  backup_previous_demo(root,database)
  existing=healthy()
  if existing and not matches(existing):raise RuntimeError('Port 8792 belongs to another installation; no process was terminated.')

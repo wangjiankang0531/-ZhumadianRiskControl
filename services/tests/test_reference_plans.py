@@ -79,7 +79,7 @@ class PlanTests(unittest.TestCase):
    db.executescript(SCHEMA.split('CREATE TABLE IF NOT EXISTS demo_plan_versions')[0]);db.execute('PRAGMA user_version=1');db.commit()
   store=DemoStore(legacy);r=store.detail('plans','DEMO-PLANS-003');self.assertIsNone(r['plan']);self.assertEqual(r['record']['state'],'已发布')
   self.assertEqual(len(r['events']),1)
-  with closing(store.connect()) as db:self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],2);self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(),[])
+  with closing(store.connect()) as db:self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],3);self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(),[])
   self.assertEqual(DemoStore(legacy).detail('plans',r['record']['id']),r)
 class PlanHTTPTests(unittest.TestCase):
  def setUp(self):
@@ -90,7 +90,7 @@ class PlanHTTPTests(unittest.TestCase):
   if authorized:headers.update({'Origin':f'http://127.0.0.1:{port}','X-XNBY-Demo':self.server.demo_token})
   c.request('POST' if body is not None else 'GET','/api/demo/'+path,json.dumps(body) if body is not None else None,headers);r=c.getresponse();raw=json.loads(r.read());c.close();return r.status,raw
  def test_http_auth_and_full_workflow_contract(self):
-  code,catalog=self.req('catalog');self.assertEqual(code,200);self.assertEqual(catalog['planSchema']['schema'],SCHEMA_ID);self.assertEqual(catalog['demoSchemaVersion'],2)
+  code,catalog=self.req('catalog');self.assertEqual(code,200);self.assertEqual(catalog['planSchema']['schema'],SCHEMA_ID);self.assertEqual(catalog['demoSchemaVersion'],3)
   body=dict(form=form(),enterprise='模拟企业甲',note='HTTP模拟',action='submit',identity=None,revision=None)
   self.assertEqual(self.req('plan',body,False)[0],403)
   code,result=self.req('plan',body);self.assertEqual(code,200);r=result['record']
@@ -102,7 +102,7 @@ class PlanHTTPTests(unittest.TestCase):
  def test_generated_models_match_real_ddl_and_are_deterministic(self):
   from tools.generate_reference_demo_docs import generate
   root=Path(self.tmp.name);a=root/'a';b=root/'b';model=generate(a);generate(b)
-  self.assertEqual(model['version'],2);self.assertEqual(len(model['tables']),6)
+  self.assertEqual(model['version'],3);self.assertEqual(len(model['tables']),9)
   for file in a.iterdir():self.assertEqual(file.read_bytes(),(b/file.name).read_bytes())
   self.assertEqual(model['tables']['demo_plan_reviews']['mysqlTypes']['reviewed_form'],'LONGBLOB')
   self.assertTrue(model['tables']['demo_plan_heads']['foreignKeys'])

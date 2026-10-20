@@ -1,7 +1,7 @@
 {
   "scope": "isolated synthetic demo only",
-  "version": 2,
-  "schemaSHA256": "e1e10280f4c917103a0ed8ed234eee823b20516ef2aaddd4c3a53c049dc3043b",
+  "version": 3,
+  "schemaSHA256": "558120f08f6a00c087fc5a3c60c81fc3fdb612aeb74eafe7cf57e6135b771bc1",
   "modules": 82,
   "initialRecords": 984,
   "workFormSchema": {
@@ -1020,7 +1020,20 @@
       "lastEvaluatedDate": "最近定期评估日期"
     },
     "maxSteps": 24,
-    "policy": "独立模拟评审，不代表真实权限或审批制度；附件、资源关联与正式身份仍待接续。"
+    "materialPolicy": {
+      "maxBytes": 2097152,
+      "maxActive": 8,
+      "maxPlanBytes": 33554432,
+      "maxPlanFiles": 32,
+      "mediaTypes": [
+        "application/pdf",
+        "image/png",
+        "image/jpeg"
+      ],
+      "payloadImmutable": true,
+      "downloadDisposition": "attachment"
+    },
+    "policy": "独立模拟评审，不代表真实权限或审批制度；资源关联与正式身份仍待接续。"
   },
   "tables": {
     "demo_records": {
@@ -1860,6 +1873,386 @@
           "table": "demo_plan_versions",
           "from": "version",
           "to": "version",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ]
+    },
+    "demo_plan_materials": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "entity",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "material_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 3
+        },
+        {
+          "cid": 3,
+          "name": "record_revision",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "media_type",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "bytes",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "sha256",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "created_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "payload",
+          "type": "BLOB",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        }
+      ],
+      "mysqlTypes": {
+        "entity": "VARBINARY(128)",
+        "id": "VARBINARY(128)",
+        "material_id": "VARBINARY(128)",
+        "record_revision": "INT UNSIGNED",
+        "name": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "media_type": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "bytes": "INT UNSIGNED",
+        "sha256": "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin",
+        "created_at": "VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "description": "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin",
+        "payload": "LONGBLOB"
+      },
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_demo_plan_materials_1",
+          "unique": true,
+          "columns": [
+            "entity",
+            "id",
+            "material_id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "demo_events",
+          "from": "entity",
+          "to": "entity",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 1,
+          "table": "demo_events",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 2,
+          "table": "demo_events",
+          "from": "record_revision",
+          "to": "revision",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ]
+    },
+    "demo_plan_version_materials": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "entity",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "version",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 3
+        },
+        {
+          "cid": 3,
+          "name": "material_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 4
+        }
+      ],
+      "mysqlTypes": {
+        "entity": "VARBINARY(128)",
+        "id": "VARBINARY(128)",
+        "version": "INT UNSIGNED",
+        "material_id": "VARBINARY(128)"
+      },
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_demo_plan_version_materials_1",
+          "unique": true,
+          "columns": [
+            "entity",
+            "id",
+            "version",
+            "material_id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "demo_plan_materials",
+          "from": "entity",
+          "to": "entity",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 1,
+          "table": "demo_plan_materials",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 2,
+          "table": "demo_plan_materials",
+          "from": "material_id",
+          "to": "material_id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "demo_plan_versions",
+          "from": "entity",
+          "to": "entity",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 1,
+          "table": "demo_plan_versions",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 2,
+          "table": "demo_plan_versions",
+          "from": "version",
+          "to": "version",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ]
+    },
+    "demo_plan_review_materials": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "entity",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "record_revision",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 3
+        },
+        {
+          "cid": 3,
+          "name": "material_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 4
+        }
+      ],
+      "mysqlTypes": {
+        "entity": "VARBINARY(128)",
+        "id": "VARBINARY(128)",
+        "record_revision": "INT UNSIGNED",
+        "material_id": "VARBINARY(128)"
+      },
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_demo_plan_review_materials_1",
+          "unique": true,
+          "columns": [
+            "entity",
+            "id",
+            "record_revision",
+            "material_id"
+          ]
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "demo_plan_materials",
+          "from": "entity",
+          "to": "entity",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 1,
+          "table": "demo_plan_materials",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 0,
+          "seq": 2,
+          "table": "demo_plan_materials",
+          "from": "material_id",
+          "to": "material_id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "demo_plan_reviews",
+          "from": "entity",
+          "to": "entity",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 1,
+          "table": "demo_plan_reviews",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 2,
+          "table": "demo_plan_reviews",
+          "from": "record_revision",
+          "to": "record_revision",
           "on_update": "NO ACTION",
           "on_delete": "NO ACTION",
           "match": "NONE"

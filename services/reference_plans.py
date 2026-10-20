@@ -4,12 +4,13 @@ from contextlib import closing
 from datetime import date,datetime,timezone
 from services.reference_errors import DemoError
 from services.reference_work_forms import ENTERPRISES
+from services.reference_plan_materials import PlanMaterialsMixin,MATERIAL_SCHEMA,MATERIAL_TABLES,policy as material_policy
 
 SCHEMA_ID='zhumadian.emergency_plan.v1'
 FIELDS={'name':'预案名称','category':'预案类别','level':'预案等级','compiledDate':'编制日期','authorUnit':'编制单位','accidentType':'事故类型','scope':'适用场景','commander':'指挥长','contact':'模拟联系渠道'}
 CATEGORIES=['综合应急预案','专项应急预案','现场处置预案','特殊时期/重大活动应急预案']
 REVIEW_FIELDS={'reviewDate':'评审日期','opinion':'评审意见','notified':'风险是否告知周边单位','noticeUnits':'风险告知单位资料','filingDepartment':'备案部门','filingKind':'备案部门性质','evaluationStatus':'预案评估状态','evaluationCycle':'定期评估周期','evaluationOpinion':'评估意见','lastFiledDate':'最近备案日期','firstFiledDate':'初次备案日期','lastEvaluatedDate':'最近定期评估日期'}
-PLAN_TABLES=('demo_plan_versions','demo_plan_heads','demo_plan_steps','demo_plan_reviews')
+PLAN_TABLES=('demo_plan_versions','demo_plan_heads','demo_plan_steps','demo_plan_reviews')+MATERIAL_TABLES
 PLAN_SCHEMA="""
 CREATE TABLE IF NOT EXISTS demo_plan_versions (
  entity TEXT NOT NULL CHECK(entity='plans'), id TEXT NOT NULL, version INTEGER NOT NULL CHECK(version>0),
@@ -36,10 +37,11 @@ CREATE TABLE IF NOT EXISTS demo_plan_reviews (
  PRIMARY KEY(entity,id,record_revision), FOREIGN KEY(entity,id,version) REFERENCES demo_plan_versions(entity,id,version),
  FOREIGN KEY(entity,id,record_revision) REFERENCES demo_events(entity,id,revision));
 """
+PLAN_SCHEMA+=MATERIAL_SCHEMA
 
 def plan_schema():
  return dict(schema=SCHEMA_ID,fields=FIELDS,categories=CATEGORIES,reviewFields=REVIEW_FIELDS,maxSteps=24,
-             policy='独立模拟评审，不代表真实权限或审批制度；附件、资源关联与正式身份仍待接续。')
+             materialPolicy=material_policy(),policy='独立模拟评审，不代表真实权限或审批制度；资源关联与正式身份仍待接续。')
 
 def text(value,label,maximum=256,required=False):
  if not isinstance(value,str) or len(value)>maximum:raise DemoError(400,label+'格式无效或过长')
@@ -75,7 +77,7 @@ def review_values(value):
  if result['notified']=='是' and not result['noticeUnits']:raise DemoError(400,'请填写风险告知单位资料')
  return result
 
-class PlanMixin:
+class PlanMixin(PlanMaterialsMixin):
  def _plan_load(self,db,identity):
   head=db.execute('SELECT * FROM demo_plan_heads WHERE entity=? AND id=?',('plans',identity)).fetchone()
   if head is None:return None
@@ -87,7 +89,7 @@ class PlanMixin:
    reviews=[]
    for r in db.execute('SELECT * FROM demo_plan_reviews WHERE entity=? AND id=? AND version=? ORDER BY record_revision',('plans',identity,number)):
     data=dict(r);data['reviewed_form']=json.loads(data['reviewed_form']);reviews.append(data)
-   versions.append(dict(version=number,status=row['status'],createdAt=row['created_at'],publishedAt=row['published_at'],form=dict(schema=SCHEMA_ID,values=values,steps=steps),reviews=reviews))
+   versions.append(dict(version=number,status=row['status'],createdAt=row['created_at'],publishedAt=row['published_at'],form=dict(schema=SCHEMA_ID,values=values,steps=steps),materials=self._plan_material_list(db,identity,number),reviews=reviews))
   return dict(currentVersion=head['current_version'],publishedVersion=head['published_version'],versions=versions,synthetic=True)
 
  def _plan_checked(self,db,identity,revision):
@@ -99,9 +101,9 @@ class PlanMixin:
   if plan is None:raise DemoError(409,'旧合成样本需复制为新的结构化草稿')
   return row,plan,plan['versions'][0]
 
- def _plan_event(self,db,identity,revision,kind,note,version):
+ def _plan_event(self,db,identity,revision,kind,note,version,metadata=None):
   at=datetime.now(timezone.utc).isoformat()
-  db.execute('INSERT INTO demo_events VALUES (?,?,?,?,?,?)',('plans',identity,revision,at,kind,json.dumps(dict(note=note,version=version,actor='DEMO-OPERATOR'),ensure_ascii=False)))
+  db.execute('INSERT INTO demo_events VALUES (?,?,?,?,?,?)',('plans',identity,revision,at,kind,json.dumps(dict(note=note,version=version,actor='DEMO-OPERATOR',metadata=metadata),ensure_ascii=False)))
   return at
 
  def _plan_fields(self,form,identity,number):
@@ -157,14 +159,16 @@ class PlanMixin:
    if action in ('approve','reject'):
     status='approved' if action=='approve' else 'draft';state='待评审' if action=='approve' else '编制中'
     db.execute('UPDATE demo_plan_versions SET status=? WHERE entity=? AND id=? AND version=?',(status,'plans',identity,number))
-    snapshot=json.dumps(current['form'],ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf8')
+    snapshot=json.dumps(dict(schema='zhumadian.plan_review_snapshot.v2',form=current['form'],materials=current['materials']),ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf8')
     db.execute('INSERT INTO demo_plan_reviews VALUES ('+','.join('?'*20)+')',('plans',identity,number,revision,at,action,*review.values(),snapshot,hashlib.sha256(snapshot).hexdigest()))
+    db.executemany('INSERT INTO demo_plan_review_materials VALUES (?,?,?,?)',[('plans',identity,revision,m['material_id']) for m in current['materials']])
    elif action=='publish':
     if plan['publishedVersion'] is not None:db.execute("UPDATE demo_plan_versions SET status='historical' WHERE entity=? AND id=? AND version=?",('plans',identity,plan['publishedVersion']))
     db.execute("UPDATE demo_plan_versions SET status='published',published_at=? WHERE entity=? AND id=? AND version=?",(at,'plans',identity,number))
     db.execute('UPDATE demo_plan_heads SET published_version=? WHERE entity=? AND id=?',(number,'plans',identity));state='已发布'
    else:
     number+=1;self._plan_insert_version(db,identity,number,current['form'],'draft',at)
+    db.execute('INSERT INTO demo_plan_version_materials SELECT entity,id,?,material_id FROM demo_plan_version_materials WHERE entity=? AND id=? AND version=?',(number,'plans',identity,number-1))
     db.execute('UPDATE demo_plan_heads SET current_version=? WHERE entity=? AND id=?',(number,'plans',identity));state='编制中'
     payload=json.loads(row['payload']);payload['fields']=self._plan_fields(current['form'],identity,number)
     db.execute('UPDATE demo_records SET payload=? WHERE entity=? AND id=?',(json.dumps(payload,ensure_ascii=False),'plans',identity))

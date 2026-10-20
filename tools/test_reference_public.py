@@ -52,11 +52,58 @@ class PublicHTTPTests(unittest.TestCase):
         c.close()
         return result
 
+    def test_plan_materials_require_public_session_and_same_origin(self):
+        import base64
+        from services.tests.test_reference_plans import form
+        cookie = self.session()
+        code, _, raw = self.request('/zhumadian/api/demo/catalog', headers={'Cookie':cookie})
+        self.assertEqual(code, 200)
+        catalog = json.loads(raw)
+        headers = {'Cookie':cookie, 'Origin':self.config['origin'],
+                   'X-XNBY-Demo':catalog['token'], 'Content-Type':'application/json'}
+        body = dict(form=form(), enterprise='模拟企业甲', note='公网附件独立验收',
+                    action='draft', identity=None, revision=None)
+        code, _, raw = self.request('/zhumadian/api/demo/plan', 'POST', json.dumps(body), headers)
+        self.assertEqual(code, 200)
+        record = json.loads(raw)['record']
+        pdf = b'%PDF-1.4\n1 0 obj<</Type/Catalog>>endobj\n%%EOF'
+        upload = dict(identity=record['id'], revision=record['revision'], name='public-qa.pdf',
+                      mediaType='application/pdf', base64Data=base64.b64encode(pdf).decode(),
+                      description='仅合成PDF原字节')
+        path = '/zhumadian/api/demo/plan-material'
+        for omitted, expected in [('Cookie',401), ('X-XNBY-Demo',403)]:
+            self.assertEqual(self.request(path, 'POST', json.dumps(upload),
+                             {k:v for k,v in headers.items() if k != omitted})[0], expected)
+        self.assertEqual(self.request(path, 'POST', json.dumps(upload),
+                         dict(headers, Origin='https://wrong.invalid'))[0], 403)
+        code, _, raw = self.request(path, 'POST', json.dumps(upload), headers)
+        self.assertEqual(code, 200)
+        value = json.loads(raw)
+        self.assertEqual(value['record']['revision'], 2)
+        material = value['plan']['versions'][0]['materials'][0]
+        download = path + '?' + urlencode(dict(id=record['id'], version=1,
+                                               materialId=material['material_id']))
+        self.assertEqual(self.request(download)[0], 401)
+        code, response_headers, raw = self.request(download, headers={'Cookie':cookie})
+        self.assertEqual(code, 200)
+        self.assertEqual(raw, pdf)
+        response_headers = {k.lower():v for k,v in response_headers}
+        self.assertEqual(response_headers['content-type'], 'application/octet-stream')
+        self.assertTrue(response_headers['content-disposition'].startswith('attachment;'))
+        self.assertEqual(response_headers['x-content-type-options'], 'nosniff')
+        self.assertEqual(self.request(download.replace('version=1','version=2'),
+                         headers={'Cookie':cookie})[0], 404)
+        code, _, _ = self.request('/zhumadian/auth/logout', 'POST', '',
+                                  {'Cookie':cookie, 'Origin':self.config['origin'],
+                                   'X-XNBY-CSRF':catalog['deployment']['csrf']})
+        self.assertEqual(code, 204)
+        self.assertEqual(self.request(download, headers={'Cookie':cookie})[0], 401)
+
     def test_structured_plan_endpoint_uses_existing_public_gate(self):
         from services.tests.test_reference_plans import form,review
         cookie=self.session()
         code,headers,raw=self.request('/zhumadian/api/demo/catalog',headers={'Cookie':cookie})
-        catalog=json.loads(raw);self.assertEqual(catalog['demoSchemaVersion'],2)
+        catalog=json.loads(raw);self.assertEqual(catalog['demoSchemaVersion'],3)
         body=dict(form=form(),enterprise='模拟企业甲',note='公网适配器本地合成验收',action='submit',identity=None,revision=None)
         headers={'Cookie':cookie,'Origin':self.config['origin'],'X-XNBY-Demo':catalog['token'],'Content-Type':'application/json'}
         self.assertEqual(self.request('/zhumadian/api/demo/plan','POST',json.dumps(body),{k:v for k,v in headers.items() if k!='Cookie'})[0],401)

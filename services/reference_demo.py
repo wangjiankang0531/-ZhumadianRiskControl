@@ -61,8 +61,8 @@ class DemoStore(PlanMixin):
         path.parent.mkdir(parents=True,exist_ok=True)
         with closing(self.connect()) as db:
             db.execute('PRAGMA journal_mode=WAL')
-            if db.execute('PRAGMA user_version').fetchone()[0] not in (0,1,2):raise ValueError('unsupported demo schema')
-            db.executescript('BEGIN IMMEDIATE;\n'+SCHEMA+'\nPRAGMA user_version=2;\nCOMMIT;')
+            if db.execute('PRAGMA user_version').fetchone()[0] not in (0,1,2,3):raise ValueError('unsupported demo schema')
+            db.executescript('BEGIN IMMEDIATE;\n'+SCHEMA+'\nPRAGMA user_version=3;\nCOMMIT;')
             db.execute('BEGIN IMMEDIATE')
             for item in MODULES.values():
                 for i in range(1,13):
