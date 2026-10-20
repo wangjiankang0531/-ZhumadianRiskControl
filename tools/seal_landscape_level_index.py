@@ -2,6 +2,7 @@
 import argparse
 from collections import Counter
 import json
+import math
 from pathlib import Path
 
 from build_landscape_level_index import write
@@ -9,6 +10,17 @@ from landscape_level_index import bounds, union
 from native_source_frontier import SourceForest
 from osgb_memory_pages import sha
 from readonly_source_memory_store import PinnedCatalogs
+
+
+def coverage_tiers(forest,nodes):
+    cut={forest.root};result=[]
+    for depth in range(1,4):
+        cut={child for name in cut for child in forest.nodes[name]['children'] or [name]}
+        values=[nodes[name]['texelP90'] for name in cut]
+        if any(not math.isfinite(v) or v<=0 for v in values):
+            raise ValueError('invalid indexed coverage texture scale')
+        result.append(dict(depth=depth,sourceCount=len(cut),maxTexel=max(values)))
+    return result
 
 
 def seal(directory, resources):
@@ -42,7 +54,7 @@ def seal(directory, resources):
             levels[n['level']] += 1
         low, high = union([bounds(data['boundsMin'], data['boundsMax']), bounds(row['bounds_min'], row['bounds_max'])])
         roots.append(dict(id=tile, tile=tile, level=0, boundsMin=low, boundsMax=high,
-                          catalogSHA256=row['sha256']))
+                          catalogSHA256=row['sha256'],coverageTiers=coverage_tiers(forest,nodes)))
         files.append(dict(tile=tile, path=path.name, bytes=len(raw), sha256=sha(raw), sourceNodes=len(nodes)))
         total += len(nodes)
     root_index = dict(schema='zhumadian.level_bounds.roots.v1', sourceManifestSHA256=catalogs.identity,

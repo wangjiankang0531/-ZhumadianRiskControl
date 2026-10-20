@@ -33,6 +33,24 @@ class RuntimePackage(unittest.TestCase):
         package = load_package(self.root)
         self.assertEqual(package["data"], self.data.resolve())
         self.assertEqual(package["root"], self.root.resolve())
+    def test_regular_rejects_wrong_kind_from_authoritative_attributes(self):
+        from portable_source_runtime import regular
+        self.assertEqual(regular(self.reader,self.root),self.reader)
+        for path,directory in ((self.reader,True),(self.root,False)):
+            with self.assertRaisesRegex(ValueError,"path kind"):
+                regular(path,self.root,directory=directory)
+
+    def test_regular_refuses_symlink_and_windows_reparse_attributes(self):
+        from portable_source_runtime import regular
+        from unittest.mock import patch
+        from types import SimpleNamespace
+        import stat
+        for mode,attributes in ((stat.S_IFLNK,0),(stat.S_IFDIR,0x400)):
+            fact=SimpleNamespace(st_mode=mode,st_file_attributes=attributes)
+            with patch("portable_source_runtime.Path.lstat",return_value=fact):
+                with self.assertRaisesRegex(ValueError,"linked runtime"):
+                    regular(self.reader,self.root)
+
     def test_modified_payload_is_refused(self):
         self.reader.write_bytes(b"corrupted")
         with self.assertRaisesRegex(ValueError, "identity differs"):

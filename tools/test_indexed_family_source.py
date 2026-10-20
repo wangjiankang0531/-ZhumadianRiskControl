@@ -98,6 +98,54 @@ class IndexedServiceTests(unittest.TestCase):
         with self.assertRaises(PermissionError):
             store.payload(granted['cache_lease'], folder, 'part_000', 'geometry.bin')
 
+    def await_plan(self,store,key):
+        deadline=time.monotonic()+3
+        while True:
+            plan=store.plan(1,parent=key)
+            if plan is not None:return plan
+            self.assertLess(time.monotonic(),deadline)
+            time.sleep(.005)
+
+    def limited_reader(self,message):
+        class Limited(Reader):
+            def __call__(self,tile,name,record):
+                if name==F:raise ValueError(message)
+                return super().__call__(tile,name,record)
+        return Limited()
+
+    def test_lossless_texture_limit_selects_coarser_complete_original_cut(self):
+        _,catalogs,provider=self.setup_provider()
+        store=IndexedFamilyStore(catalogs,self.limited_reader('source UV footprint crosses a periodic or image seam'),provider)
+        self.addCleanup(store.close)
+        key=store.register_view(1,A,Camera((0,0,0),(0,1,0),90,1,100))
+        plan=self.await_plan(store,key)
+        self.assertEqual({A1,A2},{n['name'] for n in plan['marker']['source_nodes']})
+        self.assertEqual('zhumadian.osgb_source_descendants.v3',plan['marker']['schema'])
+        self.assertTrue(store.index_requests[key]['selectionLimitedByBudget'])
+        self.assertEqual(0,store.audit()['failures'])
+
+    def test_irreducible_texture_limit_is_metadata_only_and_keeps_parent(self):
+        _,catalogs,provider=self.setup_provider()
+        store=IndexedFamilyStore(catalogs,self.limited_reader('complete source node exceeds unchanged RAM payload limit'),provider)
+        self.addCleanup(store.close)
+        key=store.register_view(1,A1,Camera((0,0,0),(0,1,0),90,1,100))
+        marker=self.await_plan(store,key)['marker']
+        self.assertEqual('zhumadian.indexed_quality_limit.v1',marker['schema'])
+        self.assertEqual(A1,marker['replacement_parent'])
+        self.assertTrue(marker['complete_parent_retained'])
+        self.assertNotIn('source_nodes',marker)
+        self.assertNotIn('parts',marker)
+        self.assertEqual(0,store.audit()['failures'])
+
+    def test_identity_error_is_not_hidden_by_quality_fallback(self):
+        _,catalogs,provider=self.setup_provider()
+        store=IndexedFamilyStore(catalogs,self.limited_reader('original source SHA changed'),provider)
+        self.addCleanup(store.close)
+        key=store.register_view(1,A1,Camera((0,0,0),(0,1,0),90,1,100))
+        with self.assertRaisesRegex(ValueError,'original source SHA changed'):
+            self.await_plan(store,key)
+        self.assertEqual(1,store.audit()['failures'])
+
     def test_real_loopback_plan_lease_payload_and_invalid_view(self):
         _, catalogs, provider = self.setup_provider()
         store = IndexedFamilyStore(catalogs, Reader(), provider)

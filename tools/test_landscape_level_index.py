@@ -125,5 +125,23 @@ class LevelIndexTests(unittest.TestCase):
             select_cut({'schema': 'zhumadian.level_bounds.tile.v1', 'complete': False}, self.camera)
 
 
+class CoverageTierTests(unittest.TestCase):
+    def test_exact_tier_scales_retain_terminal_branches(self):
+        from native_source_frontier import SourceForest
+        from seal_landscape_level_index import coverage_tiers
+        from test_indexed_source_bundle import catalog,R,A,A1,A2,B,F
+        nodes={name:dict(texelP90=value) for name,value in ((R,100),(A,50),(A1,20),(A2,10),(B,25),(F,1))}
+        actual=coverage_tiers(SourceForest(catalog()),nodes)
+        self.assertEqual([1,2,3],[v['depth'] for v in actual])
+        self.assertEqual([2,3,3],[v['sourceCount'] for v in actual])
+        self.assertEqual([50,25,25],[v['maxTexel'] for v in actual])
+
+    def test_nonfinite_texture_scale_cannot_enter_initial_tier(self):
+        from native_source_frontier import SourceForest
+        from seal_landscape_level_index import coverage_tiers
+        from test_indexed_source_bundle import catalog
+        forest=SourceForest(catalog());nodes={name:dict(texelP90=float('nan')) for name in forest.nodes}
+        with self.assertRaisesRegex(ValueError,'texture scale'):coverage_tiers(forest,nodes)
+
 if __name__ == '__main__':
     unittest.main()

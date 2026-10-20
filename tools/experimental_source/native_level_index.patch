@@ -127,7 +127,15 @@
  #endif
  
  #include <stb_image.h>
-@@ -45,6 +50,8 @@
+@@ -34,6 +39,7 @@
+ #include <stb_image_write.h>
+ 
+ #include "landscape_overlay.hpp"
++#include "zhumadian_native_coverage_mask.hpp"
+ #include "mesh_sun_shadow.h"
+ 
+ #include <algorithm>
+@@ -45,6 +51,8 @@
  #include <cstdlib>
  #include <cstring>
  #include <filesystem>
@@ -136,7 +144,7 @@
  #include <fstream>
  #include <future>
  #include <iomanip>
-@@ -1685,6 +1692,7 @@
+@@ -1685,6 +1693,7 @@
      bool landscapeEditor = false;
      bool editorShellProbe = false;
      bool editorBusinessProbe = false;
@@ -144,7 +152,7 @@
      bool landscapeValidate = false;
      fs::path landscapeLayers;
      std::string scene = "industrial_park";
-@@ -1709,6 +1717,8 @@
+@@ -1709,6 +1718,8 @@
      bool zhumadianNativeFamily = true;
      bool zhumadianNativeVisibility = false;
      bool zhumadianNativeVisibilitySchedule = true;
@@ -153,7 +161,7 @@
      int zhumadianNativeProbeCycles = 1;
      bool landscapePickProbe = false;
      int zhumadianNativeTile = 0;
-@@ -2131,7 +2141,12 @@
+@@ -2131,7 +2142,12 @@
      return std::string(value.begin(), value.end());
    }
  
@@ -166,7 +174,7 @@
  #ifdef _WIN32
      wchar_t executable[32768]{};
      if (GetModuleFileNameW(nullptr, executable, 32768)) {
-@@ -4353,6 +4368,16 @@
+@@ -4353,6 +4369,16 @@
      }
      audit.levelsVisited = static_cast<int>(std::count(levels.begin(), levels.end(), true));
      return audit;
@@ -183,7 +191,7 @@
    }
  
    struct CameraClipPlanes {
-@@ -18635,13 +18660,13 @@
+@@ -18635,13 +18661,13 @@
                  // Keep the camera-relative sky dome on the far plane even
                  // when the global WGS84 camera needs kilometre-scale near/far
                  // values. This is the Vulkan equivalent of gl_Position.xyww.
@@ -200,7 +208,7 @@
              outKind = inKind;
              outPbr = inPbr;
          }
-@@ -18870,6 +18895,8 @@
+@@ -18870,6 +18896,8 @@
              return mix(previous, current, transition);
          }
          vec3 materialLayerColor(vec3 color, vec2 uv, float kind, vec4 pbr) {
@@ -209,7 +217,7 @@
              if (pbr.w > 4.5)
                  return pow(max(texture(regionalEarthContext, clamp(uv, vec2(0.00025), vec2(0.99975)), -0.35).rgb,
                                 vec3(0)), vec3(2.2));
-@@ -19955,7 +19982,7 @@
+@@ -19955,7 +19983,7 @@
      pd.rasterization.fillMode = FillMode::Solid;
      pd.depthStencil.depthTestEnable = true;
      pd.depthStencil.depthWriteEnable = true;
@@ -218,7 +226,7 @@
      pd.renderPass = renderPass;
      pd.pipelineLayout = pipelineLayout;
      ColorBlendAttachmentState blend;
-@@ -23184,7 +23211,7 @@
+@@ -23184,7 +23212,7 @@
                             settings.target,
                             settings.fovDeg,
                             static_cast<float>(renderWidth) / renderHeight,
@@ -227,7 +235,7 @@
      }
      const bool streamGeometry = cli.preset == Preset::Zhumadian && cli.zhumadianStreamedGeometry;
      if (streamGeometry) {
-@@ -23240,7 +23267,7 @@
+@@ -23240,7 +23268,7 @@
                                        cameraClip.nearMeters,
                                        cameraClip.farMeters);
      proj[1][1] *= -1.0f;
@@ -236,7 +244,7 @@
  
      hongtu::landscape::Overlay landscapeOverlay;
      Json landscapeDocument = hongtu::landscape::emptyDocument();
-@@ -23266,7 +23293,7 @@
+@@ -23266,7 +23294,7 @@
      area.extent = {renderWidth, renderHeight};
      const std::vector<std::array<float, 4>> clearColors = {
          showcaseClearColor(cli.zhumadianCoverageMask ? glm::vec3(0.0f) : settings.clear, cli.screenshotSrgbTarget)};
@@ -245,7 +253,7 @@
      Viewport viewport;
      viewport.x = 0.0f;
      viewport.y = 0.0f;
-@@ -23578,6 +23605,7 @@
+@@ -23578,6 +23606,7 @@
      void editorShellProbeStep(int frame);
      void editorBusinessAction(int id);
      void editorBusinessProbe();
@@ -253,7 +261,7 @@
      void editorPanelLayout();
      void editorShellCommand(int id);
      bool editorThemeMessage(HWND hwnd, UINT message, WPARAM w, LPARAM l, LRESULT& result);
-@@ -23609,6 +23637,7 @@
+@@ -23609,6 +23638,7 @@
      Json editorDraft_ = {{"type", "line"}, {"positions", Json::array()}, {"style", hongtu::landscape::defaultStyle()}};
      std::vector<Json> editorUndo_, editorRedo_;
      fs::path editorFile_;
@@ -261,7 +269,7 @@
      size_t editorLayer_ = 0;
      int editorFeature_ = -1;
      int editorTabIndex_ = 0, editorVertex_ = -1, editorLiveControl_ = 0;
-@@ -25598,7 +25627,7 @@
+@@ -25598,7 +25628,7 @@
                                        cameraClip.farMeters);
      proj[1][1] *= -1.0f;
      const float shaderTimeSeconds = (cli_.preset == Preset::Drill) ? drillScenarioTime_ : elapsedSeconds_;
@@ -270,7 +278,7 @@
  
      commandBuffer_->reset();
      commandBuffer_->begin();
-@@ -25614,7 +25643,7 @@
+@@ -25614,7 +25644,7 @@
      area.extent = device_->getSwapchainExtent();
      const std::vector<std::array<float, 4>> clearColors = {
          showcaseClearColor(settings_.clear, device_->getSwapchainFormat() == Format::R8G8B8A8_SRGB)};
@@ -279,7 +287,7 @@
      Viewport viewport;
      viewport.x = 0.0f;
      viewport.y = 0.0f;
-@@ -25990,6 +26019,8 @@
+@@ -25990,6 +26020,8 @@
          editorShellProbeStep(limitedFrames);
        if (cli_.editorBusinessProbe && limitedFrames == 8)
          editorBusinessProbe();
@@ -288,7 +296,7 @@
        if (cli_.zhumadianNativeProbe) {
          const bool abandon = cli_.zhumadianNativeChunked
                                   ? (nativePager_.stagingResident.payload > 0 || nativePager_.familyGpu.payload > 0)
-@@ -26559,6 +26590,7 @@
+@@ -26559,6 +26591,7 @@
  
  #ifdef _WIN32
  #  include "landscape_editor.inl"
@@ -296,7 +304,7 @@
  #endif
  
    bool parsePreset(const std::string& value, Preset& out) {
-@@ -26778,6 +26810,7 @@
+@@ -26778,6 +26811,7 @@
          cli.landscapeLayers = fs::u8path(arg.substr(9));
          continue;
        }
@@ -304,7 +312,7 @@
        if (arg == "--editor-business-probe") {
          cli.editorBusinessProbe = true;
          continue;
-@@ -26925,6 +26958,12 @@
+@@ -26925,6 +26959,12 @@
          cli.zhumadianGeometryStreamProbe = true;
        } else if (arg == "--zhumadian-geometry-travel-probe") {
          cli.zhumadianGeometryTravelProbe = true;
@@ -317,7 +325,7 @@
        } else if (arg == "--zhumadian-native-visibility-measure-only") {
          cli.zhumadianNativeVisibility = true;
          cli.zhumadianNativeVisibilitySchedule = false;
-@@ -27199,6 +27238,8 @@
+@@ -27199,6 +27239,8 @@
      return true;
    }
  
@@ -326,7 +334,7 @@
  } // namespace
  
  int main(int argc, char** argv) try {
-@@ -27232,6 +27273,32 @@
+@@ -27232,6 +27274,32 @@
    argc = wideArgc;
    argv = utf8Argv.data();
  #endif
@@ -359,7 +367,7 @@
    Cli cli;
  #ifdef HT_LANDSCAPE_EDITOR
    if (argc == 1) {
-@@ -27245,6 +27312,7 @@
+@@ -27245,6 +27313,7 @@
    cli.presetName = "zhumadian";
    cli.zhumadianNativeGeometry = true;
    cli.zhumadianNativeChunked = true;
@@ -367,7 +375,7 @@
    cli.zhumadianContext = true;
    cli.zhumadianContextFused = true;
    cli.zhumadianContextColorMatched = true;
-@@ -27255,6 +27323,14 @@
+@@ -27255,6 +27324,14 @@
    if (!parseCli(argc, argv, cli)) {
      return argc > 1 && (std::string(argv[1]) == "--help" || std::string(argv[1]) == "-h") ? 0 : 1;
    }
@@ -382,7 +390,7 @@
    if (cli.landscapeEditor && (cli.preset != Preset::Zhumadian || !cli.zhumadianFullScene || !cli.zhumadianContext ||
                                !cli.zhumadianContextFused || !cli.zhumadianNativeChunked)) {
      std::cerr << "Landscape editor only supports the full Zhumadian landscape with satellite context and native "
-@@ -27281,6 +27357,9 @@
+@@ -27281,6 +27358,9 @@
      return renderShowcase(cli) ? 0 : 1;
    return runInteractiveShowcase(cli) ? 0 : 1;
  } catch (const std::exception& error) {
@@ -644,9 +652,176 @@
 +                                               const std::string& parent = {}, const std::string& indexedView = {}) {
 +  return decodeSourceMemory(tile, depth, buildPicking, parent, indexedView);
  }
+--- /dev/null
++++ b/native/zhumadian_native_coverage_mask.hpp
+@@ -0,0 +1,33 @@
++#pragma once
++#include <algorithm>
++#include <cstdint>
++#include <stdexcept>
++#include <vector>
++
++// Pure raster coverage comparison used by the precommit GPU geometry check.
++// Keep the old complete source on interior loss; two pixels tolerate raster edges.
++struct ZhumadianNativeCoverageMask {
++static uint64_t coverageInteriorLoss(const std::vector<uint8_t>& parent,
++                                    const std::vector<uint8_t>& child,uint32_t width,uint32_t height) {
++  if (!width || !height || parent.size()!=size_t(width)*height*4 || child.size()!=parent.size())
++    throw std::runtime_error("Invalid geometric coverage masks");
++  const size_t stride=size_t(width)+1;
++  std::vector<uint32_t> p(stride*(height+1)),c(p.size());
++  for (uint32_t y=0;y<height;++y) for (uint32_t x=0;x<width;++x) {
++    const size_t at=size_t(y+1)*stride+x+1,pixel=(size_t(y)*width+x)*4;
++    p[at]=(parent[pixel]!=0)+p[at-1]+p[at-stride]-p[at-stride-1];
++    c[at]=(child[pixel]!=0)+c[at-1]+c[at-stride]-c[at-stride-1];
++  }
++  const auto sum=[&](const auto& a,int x0,int y0,int x1,int y1) {
++    return a[size_t(y1)*stride+x1]-a[size_t(y0)*stride+x1]-a[size_t(y1)*stride+x0]+a[size_t(y0)*stride+x0];
++  };
++  uint64_t loss=0;
++  // Two raster pixels tolerate boundary/subpixel displacement. Interior holes
++  // are forbidden; the test includes screen edges, with clipped neighborhoods.
++  for (int y=0;y<int(height);++y) for (int x=0;x<int(width);++x) {
++    const int x0=std::max(0,x-2),y0=std::max(0,y-2),x1=std::min(int(width),x+3),y1=std::min(int(height),y+3);
++    loss += sum(p,x0,y0,x1,y1)==uint32_t((x1-x0)*(y1-y0)) && sum(c,x0,y0,x1,y1)==0;
++  }
++  return loss;
++}
++};
 --- a/native/zhumadian_native_family_pager.inl
 +++ b/native/zhumadian_native_family_pager.inl
-@@ -170,8 +170,7 @@
+@@ -2,6 +2,7 @@
+ struct FamilyTarget {
+   int id = -1, depth = 0;
+   std::string parent;
++  bool indexCoverage=false;
+ };
+ std::future<ZhumadianNativeCpu> familyPending;
+ std::optional<ZhumadianNativeCpu> familyStaged;
+@@ -11,8 +12,10 @@
+ std::optional<hongtu::renderer::NativeSourceFrontier::Ticket> familyTicket;
+ size_t familyNext = 0;
+ std::set<std::pair<int, std::string>> familyFailed;
++std::set<std::pair<int,std::string>> familyQualityLimited;
+ uint64_t familyCommits = 0, familyCoarsenings = 0, familyCancellations = 0;
+ std::string familyError;
++uint64_t hiddenFamilyRetiredBytes=0,hiddenFamilyRetiredParts=0;
+ 
+ static const ZhumadianNativeSource* sourceRecord(const Resident& ready, const std::string& name) {
+   if (auto it = ready.sources.find(name); it != ready.sources.end())
+@@ -21,6 +24,22 @@
+     if (auto it = family.sources.find(name); it != family.sources.end())
+       return &it->second;
+   return nullptr;
++}
++float indexedSourceEdge(const ZhumadianNativeSource& node) const {
++  return levelIndexEnabled?std::max(node.edge,node.expansion):node.edge;
++}
++bool indexedBoxVisible(glm::vec3 low,glm::vec3 high) const {
++  hongtu::renderer::NativeLevelIndex box;
++  box.build({{0,0,glm::dvec3(low),glm::dvec3(high)}});
++  return !box.query(visibilityIndexedView).ids.empty();
++}
++bool indexedCoverageNeeded(const ZhumadianNativeSource& node) const {
++  return levelIndexEnabled && visibilityScheduling() && !visibilitySignature.empty() && node.hasSubtreeBounds &&
++    !indexedBoxVisible(node.low,node.high) && indexedBoxVisible(node.subtreeLow,node.subtreeHigh);
++}
++double scheduledFamilyPriority(int id,const std::string& parent,const ZhumadianNativeSource& node,float fov,int height) const {
++  const double actual=visibilityPriority(id,parent,{indexedSourceEdge(node),node.texel},fov,height);
++  return actual>0?actual:indexedCoverageNeeded(node)?1e-6:0;
+ }
+ static uint32_t visibleIndices(const Resident& ready) {
+   if (!ready.sourceCut)
+@@ -61,6 +80,7 @@
+ void resetFamilies(Resident& ready) {
+   if (!ready.sourceCut || ready.families.empty())
+     return;
++  if (familyTicket && familyCut==ready.sourceCut) {cancelFamily();++familyCancellations;}
+   uint64_t retired = 0;
+   for (const auto& [parent, family] : ready.families)
+     retired += family.payload;
+@@ -74,7 +94,39 @@
+   familyFailed.clear();
+   ++familyCoarsenings;
+ }
++bool parentPagesAvailable(const Resident& ready,const std::string& parent) const {
++  const auto* node=sourceRecord(ready,parent);if (!node) return false;
++  const Resident* bundle=ready.sources.contains(parent)?&ready:nullptr;
++  for (const auto& [key,family]:ready.families) if (family.sources.contains(parent)) bundle=&family;
++  if (!bundle) return false;
++  for (const auto& span:node->spans)
++    if (!bundle->parts.at(span.part).payload) return false;
++  return true;
++}
++void retireHiddenFamilyParts(Resident& ready) {
++  if (!levelIndexEnabled || !ready.sourceCut) return;
++  const auto cut=ready.sourceCut->visible();uint64_t retired=0;
++  // Initial root pages remain a complete resident fallback. Only hidden
++  // intermediate-family pages can be discarded, after the frame fence.
++  for (auto& [parent,family]:ready.families) {
++    std::set<uint32_t> live;
++    for (const auto& name:cut)
++      if (const auto source=family.sources.find(name);source!=family.sources.end())
++        for (const auto& span:source->second.spans) live.insert(span.part);
++    for (uint32_t i=0;i<family.parts.size();++i) {
++      auto& part=family.parts[i];if (!part.payload || live.contains(i)) continue;
++      const uint64_t bytes=part.payload;part={};family.payload-=bytes;retired+=bytes;
++      ++hiddenFamilyRetiredParts;
++    }
++  }
++  if (retired) {
++    ready.payload-=retired;payload-=retired;hiddenFamilyRetiredBytes+=retired;
++    ready.sourceCut->reset(cut,ready.payload);
++  }
++}
+ void coarsenFamily(Resident& ready, const std::string& parent) {
++  if (levelIndexEnabled && !parentPagesAvailable(ready,parent)) {resetFamilies(ready);return;}
++  if (familyTicket && familyCut==ready.sourceCut) {cancelFamily();++familyCancellations;}
+   std::map<std::string, std::vector<std::string>> children;
+   for (const auto& node : ready.topology)
+     children[node.name] = node.children;
+@@ -125,7 +177,7 @@
+       continue;
+     for (const auto& name : ready.sourceCut->visible()) {
+       const auto* node = sourceRecord(ready, name);
+-      if (!node->hasBounds || node->children.empty() ||
++      if (!node->hasBounds || node->children.empty() || familyQualityLimited.contains({id,name}) || familyCoverageBlocked.contains({id,name}) ||
+           (familyFailed.contains({id,name}) && !(visibilityScheduling() && visibilityFamilyCosts.contains({id,name}))))
+         continue;
+       const float distance = glm::length(glm::max(glm::max(node->low - camera, camera - node->high), glm::vec3(0)));
+@@ -139,7 +191,7 @@
+                                                                glm::dot(delta, up) / (along * tangent)))
+                                        : 2;
+       const float score = visibilityScheduling()
+-                              ? float(visibilityPriority(id,name,{node->edge,node->texel},fov,height))
++                              ? float(scheduledFamilyPriority(id,name,*node,fov,height))
+                               : hongtu::renderer::nativeSourceRefinementScore(quality,diameter,float(height),centered,true);
+       if (visibilityScheduling() && !visibilityRequestAllowed(id,name,score)) continue;
+       if (visibilityScheduling())
+@@ -148,16 +200,19 @@
+       if (score <= 0)
+         continue;
+       ZhumadianTexturePage box{};
+-      box.boundsMin = node->low;
+-      box.boundsMax = node->high;
++      box.boundsMin = levelIndexEnabled && node->hasSubtreeBounds?node->subtreeLow:node->low;
++      box.boundsMax = levelIndexEnabled && node->hasSubtreeBounds?node->subtreeHigh:node->high;
+       boxes.push_back(box);
+-      candidates.push_back({{id, node->depth + 1, name},
++      candidates.push_back({{id, node->depth + 1, name,indexedCoverageNeeded(*node)},
+                             score,
+                             surface && surface->tile == roots[id].tile && surface->sourceNode == name});
+     }
+   }
+   auto visible = rankZhumadianVisibleBounds(boxes, camera, target, true, fov, aspect, false);
++  if (levelIndexEnabled) {visible.resize(candidates.size());std::iota(visible.begin(),visible.end(),0);}
+   std::stable_sort(visible.begin(), visible.end(), [&](int a, int b) {
++    if (levelIndexEnabled && candidates[a].target.indexCoverage!=candidates[b].target.indexCoverage)
++      return candidates[a].target.indexCoverage;
+     if (!visibilityScheduling() && candidates[a].center != candidates[b].center)
+       return candidates[a].center;
+     return candidates[a].score > candidates[b].score;
+@@ -170,8 +225,7 @@
    Resident part;
    part.vertices = makeHostBuffer(device, cpu.vertices, BufferUsageFlagBits::Vertex);
    part.indices = makeHostBuffer(device, cpu.indices, BufferUsageFlagBits::Index);
@@ -656,7 +831,7 @@
    if (part.vertices && part.indices && image) {
      DescriptorSetDesc descriptors;
      for (uint32_t binding = 0; binding < 13; ++binding) {
-@@ -179,7 +178,7 @@
+@@ -179,7 +233,7 @@
        d.binding = binding;
        d.type = DescriptorType::CombinedImageSampler;
        d.textureView = part.view;
@@ -665,8 +840,22 @@
        descriptors.bindings.push_back(d);
      }
      part.descriptor = device->createDescriptorSet(material.layout, descriptors);
-@@ -223,7 +222,7 @@
-     const double score=visibilityPriority(familyDesired.id,familyDesired.parent,{node->edge,node->texel},fov,height);
+@@ -210,7 +264,8 @@
+       if (!node || !node->hasBounds)
+         continue;
+       const float distance = glm::length(glm::max(glm::max(node->low - camera, camera - node->high), glm::vec3(0)));
+-      if (hongtu::renderer::projectedNativeEdge(std::max(node->edge, node->texel * 4), distance, fov, height) < 2)
++      if (!(family.indexCoverageBridge && indexedCoverageNeeded(*node)) &&
++          hongtu::renderer::projectedNativeEdge(std::max(indexedSourceEdge(*node), node->texel * 4), distance, fov, height) < 2)
+         rollback.push_back(parent);
+     }
+     for (const auto& parent : rollback)
+@@ -220,10 +275,10 @@
+   familyDesired = wantedFamily(camera,target,fov,aspect,height);
+   if (visibilityScheduling() && !familyPending.valid() && !familyStaged && familyDesired.id>=0) {
+     const auto* node=sourceRecord(resident.at(familyDesired.id),familyDesired.parent);
+-    const double score=visibilityPriority(familyDesired.id,familyDesired.parent,{node->edge,node->texel},fov,height);
++    const double score=scheduledFamilyPriority(familyDesired.id,familyDesired.parent,*node,fov,height);
      for (const auto& [id,depth] : desired)
        if (!resident.contains(id) && visibilityRootEligible(id,depth,fov,height) &&
 -          visibilityRootPriority(id,fov,height)>score) {familyDesired={};break;}
@@ -674,7 +863,39 @@
    }
    if (visibilityScheduling() && familyDesired.id>=0 &&
        visibilityFamilyCosts.contains({familyDesired.id,familyDesired.parent}))
-@@ -282,7 +281,8 @@
+@@ -236,7 +291,7 @@
+       const auto& ready=resident.at(familyRequest.id);
+       if (!ready.sourceCut || !ready.sourceCut->visible().contains(familyRequest.parent)) return false;
+       const auto* node=sourceRecord(ready,familyRequest.parent);
+-      return node && visibilityPriority(familyRequest.id,familyRequest.parent,{node->edge,node->texel},fov,height)>0;
++      return node && scheduledFamilyPriority(familyRequest.id,familyRequest.parent,*node,fov,height)>0;
+     }
+     return familyDesired.id == familyRequest.id && familyDesired.parent == familyRequest.parent &&
+            resident.contains(familyRequest.id);
+@@ -247,9 +302,10 @@
+       ++familyCancellations;
+     } else if (!cpu.valid) {
+       familyFailed.insert({familyRequest.id, familyRequest.parent});
+-      familyError = cpu.error;
+-      ++failures;
+-      recordOutcome(cpu.error == "complete sibling family exceeds local candidate budget" ||
++      const bool qualityLimited=cpu.error=="indexed lossless texture/page budget; complete parent retained";
++      if (qualityLimited) {++budgetFallbacks;familyQualityLimited.insert({familyRequest.id,familyRequest.parent});}
++      else {familyError=cpu.error;++failures;}
++      recordOutcome(qualityLimited || cpu.error == "complete sibling family exceeds local candidate budget" ||
+                             cpu.error == "family source decode budget exceeded"
+                         ? "family_conversion_budget" : "family_decode_error",
+                     familyRequest.id, familyRequest.depth, cpu.error, familyRequest.parent);
+@@ -259,7 +315,7 @@
+         visibilityFamilyCosts[{familyRequest.id,familyRequest.parent}]=cpu.payload;
+         const auto* node=sourceRecord(ready,familyRequest.parent);
+         applyVisibilityRoom(familyRequest.id,familyRequest.parent,cpu.payload,
+-                            visibilityPriority(familyRequest.id,familyRequest.parent,{node->edge,node->texel},fov,height),fov,height);
++                            scheduledFamilyPriority(familyRequest.id,familyRequest.parent,*node,fov,height),fov,height);
+       }
+       if (!visibilityScheduling() && ready.payload + cpu.payload <= rootBudget(familyRequest.id)) {
+         for (auto it = ranking.rbegin(); payload + cpu.payload > budget && it != ranking.rend(); ++it)
+@@ -282,7 +338,8 @@
                        "Complete family plus resident pages exceeds root or global budget", familyRequest.parent);
        } else {
          familyCut = ready.sourceCut;
@@ -684,7 +905,31 @@
          if (!familyTicket) {
            familyFailed.insert({familyRequest.id, familyRequest.parent});
            familyError = "Invalid complete family transaction";
-@@ -351,8 +351,16 @@
+@@ -318,8 +375,15 @@
+             throw std::runtime_error("Incomplete source family upload");
+           auto& ready = resident.at(familyRequest.id);
+           installSources(familyGpu, *familyStaged, false);
++          if (!preservesGeometricCoverage(device,familyRequest.id,familyRequest.parent,familyGpu,camera,target,fov,aspect,height)) {
++            familyCoverageBlocked.insert({familyRequest.id,familyRequest.parent});
++            recordOutcome("family_coverage_limit",familyRequest.id,familyRequest.depth,
++                          "Replacement loses parent interior coverage; complete parent retained",familyRequest.parent);
++            cancelFamily();return;
++          }
+           familyGpu.depth = familyRequest.depth;
+           const auto addedBytes = familyGpu.payload;
++          familyGpu.indexCoverageBridge=familyRequest.indexCoverage;
+           if (!ready.families.emplace(familyRequest.parent, std::move(familyGpu)).second)
+             throw std::runtime_error("Duplicate source family allocation");
+           if (!familyCut->commit(*familyTicket)) {
+@@ -334,6 +398,7 @@
+           familyCut.reset();
+           ++familyCommits;
+           ++uploads;
++          retireHiddenFamilyParts(ready);
+           familyDesired = wantedFamily(camera, target, fov, aspect, height);
+         }
+       } catch (const std::exception& error) {
+@@ -351,8 +416,16 @@
      familyRequest = familyDesired;
      const int tile = roots[familyRequest.id].tile, depth = familyRequest.depth;
      const auto parent = familyRequest.parent;
@@ -705,7 +950,16 @@
  }
 --- a/native/zhumadian_native_pager.inl
 +++ b/native/zhumadian_native_pager.inl
-@@ -18,7 +18,7 @@
+@@ -12,13 +12,14 @@
+   int depth = 0;
+   uint32_t triangles = 0;
+   float edge = 0, texel = 0;
+-  glm::vec3 low{}, high{};
+-  bool hasBounds = false;
++  glm::vec3 low{}, high{}, subtreeLow{}, subtreeHigh{};
++  float expansion=0;
++  bool hasBounds = false, hasSubtreeBounds=false;
+   std::shared_ptr<const hongtu::renderer::TriangleBvh> picking;
  };
  
  struct ZhumadianNativeCpu {
@@ -714,7 +968,7 @@
    int depth = 0;
    uint64_t payload = 0;
    float edge = 0, texel = 0;
-@@ -26,6 +26,9 @@
+@@ -26,6 +27,9 @@
    std::vector<Vertex> vertices;
    std::vector<uint32_t> indices;
    LoadedRgbaImage image;
@@ -724,7 +978,7 @@
    std::string error;
    std::vector<ZhumadianNativeCpu> parts;
    std::map<std::string, ZhumadianNativeSource> sources;
-@@ -34,6 +37,7 @@
+@@ -34,6 +38,7 @@
    std::shared_ptr<const hongtu::renderer::TriangleBvh> picking;
  };
  
@@ -732,7 +986,28 @@
  #include "zhumadian_native_chunk_decode.inl"
  
  ZhumadianNativeCpu decodeZhumadianNativeRoot(int tile, int depth, bool chunked = false, bool buildPicking = false) {
-@@ -181,6 +185,20 @@
+@@ -151,6 +156,8 @@
+   struct Root {
+     int tile = 0, maxDepth = 0;
+     float baseEdge = 0, baseTexel = 0;
++    std::array<float,4> coverageTexel{};
++    float subtreeExpansion=0;
+     std::vector<hongtu::asset::MeshIndexRange> spans;
+     std::shared_ptr<const hongtu::renderer::TriangleBvh> picking;
+   };
+@@ -160,6 +167,7 @@
+     RHITextureViewPtr view;
+     RHIDescriptorSetPtr descriptor;
+     uint64_t payload = 0;
++    bool indexCoverageBridge=false;
+     uint32_t indexCount = 0, frontier = 0;
+     int depth = 0;
+     float edge = 0, texel = 0;
+@@ -178,9 +186,27 @@
+   std::vector<ZhumadianTexturePage> bounds;
+   std::map<int, Resident> resident;
+   std::map<int, int> desired, failed;
++  std::map<int,int> coverageCaps;
    std::vector<int> ranking;
    std::map<int, float> projectedEdges, projectedBaseEdges, distances;
    std::map<std::pair<int, int>, float> tierEdges;
@@ -747,13 +1022,16 @@
 +    std::vector<ZhumadianTexturePage> selected;
 +    for (auto id:levelLastQuery.ids) selected.push_back(levelBounds.at(id));
 +    auto order=rankZhumadianVisibleBounds(selected,camera,target,true,fov,aspect,false);
++    // The legacy ranker supplies order only; it must not remove exact BVH hits.
++    for (int i=0;i<static_cast<int>(selected.size());++i)
++      if (std::find(order.begin(),order.end(),i)==order.end()) order.push_back(i);
 +    for (auto& id:order) id=static_cast<int>(levelLastQuery.ids.at(id));
 +    return order;
 +  }
    int focusId = -1;
    uint64_t coarsenings = 0, budgetFallbacks = 0;
    std::future<ZhumadianNativeCpu> pending;
-@@ -235,7 +253,23 @@
+@@ -235,7 +261,23 @@
      payload = 0;
    }
    size_t residentLimit() const {
@@ -762,7 +1040,7 @@
      return chunked ? kAdaptiveResidentLimit : kResidentLimit;
 +  }
 +  double scheduledRootPriority(int id, float fov, int height) const {
-+    const double actual = visibilityRootPriority(id,fov,height);
++    const double actual = visibilityRootPriority(id,fov,height,levelIndexEnabled?roots.at(id).subtreeExpansion:0);
 +    if (!levelIndexEnabled || actual>0) return actual;
 +    // A coarser mesh can omit an edge silhouette present in its descendants.
 +    // Exact subtree envelopes therefore get one low-priority coverage request;
@@ -772,12 +1050,12 @@
 +    if (visibilitySignature.empty()) return 0;
 +    const auto camera=visibilitySampleCamera;
 +    const float distance=glm::length(glm::max(glm::max(box.boundsMin-camera,camera-box.boundsMax),glm::vec3(0)));
-+    const float quality=hongtu::renderer::projectedNativeEdge(std::max(roots.at(id).baseEdge,roots.at(id).baseTexel*4),distance,fov,height);
++    const float quality=hongtu::renderer::projectedNativeEdge(std::max({roots.at(id).baseEdge,roots.at(id).baseTexel*4,roots.at(id).subtreeExpansion}),distance,fov,height);
 +    return quality>6 ? .0001 : 0;
    }
    uint64_t rootBudget(int id) const {
      if (visibilityScheduling())
-@@ -342,6 +376,9 @@
+@@ -342,6 +384,9 @@
      localEnabled = useLocalFamilies;
      roots.clear();
      bounds.clear();
@@ -787,7 +1065,7 @@
      failed.clear();
      chunked = useChunks;
      pickingEnabled = buildPicking;
-@@ -440,6 +477,30 @@
+@@ -440,6 +485,39 @@
        roots.push_back(std::move(root));
        bounds.push_back(box);
      }
@@ -806,11 +1084,20 @@
 +    for (const auto& row:levelIndex.at("roots")) {
 +      const int id=row.at("tile").get<int>()-1;
 +      if (id!=static_cast<int>(indexed.size())) throw std::runtime_error("LEVEL root ordering differs");
++      for (const auto& tier:row.value("coverageTiers",nlohmann::json::array())) {
++        const int depth=tier.at("depth");const float texel=tier.at("maxTexel");
++        if (depth<1 || depth>3 || !std::isfinite(texel) || texel<=0 || tier.at("sourceCount").get<size_t>()==0)
++          throw std::runtime_error("Invalid exact coverage tier metadata");
++        roots.at(id).coverageTexel[depth]=texel;
++      }
 +      auto box=bounds.at(id);
 +      for (int a=0;a<3;++a) {box.boundsMin[a]=row.at("boundsMin").at(a);box.boundsMax[a]=row.at("boundsMax").at(a);}
 +      if (glm::any(glm::greaterThan(box.boundsMin,bounds[id].boundsMin+glm::vec3(.01f))) ||
 +          glm::any(glm::lessThan(box.boundsMax,bounds[id].boundsMax-glm::vec3(.01f))))
 +        throw std::runtime_error("LEVEL subtree envelope omits original base geometry");
++      for (int axis=0;axis<3;++axis)
++        roots.at(id).subtreeExpansion=std::max({roots.at(id).subtreeExpansion,
++          bounds[id].boundsMin[axis]-box.boundsMin[axis],box.boundsMax[axis]-bounds[id].boundsMax[axis]});
 +      levelBounds.push_back(box);
 +      indexed.push_back({static_cast<uint32_t>(id),0,glm::dvec3(box.boundsMin),glm::dvec3(box.boundsMax)});
 +    }
@@ -818,7 +1105,7 @@
      std::sort(spans.begin(), spans.end(), [](auto a, auto b) { return a.first < b.first; });
      if (roots.size() != 2346 || !hongtu::asset::retainedMeshIndexRanges(baseIndices, spans).empty())
        throw std::runtime_error("Native fallback partition has holes");
-@@ -455,7 +516,7 @@
+@@ -455,7 +533,7 @@
                 int height) {
      visibilityDeferred.clear();
      sampleVisibility(device, camera, target, fov, aspect, height);
@@ -827,7 +1114,7 @@
      // Large nearby foreground boxes must not starve the actual view center.
      // Reserve three priorities for centers closest to the sight ray, then retain
      // projected-coverage ordering for the remaining bounded working set.
-@@ -503,14 +564,14 @@
+@@ -503,14 +581,14 @@
      ranking = std::move(centers);
      if (visibilityScheduling())
        std::stable_sort(ranking.begin(),ranking.end(),[&](int a,int b) {
@@ -844,7 +1131,26 @@
        const float distance =
            glm::length(glm::max(glm::max(box.boundsMin - camera, camera - box.boundsMax), glm::vec3(0)));
        const float screen =
-@@ -540,7 +601,7 @@
+@@ -536,11 +614,26 @@
+                                    ? 0
+                                    : hongtu::renderer::projectedNativeEdge(ready->second.texel, distance, fov, height))
+                          : hongtu::renderer::selectNativeGeometryDepth(screen, edge, depth, roots[id].maxDepth);
++      if (levelIndexEnabled && chunked && next==0 &&
++          hongtu::renderer::projectedNativeEdge(roots[id].subtreeExpansion,distance,fov,height)>6)
++        next=1; // Descendants can contain geometry absent from the coarse source.
++      if (levelIndexEnabled && ready==resident.end() && next>0 && coverageCaps.contains(id))
++        next=std::min(next,coverageCaps.at(id));
++      // Complete initial coverage uses the coarsest measured source texture tier
++      // meeting the current pixel target. Indexed descendants refine shape afterwards.
++      if (levelIndexEnabled && chunked && localEnabled && ready==resident.end() && next>0) {
++        for (int tier=1;tier<std::min(next,3);++tier) {
++          const float texel=roots[id].coverageTexel[tier];
++          if (texel>0 && hongtu::renderer::projectedNativeEdge(texel*4,distance,fov,height)<=6) {
++            next=tier;break;
++          }
++        }
++      }
+       if (localEnabled && ready != resident.end() && ready->second.sourceCut && next >= depth)
          next = depth;
        // Retain a needed resident until a real budget/slot admission retires it.
        // Occlusion samples and ranking position alone must not cause reload loops.
@@ -853,7 +1159,7 @@
          next=0;
        if (next && (visibilityScheduling() || desired.size() < residentLimit())) {
          desired[id] = next;
-@@ -581,7 +642,7 @@
+@@ -581,7 +674,7 @@
        const int id = pendingId;
        pendingId = -1;
        if (!desired.contains(id) || desired.at(id) != pendingDepth ||
@@ -862,7 +1168,7 @@
          ++stale;
        } else if (!cpu.valid) {
          failed[id] = pendingDepth;
-@@ -597,7 +658,7 @@
+@@ -597,7 +690,7 @@
            tierEdges[{id, cpu.depth}] = cpu.edge;
          if (visibilityScheduling()) {
            visibilityRootCosts[{id,cpu.depth}]=cpu.payload;
@@ -871,7 +1177,16 @@
          }
          // Candidate plus the old ready root must fit concurrently. If necessary,
          // release lower-ranked roots to their complete base before allocating it.
-@@ -637,8 +698,7 @@
+@@ -623,6 +716,8 @@
+             (chunked && (cpu.payload > rootBudget(id) || payload - oldPayload + cpu.payload > steadyBudget))) {
+           failed[id] = pendingDepth;
+           lastError = "Adaptive quality budget reached; previous complete root retained";
++          if (levelIndexEnabled && !resident.contains(id) && pendingDepth>1)
++            coverageCaps[id]=pendingDepth-1; // Retry a cheaper complete texture tier before giving up coverage.
+           ++budgetFallbacks;
+           ++failures;
+           recordOutcome("root_runtime_budget", id, pendingDepth, lastError);
+@@ -637,8 +732,7 @@
            Resident candidate;
            candidate.vertices = makeHostBuffer(device, cpu.vertices, BufferUsageFlagBits::Vertex);
            candidate.indices = makeHostBuffer(device, cpu.indices, BufferUsageFlagBits::Index);
@@ -881,7 +1196,7 @@
            if (candidate.vertices && candidate.indices && image) {
              DescriptorSetDesc descriptors;
              for (uint32_t binding = 0; binding < 13; ++binding) {
-@@ -646,7 +706,7 @@
+@@ -646,7 +740,7 @@
                d.binding = binding;
                d.type = DescriptorType::CombinedImageSampler;
                d.textureView = candidate.view;
@@ -890,7 +1205,7 @@
                descriptors.bindings.push_back(d);
              }
              candidate.descriptor = device->createDescriptorSet(material.layout, descriptors);
-@@ -686,8 +746,7 @@
+@@ -686,8 +780,7 @@
          Resident part;
          part.vertices = makeHostBuffer(device, cpu.vertices, BufferUsageFlagBits::Vertex);
          part.indices = makeHostBuffer(device, cpu.indices, BufferUsageFlagBits::Index);
@@ -900,7 +1215,7 @@
          if (part.vertices && part.indices && image) {
            DescriptorSetDesc descriptors;
            for (uint32_t binding = 0; binding < 13; ++binding) {
-@@ -695,7 +754,7 @@
+@@ -695,7 +788,7 @@
              d.binding = binding;
              d.type = DescriptorType::CombinedImageSampler;
              d.textureView = part.view;
@@ -909,7 +1224,46 @@
              descriptors.bindings.push_back(d);
            }
            part.descriptor = device->createDescriptorSet(material.layout, descriptors);
-@@ -770,7 +829,7 @@
+@@ -723,11 +816,6 @@
+           ++stagingNext;
+           if (stagingNext == staged->parts.size()) {
+             const int id = stagingId;
+-            if (resident.contains(id)) {
+-              if (staged->depth < resident.at(id).depth)
+-                ++coarsenings;
+-              payload -= resident.at(id).payload;
+-            }
+             stagingResident.depth = staged->depth;
+             stagingResident.edge = staged->edge;
+             stagingResident.texel = staged->texel;
+@@ -737,6 +825,18 @@
+             installSources(stagingResident, *staged, true);
+             if (stagingResident.payload != staged->payload)
+               throw std::runtime_error("Incomplete native part transaction");
++            if (!preservesGeometricCoverage(device,id,"",stagingResident,camera,target,fov,aspect,height)) {
++              rootCoverageBlocked.insert({id,staged->depth});failed[id]=staged->depth;
++              if (staged->depth>1) coverageCaps[id]=staged->depth-1;
++              recordOutcome("root_coverage_limit",id,staged->depth,
++                            "Replacement loses root interior coverage; previous complete root retained");
++              stagingResident={};staged.reset();stagingId=-1;
++              return;
++            }
++            if (resident.contains(id)) {
++              if (staged->depth < resident.at(id).depth) ++coarsenings;
++              payload -= resident.at(id).payload;
++            }
+             payload += stagingResident.payload;
+             maxParts = std::max<uint64_t>(maxParts, stagingResident.parts.size());
+             resident.insert_or_assign(id, std::move(stagingResident));
+@@ -749,6 +849,7 @@
+       }
+     }
+     serviceFamilies(device, material, camera, target, fov, aspect, height);
++    if (resident.empty() && !staged && !familyStaged) clearCoverageTarget();
+     if (!pending.valid() && !staged && !familyPending.valid() && !familyStaged) {
+       auto queue = ranking;
+       if (chunked && !visibilityScheduling())
+@@ -770,9 +871,10 @@
          });
        if (visibilityScheduling())
          std::stable_sort(queue.begin(),queue.end(),[&](int a,int b) {
@@ -917,8 +1271,11 @@
 +          return scheduledRootPriority(a,fov,height)>scheduledRootPriority(b,fov,height);
          });
        for (int id : queue) {
++          if (levelIndexEnabled && desired.contains(id) && rootCoverageBlocked.contains({id,desired.at(id)})) continue;
          if (visibilityScheduling() && desired.contains(id)) {
-@@ -818,8 +877,10 @@
+           if (!visibilityRootEligible(id,desired.at(id),fov,height)) {
+             visibilityDeferred.insert(id);
+@@ -818,8 +920,10 @@
                glm::vec3 target,
                float fov,
                float aspect,
@@ -931,7 +1288,7 @@
      bool stable = false;
      uint64_t previousUploads = uploads;
      do {
-@@ -827,12 +888,14 @@
+@@ -827,12 +931,14 @@
        const bool done = settled();
        // A newly committed tier may itself require another refinement. Recompute
        // projected quality once before declaring an offscreen capture converged.
@@ -947,7 +1304,15 @@
      throw std::runtime_error("Native pager observation did not settle within capture deadline");
    }
    void draw(const RHICommandBufferPtr& cmd,
-@@ -916,6 +979,7 @@
+@@ -862,6 +968,7 @@
+       const auto drawBundle = [&](const Resident& bundle) {
+         for (size_t partIndex = 0; partIndex < bundle.parts.size(); ++partIndex) {
+           const auto& part = bundle.parts[partIndex];
++          if (!part.payload) continue; // Fence-retired hidden intermediate source page.
+           std::vector<hongtu::asset::MeshIndexRange> hidden;
+           if (ready.sourceCut)
+             for (const auto& [name, node] : bundle.sources)
+@@ -916,6 +1023,7 @@
        ready.push_back({{"tile", roots[id].tile},
                         {"depth", visibleDepth(r)},
                         {"base_depth", r.depth},
@@ -955,7 +1320,7 @@
                         {"local_families", r.families.size()},
                         {"frontier", r.sourceCut ? r.sourceCut->visible().size() : r.frontier},
                         {"triangles", visibleIndices(r) / 3},
-@@ -945,7 +1009,9 @@
+@@ -945,17 +1053,29 @@
                           {"base_edge_pixels", projectedBaseEdges.at(id)},
                           {"ready_edge_pixels", projectedEdges.at(id)},
                           {"root_budget_bytes", rootBudget(id)}});
@@ -966,7 +1331,16 @@
              {"visibility_budget_retirements",visibilityBudgetRetirements},
              {"visibility_deferred_roots",visibilityDeferred},
              {"local_family_enabled", localEnabled},
-@@ -956,6 +1022,10 @@
+             {"local_family_commits", familyCommits},
++            {"local_family_quality_limits",familyQualityLimited.size()},
++            {"coverage_checks",coverageChecks},{"coverage_rejections",coverageRejected},
++            {"coverage_missing_pixels",coverageMissingPixels},
++            {"coverage_guard_resolution",{coverageWidth,coverageHeight}},
++            {"hidden_family_retired_parts",hiddenFamilyRetiredParts},
++            {"hidden_family_retired_bytes",hiddenFamilyRetiredBytes},
+             {"local_family_coarsenings", familyCoarsenings},
+             {"local_family_cancellations", familyCancellations},
+             {"local_families", familyStats},
              {"local_family_pending", familyPending.valid() || familyStaged.has_value()},
              {"local_family_error", familyError},
              {"catalog_roots", roots.size()},
@@ -979,12 +1353,13 @@
              {"base_picking_triangles", basePickingTriangles},
 --- a/native/zhumadian_native_visibility.inl
 +++ b/native/zhumadian_native_visibility.inl
-@@ -16,9 +16,13 @@
+@@ -16,13 +16,19 @@
  uint32_t visibilityIndexCount = 0, visibilityWidth = 96, visibilityHeight = 0;
  std::string visibilitySignature, visibilityCameraSignature;
  nlohmann::json visibilityProbes = nlohmann::json::array();
 +nlohmann::json visibilityRegions=nlohmann::json::array(),visibilityEdgeProbes=nlohmann::json::array();
 +glm::vec3 visibilitySampleCamera{};
++hongtu::renderer::NativeLevelView visibilityIndexedView;
  uint64_t visibilitySamples = 0;
  std::set<int> visibilityDeferred;
  double visibilityMilliseconds = 0, visibilityDeficit = 0;
@@ -993,7 +1368,12 @@
  double visibilityTotalWeight = 0;
  std::array<uint32_t, 4> visibilityAttention{};
  
-@@ -50,6 +54,7 @@
+ void clearVisibility() {
++  clearCoverageTarget();
+   visibilityPipeline.reset();
+   visibilityLayout.reset();
+   visibilityTarget.reset();
+@@ -50,6 +56,7 @@
      return;
    if (!chunked || !pickingEnabled || !vertices || !indices)
      throw std::runtime_error("Source visibility requires the chunked landscape editor");
@@ -1001,7 +1381,7 @@
    visibilityEnabled = true;
    visibilityCli = cli;
    visibilityBaseVertices = vertices;
-@@ -65,7 +70,7 @@
+@@ -65,7 +72,7 @@
        vec3 pos = position;
        if (kind > 3.5) pos += pc.camera.xyz;
        gl_Position = pc.mvp * vec4(pos,1);
@@ -1010,15 +1390,25 @@
        viewDepth = dot(pos-pc.camera.xyz,pc.forward.xyz);
      }
    )glsl",
-@@ -122,6 +127,7 @@
+@@ -117,11 +124,17 @@
+   if (visibilityCameraSignature != cameraSignature) {
+     visibilityCameraSignature = cameraSignature;
+     visibilityRetiredScores.clear();
++    coverageCaps.clear();
++    invalidateCoverageBlocks();
+   }
+   const auto signature = state.dump();
    if (visibilitySignature == signature)
      return;
++  // Every successful scene change can make a formerly blocked refinement
++  // safe through expanded neighbor geometry. Stable scenes keep refusals cached.
++  invalidateCoverageBlocks();
    const auto started = std::chrono::steady_clock::now();
 +  visibilitySampleCamera=camera;
    const uint32_t rh =
        std::clamp<uint32_t>(static_cast<uint32_t>(std::lround(visibilityWidth / aspect)), 16, 256);
    if (!visibilityTarget || visibilityHeight != rh) {
-@@ -139,7 +145,7 @@
+@@ -139,7 +152,7 @@
      pipeline.rasterization.fillMode = FillMode::Solid;
      pipeline.depthStencil.depthTestEnable = true;
      pipeline.depthStencil.depthWriteEnable = true;
@@ -1027,7 +1417,11 @@
      pipeline.renderPass = visibilityTarget->getRenderPass();
      pipeline.pipelineLayout = visibilityLayout;
      ColorBlendAttachmentState blend;
-@@ -153,7 +159,7 @@
+@@ -150,10 +163,11 @@
+       throw std::runtime_error("Source visibility pipeline unavailable");
+   }
+   const auto clip = cameraClipPlanesFor(visibilityCli, camera);
++  visibilityIndexedView={glm::dvec3(camera),glm::dvec3(target),fov,aspect,clip.nearMeters,clip.farMeters};
    const auto view = glm::lookAt(camera, target, glm::vec3(0, 0, 1));
    auto projection = glm::perspective(glm::radians(fov), aspect, clip.nearMeters, clip.farMeters);
    projection[1][1] *= -1;
@@ -1036,7 +1430,7 @@
                        glm::vec4(0)};
    auto cmd = device->createCommandBuffer();
    auto fence = device->createFence(false);
-@@ -161,7 +167,7 @@
+@@ -161,7 +175,7 @@
    Rect2D area;
    area.extent = {visibilityWidth, rh};
    cmd->beginRenderPass(visibilityTarget->getRenderPass(), visibilityTarget->getFramebuffer(), area,
@@ -1045,7 +1439,7 @@
    Viewport viewport;
    viewport.width = float(visibilityWidth);
    viewport.height = float(rh);
-@@ -189,7 +195,7 @@
+@@ -189,10 +203,10 @@
      metrics[{id, name}] = metric;
      pushColor(static_cast<uint32_t>(registry.size() - 1));
    };
@@ -1053,24 +1447,21 @@
 +  for (int id : indexedRootRanking(camera,target,fov,aspect)) {
      if (resident.contains(id))
        continue;
-     registerSource(id, "", {roots[id].baseEdge, roots[id].baseTexel});
-@@ -242,6 +248,7 @@
-   visibilityAttention = {rw * 3 / 10, rh * 3 / 10, rw * 7 / 10, rh * 7 / 10};
-   const auto weightAt = [&](size_t pixel) {
-     const auto x = uint32_t(pixel % rw), y = uint32_t(pixel / rw);
-+    if (levelIndexEnabled) return 1.0;
-     return x >= visibilityAttention[0] && x < visibilityAttention[2] && y >= visibilityAttention[1] &&
-                    y < visibilityAttention[3]
-                ? 4.0
-@@ -249,6 +256,7 @@
-   };
-   visibilityTotalWeight = double(rw) * rh + 3.0 * (visibilityAttention[2] - visibilityAttention[0]) *
-                                                 (visibilityAttention[3] - visibilityAttention[1]);
-+  if (levelIndexEnabled) visibilityTotalWeight=double(rw)*rh;
-   for (size_t pixel = 0; pixel < size_t(rw) * rh; ++pixel) {
-     const auto id = decode(pixel);
-     if (id)
-@@ -258,7 +266,17 @@
+-    registerSource(id, "", {roots[id].baseEdge, roots[id].baseTexel});
++    registerSource(id, "", {levelIndexEnabled?std::max(roots[id].baseEdge,roots[id].subtreeExpansion):roots[id].baseEdge, roots[id].baseTexel});
+     for (const auto &span : roots[id].spans)
+       cmd->drawIndexed(span.count, 1, prefixIndices + span.first);
+   }
+@@ -209,7 +223,7 @@
+           bundle = &family;
+       if (!bundle)
+         throw std::runtime_error("Source visibility references missing GPU bundle");
+-      registerSource(id, name, {node->edge, node->texel});
++      registerSource(id, name, {indexedSourceEdge(*node), node->texel});
+       for (const auto &span : node->spans) {
+         const auto &part = bundle->parts.at(span.part);
+         cmd->bindVertexBuffer(0, part.vertices);
+@@ -258,7 +272,17 @@
    for (const auto &[key, bins] : visibilityBins)
      visibilityDeficit += visibilitySourcePriority(key, visibilityMetrics.at(key), bins, fov, height);
    visibilityProbes = nlohmann::json::array();
@@ -1089,7 +1480,7 @@
    for (int row = 1; row <= 5; ++row)
      for (int column = 1; column <= 5; ++column) {
        const uint32_t x = rw * column / 6, y = rh * row / 6;
-@@ -277,6 +295,34 @@
+@@ -277,6 +301,34 @@
                                    {"ray_origin", {ray.origin.x, ray.origin.y, ray.origin.z}},
                                    {"ray_direction", {ray.direction.x, ray.direction.y, ray.direction.z}}});
      }
@@ -1119,21 +1510,12 @@
 +    visibilityRegions.push_back({{"row",row},{"column",column},{"source_pixels",quality.size()},
 +      {"base_pixels",base},{"fine_pixels",fine},
 +      {"quality_p90_px",quality.empty()?nlohmann::json():nlohmann::json(quality[std::min(quality.size()-1,size_t(quality.size()*.9))])},
-+      {"metric","projected_original_triangle_edge_or_four_texels_proxy_not_geometric_error"}});
++      {"metric","projected_original_triangle_edge_or_four_texels_or_subtree_expansion_proxy_not_geometric_error"}});
 +  }
    visibilitySignature = signature;
    ++visibilitySamples;
    visibilityMilliseconds =
-@@ -307,7 +353,7 @@
-       {"retirement_holds", visibilityRetiredScores.size()},
-       {"normalization_weight", visibilityTotalWeight},
-       {"attention_rectangle", visibilityAttention},
--      {"attention_weight", 4},
-+      {"attention_weight", levelIndexEnabled ? 1 : 4},
-       {"last_milliseconds", visibilityMilliseconds},
-       {"weighted_quality_deficit", visibilityDeficit},
-       {"score_cache_generation", visibilityScoreCacheGeneration},
-@@ -316,5 +362,10 @@
+@@ -316,5 +368,113 @@
        {"score_cache_entries", visibilitySourceScores.size() + visibilityRootScores.size()},
        {"sources", sources},
        {"probe_pixels", visibilityProbes},
@@ -1144,18 +1526,156 @@
 +      {"clip_planes_m",visibilityClip},
        {"method", "depth-tested current complete source cut, logarithmic per-pixel view-depth bins"}};
  }
++
++// A complete source antichain does not imply geometric coverage: original
++// children may contain holes that are absent from their parent. Check the
++// actual uploaded triangles before replacing the complete visible parent.
++RHIOffscreenTargetPtr coverageTarget;
++RHIPipelinePtr coveragePipeline;
++uint32_t coverageWidth=0,coverageHeight=0;
++uint64_t coverageChecks=0,coverageRejected=0,coverageMissingPixels=0;
++std::set<std::pair<int,std::string>> familyCoverageBlocked;
++std::set<std::pair<int,int>> rootCoverageBlocked;
++void invalidateCoverageBlocks() {
++  for (const auto& [id,depth]:rootCoverageBlocked)
++    if (const auto it=failed.find(id);it!=failed.end() && it->second==depth) failed.erase(it);
++  rootCoverageBlocked.clear();familyCoverageBlocked.clear();
++}
++void clearCoverageTarget() {
++  coveragePipeline.reset();coverageTarget.reset();coverageWidth=coverageHeight=0;
++}
++template<class Draw>
++std::vector<uint8_t> geometricCoverageMask(RHIDevice* device,const VisibilityPush& push,Draw&& draw) {
++  auto cmd=device->createCommandBuffer();auto fence=device->createFence(false);cmd->begin();
++  Rect2D area;area.extent={coverageWidth,coverageHeight};
++  cmd->beginRenderPass(coverageTarget->getRenderPass(),coverageTarget->getFramebuffer(),area,{{0,0,0,0}},0,0);
++  Viewport viewport;viewport.width=float(coverageWidth);viewport.height=float(coverageHeight);viewport.maxDepth=1;
++  cmd->setViewport(viewport);cmd->setScissor(area);cmd->bindPipeline(coveragePipeline);
++  cmd->pushConstants(visibilityLayout,ShaderStageFlagBits::Vertex|ShaderStageFlagBits::Fragment,0,sizeof(push),&push);
++  draw(cmd);cmd->endRenderPass();cmd->end();device->submit({cmd},{},{},fence);fence->wait();
++  std::vector<uint8_t> pixels;uint32_t width=0,height=0;
++  if (!coverageTarget->readbackToBuffer(pixels,width,height) || width!=coverageWidth || height!=coverageHeight)
++    throw std::runtime_error("Geometric coverage readback failed");
++  return pixels;
++}
++bool preservesGeometricCoverage(RHIDevice* device,int id,const std::string& parent,const Resident& candidate,
++                                glm::vec3 camera,glm::vec3 target,float fov,float aspect,int height) {
++  if (!levelIndexEnabled || !visibilityEnabled) return true;
++  const uint32_t h=std::clamp(height,16,2160),w=std::clamp(int(std::lround(h*aspect)),16,4096);
++  if (!coverageTarget || coverageWidth!=w || coverageHeight!=h) {
++    clearCoverageTarget();coverageWidth=w;coverageHeight=h;
++    coverageTarget=device->createOffscreenTarget(w,h,Format::R8G8B8A8_UNORM);
++    if (!coverageTarget) throw std::runtime_error("Geometric coverage target unavailable");
++    GraphicsPipelineDesc pipeline;pipeline.shaders={visibilityVertexShader,visibilityFragmentShader};
++    pipeline.vertexInput.bindings={Vertex::binding()};
++    pipeline.vertexInput.attributes={Vertex::attributes()[0],Vertex::attributes()[4]};
++    pipeline.primitiveTopology=PrimitiveTopology::TriangleList;pipeline.rasterization.cullMode=CullMode::None;
++    pipeline.rasterization.fillMode=FillMode::Solid;pipeline.depthStencil.depthTestEnable=true;
++    pipeline.depthStencil.depthWriteEnable=true;pipeline.depthStencil.depthCompareOp=CompareOp::Greater;pipeline.renderPass=coverageTarget->getRenderPass();
++    pipeline.pipelineLayout=visibilityLayout;ColorBlendAttachmentState blend;blend.blendEnable=false;
++    pipeline.colorBlendAttachments.push_back(blend);coveragePipeline=device->createGraphicsPipeline(pipeline);
++    if (!coveragePipeline) throw std::runtime_error("Geometric coverage pipeline unavailable");
++  }
++  const auto clip=cameraClipPlanesFor(visibilityCli,camera);
++  auto projection=glm::perspective(glm::radians(fov),aspect,clip.nearMeters,clip.farMeters);projection[1][1]*=-1;
++  VisibilityPush push{reverseSceneDepth(projection*glm::lookAt(camera,target,glm::vec3(0,0,1))),glm::vec4(camera,0),
++                      glm::vec4(glm::normalize(target-camera),0),glm::vec4(1,0,0,0)};
++  const auto nodeDraw=[&](const auto& cmd,const Resident& root,const std::string& name) {
++    const auto* node=sourceRecord(root,name);const Resident* bundle=root.sources.contains(name)?&root:nullptr;
++    for (const auto& [key,family]:root.families) if (family.sources.contains(name)) bundle=&family;
++    if (!node || !bundle) throw std::runtime_error("Missing parent coverage geometry");
++    for (const auto& span:node->spans) {
++      const auto& part=bundle->parts.at(span.part);cmd->bindVertexBuffer(0,part.vertices);cmd->bindIndexBuffer(part.indices);
++      cmd->drawIndexed(span.count,1,span.first);
++    }
++  };
++  const auto visibleRoots=indexedRootRanking(camera,target,fov,aspect);
++  const auto sceneMask=[&](const auto& cmd,bool replacement) {
++    const auto color=[&](bool marked) {
++      auto colored=push;colored.color=glm::vec4(marked?1.f:0.f,0,0,0);
++      cmd->pushConstants(visibilityLayout,ShaderStageFlagBits::Vertex|ShaderStageFlagBits::Fragment,0,sizeof(colored),&colored);
++    };
++    cmd->bindVertexBuffer(0,visibilityBaseVertices);cmd->bindIndexBuffer(visibilityBaseIndices);
++    // Context/sky/procedural fill cannot prove OSGB landscape coverage. Only
++    // original landscape sources participate, otherwise an exposed flat ground
++    // proxy could turn a real landscape hole into a false positive.
++
++    for (int root:visibleRoots) {
++      if (resident.contains(root) || (replacement && root==id && parent.empty())) continue;
++      color(replacement || (root==id && parent.empty()));
++      for (const auto& span:roots[root].spans) cmd->drawIndexed(span.count,1,prefixIndices+span.first);
++    }
++    for (const auto& [root,ready]:resident) {
++      for (const auto& name:ready.sourceCut->visible()) {
++        const bool replaced=root==id && (parent.empty() || name==parent);
++        if (replacement && replaced) continue;
++        color(replacement || replaced);nodeDraw(cmd,ready,name);
++      }
++    }
++    if (replacement) {
++      color(true);
++      for (const auto& part:candidate.parts) {
++        cmd->bindVertexBuffer(0,part.vertices);cmd->bindIndexBuffer(part.indices);cmd->drawIndexed(part.indexCount);
++      }
++    }
++  };
++  // The old mask marks only currently visible parent pixels, with the complete
++  // current scene as depth occluders. The proposed mask includes every remaining
++  // source plus the candidate. Occluded parent fragments must not reject useful
++  // refinement, and an unchanged neighbor is valid geometry behind a silhouette.
++  const auto old=geometricCoverageMask(device,push,[&](const auto& cmd){sceneMask(cmd,false);});
++  const auto replacement=geometricCoverageMask(device,push,[&](const auto& cmd){sceneMask(cmd,true);});
++  const auto loss=ZhumadianNativeCoverageMask::coverageInteriorLoss(old,replacement,w,h);++coverageChecks;
++  if (loss) {++coverageRejected;coverageMissingPixels+=loss;return false;}
++  return true;
++}
 --- a/native/zhumadian_native_visibility_budget.inl
 +++ b/native/zhumadian_native_visibility_budget.inl
-@@ -69,7 +69,7 @@
+@@ -37,6 +37,9 @@
+   if (!visibilityScheduling() || cost > rootBudget(requestId) || !(score > 0) ||
+       !visibilityRequestAllowed(requestId, requestParent, score))
+     return {};
++  const auto* requestNode=requestParent.empty() || !resident.contains(requestId)?nullptr:sourceRecord(resident.at(requestId),requestParent);
++  const bool coverageRequest=levelIndexEnabled && ((requestParent.empty() && !resident.contains(requestId)) ||
++                             (requestNode && indexedCoverageNeeded(*requestNode)));
+   uint64_t used = payload, own = resident.contains(requestId) ? resident.at(requestId).payload : 0;
+   size_t rootCount=resident.size()+size_t(requestParent.empty() && !resident.contains(requestId));
+   const auto fits = [&] {
+@@ -55,21 +58,29 @@
+   std::vector<Candidate> candidates;
+   for (const auto &[id, ready] : resident) {
+     for (const auto &[parent, family] : ready.families) {
++      if (levelIndexEnabled && !parentPagesAvailable(ready,parent)) continue;
+       auto subtree = visibilitySubtree(ready, parent);
+       if (id == requestId && (requestParent.empty() || subtree.contains(requestParent)))
+         continue;
+       const auto *node = sourceRecord(ready, parent);
+       if (!node)
+         throw std::logic_error("Visibility plan missing parent");
++      if (family.indexCoverageBridge && indexedCoverageNeeded(*node)) continue;
+       const double benefit =
+-          std::max(0.0, visibilityPriority(id, parent, {node->edge, node->texel}, fov, height, &subtree) -
++          std::max(0.0, visibilityPriority(id, parent, {indexedSourceEdge(*node), node->texel}, fov, height, &subtree) -
+                             visibilityCurrentPriority(id, fov, height, &subtree));
+-      if (benefit * 2 < score)
++      if (coverageRequest || benefit * 2 < score)
+         candidates.push_back({id, parent, benefit, std::move(subtree)});
      }
-     if (id != requestId) {
+-    if (id != requestId) {
++    const auto visibleRoot=visibilityBins.lower_bound({id,""});
++    const bool covered=visibleRoot!=visibilityBins.end() && visibleRoot->first.root==id;
++    const bool bridge=std::any_of(ready.families.begin(),ready.families.end(),[&](const auto& entry) {
++      const auto* parent=sourceRecord(ready,entry.first);
++      return entry.second.indexCoverageBridge && parent && indexedCoverageNeeded(*parent);
++    });
++    if (id != requestId && !(levelIndexEnabled && (covered || bridge))) {
        const double benefit =
 -          std::max(0.0, visibilityRootPriority(id, fov, height) - visibilityCurrentPriority(id, fov, height));
 +          std::max(0.0, scheduledRootPriority(id, fov, height) - visibilityCurrentPriority(id, fov, height));
        if (benefit * 2 < score)
          candidates.push_back({id, "", benefit, {}});
      }
-@@ -139,15 +139,15 @@
+@@ -139,15 +150,15 @@
    return true;
  }
  bool visibilityRootEligible(int id, int depth, float fov, int height) const {
@@ -1175,6 +1695,19 @@
          .has_value();
    return !failed.contains(id) || failed.at(id) != depth;
  }
+--- a/native/zhumadian_native_visibility_scores.inl
++++ b/native/zhumadian_native_visibility_scores.inl
+@@ -89,8 +89,8 @@
+       score += visibilitySourcePriority(it->first, visibilityMetrics.at(it->first), it->second, fov, height);
+   return score;
+ }
+-double visibilityRootPriority(int id, float fov, int height) const {
+-  const VisibilityMetric metric{roots.at(id).baseEdge, roots.at(id).baseTexel};
++double visibilityRootPriority(int id, float fov, int height, float extraEdge=0) const {
++  const VisibilityMetric metric{std::max(roots.at(id).baseEdge,extraEdge), roots.at(id).baseTexel};
+   if (!std::isfinite(metric.edge) || !std::isfinite(metric.texel) || !std::isfinite(fov)) {
+     double score = 0;
+     for (auto it = visibilityBins.lower_bound({id, ""}); it != visibilityBins.end() && it->first.root == id; ++it)
 --- /dev/null
 +++ b/native/zhumadian_owned_runtime.inl
 @@ -0,0 +1,362 @@
@@ -1542,7 +2075,7 @@
 +};
 --- /dev/null
 +++ b/native/zhumadian_source_memory.inl
-@@ -0,0 +1,280 @@
+@@ -0,0 +1,318 @@
 +uint64_t sourceMemoryMipBytes(uint32_t w,uint32_t h) {uint64_t bytes=0;for (;;) {bytes+=uint64_t(w)*h*4;if (w==1 && h==1) return bytes;w=std::max(1u,w/2);h=std::max(1u,h/2);}}
 +// Read-only loopback adapter. No asset/cache creation, conversion or cleanup fallback.
 +// The independent source service owns bounded OSGB decoding and complete-family leases.
@@ -1640,14 +2173,25 @@
 +        : std::string(family?"/api/lod-family-plan/":"/api/lod-plan/")+suffix;
 +    const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(120);
 +    SourceHttpResult response;
++    unsigned sourcePollDelay=15;
 +    do {
 +      response=sourceMemoryHTTP(planRoute,17ull*1048576);
 +      if (response.status!=202) break;
 +      if (std::chrono::steady_clock::now()>deadline) throw std::runtime_error("Read-only source plan timeout");
-+      std::this_thread::sleep_for(std::chrono::milliseconds(300));
++      std::this_thread::sleep_for(std::chrono::milliseconds(sourcePollDelay));
++      sourcePollDelay=std::min(150u,sourcePollDelay*2);
 +    } while (true);
 +    if (response.status!=200) throw std::runtime_error("Original source plan rejected: HTTP "+std::to_string(response.status));
 +    const auto plan=nlohmann::json::parse(response.data);const auto& stamp=plan.at("marker");
++    if (indexed && stamp.value("schema",std::string{})=="zhumadian.indexed_quality_limit.v1") {
++      if (plan.at("schema")!="xnby.source_bundle_plan.v1" || plan.at("verification")!="metadata_only" ||
++          plan.at("availabilityVerified")!=false || stamp.at("tile_id")!=tile ||
++          stamp.at("replacement_parent")!=parent || stamp.at("complete_parent_retained")!=true ||
++          stamp.at("reason_code")!="lossless_texture_or_page_limit")
++        throw std::runtime_error("Invalid indexed quality limit outcome");
++      result.error="indexed lossless texture/page budget; complete parent retained";
++      return result;
++    }
 +    if (plan.at("schema")!="xnby.source_bundle_plan.v1" || plan.at("verification")!="metadata_only" ||
 +        plan.at("availabilityVerified")!=false || (stamp.at("source_format")!="osgb_memory_png_v1" && stamp.at("source_format")!="osgb_memory_png_crop_v2") ||
 +        stamp.at("tile_id")!=tile || stamp.at("texture_policy")!="original_pixels_v1" ||
@@ -1794,18 +2338,45 @@
 +    for (size_t part=0;part<ownership.size();++part) {auto& spans=ownership[part];std::sort(spans.begin(),spans.end());uint64_t next=0;
 +      for (const auto [first,count]:spans) {if (first!=next) throw std::runtime_error("Original spans overlap or leave gaps");next+=count;}
 +      if (next!=result.parts[part].indices.size()) throw std::runtime_error("Original page triangles unowned");}
-+    nlohmann::json master,catalog;std::ifstream masterInput(resolveProjectPath("data/showcase/zhumadian_native_hierarchy.json"));masterInput>>master;
++    nlohmann::json master,catalog;std::string catalogSHA;std::ifstream masterInput(resolveProjectPath("data/showcase/zhumadian_native_hierarchy.json"));masterInput>>master;
 +    for (const auto& root:master.at("root_records")) if (root.at("tile_id")==tile) {
 +      const std::string expected="assets/showcase/runtime/zhumadian/native_hierarchy/tile_"+std::to_string(tile)+".json";
 +      if (root.at("catalog")!=expected) throw std::runtime_error("Original topology path differs");
 +      std::ifstream input(resolveProjectPath(expected),std::ios::binary);std::vector<uint8_t> raw((std::istreambuf_iterator<char>(input)),{});
-+      if (sourceMemorySHA(raw.data(),raw.size())!=root.at("sha256").get<std::string>()) throw std::runtime_error("Original topology SHA changed");catalog=nlohmann::json::parse(raw);break;
++      catalogSHA=sourceMemorySHA(raw.data(),raw.size());
++      if (catalogSHA!=root.at("sha256").get<std::string>()) throw std::runtime_error("Original topology SHA changed");catalog=nlohmann::json::parse(raw);break;
 +    }
 +    result.sourceRoot=catalog.at("root");for (const auto& record:catalog.at("nodes"))
 +      result.topology.push_back({record.at("name"),record.at("children").get<std::vector<std::string>>()});
-+    hongtu::renderer::NativeSourceFrontier::Cut cut;for (const auto& [name,node]:result.sources) {
++    std::map<std::string,nlohmann::json> indexedSources;
++    std::ifstream boundsInput(resolveProjectPath("data/showcase/level_index/tile_"+std::to_string(tile)+".json"));
++    if (boundsInput) {
++      nlohmann::json exact;boundsInput>>exact;
++      if (exact.at("schema")!="zhumadian.level_bounds.tile.v1" || exact.at("complete")!=true ||
++          exact.at("tile")!=tile || exact.at("catalogSHA256")!=catalogSHA)
++        throw std::runtime_error("Exact source subtree index identity differs");
++      for (const auto& row:exact.at("nodes")) if (result.sources.contains(row.at("name").get<std::string>()))
++        if (!indexedSources.emplace(row.at("name").get<std::string>(),row).second)
++          throw std::runtime_error("Duplicate exact source subtree bounds");
++      if (indexedSources.size()!=result.sources.size()) throw std::runtime_error("Missing exact source subtree bounds");
++    }
++    hongtu::renderer::NativeSourceFrontier::Cut cut;for (auto& [name,node]:result.sources) {
 +      auto found=std::find_if(catalog.at("nodes").begin(),catalog.at("nodes").end(),[&](const auto& n){return n.at("name")==name;});
-+      if (found==catalog.at("nodes").end() || found->at("children")!=node.children) throw std::runtime_error("Original topology differs from source");cut.insert(name);
++      if (found==catalog.at("nodes").end() || found->at("children")!=node.children) throw std::runtime_error("Original topology differs from source");
++      if (!indexedSources.empty()) {
++        const auto& row=indexedSources.at(name);
++        if (row.at("sourceSHA256")!=found->at("sha256") || row.at("children")!=node.children)
++          throw std::runtime_error("Indexed source subtree belongs to another original node");
++        for (int axis=0;axis<3;++axis) {
++          node.subtreeLow[axis]=row.at("subtreeMin").at(axis);node.subtreeHigh[axis]=row.at("subtreeMax").at(axis);
++          if (!std::isfinite(node.subtreeLow[axis]+node.subtreeHigh[axis]) ||
++              node.subtreeLow[axis]>node.low[axis]+.01f || node.subtreeHigh[axis]<node.high[axis]-.01f)
++            throw std::runtime_error("Indexed subtree omits original rendered geometry");
++          node.expansion=std::max({node.expansion,node.low[axis]-node.subtreeLow[axis],node.subtreeHigh[axis]-node.high[axis]});
++        }
++        node.hasSubtreeBounds=true;
++      }
++      cut.insert(name);
 +    }
 +    hongtu::renderer::NativeSourceFrontier checked(result.topology,family?parent:result.sourceRoot,cut,result.payload,384ull*1048576);
 +    result.valid=result.frontier>0 && std::isfinite(result.edge) && result.edge>0 && std::isfinite(result.texel) && result.texel>0;

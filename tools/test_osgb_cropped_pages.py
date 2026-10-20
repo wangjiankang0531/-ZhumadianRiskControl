@@ -33,6 +33,7 @@ class CropProtocol(unittest.TestCase):
   d,p=fixture();d['images'][0].update(originalWidth=4,originalHeight=4,sourceRect=[1,2,1,1]);part,files,metrics=page(d,memoryview(p),d['meshes'][0],'part_000','Tile_1_L16_0u.osgb');self.assertEqual(part['source_image']['uv_transform'],[4,4,-1,-2]);self.assertEqual(part['gpu_payload_bytes'],208);self.assertEqual(files['geometry.bin'][0],p[4:]);self.assertAlmostEqual(metrics[3][0],.25)
  def test_large_single_triangle_seam_and_mipmapped_crop_refused(self):
   d,p=fixture();image=dict(width=4096,height=4096);m=d['meshes'][0]
+  m['sampler'].update(wrapS=10497,wrapT=10497)
   with self.assertRaisesRegex(ValueError,'seam'):plan_mesh(m,image,memoryview(p))
   m['sampler']['minFilter']=9987
   with self.assertRaisesRegex(ValueError,'mip'):plan_mesh(m,image,memoryview(p))
@@ -58,4 +59,46 @@ class ReaderDispatch(unittest.TestCase):
   d['vertices']=4;d['payloadBytes']=len(p);m=d['meshes'][0];m['positions'].update(bytes=48,count=12);m['uv'].update(offset=52,bytes=32,count=8);m['indices'].update(offset=84)
   calls=[];reader=PinnedCropReader.__new__(PinnedCropReader);reader._invoke=lambda node,record,mode=None:(calls.append(mode) or frame(d,p))
   actual,data=reader(1,'Tile_1_L16_0u.osgb',{'bytes':100});self.assertEqual(calls,[None]);self.assertEqual(actual['vertices'],3);self.assertEqual(actual['triangles'],1)
+class GeometryOnlyBudgetPreflight(unittest.TestCase):
+ def test_large_source_refuses_oversized_combined_pixels_before_any_crop_read(self):
+  from osgb_cropped_pages import PinnedCropReader,SourceImageNeedsCrop
+  import array
+  d,_=CropProtocol().geometry();uv=[]
+  for y in range(8):
+   for x in range(8):uv.extend((x/8,y/8,(x+1)/8,y/8,x/8,(y+1)/8))
+  positions=array.array('f',[0.0]*(192*3)).tobytes();coords=array.array('f',uv).tobytes();indices=array.array('I',range(192)).tobytes();payload=positions+coords+indices
+  d.update(vertices=192,triangles=64,payloadBytes=len(payload));d['images'][0].update(width=8192,height=8192)
+  mesh=d['meshes'][0];mesh['positions']=dict(offset=0,bytes=len(positions),count=576);mesh['uv']=dict(offset=len(positions),bytes=len(coords),count=384);mesh['indices']=dict(offset=len(positions)+len(coords),bytes=len(indices),count=192);mesh['sampler'].update(wrapS=33071,wrapT=33071,minFilter=9729)
+  calls=[];reader=PinnedCropReader.__new__(PinnedCropReader)
+  def invoke(node,record,mode=None):
+   calls.append(mode)
+   if mode is None:raise SourceImageNeedsCrop('bounded source crop required')
+   if mode=='--geometry-only':return CropProtocol().encoded(d,payload)
+   raise AssertionError('RGBA must not be fetched for an impossible complete RAM plan')
+  reader._invoke=invoke
+  with self.assertRaisesRegex(ValueError,'unchanged RAM payload'):reader(1,'Tile_1_L16_0u.osgb',{'bytes':100})
+  self.assertEqual([None,'--geometry-only'],calls)
+
+class ClampBoundaryPlanning(unittest.TestCase):
+ def test_clamped_source_borders_keep_original_uv_and_bilinear_pixels(self):
+  import array,math
+  from unittest.mock import patch
+  coords=[(-.1,-.1),(.2,-.1),(-.1,.2),(.8,.8),(1.1,.8),(.8,1.1),(.8,-.1),(1.1,-.1),(1.1,.2),(-.1,.8),(.2,1.1),(-.1,1.1)]
+  uv=array.array('f',[c for pair in coords for c in pair]).tobytes();indices=array.array('I',range(12)).tobytes();payload=memoryview(uv+indices)
+  mesh=dict(uv=dict(offset=0,bytes=len(uv),count=24),indices=dict(offset=len(uv),bytes=len(indices),count=12),sampler=dict(minFilter=9729,magFilter=9729,wrapS=10496,wrapT=33071))
+  image=[[float(y*16+x) for x in range(16)] for y in range(16)]
+  def linear(data,u,v):
+   h,w=len(data),len(data[0]);x=max(0,min(w-1,u*w-.5));y=max(0,min(h-1,v*h-.5));a,b=math.floor(x),math.floor(y);dx,dy=x-a,y-b
+   return sum(data[min(h-1,b+j)][min(w-1,a+i)]*(dx if i else 1-dx)*(dy if j else 1-dy) for i in (0,1) for j in (0,1))
+  with patch('osgb_cropped_pages.MIB',16):pages=plan_mesh(mesh,dict(width=16,height=16),payload)
+  self.assertEqual(list(range(4)),sorted(t for ids,_,_ in pages for t in ids))
+  original=struct.unpack('<24f',uv)
+  for ids,refs,(x,y,w,h) in pages:
+   cropped=[row[x:x+w] for row in image[y:y+h]]
+   self.assertLessEqual(len(refs)*64+len(ids)*12+mip_bytes(w,h),512)
+   for tri in ids:
+    for a,b,c in ((1,0,0),(0,1,0),(0,0,1),(.2,.3,.5),(.5,.5,0)):
+     u=sum(weight*original[(tri*3+k)*2] for k,weight in enumerate((a,b,c)));v=sum(weight*original[(tri*3+k)*2+1] for k,weight in enumerate((a,b,c)))
+     self.assertAlmostEqual(linear(image,u,v),linear(cropped,(u*16-x)/w,(v*16-y)/h),places=10)
+
 if __name__=='__main__':unittest.main()

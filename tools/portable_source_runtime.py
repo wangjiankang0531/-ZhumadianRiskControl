@@ -6,6 +6,7 @@ No converter, source write, public bind or automatic process restart is enabled.
 """
 from __future__ import annotations
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import http.server
 import json
@@ -14,6 +15,7 @@ from pathlib import Path, PurePosixPath
 import re
 import secrets
 import socket
+import stat
 import sys
 import threading
 from urllib.parse import urlsplit
@@ -34,9 +36,9 @@ def regular(path, root, *, directory=False):
     parts = path.relative_to(root).parts
     for entry in (root, *(root.joinpath(*parts[:i]) for i in range(1, len(parts)+1))):
         fact = entry.lstat()
-        if entry.is_symlink() or getattr(fact, "st_file_attributes", 0) & 0x400:
+        if stat.S_ISLNK(fact.st_mode) or getattr(fact, "st_file_attributes", 0) & 0x400:
             raise ValueError("linked runtime path is not allowed")
-    if not (path.is_dir() if directory else path.is_file()):
+    if not (stat.S_ISDIR(fact.st_mode) if directory else stat.S_ISREG(fact.st_mode)):
         raise ValueError("unexpected runtime path kind")
     return path
 
@@ -81,9 +83,22 @@ def load_package(root):
                 or type(identity["bytes"]) is not int or not 0 <= identity["bytes"] <= 512*1048576
                 or not isinstance(identity["sha256"], str) or not re.fullmatch("[0-9a-f]{64}", identity["sha256"])):
             raise ValueError("invalid package payload identity")
-        path = regular(root/name, root)
-        if path.stat().st_size != identity["bytes"] or digest(path.read_bytes()) != identity["sha256"]:
+    def verify_payload(item):
+        name,identity=item
+        path=regular(root/name,root)
+        if path.stat().st_size!=identity["bytes"]:
             raise ValueError("package payload identity differs: "+name)
+        value=hashlib.sha256()
+        with path.open("rb") as stream:
+            while block:=stream.read(1048576):
+                value.update(block)
+        if value.hexdigest()!=identity["sha256"]:
+            raise ValueError("package payload identity differs: "+name)
+    # All declared files and all ancestors are checked on every launch. Four
+    # independent read streams cap buffers at 4 MiB without a trust cache.
+    with ThreadPoolExecutor(max_workers=4,thread_name_prefix="package_verify") as pool:
+        for _ in pool.map(verify_payload,files.items()):
+            pass
     actual = set()
     for directory in PAYLOAD_DIRS:
         folder = regular(root/directory, root, directory=True)

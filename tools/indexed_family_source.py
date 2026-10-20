@@ -3,13 +3,14 @@ from collections import OrderedDict
 import hashlib
 import json
 from pathlib import Path
+from types import MappingProxyType
 import re
 from urllib.parse import parse_qs, urlsplit
 
 from landscape_level_index import Camera, select_cut
 from native_source_frontier import SourceForest
 from osgb_cropped_pages import build_bundle
-from osgb_memory_pages import canonical, sha
+from osgb_memory_pages import SourceBundle, canonical, sha
 from readonly_source_memory_store import MemorySourceStore, MemoryStoreBusy, ordinary
 from source_memory_http import MemorySourceHTTP
 
@@ -72,13 +73,27 @@ class IndexedFamilyStore(MemorySourceStore):
                         return build_bundle(tile, catalog, source_reader, parent=request['parent'],
                                             selection=request['selection'], recipe_identity=recipe_identity)
                     except ValueError as error:
-                        if not any(text in str(error) for text in ('64-page bound', 'delivery bound', 'bundle budget')):
+                        limits=('64-page bound', 'delivery bound', 'bundle budget',
+                                'source UV footprint crosses a periodic or image seam',
+                                'mipmapped original image requires per-mip crop gutters',
+                                'source mesh exceeds unchanged physical-page count',
+                                'source exceeds unchanged physical-page count',
+                                'one original triangle cannot fit the unchanged page limit',
+                                'complete source node exceeds unchanged RAM payload limit')
+                        if not any(text in str(error) for text in limits):
                             raise
                         data = self.index_provider.tile(tile)
                         nodes = {n['name']: n for n in data['nodes']}
                         direct = nodes[request['parent']]['children']
                         if set(request['selection']) == set(direct):
-                            raise
+                            with self.lock:
+                                request['selectionLimitedByBudget']=True
+                            raw=canonical(dict(schema='zhumadian.indexed_quality_limit.v1',tile_id=tile,
+                                               replacement_parent=request['parent'],complete_parent_retained=True,
+                                               reason_code='lossless_texture_or_page_limit',index_identity=index_provider.identity))
+                            # A successful metadata-only outcome, without a lease or fake source cut.
+                            return SourceBundle(raw,MappingProxyType({}),
+                                                f"family_tile_{tile}_{sha(request['parent'].encode())[:16]}",len(raw))
                         max_depth = max(nodes[n]['depth'] for n in request['selection'])-1
                         selected, stats = select_cut({**data, 'roots': direct}, request['camera'],
                                                      request['selectedPixels'], max_depth=max_depth)

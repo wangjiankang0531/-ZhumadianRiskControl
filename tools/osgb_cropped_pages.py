@@ -69,7 +69,14 @@ def plan_mesh(mesh, image, payload):
         refs = sorted({indices[t*3+k] for t in ids for k in range(3)})
         x = [uv[i*2]*width-.5 for i in refs]
         y = [uv[i*2+1]*height-.5 for i in refs]
-        return refs, (min(x), min(y)), (max(x), max(y))
+        low,high=[min(x),min(y)],[max(x),max(y)]
+        # Use the same legacy CLAMP -> CLAMP_TO_EDGE contract as MemoryGltf.
+        # Only planning footprints are clamped; original float32 UVs stay unchanged.
+        for axis,(key,dim) in enumerate(zip(('wrapS','wrapT'),(width,height))):
+            if sampler[key] in (10496,33071):
+                low[axis]=max(-.5,min(dim-.5,low[axis]))
+                high[axis]=max(-.5,min(dim-.5,high[axis]))
+        return refs,low,high
 
     def split(ids):
         refs, low, high = footprint(ids)
@@ -81,7 +88,8 @@ def plan_mesh(mesh, image, payload):
         else:
             if not no_mips:
                 raise ValueError("mipmapped original image requires per-mip crop gutters")
-            if any(a < 1 or b > dim-2 for a,b,dim in zip(low,high,(width,height))):
+            if any((a<1 or b>dim-2) and sampler[key] not in (10496,33071)
+                   for a,b,dim,key in zip(low,high,(width,height),('wrapS','wrapT'))):
                 raise ValueError("source UV footprint crosses a periodic or image seam")
             x, y = max(0, math.floor(low[0])-1), max(0, math.floor(low[1])-1)
             right, top = min(width, math.ceil(high[0])+2), min(height, math.ceil(high[1])+2)
@@ -167,13 +175,22 @@ class PinnedCropReader(PinnedMemoryReader):
             images=[{**image,"originalWidth":image["width"],"originalHeight":image["height"],
                      "sourceRect":[0,0,image["width"],image["height"]]} for image in desc["images"]]
             return {**desc,"schema":"zhumadian.osgb.crop_memory.v1","images":images},payload
+        planned=[(mesh,plan_mesh(mesh,desc['images'][mesh['image']],payload)) for mesh in desc['meshes']]
+        # Geometry-only plans determine the exact compact RAM size before any
+        # oversized source-image crop is requested or accumulated.
+        if sum(len(pages) for _,pages in planned)>64:
+            raise ValueError('source exceeds unchanged physical-page count')
+        estimated=sum(len(refs)*20+len(triangles)*12+crop[2]*crop[3]*4
+                      for _,pages in planned for triangles,refs,crop in pages)
+        if estimated>MAX_PAYLOAD:
+            raise ValueError('complete source node exceeds unchanged RAM payload limit')
         images, meshes, blob = [], [], bytearray()
-        for mesh in desc["meshes"]:
+        for mesh,mesh_pages in planned:
             image = desc["images"][mesh["image"]]
             original_positions = payload[mesh["positions"]["offset"]:mesh["positions"]["offset"]+mesh["positions"]["bytes"]]
             original_uv = payload[mesh["uv"]["offset"]:mesh["uv"]["offset"]+mesh["uv"]["bytes"]]
             original_indices = floats(payload,mesh["indices"],"I")
-            for triangles,refs,crop in plan_mesh(mesh,image,payload):
+            for triangles,refs,crop in mesh_pages:
                 if full_pixels:
                     x,y,w,h=crop;stride=image['width']*4;offset=image['offset']
                     pixels=b''.join(payload[offset+(y+row)*stride+x*4:offset+(y+row)*stride+(x+w)*4] for row in range(h))
