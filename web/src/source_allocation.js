@@ -13,3 +13,13 @@ export function chooseRefinementCandidate(candidates){
  }
  return best;
 }
+
+
+// Indexed mode follows the native coverage phase: seed still-visible roots
+// before spending the remaining budget on local refinement. Merely learning a
+// cost is not a reason to abandon a useful in-flight complete source load.
+export function chooseIndexedCoverageCandidate(candidates,hasRoot){
+ const refinement=chooseRefinementCandidate(candidates);let coverage=null;
+ for(const c of candidates)if(c.kind==='root'&&!hasRoot(c.id)&&c.score>0&&(!coverage||c.score>coverage.score||c.score===coverage.score&&c.key<coverage.key))coverage=c;
+ return coverage??refinement;
+}

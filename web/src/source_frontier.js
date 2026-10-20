@@ -1,7 +1,8 @@
-import {isMemorySourcePart,memoryImageInfo,isMemoryFamily,isMemoryFormat,MEMORY_ROOT_SCHEMA} from './source_page_format.js';
+import {isMemorySourcePart,memoryImageInfo,isMemoryFamily,isIndexedMemoryFamily,isMemoryFormat,MEMORY_ROOT_SCHEMA} from './source_page_format.js';
 import {validateRuntimeSourceTexture,sourcePageGeometryBytes} from './prepared_source_page.js';
 import {webSourceGeometryBytes,validateLoadedSourceGeometry} from './source_geometry_layout.js';
 import {sourceRestorationFootprint} from './source_page_budget.js';
+import {validateSourceAgainstLevelTile,validateIndexedSourceReplacement} from './source_level_index.js';
 import {Vector3,Box3,Frustum,Matrix4,ClampToEdgeWrapping} from 'three';
 
 export function validateSourcePart(part,mesh){if(!mesh?.geometry?.index||mesh.geometry.index.count!==part.indices||mesh.geometry.attributes.position.count!==part.vertices||!/^part_\d{3}$/.test(part.directory)||!Number.isFinite(part.gpu_payload_bytes)||part.gpu_payload_bytes<=0||part.gpu_payload_bytes>32*1048576)throw Error('源模型分批不一致');
@@ -42,14 +43,14 @@ export function validateSourceBundle(marker,meshes){
 // Initial cut was audited against the complete source forest by the converter.
 // Every later edit replaces exactly one visible parent with all direct children.
 export class SourceFrontier {
-  constructor(marker,meshes){validateSourceBundle(marker,meshes);this.bundles=new Map([['$root',{marker,meshes}]]);this.visible=new Set(marker.source_nodes.map(n=>n.name));this.pending=null;this.sequence=0;this.cutVersion=0;}
+  constructor(marker,meshes,{topology=null}={}){validateSourceBundle(marker,meshes);if(topology)validateSourceAgainstLevelTile(topology,marker);this.topology=topology;this.topologyNodes=topology?new Map(topology.nodes.map(n=>[n.name,n])):null;this.bundles=new Map([['$root',{marker,meshes}]]);this.visible=new Set(marker.source_nodes.map(n=>n.name));this.pending=null;this.sequence=0;this.cutVersion=0;}
   get bytes(){return this.bytesFor(this.visible);}
   get retainedPayloadBytes(){return [...this.bundles.values()].reduce((n,b)=>n+b.marker.parts.filter(p=>b.meshes.has(p.directory)).reduce((sum,p)=>sum+p.gpu_payload_bytes,0),0);}
   bytesFor(visible,bundles=this.bundles){let total=0;for(const bundle of bundles.values()){const active=new Set(bundle.marker.source_nodes.filter(n=>visible.has(n.name)).flatMap(n=>n.spans.map(s=>s.part)));for(const part of bundle.marker.parts)if(active.has(part.directory))total+=part.gpu_payload_bytes;}return total;}
   copyForPlanning(){return Object.assign(Object.create(Object.getPrototypeOf(this)),this,{bundles:new Map(this.bundles),visible:new Set(this.visible),pending:null,planningOnly:true});}
   rollbackPlan(parent){
     if(!this.bundles.has(parent))return null;
-    const nodes=this.nodes,subtree=new Set();const visit=name=>{if(subtree.has(name))return;subtree.add(name);for(const child of nodes.get(name)?.node.children??[])visit(child);};visit(parent);
+    const nodes=this.nodes,subtree=new Set();const visit=name=>{if(subtree.has(name))return;subtree.add(name);for(const child of this.topologyNodes?.get(name)?.children??nodes.get(name)?.node.children??[])visit(child);};visit(parent);
     const visible=new Set(this.visible);for(const name of subtree)visible.delete(name);visible.add(parent);
     const bundles=new Map([...this.bundles].filter(([key])=>!subtree.has(key)));
     const missingPages=[];for(const bundle of bundles.values()){const needed=new Set(bundle.marker.source_nodes.filter(n=>visible.has(n.name)).flatMap(n=>n.spans.map(s=>s.part)));for(const part of bundle.marker.parts)if(needed.has(part.directory)&&!bundle.meshes.has(part.directory))missingPages.push({bundle,part});}
@@ -59,13 +60,14 @@ export class SourceFrontier {
   get maxDepth(){const nodes=this.nodes;return Math.max(...[...this.visible].map(n=>nodes.get(n).node.depth));}
   begin(marker,remainingBytes){
     const parent=this.nodes.get(marker.replacement_parent)?.node,children=marker.source_nodes?.map(n=>n.name)??[];
-    if(this.pending||!parent||!this.visible.has(parent.name)||!(marker.schema==='xnby.osgb_native_family.v1'||isMemoryFamily(marker))||marker.source_format!==this.nodes.get(parent.name)?.bundle.marker.source_format||!marker.complete_sibling_family||marker.texture_policy!=='original_pixels_v1'||marker.parent_source_sha256!==parent.source_sha256||children.length!==parent.children.length||new Set(children).size!==children.length||children.some(n=>!parent.children.includes(n))||!marker.parts?.length||marker.parts.length>64||!Number.isSafeInteger(marker.gpu_payload_bytes)||marker.gpu_payload_bytes<=0||marker.gpu_payload_bytes>remainingBytes)throw Error('完整源节点族或资源预算不满足');
+    const indexed=isIndexedMemoryFamily(marker);if(indexed)validateIndexedSourceReplacement(this.topology,marker,marker.replacement_parent);
+    if(this.pending||!parent||!this.visible.has(parent.name)||!(marker.schema==='xnby.osgb_native_family.v1'||isMemoryFamily(marker))||marker.source_format!==this.nodes.get(parent.name)?.bundle.marker.source_format||(!indexed&&!marker.complete_sibling_family)||marker.texture_policy!=='original_pixels_v1'||marker.parent_source_sha256!==parent.source_sha256||(!indexed&&(children.length!==parent.children.length||new Set(children).size!==children.length||children.some(n=>!parent.children.includes(n))))||!marker.parts?.length||marker.parts.length>64||!Number.isSafeInteger(marker.gpu_payload_bytes)||marker.gpu_payload_bytes<=0||marker.gpu_payload_bytes>remainingBytes)throw Error('完整源节点族或资源预算不满足');
     const ticket=++this.sequence;this.pending={ticket,marker,ready:new Set()};return ticket;
   }
   markReady(ticket,index){if(this.pending?.ticket!==ticket||index<0||index>=this.pending.marker.parts.length)return false;this.pending.ready.add(index);return true;}
   commit(ticket,meshes){
     const state=this.pending;if(state?.ticket!==ticket||state.ready.size!==state.marker.parts.length||!this.visible.has(state.marker.replacement_parent))return false;
-    validateSourceBundle(state.marker,meshes);
+    validateSourceBundle(state.marker,meshes);if(this.topology)validateSourceAgainstLevelTile(this.topology,state.marker);
     const next=new Set(this.visible);next.delete(state.marker.replacement_parent);for(const node of state.marker.source_nodes)next.add(node.name);
     this.bundles.set(state.marker.replacement_parent,{marker:state.marker,meshes});this.visible=next;this.pending=null;this.cutVersion++;return true;
   }
@@ -132,8 +134,9 @@ export function rankSourceCandidates(candidates){return [...candidates].sort((a,
 
 // Plan all coarsenings before changing any live draw cut. Independent siblings
 // within one root may jointly make room; failed admission changes nothing.
-export function planSourceBudget(residents,request,cost,limit,priority,rootPriority=null,{checkRestorePeak=true}={}){
- let used=[...residents.values()].reduce((sum,r)=>sum+r.frontier.bytes,0);if(used+cost<=limit)return[];
+export function planSourceBudget(residents,request,cost,limit,priority,rootPriority=null,{checkRestorePeak=true,maxResidents=Infinity}={}){
+ if(!(maxResidents===Infinity||Number.isInteger(maxResidents)&&maxResidents>=1))throw Error('Invalid source resident capacity');
+ let slots=residents.size+(residents.has(request.id)?0:1),used=[...residents.values()].reduce((sum,r)=>sum+r.frontier.bytes,0);const fits=()=>used+cost<=limit&&slots<=maxResidents;if(fits())return[];
  const candidates=[];
  for(const [root,ready] of residents)for(const parent of ready.frontier.bundles.keys())if(parent!=='$root'){
    const plan=ready.frontier.rollbackPlan(parent);if(root===request.id&&plan.subtree.has(request.parent))continue;
@@ -144,11 +147,11 @@ export function planSourceBudget(residents,request,cost,limit,priority,rootPrior
  const totalLoss=actions=>actions.reduce((sum,action)=>sum+(candidates.find(c=>c.root===action.root&&c.parent===action.parent)?.benefit??Infinity),0);
  candidates.sort((a,b)=>a.benefit-b.benefit);const copies=new Map(),actions=[];
  for(const candidate of candidates){let copy=copies.get(candidate.root);if(copy===null)continue;if(!copy){copy=residents.get(candidate.root).frontier.copyForPlanning();copies.set(candidate.root,copy);}
-   if(candidate.parent===null){used-=copy.bytes;copies.set(candidate.root,null);actions.splice(0,actions.length,...actions.filter(a=>a.root!==candidate.root));actions.push({root:candidate.root,parent:null});if(used+cost<=limit&&totalLoss(actions)*2<request.score)return actions;continue;}
+   if(candidate.parent===null){used-=copy.bytes;slots--;copies.set(candidate.root,null);actions.splice(0,actions.length,...actions.filter(a=>a.root!==candidate.root));actions.push({root:candidate.root,parent:null});if(fits()&&totalLoss(actions)*2<request.score)return actions;continue;}
    const plan=copy.rollbackPlan(candidate.parent);if(!plan||plan.bytes>=copy.bytes)continue;
    const proposed=[...actions.filter(a=>a.root!==candidate.root||!plan.subtree.has(a.parent)),{root:candidate.root,parent:candidate.parent}];
    if(checkRestorePeak&&sourceRestorationFootprint(residents,proposed)>limit)continue;
-   used+=plan.bytes-copy.bytes;copy.rollback(candidate.parent);actions.splice(0,actions.length,...actions.filter(a=>a.root!==candidate.root||!plan.subtree.has(a.parent)));actions.push({root:candidate.root,parent:candidate.parent});if(used+cost<=limit&&totalLoss(actions)*2<request.score)return actions;
+   used+=plan.bytes-copy.bytes;copy.rollback(candidate.parent);actions.splice(0,actions.length,...actions.filter(a=>a.root!==candidate.root||!plan.subtree.has(a.parent)));actions.push({root:candidate.root,parent:candidate.parent});if(fits()&&totalLoss(actions)*2<request.score)return actions;
  }
  return null;
 }

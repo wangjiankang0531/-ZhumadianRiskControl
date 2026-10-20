@@ -1,3 +1,4 @@
+import {chooseIndexedCoverageCandidate} from '../src/source_allocation.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {chooseRefinementCandidate as choose} from '../src/source_allocation.js';
@@ -18,4 +19,9 @@ test('lazy metadata and upper-bound refinement selects the same winner as exhaus
   while(steps++<=pending.length*2+1){const best=choose(pending);if(!best)break;const actual=truth.find(t=>t.key===best.key);if(best.cost===null){best.cost=actual.cost;continue;}if(!best.measured){best.score=actual.score;best.measured=true;continue;}winner=best;break;}
   assert.ok(steps<=pending.length*2+1);assert.equal(winner?.key,choose(truth)?.key);
  }
+});
+
+test('indexed visible coverage is seeded before high-detail families without pre-reading every other cost',()=>{
+ const root={key:'root/1/1',kind:'root',id:1,score:.5,cost:null},other={key:'root/2/1',kind:'root',id:2,score:.2,cost:null},family={key:'family/3/parent',kind:'family',id:3,score:.9,cost:null};
+ assert.equal(chooseIndexedCoverageCandidate([root,other,family],id=>id===3),root);root.cost=1048576;assert.equal(chooseIndexedCoverageCandidate([root,other,family],id=>id===3),root);assert.equal(chooseIndexedCoverageCandidate([root,other,family],id=>id===1||id===3),other);assert.equal(chooseIndexedCoverageCandidate([family],()=>true),family);
 });

@@ -212,5 +212,42 @@ class IndexedServiceTests(unittest.TestCase):
             self.assertEqual(422,error.exception.code);error.exception.close()
 
 
+
+
+class SealedIndexFileTests(unittest.TestCase):
+    setup_provider = IndexedServiceTests.setup_provider
+    def test_only_pinned_index_files_are_delivered_and_changed_bytes_refused(self):
+        directory, catalogs, provider = self.setup_provider()
+        roots = canonical({'schema': 'test_roots', 'roots': [1]})
+        (directory/'root_index.json').write_bytes(roots)
+        manifest = json.loads((directory/'index_manifest.json').read_bytes())
+        manifest['rootIndexSHA256'] = sha(roots)
+        (directory/'index_manifest.json').write_bytes(canonical(manifest))
+        provider = LevelIndexProvider(directory, catalogs)
+        store = IndexedFamilyStore(catalogs, Reader(), provider)
+        self.addCleanup(store.close)
+        class Base(BaseHTTPRequestHandler):
+            def log_message(self, *args): pass
+            def do_GET(self): self.send_error(404)
+        class Handler(IndexedFamilyHTTP, Base): memory_sources = store
+        server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True);thread.start()
+        self.addCleanup(lambda: (server.shutdown(), server.server_close(), thread.join(2)))
+        root = f'http://127.0.0.1:{server.server_port}/api/level-index/files/'
+        for name in ('index_manifest.json','root_index.json','tile_1.json'):
+            with urlopen(root+name, timeout=3) as response:
+                self.assertEqual((directory/name).read_bytes(), response.read())
+                self.assertEqual(provider.identity, response.headers['X-XNBY-Level-Index-SHA256'])
+        for name in ('../private','tile_0.json','tile_01.json','tile_2347.json','tile_1.json?x=1','%2e%2e/private','tile_2.json'):
+            with self.assertRaises(HTTPError) as error: urlopen(root+name, timeout=3)
+            self.assertIn(error.exception.code,(400,422))
+        for name in ('index_manifest.json','root_index.json','tile_1.json'):
+            original=(directory/name).read_bytes();(directory/name).write_bytes(original+b' ')
+            with self.assertRaises(HTTPError) as error:urlopen(root+name, timeout=3)
+            self.assertEqual(422,error.exception.code);(directory/name).write_bytes(original)
+        self.assertEqual(0,store.audit()['builds'])
+        self.assertEqual(0,store.audit()['activeLeases'])
+
+
 if __name__ == '__main__':
     unittest.main()

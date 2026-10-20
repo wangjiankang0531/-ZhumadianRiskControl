@@ -59,3 +59,13 @@ test('combined independent losses must satisfy the two-times margin as a whole',
  assert.equal(planSourceRecoverySequence(states,{id:3,parent:'incoming',score:10},9,12,()=>3),null);
  assert.equal(planSourceBudget(states,{id:3,parent:'incoming',score:10},9,12,()=>2).length,2);
 });
+
+
+test('sequential recovery cannot bypass full resident capacity when bytes alone fit',()=>{
+ const states=fixture(),before=sourceRecoverySnapshot(states),options={maxResidents:1};
+ assert.equal(planSourceRecoverySequence(states,request,1,100,priority,null,options),null);
+ assert.equal(planSourceRecoverySequence(states,request,1,100,priority,()=>60,options),null);
+ const plan=planSourceRecoverySequence(states,request,1,100,priority,()=>1,options);
+ assert.ok(plan);assert.equal(plan.steps.at(-1).parent,null);assert.equal(plan.steps.at(-1).root,1);
+ assert.equal(sourceRecoverySnapshot(states),before);
+});

@@ -5,7 +5,7 @@ import {sourceRestorationFootprint} from './source_page_budget.js';
 export class SourceRestoreUnavailable extends Error{constructor(message){super(message);this.name='SourceRestoreUnavailable';}}
 
 const stable=value=>Array.isArray(value)?value.map(stable):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(key=>[key,stable(value[key])])):value;
-export function sourceBundleIdentity(marker){return JSON.stringify(stable(Object.fromEntries(['schema','source_format','parent_source_sha256','longest_edge_p90_m','texel_world_p90_m','tile_id','depth','replacement_parent','family_key','texture_policy','source_nodes','parts','stamp','gpu_payload_bytes','indices'].map(key=>[key,marker[key]]))));}
+export function sourceBundleIdentity(marker){return JSON.stringify(stable(Object.fromEntries(['schema','complete_source_cut','source_cut_key','min_depth','max_depth','source_format','parent_source_sha256','longest_edge_p90_m','texel_world_p90_m','tile_id','depth','replacement_parent','family_key','texture_policy','source_nodes','parts','stamp','gpu_payload_bytes','indices'].map(key=>[key,marker[key]]))));}
 
 // Load all missing parent pages while the live cut remains untouched. The caller
 // applies one synchronous cut change only after every page and snapshot is valid.

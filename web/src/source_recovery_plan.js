@@ -18,9 +18,10 @@ function simulate(states,action){
  }
 }
 
-export function planSourceRecoverySequence(residents,request,cost,limit,priority,rootPriority=null){
+export function planSourceRecoverySequence(residents,request,cost,limit,priority,rootPriority=null,{maxResidents=Infinity}={}){
+ if(!(maxResidents===Infinity||Number.isInteger(maxResidents)&&maxResidents>=1))throw Error('Invalid source resident capacity');
  const states=clones(residents),steps=[],qualityActions=[];let used=[...states.values()].reduce((sum,r)=>sum+r.frontier.bytes,0),peak=used,loss=0,remaining=1+[...states.values()].reduce((sum,r)=>sum+r.frontier.bundles.size+1,0);
- while(used+cost>limit){
+ while(used+cost>limit||states.size+(states.has(request.id)?0:1)>maxResidents){
   if(--remaining<0)return null;const choices=[];
   for(const [root,ready] of states){const f=ready.frontier,original=residents.get(root).frontier;
    const admit=(action,freed,nextQuality)=>{const nextLoss=nextQuality.reduce((sum,a)=>sum+a.loss,0);if(freed<=0||nextLoss<loss||!(nextLoss*2<request.score))return;const uploadPeak=sourceRestorationFootprint(states,[action]);if(uploadPeak<=limit)choices.push({action,freed,quality:nextQuality,loss:nextLoss,peak:uploadPeak,ratio:(nextLoss-loss)/freed});};

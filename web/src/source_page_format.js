@@ -5,6 +5,8 @@ export const isMemoryFormat=format=>[MEMORY_SOURCE_FORMAT,CROP_SOURCE_FORMAT].in
 export const MEMORY_GEOMETRY_LAYOUT='three_float32_pu_uint32_v1';
 export const MEMORY_ROOT_SCHEMA='zhumadian.osgb_source_frontier.v2';
 export const MEMORY_FAMILY_SCHEMA='zhumadian.osgb_source_family.v2';
+export const INDEXED_FAMILY_SCHEMA='zhumadian.osgb_source_descendants.v3';
+export const isIndexedMemoryFamily=marker=>marker?.schema===INDEXED_FAMILY_SCHEMA;
 const require=(ok,message)=>{if(!ok)throw Error(message);};
 export function isMemorySourcePart(part){
  if(!Object.hasOwn(part,'source_format')){require(!Object.hasOwn(part,'geometry_layout'),'Unversioned source geometry layout');return false;}
@@ -32,4 +34,4 @@ export function memoryImageInfo(part){
  const file=part.files.find(f=>f.name==='texture.png');require(Number.isSafeInteger(file.bytes)&&file.bytes>0&&file.bytes<=32*1048576&&/^[0-9a-f]{64}$/.test(file.sha256),'Invalid original PNG identity');
  return {width:image.width,height:image.height,sha256:file.sha256,bytes,sampler:s,mipLevels,transform,generateMipmaps:crop?mipLevels>1:true,...(crop?{cropContract}:{})};
 }
-export function isMemoryFamily(marker){return marker?.schema===MEMORY_FAMILY_SCHEMA&&isMemoryFormat(marker.source_format);}
+export function isMemoryFamily(marker){return (marker?.schema===MEMORY_FAMILY_SCHEMA||isIndexedMemoryFamily(marker))&&isMemoryFormat(marker.source_format);}

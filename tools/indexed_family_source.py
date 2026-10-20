@@ -25,11 +25,37 @@ class LevelIndexProvider:
         if manifest.get('schema') != 'zhumadian.level_bounds.manifest.v1' or manifest.get('sourceManifestSHA256') != catalogs.identity:
             raise ValueError('level index belongs to another source forest')
         self.identity = sha(raw)
+        self.manifest = manifest
         self.records = {r['tile']: r for r in manifest['tiles']}
         if len(self.records) != len(manifest['tiles']) or set(self.records) != set(catalogs.records):
             raise ValueError('level index must cover all source roots')
         self.catalogs = catalogs
         self.cache = OrderedDict()
+
+    def index_file(self, name):
+        """Return only a SHA-pinned public index record, never a source path."""
+        if name == 'index_manifest.json':
+            identity, limit, size = self.identity, 4*1048576, None
+        elif name == 'root_index.json':
+            identity, limit, size = self.manifest['rootIndexSHA256'], 4*1048576, None
+        else:
+            match = re.fullmatch(r'tile_([1-9][0-9]{0,3})\.json', name)
+            if match is None or int(match[1]) not in self.records:
+                raise ValueError('index file is not in sealed manifest')
+            record = self.records[int(match[1])]
+            if record['path'] != name:
+                raise ValueError('index file path differs')
+            identity, limit, size = record['sha256'], 16*1048576, record['bytes']
+        if not re.fullmatch(r'[0-9a-f]{64}', identity):
+            raise ValueError('index file identity unavailable')
+        path = ordinary(self.directory/name, self.directory)
+        if path.stat().st_size > limit:
+            raise ValueError('index file exceeds delivery bound')
+        with path.open('rb') as stream:
+            raw = stream.read(limit+1)
+        if len(raw) > limit or (size is not None and len(raw) != size) or sha(raw) != identity:
+            raise ValueError('sealed index file SHA differs')
+        return raw
 
     def tile(self, tile):
         if tile in self.cache:
@@ -148,6 +174,22 @@ class IndexedFamilyStore(MemorySourceStore):
 class IndexedFamilyHTTP(MemorySourceHTTP):
     def do_GET(self):
         parsed = urlsplit(self.path)
+        if parsed.path.startswith('/api/level-index/files/'):
+            match = re.fullmatch(r'/api/level-index/files/(index_manifest\.json|root_index\.json|tile_[1-9][0-9]{0,3}\.json)', parsed.path)
+            if parsed.query or match is None:
+                return self.send_error(400)
+            try:
+                raw = self.memory_sources.index_provider.index_file(match[1])
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json; charset=utf-8')
+                self.send_header('Content-Length', str(len(raw)))
+                self.send_header('Cache-Control', 'no-store')
+                self.send_header('X-XNBY-Level-Index-SHA256', self.memory_sources.index_provider.identity)
+                self.end_headers()
+                self.wfile.write(raw)
+            except (ValueError, RuntimeError, KeyError, TypeError, OSError) as error:
+                self._memory_error(error)
+            return
         if parsed.path == '/api/level-index/status':
             if parsed.query:
                 return self.send_error(400)

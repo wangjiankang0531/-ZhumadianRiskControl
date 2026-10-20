@@ -177,3 +177,17 @@ test('rectangular source pages validate real two-axis mip bytes and explicit cla
   m.material.map.wrapS=RepeatWrapping;assert.throws(()=>validateSourceBundle(marker,meshes),/采样/);
  }
 });
+
+test('resident capacity and bytes are jointly planned; fine roots are not discarded by rank truncation',()=>{
+ const residents=new Map(Array.from({length:16},(_,i)=>[i+1,{frontier:initial().frontier}])),before=[...residents.keys()],limit=512*1048576,cost=1024;
+ const request={id:17,parent:null,score:10},options={maxResidents:16};
+ assert.deepEqual(planSourceBudget(residents,request,cost,limit,()=>0),[]);
+ assert.equal(planSourceBudget(residents,request,cost,limit,()=>0,()=>6,options),null);
+ assert.deepEqual(planSourceBudget(residents,request,cost,limit,()=>0,()=>1,options),[{root:1,parent:null}]);
+ assert.deepEqual([...residents.keys()],before);assert.deepEqual(planSourceBudget(residents,{id:16,parent:'P',score:10},cost,limit,()=>0,()=>1,options),[]);
+ assert.equal(planSourceBudget(residents,request,cost,1,()=>0,()=>1,options),null);
+});
+
+test('all indexed roots may remain resident when actual bytes fit; legacy slot gates remain explicit',()=>{
+ const residents=new Map(Array.from({length:24},(_,i)=>[i+1,{frontier:initial().frontier}]));assert.deepEqual(planSourceBudget(residents,{id:25,parent:null,score:10},1024,512*1048576,()=>0,()=>8,{maxResidents:2346}),[]);assert.equal(planSourceBudget(residents,{id:25,parent:null,score:10},1024,512*1048576,()=>0,()=>8,{maxResidents:16}),null);
+});
