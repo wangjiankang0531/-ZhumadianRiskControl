@@ -43,7 +43,7 @@
     "native/zhumadian_native_visibility_scores.inl": "58df0236905709b58a42b914ec4e26e63afa33ca152bdae64b82ce3765b28fbf",
     "native/zhumadian_owned_runtime.inl": "2986e200622627b86953a25377334c5803e66e251841d0e306fcc40380d0e458",
     "native/zhumadian_owned_worker.inl": "d97d8fb914ca637b8a2274b0af3fd94f2b700138281af82694c4983ed802f136",
-    "native/zhumadian_source_memory.inl": "739d69b1717802daafd4eaf984f128eba6b6024004e4468ffb99c05c11eda8f0"
+    "native/zhumadian_source_memory.inl": "2c6ba23e935cf64604b26b1b52b8ede580217614875a71b4eabf43ac4f22f3ed"
   },
   "normalizeBaseLF": [
     "native/landscape_editor.inl",
@@ -64,6 +64,6 @@
     "native/zhumadian_source_memory.inl"
   ],
   "patch": "native_level_index.patch",
-  "patchSHA256": "be9eca35ced6839c52a995ac36f5930cf3ec23b46c5896549c49fd97ddfef838",
+  "patchSHA256": "8ed797eba9503a05775123090fd56745cc351bcd04bd8e937e61adbe50e4286a",
   "dataFilesIncluded": false
 }

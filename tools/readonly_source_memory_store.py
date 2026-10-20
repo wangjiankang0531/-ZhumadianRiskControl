@@ -98,6 +98,13 @@ class MemoryStoreBusy(RuntimeError):
     pass
 
 
+class MemoryStoreClosed(RuntimeError):
+    pass
+
+
+MAX_PLAN_WAIT_MS = 200
+
+
 class MemorySourceStore:
     def __init__(self, catalogs, reader, *, limit=256 * MIB, build_reservation=128 * MIB,
                  clock=time.monotonic, ttl=180, max_jobs=16, max_leases=256,
@@ -116,12 +123,16 @@ class MemorySourceStore:
                          "code": {name: sha((Path(__file__).parent / name).read_bytes()) for name in
                                   ("osgb_memory_pages.py", "osgb_memory_gltf.py", "osgb_memory_reader.py")}}))
         self.lock = threading.RLock()
+        self.plan_ready = threading.Condition(self.lock)
+        self.plan_waiters = 0
         self.entries, self.jobs, self.failures, self.leases = OrderedDict(), {}, OrderedDict(), {}
         self.executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="source-memory")
         self.building = None
         self.closed = False
         self.stats = {"builds": 0, "failures": 0, "evictions": 0, "payloads": 0,
-                      "peakEncodedAndReservation": 0}
+                      "peakEncodedAndReservation": 0, "planRequests": 0,
+                      "planWaitRequests": 0, "planWaitCompleted": 0, "planWaitTimeouts": 0,
+                      "planWaitMilliseconds": 0.0, "peakPlanWaiters": 0, "buildMilliseconds": 0.0}
 
     @staticmethod
     def key(tile, depth, parent):
@@ -154,6 +165,7 @@ class MemorySourceStore:
             self.stats["evictions"] += 1
 
     def _build(self, key):
+        build_started = time.monotonic()
         try:
             with self.lock:
                 self._room(self.build_reservation)
@@ -178,13 +190,15 @@ class MemorySourceStore:
         finally:
             with self.lock:
                 self.building = None
+                self.stats["buildMilliseconds"] += (time.monotonic() - build_started) * 1000
                 self.jobs.pop(key, None)
+                self.plan_ready.notify_all()
 
     def request(self, tile, *, depth=None, parent=None):
         key = self.key(tile, depth, parent)
         with self.lock:
             if self.closed:
-                raise RuntimeError("source memory store closed")
+                raise MemoryStoreClosed("source memory store closed")
             self._expire()
             if key in self.entries:
                 self.entries.move_to_end(key)
@@ -198,12 +212,41 @@ class MemorySourceStore:
                 self.jobs[key] = self.executor.submit(self._build, key)
             return None
 
-    def plan(self, tile, *, depth=None, parent=None):
-        bundle = self.request(tile, depth=depth, parent=parent)
-        if bundle is None:
-            return None
-        return {"schema": PLAN_SCHEMA, "verification": "metadata_only", "availabilityVerified": False,
-                "markerSHA256": bundle.marker_sha256, "marker": bundle.marker()}
+    def plan(self, tile, *, depth=None, parent=None, wait_ms=0):
+        if type(wait_ms) is not int or not 0 <= wait_ms <= MAX_PLAN_WAIT_MS:
+            raise ValueError("invalid bounded plan wait")
+        # Register and test under the same lock as completion notification, so
+        # completion between request() and Condition.wait() cannot be lost.
+        with self.plan_ready:
+            self.stats["planRequests"] += 1
+            self.stats["planWaitRequests"] += bool(wait_ms)
+            bundle = self.request(tile, depth=depth, parent=parent)
+            if bundle is None and wait_ms:
+                if self.plan_waiters >= self.max_jobs:
+                    raise MemoryStoreBusy("source plan wait slots full; keep previous layer")
+                self.plan_waiters += 1
+                self.stats["peakPlanWaiters"] = max(self.stats["peakPlanWaiters"], self.plan_waiters)
+                started = time.monotonic()
+                deadline = started + wait_ms / 1000
+                try:
+                    while bundle is None:
+                        remaining = deadline - time.monotonic()
+                        if remaining <= 0:
+                            self.stats["planWaitTimeouts"] += 1
+                            break
+                        self.plan_ready.wait(remaining)
+                        # request() propagates immutable source errors and a
+                        # closed store instead of disguising them as a timeout.
+                        bundle = self.request(tile, depth=depth, parent=parent)
+                    if bundle is not None:
+                        self.stats["planWaitCompleted"] += 1
+                finally:
+                    self.plan_waiters -= 1
+                    self.stats["planWaitMilliseconds"] += (time.monotonic() - started) * 1000
+            if bundle is None:
+                return None
+            return {"schema": PLAN_SCHEMA, "verification": "metadata_only", "availabilityVerified": False,
+                    "markerSHA256": bundle.marker_sha256, "marker": bundle.marker()}
 
     def grant(self, tile, *, depth=None, parent=None):
         key = self.key(tile, depth, parent)
@@ -251,12 +294,16 @@ class MemorySourceStore:
                     "buildReservation": self.build_reservation, "bundles": len(self.entries),
                     "activeLeases": len(self.leases), "queuedJobs": len(self.jobs),
                     "building": self.building, "failuresByRequest": {str(k): v for k, v in self.failures.items()},
-                    "assetWritesEnabled": False, "gpuLimitsChanged": False}
+                    "activePlanWaiters": self.plan_waiters, "maxPlanWaiters": self.max_jobs,
+                    "maxPlanWaitMs": MAX_PLAN_WAIT_MS, "assetWritesEnabled": False, "gpuLimitsChanged": False}
 
     def close(self):
         with self.lock:
             self.closed = True
+            self.plan_ready.notify_all()
         self.executor.shutdown(wait=True, cancel_futures=True)
+        with self.lock:
+            self.jobs.clear()  # shutdown has completed or cancelled every future
         close_reader = getattr(self.reader, "close", None)
         if close_reader is not None:
             close_reader()

@@ -185,5 +185,32 @@ class IndexedServiceTests(unittest.TestCase):
             error.exception.close()
 
 
+    def test_bounded_wait_indexed_http_preserves_request_identity(self):
+        _, catalogs, provider = self.setup_provider()
+        store = IndexedFamilyStore(catalogs, Reader(), provider)
+        self.addCleanup(store.close)
+        class Base(BaseHTTPRequestHandler):
+            def log_message(self, *args): pass
+            def do_GET(self): self.send_error(404)
+        class Handler(IndexedFamilyHTTP, Base):
+            memory_sources = store
+        server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True);thread.start()
+        self.addCleanup(lambda: (server.shutdown(), server.server_close(), thread.join(2)))
+        route = f'http://127.0.0.1:{server.server_port}/api/lod-index-family-plan/1/{A}?view=0,0,0,0,1,0,90,1,100,6'
+        with urlopen(route+'&wait_ms=200') as response:
+            self.assertEqual(200,response.status)
+            self.assertEqual('200',response.headers['X-XNBY-Source-Plan-Wait-Ms'])
+            waiting=json.load(response)
+        with urlopen(route) as response:
+            old=json.load(response)
+        self.assertEqual(waiting,old)
+        self.assertEqual(1,store.audit()['builds'])
+        self.assertEqual(0,store.audit()['activeLeases'])
+        for query in ('&wait_ms=201','&wait_ms=nan','&wait_ms=200&wait_ms=200'):
+            with self.assertRaises(HTTPError) as error:urlopen(route+query)
+            self.assertEqual(422,error.exception.code);error.exception.close()
+
+
 if __name__ == '__main__':
     unittest.main()

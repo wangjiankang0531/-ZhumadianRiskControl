@@ -158,9 +158,10 @@ class IndexedFamilyHTTP(MemorySourceHTTP):
         bundle = re.fullmatch(r'/api/lod-index-family/([0-9]+)/([0-9a-f]{32})', parsed.path)
         if plan:
             try:
-                query = parse_qs(parsed.query, strict_parsing=True, max_num_fields=1)
-                if set(query) != {'view'} or len(query['view']) != 1 or len(query['view'][0]) > 512:
+                query = parse_qs(parsed.query, strict_parsing=True, max_num_fields=2, keep_blank_values=True)
+                if set(query) not in ({'view'}, {'view', 'wait_ms'}) or len(query['view']) != 1 or len(query['view'][0]) > 512:
                     raise ValueError('one bounded indexed view is required')
+                wait_ms = self._plan_wait_ms(query)
                 values = [float(n) for n in query['view'][0].split(',')]
                 if (len(values) != 10 or any(not (-1e7 <= n <= 1e7) for n in values[:6]) or
                         not 1 <= values[8] <= 16384 or values[8] != int(values[8]) or not .25 <= values[9] <= 512):
@@ -168,14 +169,15 @@ class IndexedFamilyHTTP(MemorySourceHTTP):
                 camera = Camera(tuple(values[:3]), tuple(values[3:6]), values[6], values[7], int(values[8]))
                 tile = int(plan[1])
                 key = self.memory_sources.register_view(tile, plan[2], camera, values[9])
-                result = self.memory_sources.plan(tile, parent=key)
+                result = self.memory_sources.plan(tile, parent=key, wait_ms=wait_ms)
                 request = self.memory_sources.index_requests[key]
                 self._memory_json({**(result or {'status': 'preparing_indexed_source'}),
                                    'indexedRequest': key[8:], 'requestedPixels': request['requestedPixels'],
                                    'selectedPixels': request['selectedPixels'], 'queryStats': request['queryStats'],
                                    'selectionLimitedByBudget': request['selectionLimitedByBudget'],
                                    'selectedMaxDepth': request.get('selectedMaxDepth')},
-                                  200 if result is not None else 202)
+                                  200 if result is not None else 202,
+                                  plan_wait_ms=wait_ms if "wait_ms" in query else None)
             except (ValueError, RuntimeError, KeyError, TypeError, OSError) as error:
                 self._memory_error(error)
             return

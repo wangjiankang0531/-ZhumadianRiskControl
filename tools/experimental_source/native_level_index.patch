@@ -2075,7 +2075,7 @@
 +};
 --- /dev/null
 +++ b/native/zhumadian_source_memory.inl
-@@ -0,0 +1,318 @@
+@@ -0,0 +1,333 @@
 +uint64_t sourceMemoryMipBytes(uint32_t w,uint32_t h) {uint64_t bytes=0;for (;;) {bytes+=uint64_t(w)*h*4;if (w==1 && h==1) return bytes;w=std::max(1u,w/2);h=std::max(1u,h/2);}}
 +// Read-only loopback adapter. No asset/cache creation, conversion or cleanup fallback.
 +// The independent source service owns bounded OSGB decoding and complete-family leases.
@@ -2102,7 +2102,7 @@
 +  const char* digits="0123456789abcdef"; std::string result;
 +  for (const auto n:digest) { result+=digits[n>>4]; result+=digits[n&15]; } return result;
 +}
-+struct SourceHttpResult { DWORD status=0; std::vector<uint8_t> data; std::string marker; };
++struct SourceHttpResult { DWORD status=0; std::vector<uint8_t> data; std::string marker; unsigned planWaitMs=0; };
 +SourceHttpResult sourceMemoryHTTP(const std::string& route, size_t limit, bool post=false, const std::wstring& extraHeaders={}) {
 +  if (route.empty() || route[0]!='/' || route.find_first_of("\r\n\\")!=std::string::npos)
 +    throw std::runtime_error("Invalid source HTTP route");
@@ -2128,6 +2128,9 @@
 +  wchar_t digest[128]{};count=sizeof(digest);
 +  if (WinHttpQueryHeaders(request.value,WINHTTP_QUERY_CUSTOM,L"X-XNBY-Source-Marker-SHA256",digest,&count,nullptr))
 +    for (const wchar_t c:std::wstring(digest)) result.marker+=static_cast<char>(c);
++  wchar_t waitValue[16]{};count=sizeof(waitValue);
++  if (WinHttpQueryHeaders(request.value,WINHTTP_QUERY_CUSTOM,L"X-XNBY-Source-Plan-Wait-Ms",waitValue,&count,nullptr) &&
++      std::wstring(waitValue)==L"200") result.planWaitMs=200;
 +  for (;;) {
 +    DWORD available=0;
 +    if (!WinHttpQueryDataAvailable(request.value,&available)) throw std::runtime_error("Source read failed");
@@ -2173,13 +2176,25 @@
 +        : std::string(family?"/api/lod-family-plan/":"/api/lod-plan/")+suffix;
 +    const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(120);
 +    SourceHttpResult response;
++    std::string requestRoute=planRoute+(indexed?"&":"?")+"wait_ms=200";
++    bool boundedPlanWait=true;
 +    unsigned sourcePollDelay=15;
 +    do {
-+      response=sourceMemoryHTTP(planRoute,17ull*1048576);
++      response=sourceMemoryHTTP(requestRoute,17ull*1048576);
++      if ((response.status==400 || (indexed && response.status==422)) && boundedPlanWait) {
++        // Older explicit loopback services reject the optional query. Retry the
++        // same read-only route with the original bounded polling behavior.
++        // Indexed legacy handlers use 422 for unknown queries. The retry still
++        // validates the exact same view/source and cannot bypass an identity error.
++        boundedPlanWait=false;requestRoute=planRoute;
++        response=sourceMemoryHTTP(requestRoute,17ull*1048576);
++      }
 +      if (response.status!=202) break;
 +      if (std::chrono::steady_clock::now()>deadline) throw std::runtime_error("Read-only source plan timeout");
-+      std::this_thread::sleep_for(std::chrono::milliseconds(sourcePollDelay));
-+      sourcePollDelay=std::min(150u,sourcePollDelay*2);
++      if (response.planWaitMs!=200) {
++        std::this_thread::sleep_for(std::chrono::milliseconds(sourcePollDelay));
++        sourcePollDelay=std::min(150u,sourcePollDelay*2);
++      }
 +    } while (true);
 +    if (response.status!=200) throw std::runtime_error("Original source plan rejected: HTTP "+std::to_string(response.status));
 +    const auto plan=nlohmann::json::parse(response.data);const auto& stamp=plan.at("marker");
