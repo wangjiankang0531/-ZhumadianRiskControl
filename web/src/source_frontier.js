@@ -83,7 +83,7 @@ export class SourceFrontier {
     for(const bundle of this.bundles.values()){
       const needed=new Set(bundle.marker.source_nodes.filter(n=>this.visible.has(n.name)).flatMap(n=>n.spans.map(s=>s.part)));
       for(const part of bundle.marker.parts)if(!needed.has(part.directory)&&bundle.meshes.has(part.directory)){
-        const mesh=bundle.meshes.get(part.directory);retireSourceGpu(mesh);const material=mesh.userData.sourceMaterial??(Array.isArray(mesh.material)?mesh.material[0]:mesh.material);material.map?.source?.data?.close?.();mesh.removeFromParent();bundle.meshes.delete(part.directory);pages++;bytes+=part.gpu_payload_bytes;
+        const mesh=bundle.meshes.get(part.directory);retireSourceGpu(mesh);const material=mesh.userData.sourceMaterial??(Array.isArray(mesh.material)?mesh.material[0]:mesh.material);if(!material.map?.userData?.ownedOriginalImage)material.map?.source?.data?.close?.();mesh.removeFromParent();bundle.meshes.delete(part.directory);pages++;bytes+=part.gpu_payload_bytes;
       }
     }return {pages,bytes};
   }

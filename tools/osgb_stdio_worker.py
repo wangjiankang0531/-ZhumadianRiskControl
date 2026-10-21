@@ -63,6 +63,7 @@ class StdioWorker:
     def __init__(self, executable, source_root):
         self.executable,self.source_root=Path(executable),Path(source_root)
         self.process=self.job=None;self.failed=False;self.closed=False;self.starts=0;self.requests=0
+        self.phase='idle';self.failure=None;self.native_exit=None;self.cleanup_exit=None;self.owner_terminated=False;self.handshake_complete=False;self.attempted_requests=0
         self.responses=queue.Queue(maxsize=1);self.lock=threading.Lock();self.stderr=bytearray()
         atexit.register(self.close)
     def _read_exact(self,size):
@@ -89,50 +90,71 @@ class StdioWorker:
     def _response(self,timeout=45):
         try:value=self.responses.get(timeout=timeout)
         except queue.Empty:
-            self._hold();raise TimeoutError('owned source reader exceeded bounded response time')
-        if isinstance(value,Exception):self._hold();raise RuntimeError('owned source reader frame failed: '+str(value))
+            self._hold(TimeoutError('bounded response timeout'));raise TimeoutError('owned source reader exceeded bounded response time')
+        if isinstance(value,Exception):self._hold(value,settle_exit=isinstance(value,EOFError));raise RuntimeError('owned source reader frame failed: '+str(value))
         return value
-    def _hold(self):
-        self.failed=True
+    def _hold(self,error=None,settle_exit=False):
+        if self.failure is None:
+            self.failure={'phase':self.phase,'type':type(error).__name__ if error else 'ContractFailure',
+                          'winerror':getattr(error,'winerror',None)}
+        self.failed=True;self.phase='held'
+        # EOF can precede process termination by a scheduling tick. Capture a
+        # native exit before closing the kill-on-close Job; never call it a
+        # native failure code if the owner had to terminate the child instead.
+        if self.process and not self.owner_terminated and self.native_exit is None:
+            code=self.process.poll()
+            if code is None and settle_exit:
+                try:code=self.process.wait(timeout=.25)
+                except subprocess.TimeoutExpired:pass
+            self.native_exit=code
+        if self.process and self.process.poll() is None:self.owner_terminated=True
         if self.job:self.job.close();self.job=None
-        if self.process and self.process.poll() is None:self.process.kill()
+        if self.process:
+            if self.process.poll() is None:self.process.kill()
+            try:self.cleanup_exit=self.process.wait(timeout=1)
+            except subprocess.TimeoutExpired:self.cleanup_exit=None
     def _start(self):
         if self.failed or self.closed:raise RuntimeError('owned source reader is held; no automatic restart')
         if self.process is not None:return
-        self.starts+=1
+        self.starts+=1;self.phase='launch'
         try:
             env={k:os.environ[k] for k in ('SystemRoot','WINDIR','SystemDrive') if k in os.environ}
             env['PATH']=str(self.executable.parent)+os.pathsep+str(Path(os.environ.get('SystemRoot','C:/Windows'))/'System32')
             self.process=subprocess.Popen([str(self.executable),str(self.source_root),'--stdio-worker-v1',str(self.executable.parent/'osgPlugins-3.6.5')],
                 executable=str(self.executable),cwd=self.executable.parent,env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,
                 bufsize=0,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0),close_fds=True)
-            self.job=OwnedWindowsJob(self.process)
+            self.job=OwnedWindowsJob(self.process);self.phase='handshake'
             threading.Thread(target=self._receive,daemon=True,name='source-frame-reader').start()
             threading.Thread(target=self._drain_stderr,daemon=True,name='source-stderr-reader').start()
             raw=self._response();header,payload=frame_extent(raw[:24])
             expected=dict(schema='zhumadian.osgb.worker.v1',readOnly=True,maxHeaderBytes=MIB,maxPayloadBytes=128*MIB,requestLimitBytes=4096)
             value=json.loads(raw[24:24+header],object_pairs_hook=unique_pairs)
             if raw[:8]!=b'ZMDWRK01' or canonical(value)!=canonical(expected):raise ValueError('worker handshake differs')
-        except Exception:self._hold();raise
+            self.handshake_complete=True;self.phase='ready'
+        except Exception as error:self._hold(error);raise
     def request(self,node,mode):
         raw=canonical({'node':node,'mode':mode})+b'\n'
         if len(raw)>4096:raise ValueError('worker request exceeds bounds')
         with self.lock:
             self._start()
             if self.process.poll() is not None:self._hold();raise RuntimeError('owned source reader exited; no automatic restart')
+            self.attempted_requests+=1;self.phase='request_write'
             try:
                 pending=memoryview(raw)
                 while pending:
                     written=self.process.stdin.write(pending)
                     if not written:raise BrokenPipeError("owned source reader accepted no request bytes")
                     pending=pending[written:]
-                self.process.stdin.flush();result=self._response();self.requests+=1
+                self.process.stdin.flush();self.phase='response';result=self._response();self.requests+=1;self.phase='ready'
                 return result
-            except Exception:self._hold();raise
+            except Exception as error:self._hold(error);raise
     def audit(self):
         return {'starts':self.starts,'requests':self.requests,'pid':self.process.pid if self.process else None,
                 'alive':bool(self.process and self.process.poll() is None),'failed':self.failed,'closed':self.closed,
-                'restartEnabled':False,'jobOwned':self.job is not None,'jobLimitFlags':self.job.limit_flags if self.job else None,'stderrBytesRetained':len(self.stderr)}
+                'restartEnabled':False,'phase':self.phase,'handshakeComplete':self.handshake_complete,'attemptedRequests':self.attempted_requests,
+                'failure':dict(self.failure) if self.failure else None,'nativeExitCode':self.native_exit,
+                'nativeExitHex':None if self.native_exit is None else '0x%08X'%(self.native_exit&0xffffffff),
+                'cleanupExitCode':self.cleanup_exit,'ownerTerminated':self.owner_terminated,'jobOwned':self.job is not None,'jobLimitFlags':self.job.limit_flags if self.job else None,'stderrBytesRetained':len(self.stderr)}
     def close(self):
         with self.lock:
             if self.closed:return
@@ -142,7 +164,9 @@ class StdioWorker:
                 except OSError:pass
                 try:self.process.wait(timeout=3)
                 except subprocess.TimeoutExpired:self._hold();self.process.wait(timeout=3)
+            if self.process and not self.owner_terminated and self.native_exit is None:self.native_exit=self.process.poll()
             if self.job:self.job.close();self.job=None
+            self.phase='closed'
 
 
 class PinnedPersistentCropReader(PinnedCropReader):

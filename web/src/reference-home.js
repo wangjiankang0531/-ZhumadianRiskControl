@@ -1,4 +1,4 @@
-import {referenceCommandURL} from './reference-deployment.js';
+import {referenceCommandURL,referenceSceneURL} from './reference-deployment.js';
 
 export function referenceRoute(hash, catalog) {
  const route=String(hash||'').replace(/^#/, '');
@@ -34,7 +34,7 @@ export function renderReferenceHome({app,deployment,catalog,el,anchor,button,log
  const quick=card('links','快捷链接','常用业务，快速抵达'),quickLinks=el('nav','home-quick-links');quickLinks.setAttribute('aria-label','快捷链接');for(const [text,id] of homeShortcuts(catalog))quickLinks.append(entry(text,'#'+id));quick.append(quickLinks);
  const scene=card('scene','园区三维场景','驻马店实景地景 · 编辑图层同步'),graphic=el('div','home-scene-illustration');graphic.setAttribute('aria-hidden','true');
  graphic.innerHTML='<svg viewBox="0 0 210 160" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 112 90 40 200 91 117 153Z M23 112 93 52 186 93 116 140Z M8 112v8l109 40 83-61v-8 M46 96 152 125 M73 73 177 105 M62 135 139 73 M91 146 169 86 M76 80V57l22-14 23 12v24L99 95Z M76 57l23 14 22-16 M99 71v24 M124 112V88l22-14 21 10v24l-21 14Z M124 88l22 12 21-16 M146 100v22"/></svg>';
- const sceneURL=new URL(referenceCommandURL(deployment));sceneURL.search='';
+ const sceneURL=new URL(referenceSceneURL(deployment));
  scene.append(graphic,el('p','home-scene-note','点线面选择 / 分层浏览 / 近景细节'),entry('进入园区一张图',sceneURL.href,true));
  main.append(cards);
  const footer=el('footer','home-footer');footer.append(el('span','','模拟业务测试环境 · 仅使用合成业务样本'),el('span','','重大风险防控 · 应急协同'));

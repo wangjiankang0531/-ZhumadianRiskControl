@@ -1,3 +1,4 @@
+import {decodeOriginalImage,ownOriginalImageTexture} from './original_image.js';
 import {isMemorySourcePart,memoryImageInfo,sourceImageMipBytes} from './source_page_format.js';
 // A native source page reserves geometry and the negotiated photograph together.
 // Source manifests remain immutable; runtime choice is tracked separately.
@@ -75,14 +76,14 @@ function validPageSampler(part,sampler){
 }
 const wrapConstants=new Map([[10497,RepeatWrapping],[33071,ClampToEdgeWrapping],[33648,MirroredRepeatWrapping]]),filterConstants=new Map([[9728,NearestFilter],[9729,LinearFilter],[9984,NearestMipmapNearestFilter],[9985,LinearMipmapNearestFilter],[9986,NearestMipmapLinearFilter],[9987,LinearMipmapLinearFilter]]);
 function setOriginalSampling(texture,part){const info=memoryImageInfo(part),s=info.sampler;texture.wrapS=wrapConstants.get(s.wrapS);texture.wrapT=wrapConstants.get(s.wrapT);texture.minFilter=filterConstants.get(s.minFilter);texture.magFilter=filterConstants.get(s.magFilter);texture.generateMipmaps=info.generateMipmaps;if(info.cropContract)texture.anisotropy=1;texture.repeat.set(info.transform[0],info.transform[1]);texture.offset.set(info.transform[2],info.transform[3]);texture.updateMatrix();}
-async function loadMemoryPhotograph({part,renderer,loadFile,reserve,stillWanted}){
+async function loadMemoryPhotograph({THREE,part,renderer,loadFile,reserve,stillWanted}){
  const source=memoryImageInfo(part),bytes=source.bytes;require(source.width<=renderer.capabilities.maxTextureSize&&source.height<=renderer.capabilities.maxTextureSize,'Original source image exceeds this device capability');
- const owned=await reserve({format:'rgba8',bytes});let texture,released=false;const release=()=>{if(!released){released=true;owned.release();}};
+ const owned=await reserve({format:'rgba8',bytes});let texture,decoded,released=false;const release=()=>{if(!released){released=true;owned.release();}};
  const wanted=()=>{if(!stillWanted())throw new PreparedTextureCancelled('Original source page no longer wanted');};
  try{wanted();const original=await checkedFile(part,'texture.png',loadFile);wanted();const header=new DataView(original);require(original.byteLength>=33&&header.getUint32(0)===0x89504e47&&header.getUint32(4)===0x0d0a1a0a&&header.getUint32(8)===13&&header.getUint32(12)===0x49484452&&header.getUint32(16)===source.width&&header.getUint32(20)===source.height&&header.getUint8(24)===8&&header.getUint8(25)===6&&header.getUint8(26)===0&&header.getUint8(27)===0&&header.getUint8(28)===0,'Invalid original RGBA PNG header');
-  const url=URL.createObjectURL(new Blob([original],{type:'image/png'}));try{texture=await new TextureLoader().loadAsync(url);}finally{URL.revokeObjectURL(url);}wanted();require(texture.image?.width===source.width&&texture.image?.height===source.height,'Decoded source image size mismatch');texture.flipY=false;texture.colorSpace=SRGBColorSpace;setOriginalSampling(texture,part);texture.addEventListener('dispose',release);
+  decoded=await decodeOriginalImage({blob:new Blob([original],{type:'image/png'}),width:source.width,height:source.height,stillWanted,loadImage:async blob=>{const url=URL.createObjectURL(blob);try{const loaded=await new TextureLoader().loadAsync(url);const image=loaded.image;loaded.dispose();return image;}finally{URL.revokeObjectURL(url);}}});wanted();texture=ownOriginalImageTexture(new THREE.Texture(decoded.image),decoded);texture.needsUpdate=true;texture.flipY=false;texture.colorSpace=SRGBColorSpace;setOriginalSampling(texture,part);texture.addEventListener('dispose',release);
   return {texture,format:'rgba8',bytes,payloadSHA256:null,dispose(){try{texture.dispose();}finally{release();}}};
- }catch(error){texture?.dispose();release();throw error;}
+ }catch(error){texture?.dispose();decoded?.dispose();release();throw error;}
 }
 function validateGltf(json,part){
  require(json.asset?.version==='2.0'&&json.buffers?.length===1&&json.buffers[0].uri==='geometry.bin'&&json.images?.length===1&&json.images[0].uri===(isMemorySourcePart(part)?'texture.png':'atlas.jpg'),'Unsupported source page GLTF files');
@@ -105,7 +106,7 @@ export async function loadPreparedSourcePage({THREE,renderer,part,supported,load
   wanted();const jsonBytes=await checkedFile(part,'geometry.gltf',loadFile);wanted();const json=metrics?metrics.measure('source_json',()=>{const value=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(jsonBytes));validateGltf(value,part);return value;}):JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(jsonBytes));if(!metrics)validateGltf(json,part);
   const binary=await checkedFile(part,'geometry.bin',loadFile);wanted();require(json.buffers[0].byteLength===binary.byteLength,'GLTF buffer length mismatch');if(metrics)metrics.measure('source_geometry',()=>validateSourceGltfGeometry(json,part,binary));else validateSourceGltfGeometry(json,part,binary);
   geometryLease=await reserve({format:'geometry',bytes:geometryBytes});require(typeof geometryLease?.release==='function','Invalid geometry budget lease');wanted();
-  photo=isMemorySourcePart(part)?await loadMemoryPhotograph({part,renderer,loadFile,reserve,stillWanted}):await loadPreparedPhotograph({supported,source,loadManifest,loadPayload,reserve:async request=>{require(geometryBytes+request.bytes<=32*1048576,'Source page exceeds upload limit');return reserve(request);},stillWanted,
+  photo=isMemorySourcePart(part)?await loadMemoryPhotograph({THREE,part,renderer,loadFile,reserve,stillWanted}):await loadPreparedPhotograph({supported,source,loadManifest,loadPayload,reserve:async request=>{require(geometryBytes+request.bytes<=32*1048576,'Source page exceeds upload limit');return reserve(request);},stillWanted,
    upload:prepared=>uploadPreparedBc7(THREE,renderer,prepared),
    onFallback:reason=>{if(expectedIdentity?.format==='bc7')throw new SourcePagePlanChanged(part.directory,reason);},
    loadFallback:async()=>{

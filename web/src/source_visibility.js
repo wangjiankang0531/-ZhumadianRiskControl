@@ -1,3 +1,4 @@
+import {visibilityRegionWeights} from './visibility_region_weights.js';
 import {WebGLRenderTarget,MeshBasicMaterial,ShaderMaterial,Color,Vector3,Box3,Frustum,Matrix4,DoubleSide,NoBlending,LinearSRGBColorSpace} from 'three';
 
 const surfaceDepths=Float64Array.from({length:256},(_,bin)=>.5*120000**(bin/255));
@@ -51,7 +52,7 @@ export class SourceVisibility {
  retirementLoss(root,replacement,names,currentNodes,camera,height){
   let loss=0;for(const name of new Set(names)){const bins=this.depthBins.get(visibilityKey(root,name));if(!bins?.size)continue;const before=currentNodes.get(name)?.node;if(!before)return Infinity;loss+=Math.max(0,depthWeightedPriority(replacement,bins,camera,height)-depthWeightedPriority(before,bins,camera,height));}return loss;
  }
- sample({camera,width,height,base,catalog,residents,obscured=[],baseQuality=null}){
+ sample({camera,width,height,base,catalog,residents,obscured=[],baseQuality=null,balancedRegions=false}){
   this.visibleSnapshot=null;
   const renderer=this.renderer,rw=96,rh=Math.max(16,Math.round(rw*height/width)),frustum=new Frustum().setFromProjectionMatrix(new Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
   this.target.setSize(rw,rh);const registry=new Map(),metrics=new Map(),saved=[],used=new Set();let next=1;
@@ -72,12 +73,12 @@ export class SourceVisibility {
   const contextMaterials=[];this.context.traverse(n=>{if(n.isMesh){contextMaterials.push([n,n.material]);n.material=this.black;}});
   const target=renderer.getRenderTarget(),color=renderer.getClearColor(new Color()).clone(),alpha=renderer.getClearAlpha(),autoClear=renderer.autoClear,background=this.scene.background;
   try{this.scene.background=null;renderer.autoClear=true;renderer.setRenderTarget(this.target);renderer.setClearColor(0,1);renderer.clear();renderer.render(this.scene,camera);
-   const pixels=new Uint8Array(rw*rh*4),weights=new Float32Array(rw*rh);renderer.readRenderTargetPixels(this.target,0,0,rw,rh,pixels);
-   for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){const px=(x+.5)*width/rw,py=(rh-y-.5)*height/rh;weights[y*rw+x]=obscured.some(r=>px>=r.left&&px<r.right&&py>=r.top&&py<r.bottom)?.2:1;}
+   const pixels=new Uint8Array(rw*rh*4);renderer.readRenderTargetPixels(this.target,0,0,rw,rh,pixels);
+   const regional=visibilityRegionWeights({pixels,rasterWidth:rw,rasterHeight:rh,width,height,obscured,balanced:balancedRegions}),weights=regional.weights;
    const sampled=countVisibilityPixels(pixels,rw,rh,weights);for(const [id,count] of sampled.counts){const key=registry.get(id);if(!key)throw Error('Invalid GPU visibility color');this.weights.set(key,count/sampled.total);this.depths.set(key,sampled.depths.get(id));this.depthBins.set(key,new Map([...sampled.depthBins.get(id)].map(([bin,weight])=>[bin,weight/sampled.total])));}
    const weightedQualityDeficit=[...metrics].reduce((sum,[key,node])=>sum+depthWeightedPriority(node,this.depthBins.get(key),camera,height),0);
    this.visibleSnapshot={cameraKey:visibilityCameraKey(camera,width,height),width,height,cameraWorld:[...camera.matrixWorld.elements],projectionInverse:[...camera.projectionMatrixInverse.elements],viewMatrix:[...camera.matrixWorldInverse.elements],metrics,samples:visiblePixelSamples(pixels,rw,rh,weights,registry)};
-   return {width:rw,height:rh,visibleSources:sampled.counts.size,weightedQualityDeficit};
+   return {width:rw,height:rh,visibleSources:sampled.counts.size,weightedQualityDeficit,weightingPolicy:regional.policy,regions:regional.cells};
   }finally{renderer.setRenderTarget(target);renderer.setClearColor(color,alpha);renderer.autoClear=autoClear;this.scene.background=background;
    for(const {mesh,material,groups,visible} of saved){mesh.material=material;mesh.geometry.groups=groups;mesh.visible=visible;}
    for(const [mesh,material] of contextMaterials)mesh.material=material;

@@ -1,0 +1,2 @@
+// Synthetic non-user RGBA fixture, including colored alpha-zero pixels.
+export const imageFixture={"width":9,"height":7,"pngBase64":"iVBORw0KGgoAAAANSUhEUgAAAAkAAAAHCAYAAADam2dgAAAAaElEQVR4AQKMkYGBgUGWm5cRim1luXkdZLl566F8sDgLu6owIzs3LwjbsnPzOrBz89ZD+SAxMIYpwqmAnZvXFqQIrwKQ6SBFWK0AmQBSALIepAjDDcgKQO4DKQI7DsSBYoT1qmAPMQIAGwISJbxTrJoAAAAASUVORK5CYII=","rgbaSHA256":"6a312480e2977c33b1f069c48f033c5757add80708db9e9136ee476ed211ffac","pngSHA256":"4a201814d39629c865504060fc5ae3d471de4908c924fe9e1d5cbfebc02d5eac"};

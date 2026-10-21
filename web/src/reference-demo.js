@@ -1,3 +1,4 @@
+import {referenceLocalDeployment} from './reference-deployment.js';
 import {renderReferenceHome,referenceRoute} from './reference-home.js';
 import {openWorkForm,workSummary,chinaInput} from './reference-work-form.js';
 import {openPlanEditor,renderPlanDetail} from './reference-plan-form.js';
@@ -79,4 +80,4 @@ async function render(){
  const steps=el('div','steps');for(const [i,s] of model.states.entries()){const n=el('span','',`${i+1}. ${s}`);steps.append(n);}content.append(steps);listRoot=el('section','panel records');content.append(listRoot);await refreshList();
 }
 window.addEventListener('hashchange',render);
-try {const c=await api('catalog');catalog=c.modules;token=c.token;workSchema=c.workFormSchema;planSchema=c.planSchema;deployment=c.deployment||null;await render();}catch(error){app.append(el('div','boot-error','模拟服务无法连接：'+error.message));}
+try {const c=await api('catalog');catalog=c.modules;token=c.token;workSchema=c.workFormSchema;planSchema=c.planSchema;deployment=referenceLocalDeployment(c.deployment||null,{hostname:location.hostname,commandURL:document.querySelector('meta[name="xnby-local-command-url"]')?.content});await render();}catch(error){app.append(el('div','boot-error','模拟服务无法连接：'+error.message));}
