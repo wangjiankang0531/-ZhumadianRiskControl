@@ -55,3 +55,52 @@ test('malformed or mismatched part payloads fail before network or GPU work',asy
   const {state,options}=setup();mutate(options.marker);await assert.rejects(()=>stageSourceParts(options),/资源账目/);assert.deepEqual(state.loaded,[]);assert.deepEqual(state.uploaded,[]);
  }
 });
+
+const deferred=()=>{let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b;});return {promise,resolve,reject};};
+const tick=()=>new Promise(resolve=>setImmediate(resolve));
+function windowSetup(count=4){
+ const {state,options}=setup(count),requests=[];options.loadConcurrency=2;
+ options.downloads.load=(url,wanted)=>{const d=deferred();requests.push({url,wanted,...d});state.loaded.push(url);return d.promise;};
+ const resolve=i=>requests[i].resolve({scene:{url:requests[i].url}});
+ return {state,options,requests,resolve};
+}
+test('two preparation slots overlap out of order reads but upload and attach in source order',async()=>{
+ const {state,options,requests,resolve}=windowSetup();const task=stageSourceParts(options);await tick();assert.equal(requests.length,2);
+ resolve(1);await tick();assert.deepEqual(state.uploaded,[]);assert.equal(requests.length,2);
+ resolve(0);await tick();assert.deepEqual(state.uploaded,['part_000','part_001']);assert.equal(requests.length,4);
+ resolve(3);await tick();assert.equal(state.uploaded.length,2);resolve(2);await task;
+ assert.deepEqual(state.uploaded,state.loaded);assert.deepEqual(state.ready,[0,1,2,3]);assert.deepEqual(state.disposed,[]);
+});
+test('the next two-page window is filled only after upload transfers the current model',async()=>{
+ const {state,options,requests,resolve}=windowSetup();const hold=deferred();options.upload=async model=>{state.uploaded.push(model.scene.url);if(model.scene.url==='part_000')await hold.promise;};
+ const task=stageSourceParts(options);await tick();resolve(0);resolve(1);await tick();assert.equal(requests.length,2);assert.equal(state.scenes.length,0);
+ state.wanted=false;hold.resolve();await assert.rejects(task,SourceLoadCancelled);assert.equal(requests.length,2);assert.deepEqual(state.disposed,['part_000','part_001']);assert.equal(state.scenes.length,0);
+});
+test('a failed prefetched page aborts the batch and drains the earlier in-flight page before rejecting',async()=>{
+ const {state,options,requests,resolve}=windowSetup();let settled=false;const failure=Error('prefetch failed');const task=stageSourceParts(options);const checked=assert.rejects(task,error=>error===failure).then(()=>{settled=true;});
+ await tick();requests[1].reject(failure);await tick();assert.equal(settled,false);assert.equal(requests[0].wanted(),false);
+ resolve(0);await checked;assert.equal(requests.length,2);assert.deepEqual(state.disposed,['part_000']);assert.deepEqual(state.uploaded,[]);
+});
+test('upload failure drains and disposes the late prefetched model once while preserving the original error',async()=>{
+ const {state,options,requests,resolve}=windowSetup();const failure=Error('GPU upload failed');options.upload=()=>{throw failure;};let settled=false;
+ const task=stageSourceParts(options);const checked=assert.rejects(task,error=>error===failure).then(()=>{settled=true;});await tick();resolve(0);await tick();assert.equal(settled,false);assert.equal(requests[1].wanted(),false);
+ resolve(1);await checked;assert.deepEqual(state.disposed,['part_000','part_001']);assert.equal(state.scenes.length,0);assert.equal(requests.length,2);
+});
+test('camera cancellation drains both reads without attachment or further requests',async()=>{
+ const {state,options,requests,resolve}=windowSetup();const task=stageSourceParts(options);const checked=assert.rejects(task,SourceLoadCancelled);await tick();state.wanted=false;resolve(1);await tick();assert.equal(requests[0].wanted(),false);resolve(0);await checked;
+ assert.deepEqual(state.disposed,['part_000','part_001']);assert.deepEqual(state.ready,[]);assert.equal(requests.length,2);
+});
+test('failure after attachment leaves transferred pages to the group owner and disposes speculative pages once',async()=>{
+ const {state,options,requests,resolve}=windowSetup();options.yieldFrame=async()=>{state.wanted=false;};const task=stageSourceParts(options);const checked=assert.rejects(task,SourceLoadCancelled);await tick();resolve(0);resolve(1);await tick();
+ // Page 2 can have been requested before the yield invalidates demand.
+ for(let i=2;i<requests.length;i++)resolve(i);await checked;
+ for(const scene of state.scenes)options.dispose(scene);
+ assert.equal(state.scenes.length,1);assert.deepEqual([...state.disposed].sort(),[...state.loaded].sort());assert.equal(new Set(state.disposed).size,state.disposed.length);
+});
+test('cleanup keeps draining all prepared models when one disposer throws',async()=>{
+ const {state,options,requests,resolve}=windowSetup();const failure=Error('prepare failed');options.prepare=()=>{throw failure;};options.dispose=scene=>{state.disposed.push(scene.url);if(scene.url==='part_000')throw Error('cleanup failed');};
+ const task=stageSourceParts(options);const checked=assert.rejects(task,e=>e===failure);await tick();resolve(0);resolve(1);await checked;assert.deepEqual(state.disposed,['part_000','part_001']);
+});
+test('invalid preparation concurrency rejects before IO while one remains the default',async()=>{
+ for(const value of [0,3,1.5,'2',null]){const {state,options}=setup();options.loadConcurrency=value;await assert.rejects(stageSourceParts(options),/concurrency/);assert.deepEqual(state.loaded,[]);}
+});

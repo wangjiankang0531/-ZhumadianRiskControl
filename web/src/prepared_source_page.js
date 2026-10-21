@@ -146,16 +146,20 @@ export function validateRuntimeSourceTexture(part,texture){
 
 // A staged bundle owns every page until the caller atomically commits the whole cut.
 // Failure/cancellation cannot attach a partial family to the live scene.
-export async function stagePreparedSourceBundle({THREE,renderer,marker,plan,supported,loadFile,loadManifest,loadPayload,reserve,stillWanted=()=>true,prepare=()=>{},upload,onReady,yieldFrame=()=>Promise.resolve(),metrics=null}){
+export async function stagePreparedSourceBundle({THREE,renderer,marker,plan,supported,loadFile,loadManifest,loadPayload,reserve,stillWanted=()=>true,prepare=()=>{},upload,onReady,yieldFrame=()=>Promise.resolve(),metrics=null,loadConcurrency=1}){
+ require(loadConcurrency===1||loadConcurrency===2,'Source preparation concurrency must be 1 or 2');
+ // Prepared compressed uploads may execute renderer work during load. Only
+ // original memory PNG pages are CPU-only until the ordered upload callback.
+ const preparationSlots=marker.parts.every(isMemorySourcePart)?loadConcurrency:1;
  const planned=plan&&plans.get(plan);if(plan)require(planned&&planned.source===JSON.stringify(marker),'Source bundle plan identity mismatch');
  const group=new THREE.Group(),meshes=new Map(),pages=[];let disposed=false;
  const dispose=()=>{if(disposed)return;disposed=true;try{for(const page of pages)page.dispose();}finally{group.removeFromParent();group.clear();}};
  try{
-  await stageSourceParts({marker,group,stillWanted,prepare,upload:async(model,index)=>{const part=marker.parts[index],page=pages.find(p=>p.model===model);require(page,'Unknown prepared upload');if(metrics)metrics.measure('source_loaded_geometry',()=>validateLoadedSourceGeometry(page.mesh.geometry,part));else validateLoadedSourceGeometry(page.mesh.geometry,part);await upload?.(model,index);},onReady,yieldFrame,urlForPart:part=>part.directory,
-   downloads:{load:async directory=>{
+  await stageSourceParts({marker,group,stillWanted,loadConcurrency:preparationSlots,prepare,upload:async(model,index)=>{const part=marker.parts[index],page=pages.find(p=>p.model===model);require(page,'Unknown prepared upload');if(metrics)metrics.measure('source_loaded_geometry',()=>validateLoadedSourceGeometry(page.mesh.geometry,part));else validateLoadedSourceGeometry(page.mesh.geometry,part);await upload?.(model,index);},onReady,yieldFrame,urlForPart:part=>part.directory,
+   downloads:{load:async (directory,batchWanted=stillWanted)=>{
     const part=marker.parts.find(p=>p.directory===directory);require(part,'Unknown staged source page');
     const choice=planned?.choices.get(directory);
-    const load=()=>loadPreparedSourcePage({THREE,renderer,part,metrics,supported:choice?choice.identity.format==='bc7':typeof supported==='function'?supported(part):supported,expectedIdentity:choice?.identity,loadFile:name=>loadFile(part,name),loadManifest:()=>choice?choice.manifest:loadManifest(part),loadPayload:()=>loadPayload(part),reserve,stillWanted});const page=await (metrics?metrics.measureAsync('source_load_wait',load):load());
+    const load=()=>loadPreparedSourcePage({THREE,renderer,part,metrics,supported:choice?choice.identity.format==='bc7':typeof supported==='function'?supported(part):supported,expectedIdentity:choice?.identity,loadFile:name=>loadFile(part,name),loadManifest:()=>choice?choice.manifest:loadManifest(part),loadPayload:()=>loadPayload(part),reserve,stillWanted:()=>stillWanted()&&batchWanted()});const page=await (metrics?metrics.measureAsync('source_load_wait',load):load());
     pages.push(page);meshes.set(directory,page.mesh);return page.model;
    }},
    dispose:scene=>{const page=pages.find(p=>p.model.scene===scene);page?.dispose();}});

@@ -64,3 +64,13 @@ test('an admitted compressed page must replan before original JPEG download or r
  await assert.rejects(loadPreparedSourcePage({part:p,supported:true,expectedIdentity:{format:'bc7'},loadFile:async name=>{if(name==='atlas.jpg'){jpeg++;throw Error('must not download original');}return name==='geometry.gltf'?raw:binary;},loadManifest:async()=>{throw Error('descriptor no longer available');},reserve:async({format,bytes})=>{reservations.push(format);held+=bytes;return {release(){held-=bytes;}};}}),SourcePagePlanChanged);
  assert.equal(held,0);assert.equal(jpeg,0);assert.deepEqual(reservations,['geometry']);
 });
+
+test('legacy and prepared texture bundles stay serial even when two CPU slots are requested',async()=>{
+ const f=plannedFixture();f.p.files.push({name:'geometry.gltf',bytes:1,sha256:'b'.repeat(64)});f.marker.parts.push({...structuredClone(f.p),directory:'part_001'});f.marker.gpu_payload_bytes*=2;const reads=[];let reject;
+ const THREE={Group:class{removeFromParent(){}clear(){}}};
+ const task=stagePreparedSourceBundle({THREE,marker:f.marker,loadConcurrency:2,reserve:()=>{throw Error("must not reserve after failed read");},loadFile:async part=>{reads.push(part.directory);return new Promise((a,b)=>{reject=b;});}});
+ const checked=assert.rejects(task,/stop test/);await new Promise(r=>setImmediate(r));assert.deepEqual(reads,['part_000']);reject(Error('stop test'));await checked;
+});
+test('invalid CPU window is rejected before group allocation or source reads',async()=>{
+ let groups=0;await assert.rejects(stagePreparedSourceBundle({THREE:{Group:class{constructor(){groups++;}}},marker:plannedFixture().marker,loadConcurrency:3}),/concurrency/);assert.equal(groups,0);
+});

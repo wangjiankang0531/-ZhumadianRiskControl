@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {BufferGeometry,BufferAttribute,PerspectiveCamera} from 'three';
 import {MEMORY_SOURCE_FORMAT,MEMORY_GEOMETRY_LAYOUT,MEMORY_ROOT_SCHEMA,memoryImageInfo,sourceImageMipBytes,isMemorySourcePart} from '../src/source_page_format.js';
 import {webSourceGeometryBytes,validateSourceGltfGeometry,validateLoadedSourceGeometry} from '../src/source_geometry_layout.js';
-import {sourcePageSource,planPreparedSourceBundle,sourcePageGeometryBytes,loadPreparedSourcePage} from '../src/prepared_source_page.js';
+import {sourcePageSource,stagePreparedSourceBundle,planPreparedSourceBundle,sourcePageGeometryBytes,loadPreparedSourcePage} from '../src/prepared_source_page.js';
 import {SOURCE_PLAN_SCHEMA,readSourcePlan,verifyPlannedSource,SourcePlanChanged} from '../src/source_descriptor_plan.js';
 import {SourceLoadCancelled} from '../src/lod_transaction.js';
 import {geometryDigest,evaluateSourceGeometryGain} from '../src/source_geometry_gain.js';
@@ -59,3 +59,11 @@ test('new marker schema requires every page to opt in; legacy/new mixtures are r
  }
 });
 
+
+test('original-memory preparation uses two slots and drains pending reads on failure before owner cleanup',async()=>{
+ const f=await fixture();f.marker.parts.push({...structuredClone(f.part),directory:'part_001'});f.marker.gpu_payload_bytes*=2;const reads=[],rejects=[];let cleared=false,settled=false;
+ const THREE={Group:class{removeFromParent(){}clear(){cleared=true;}}};const failure=Error('source read failed');
+ const task=stagePreparedSourceBundle({THREE,marker:f.marker,loadConcurrency:2,reserve:()=>{throw Error("must not reserve after failed read");},loadFile:async part=>{reads.push(part.directory);return new Promise((a,b)=>rejects.push(b));}});
+ const checked=assert.rejects(task,e=>e===failure).then(()=>{settled=true;});await new Promise(r=>setImmediate(r));assert.deepEqual(reads,['part_000','part_001']);rejects[1](failure);await new Promise(r=>setImmediate(r));assert.equal(settled,false);assert.equal(cleared,false);
+ rejects[0](Error('late cancellation'));await checked;assert.equal(cleared,true);
+});
