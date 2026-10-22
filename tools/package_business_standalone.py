@@ -4,11 +4,12 @@ from pathlib import Path
 
 APP_FILES = (
     'services/__init__.py', 'services/reference_demo.py',
+    'services/business_workflow.py', 'services/business_materials.py',
     'services/reference_work_forms.py', 'services/reference_demo_catalog.json',
     'services/reference_plans.py', 'services/reference_errors.py', 'services/reference_plan_materials.py',
     'tools/serve_reference_demo.py',
 )
-STATIC_FILES = ('reference-demo.html', 'reference-demo.js', 'reference-demo.css', 'reference-home.css', 'home-access-qr.svg')
+STATIC_FILES = ('reference-demo.html', 'reference-demo.js', 'reference-demo.css', 'reference-home.css', 'home-access-qr.svg','business.html','mobile.html','business.js','business.css','mobile.webmanifest')
 RUNTIME_ROOT = ('python.exe', 'python3.dll', 'python312.dll', 'vcruntime140.dll', 'vcruntime140_1.dll', 'LICENSE.txt')
 
 VERIFY = r'''"""Verify packaged immutable files; data and logs are intentionally separate."""
@@ -55,9 +56,9 @@ def main():
 if __name__=='__main__':main()
 '''
 
-README = """驻马店模拟业务 0.8.10 独立运行包（本机验收候选）
+README = """驻马店模拟业务 0.9.0 独立运行包（本机验收候选）
 
-本包含 Python 3.12 运行时、82 模拟业务模块、八类作业表单和结构化预案编制/评审/版本流程；首次启动在 data/synthetic.sqlite 新建984条合成数据。没有复制任何现有数据库、GIS、三维模型、DLG或凭据。不扫描相邻安装或迁移相邻业务库。
+本包含 Python 3.12 运行时、共享PC/H5业务闭环与空白业务协同侧库、82 模拟业务模块、八类作业表单和结构化预案编制/评审/版本流程；首次启动在 data/synthetic.sqlite 新建984条合成数据。没有复制任何现有数据库、GIS、三维模型、DLG或凭据。不扫描相邻安装或迁移相邻业务库。
 
 解压到新的版本目录。请先运行：
   runtime\\python\\python.exe -I -B verify_package.py
@@ -93,14 +94,14 @@ def build(app,static,output,*,public=False):
                 items['runtime/python/'+rel.as_posix()]=checked(path,runtime)
     items.update({'verify_package.py':VERIFY.encode(),'run_local.py':RUN.encode(),'config/local.json':b'{"listen":"127.0.0.1","port":18872}', 'README.txt':README.encode('utf-8')})
     if public:
-        for name in ('services/reference_access.py','tools/serve_reference_public.py'):
+        for name in ('services/reference_access.py','tools/serve_reference_public.py','tools/deploy_business_bluegreen.py'):
             items[name]=checked(app/name,app)
         items['run_public.py']=PUBLIC_RUN.encode()
         items['iis/App_Code/XnbyReferenceProxy.cs']=checked(app/'deploy/iis_reference/App_Code/XnbyReferenceProxy.cs',app)
         items['iis/web.config.template']=checked(app/'deploy/iis_reference/web.config.template',app)
         items['README_PUBLIC.txt']=PUBLIC_README.encode('utf-8')
     # Config is editable and is checked semantically at startup, outside immutable hashes.
-    manifest={'schema':'xnby.synthetic.business.package.v1','version':'0.8.10-public.1' if public else '0.8.10-standalone.1','includesDatabase':False,'includes3D':False,'publicReady':False,
+    manifest={'schema':'xnby.synthetic.business.package.v1','version':'0.9.0-public.1' if public else '0.9.0-standalone.1','includesDatabase':False,'includes3D':False,'publicReady':False,
               'files':[dict(path=name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()) for name,raw in sorted(items.items()) if name!='config/local.json']}
     output.parent.mkdir(parents=True,exist_ok=True)
     with output.open('xb') as stream,zipfile.ZipFile(stream,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as archive:
@@ -108,28 +109,41 @@ def build(app,static,output,*,public=False):
         archive.writestr('package_manifest.json',json.dumps(manifest,ensure_ascii=False,indent=2).encode())
     return dict(path=str(output),sha256=hashlib.sha256(output.read_bytes()).hexdigest(),bytes=output.stat().st_size,files=len(items)+1,publicReady=False)
 
-PUBLIC_RUN = r'''"""Private loopback backend for the separately configured HTTPS test ingress."""
-import json,sys
+PUBLIC_RUN = r'''"""Authenticated loopback business backend; no public administration endpoint."""
+import datetime,json,os,secrets,sys,threading
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent
 sys.path.insert(0,str(ROOT))
 from verify_package import verify
-verify(ROOT)
+verification=verify(ROOT)
 from tools.serve_reference_public import make_public_server
 config=json.loads((ROOT/'config/public.json').read_text('utf-8'))
 server=make_public_server(config,ROOT/'web/dist',ROOT/'data/public-synthetic.sqlite')
-print(json.dumps(dict(loopback=f'127.0.0.1:{server.server_port}',origin=config['origin'],prefix=config['prefix'],synthetic=True)),flush=True)
+logs=ROOT/'logs';logs.mkdir(exist_ok=True);record=logs/'backend_runtime.json';owner=secrets.token_hex(32);done=threading.Event()
+runtime=dict(kind='xnby.business.backend.v1',state='ready',version=verification['version'],pid=os.getpid(),port=server.server_port,owner=owner,nativeStarts=0,startedAt=datetime.datetime.now().astimezone().isoformat())
+def save():
+ pending=logs/'backend_runtime.pending.json';pending.write_text(json.dumps(runtime,indent=2),encoding='utf-8');pending.replace(record)
+def monitor():
+ while not done.wait(.5):
+  request=logs/'stop_request.json'
+  if request.exists():
+   try:value=json.loads(request.read_text(encoding='utf-8'))
+   except (OSError,ValueError):continue
+   if isinstance(value,dict) and value.get('owner')==owner and value.get('pid')==os.getpid():server.shutdown();return
+save();threading.Thread(target=monitor,daemon=True).start()
+print(json.dumps(dict(loopback=f'127.0.0.1:{server.server_port}',version=verification['version'],nativeStarts=0)),flush=True)
 try:server.serve_forever()
-finally:server.server_close()
+finally:
+ done.set();server.server_close();runtime.update(state='stopped',stoppedAt=datetime.datetime.now().astimezone().isoformat());save()
 '''
 
-PUBLIC_README = '''公网模拟业务 0.8.10-public.1 候选
+PUBLIC_README = '''公网模拟业务 0.9.0-public.1 候选
 
-目标 https://www.joinlinksmart.com/zhumadian/ 。此包的运行时和业务代码可搬迁，三维/GIS/DLG/生产库/账号密码/入口密钥均未打包。
-run_public.py 仅绑定127.0.0.1:18873。必须单独提供 config/public.json（仅密码散列和随机入口密钥），并在 iis/web.config 中填入相同入口密钥。默认不配置账号、不自动发布公网、不修改原网站。
-IIS子应用必须使用独立.NET Framework v4 Integrated应用池，物理目录指向本包iis目录。使用服务器现有ASP.NET4管理处理程序，固定转发至18873；不需要安装ARR/Rewrite。仅允许指定域名的HTTPS和/zhumadian/，不会代理其它地址；不要将包根目录作为网站目录。
+目标 https://www.joinlinksmart.com/zhumadian/ 。此包的运行时和业务代码可搬迁，三维/GIS/DLG/生产库/账号密码/入口密钥均未打包。新增business.html与mobile.html共用工作流，附件与坐标另有服务端校验，原82合成台账和预案版本附件继续保留。
+run_public.py 仅绑定127.0.0.1:18874。必须单独提供 config/public.json（仅密码散列和随机入口密钥），并在 iis/web.config 中填入相同入口密钥。默认不配置账号、不自动发布公网、不修改原网站。
+首次安装IIS子应用需独立.NET Framework v4 Integrated应用池，物理目录指向iis目录。已有0.8.7升级使用tools/deploy_business_bluegreen.py，保留旧IIS物理目录，仅在新后台就绪后切旧固定代理、请求上限和对应清单，并在新目录logs/ingress_backup保留旧字节。使用服务器现有ASP.NET4管理处理程序，固定转发至18874；不需要安装ARR/Rewrite。仅允许指定域名的HTTPS和/zhumadian/，不会代理其它地址；不要将包根目录作为网站目录。
 启动：runtime\\python\\python.exe -I -B run_public.py 。启动前检查包内逐文件SHA，首次创建独立 data/public-synthetic.sqlite，保留已有0.8.7本机数据库和18872服务。此候选尚未验收Windows服务/重启自启，关闭RDP窗口与注销不是一回事；请勿将此当作正式长稳部署。
-测试账号是临时访问门禁，所有记录仍为合成数据和模拟操作员审计，不是企业IAM或角色/租户权限验收。密码PBKDF2-SHA256独立随机盐，Cookie Secure/HttpOnly/SameSite=Strict，8小时绝对会话，重启后需重新登录。访问失败限速，登录和会话容量有界。
+测试账号是临时访问门禁，原82模块保留合成台账；新增业务协同库初始为空，PC与H5用户录入记录和账号审计独立保存，不是企业IAM或角色/租户权限验收。密码PBKDF2-SHA256独立随机盐，Cookie Secure/HttpOnly/SameSite=Strict，8小时绝对会话，重启后需重新登录。访问失败限速，登录和会话容量有界。
 升级先SQLite在线备份含WAL，不要覆盖data或将数据库放在iis目录。Linux/Apache可用同一业务协议与入口头契约，但需对应运行时和独立代理配置；未做Linux/MySQL实际部署验收。
 '''
 

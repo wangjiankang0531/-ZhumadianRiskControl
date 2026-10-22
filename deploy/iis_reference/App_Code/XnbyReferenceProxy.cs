@@ -9,7 +9,7 @@ public sealed class XnbyReferenceProxy : IHttpHandler
 {
     private const string Prefix = "/zhumadian/";
     private const string Origin = "https://www.joinlinksmart.com";
-    private const string Upstream = "http://127.0.0.1:18873";
+    private const string Upstream = "http://127.0.0.1:18874";
     public bool IsReusable { get { return true; } }
     private static void Error(HttpContext context, int status)
     {
@@ -33,9 +33,25 @@ public sealed class XnbyReferenceProxy : IHttpHandler
         { Error(context, 404); return; }
         if (input.HttpMethod != "GET" && input.HttpMethod != "POST") { Error(context, 405); return; }
         if (key == null || !System.Text.RegularExpressions.Regex.IsMatch(key, "^[0-9a-f]{64}$") || key == new string('0',64)) { Error(context, 503); return; }
-        if (input.ContentLength < 0 || input.ContentLength > 131072 || !String.IsNullOrEmpty(input.Headers["Transfer-Encoding"])) { Error(context, 413); return; }
+        int bodyLimit = (route == Prefix + "api/demo/workflow-material" || route == Prefix + "api/demo/plan-material") ? 2828972 : 131072;
+        if (input.ContentLength < 0 || input.ContentLength > bodyLimit || !String.IsNullOrEmpty(input.Headers["Transfer-Encoding"])) { Error(context, 413); return; }
         try
         {
+            // This handler owns the entity body. Keep the framework size limit,
+            // bound our allocation, and reject truncation before forwarding.
+            byte[] postBody = null;
+            if (input.HttpMethod == "POST")
+            {
+                postBody = new byte[input.ContentLength];
+                Stream incoming = input.GetBufferlessInputStream();
+                int offset = 0;
+                while (offset < postBody.Length)
+                {
+                    int n = incoming.Read(postBody, offset, Math.Min(8192, postBody.Length-offset));
+                    if (n <= 0) { Error(context,400); return; }
+                    offset += n;
+                }
+            }
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Upstream + raw);
             request.Method = input.HttpMethod; request.AllowAutoRedirect = false; request.Proxy = null;
             request.UseDefaultCredentials = false; request.KeepAlive = false;
@@ -51,8 +67,7 @@ public sealed class XnbyReferenceProxy : IHttpHandler
                 request.ContentType = input.ContentType; request.ContentLength = input.ContentLength;
                 using (Stream target = request.GetRequestStream())
                 {
-                    byte[] buffer = new byte[8192]; int remaining = input.ContentLength;
-                    while (remaining > 0) { int n = input.InputStream.Read(buffer,0,Math.Min(buffer.Length,remaining)); if (n <= 0) throw new IOException(); target.Write(buffer,0,n); remaining -= n; }
+                    target.Write(postBody,0,postBody.Length);
                 }
             }
             HttpWebResponse response;
@@ -66,7 +81,7 @@ public sealed class XnbyReferenceProxy : IHttpHandler
                 while ((n = stream.Read(buffer,0,buffer.Length)) > 0) { if (body.Length+n > 2097152) throw new IOException(); body.Write(buffer,0,n); }
                 context.Response.Clear(); context.Response.StatusCode = (int)response.StatusCode;
                 context.Response.TrySkipIisCustomErrors = true; context.Response.ContentType = response.ContentType;
-                foreach (string name in new string[] { "Cache-Control", "X-Content-Type-Options", "Content-Security-Policy", "X-Frame-Options", "Permissions-Policy" })
+                foreach (string name in new string[] { "Content-Disposition", "Cache-Control", "X-Content-Type-Options", "Content-Security-Policy", "X-Frame-Options", "Permissions-Policy" })
                     if (response.Headers[name] != null) context.Response.AppendHeader(name,response.Headers[name]);
                 // Native same-origin form POSTs must retain Origin; no-referrer makes it null.
                 context.Response.AppendHeader("Referrer-Policy", "same-origin");
@@ -77,6 +92,7 @@ public sealed class XnbyReferenceProxy : IHttpHandler
                 context.Response.OutputStream.Write(body.GetBuffer(),0,(int)body.Length);
             }
         }
+        catch (HttpException) { Error(context,400); }
         catch (WebException) { Error(context,502); }
         catch (IOException) { Error(context,502); }
         catch (ArgumentException) { Error(context,400); }

@@ -30,13 +30,13 @@ export function renderReferenceHome({app,deployment,catalog,el,anchor,button,log
  function card(kind,title,desc){const n=el('section','home-card home-card-'+kind);n.append(illustration(kind),el('h2','',title),el('p','home-card-desc',desc));cards.append(n);return n;}
  function entry(text,href,local=false){const a=anchor(' ',href,'home-entry');a.replaceChildren(el('span','',text),el('span','home-arrow','➤'));if(local){a.target='_blank';a.rel='noopener noreferrer';a.append(el('small','','本机三维场景 ↗'));}return a;}
  const systems=card('navigation','系统导航','业务管理与本地三维协同入口'),systemLinks=el('nav','home-system-links');systemLinks.setAttribute('aria-label','系统导航');
- systemLinks.append(entry('安全风险智能管控平台','#dashboard'),entry('敏捷应急管理','#events'),entry('敏捷应急指挥',referenceCommandURL(deployment),true));systems.append(systemLinks,el('p','home-local-note','三维指挥使用当前电脑的本地地景，请先启动本地场景服务。'));
+ systemLinks.append(entry('业务协同工作台','business.html'),entry('手机业务端','mobile.html'),entry('安全风险智能管控平台','#dashboard'),entry('敏捷应急管理','#events'),entry('敏捷应急指挥',referenceCommandURL(deployment),true));systems.append(systemLinks,el('p','home-local-note','三维指挥使用当前电脑的本地地景，请先启动本地场景服务。'));
  const quick=card('links','快捷链接','常用业务，快速抵达'),quickLinks=el('nav','home-quick-links');quickLinks.setAttribute('aria-label','快捷链接');for(const [text,id] of homeShortcuts(catalog))quickLinks.append(entry(text,'#'+id));quick.append(quickLinks);
  const scene=card('scene','园区三维场景','驻马店实景地景 · 编辑图层同步'),graphic=el('div','home-scene-illustration');graphic.setAttribute('aria-hidden','true');
  graphic.innerHTML='<svg viewBox="0 0 210 160" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 112 90 40 200 91 117 153Z M23 112 93 52 186 93 116 140Z M8 112v8l109 40 83-61v-8 M46 96 152 125 M73 73 177 105 M62 135 139 73 M91 146 169 86 M76 80V57l22-14 23 12v24L99 95Z M76 57l23 14 22-16 M99 71v24 M124 112V88l22-14 21 10v24l-21 14Z M124 88l22 12 21-16 M146 100v22"/></svg>';
  const sceneURL=new URL(referenceSceneURL(deployment));
  scene.append(graphic,el('p','home-scene-note','点线面选择 / 分层浏览 / 近景细节'),entry('进入园区一张图',sceneURL.href,true));
  main.append(cards);
- const footer=el('footer','home-footer');footer.append(el('span','','模拟业务测试环境 · 仅使用合成业务样本'),el('span','','重大风险防控 · 应急协同'));
+ const footer=el('footer','home-footer');footer.append(el('span','','项目业务测试环境 · 业务协同与三维场景'),el('span','','重大风险防控 · 应急协同'));
  app.replaceChildren(header,main,footer);
 }

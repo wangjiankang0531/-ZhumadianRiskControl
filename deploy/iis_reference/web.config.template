@@ -4,7 +4,7 @@
   <appSettings><add key="XnbyIngressKey" value="REPLACE_WITH_PRIVATE_64_HEX_KEY" /></appSettings>
   <system.web>
     <compilation debug="false" targetFramework="4.0" />
-    <httpRuntime maxRequestLength="128" executionTimeout="30" />
+    <httpRuntime maxRequestLength="3072" executionTimeout="30" />
     <customErrors mode="On" />
   </system.web>
   <system.webServer>

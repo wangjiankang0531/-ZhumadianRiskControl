@@ -70,7 +70,7 @@ class PublicHandler(Handler):
             sys.stderr.write('synthetic-test request status=' + str(args[1]) + '\n')
 
     def end_headers(self):
-        self.send_header('Content-Security-Policy', "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'")
+        self.send_header('Content-Security-Policy', "default-src 'none'; script-src 'self'; manifest-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'")
         self.send_header('Referrer-Policy', 'same-origin')
         self.send_header('X-Frame-Options', 'DENY')
         self.send_header('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
@@ -139,7 +139,7 @@ class PublicHandler(Handler):
         prefix = html.escape(self.server.public_config['prefix'], quote=True)
         raw = f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>驻马店重大风险防控 · 测试登录</title>
 <style>body{{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(at top right,#1d416d,#081628 65%);font:16px system-ui;color:#e8f1ff}}main{{max-width:390px;margin:24px;padding:38px;background:#11273b;border:1px solid #315774;border-radius:20px;box-shadow:0 25px 80px #0007}}b{{color:#70dfec;letter-spacing:.15em}}h1{{font-size:25px}}p{{color:#adc3d9;line-height:1.7}}label{{display:block;margin:20px 0 8px}}input{{box-sizing:border-box;width:100%;padding:13px;border:1px solid #456680;border-radius:8px;background:#081c30;color:white;font:inherit}}button{{width:100%;margin-top:25px;padding:14px;background:#57c9df;color:#062337;border:0;border-radius:8px;font:700 16px system-ui;cursor:pointer}}small{{display:block;margin-top:23px;color:#aac1d5;line-height:1.7}}</style>
-<main><b>驻马店重大风险防控</b><h1>驻马店重大风险防控</h1><p>公网模拟业务测试。请使用分配的测试账号登录。</p><form method="post" action="{prefix}auth/login"><input type="hidden" name="csrf" value="{csrf}"><label for="user">测试账号</label><input id="user" name="username" maxlength="32" required autocomplete="username"><label for="pass">密码</label><input id="pass" type="password" name="password" maxlength="128" required autocomplete="current-password"><button type="submit">登录测试环境</button></form><small>本环境仅含合成企业与业务记录。三维测试继续在本地设备进行；测试账号不代表正式统一身份认证。</small></main></html>'''.encode()
+<main><b>驻马店重大风险防控</b><h1>驻马店重大风险防控</h1><p>项目业务协同测试。请使用现有测试账号登录，电脑与手机共享业务数据。</p><form method="post" action="{prefix}auth/login"><input type="hidden" name="csrf" value="{csrf}"><label for="user">测试账号</label><input id="user" name="username" maxlength="32" required autocomplete="username"><label for="pass">密码</label><input id="pass" type="password" name="password" maxlength="128" required autocomplete="current-password"><button type="submit">登录测试环境</button></form><small>本环境包含合成台账与用户录入的测试业务。三维测试继续在本地设备进行；测试账号不代表正式统一身份认证。</small></main></html>'''.encode()
         self.send_response(200)
         self.send_header('Content-Type', 'text/html; charset=utf-8')
         self.send_header('Cache-Control', 'no-store')
@@ -155,7 +155,7 @@ class PublicHandler(Handler):
             path = urlsplit(self.path).path
             if path == '/auth/login':
                 return self.login_page()
-            if not self.session_value and path in ('/', '/reference-demo.html'):
+            if not self.session_value and path in ('/', '/reference-demo.html', '/business.html', '/mobile.html'):
                 return self.empty(303, location='auth/login')
             super().do_GET()
         except DemoError as e:

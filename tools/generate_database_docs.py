@@ -90,4 +90,6 @@ if __name__=="__main__":
         import shutil
         target=Path(__file__).resolve().parents[1]/"deploy/database";target.mkdir(parents=True,exist_ok=True)
         for name in (f"schema_mysql_v{SCHEMA_VERSION}.sql","schema_manifest.json"):shutil.copy2(a.output/name,target/name)
+    from tools.generate_business_workflow_docs import generate as generate_workflow
+    generate_workflow(a.output,publish_source=a.publish_source)
     print(json.dumps({"version":m["schemaVersion"],"tables":len(m["tables"]),"sha256":m["schemaDefinitionSHA256"]}))

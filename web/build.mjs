@@ -9,6 +9,8 @@ const outDir=args.length?resolve(args[1]):join(webRoot,'dist');
 await mkdir(outDir,{recursive:true});
 await build({absWorkingDir:webRoot,entryPoints:['src/viewer.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'viewer.js')});
 await build({absWorkingDir:webRoot,entryPoints:['src/source_gain_worker.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'source-gain-worker.js')});
+await build({absWorkingDir:webRoot,entryPoints:['src/business.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'business.js')});
+for(const name of ['business.html','mobile.html','business.css','mobile.webmanifest'])await copyFile(join(webRoot,'src',name),join(outDir,name));
 await copyFile(join(webRoot,'src/index.html'),join(outDir,'index.html'));
 await copyFile(join(webRoot,'node_modules/three/LICENSE'),join(outDir,'THREE-LICENSE.txt'));
 await build({absWorkingDir:webRoot,entryPoints:['src/portal.js'],bundle:true,minify:true,format:'esm',outfile:join(outDir,'portal.js')});
