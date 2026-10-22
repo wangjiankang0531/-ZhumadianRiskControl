@@ -766,5 +766,38 @@
     }
   },
   "networkDeliveryImplemented": false,
-  "authenticationTransportImplemented": false
+  "authenticationTransportImplemented": true,
+  "formalIAMImplemented": false,
+  "excelPolicy": {
+    "headers": [
+      "部门名称",
+      "负责人",
+      "分析对象",
+      "分析单元",
+      "风险等级",
+      "坐标"
+    ],
+    "formats": [
+      "xls",
+      "xlsx"
+    ],
+    "fileBytesStrictlyLessThan": 104857600,
+    "maxDataRows": 10000,
+    "maxColumns": 64,
+    "maxZipEntries": 2000,
+    "maxExpandedBytes": 268435456,
+    "maxMemberBytes": 67108864,
+    "atomicBatch": true,
+    "formulaEvaluation": false,
+    "formulaCachedValuesOnly": true,
+    "exportScopeChecked": true,
+    "rawFilesArchived": false,
+    "importEventMetadata": [
+      "id",
+      "sourceSHA256",
+      "rowNumber",
+      "rowCount",
+      "batchDigest"
+    ]
+  }
 }

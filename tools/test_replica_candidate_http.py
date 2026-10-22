@@ -47,7 +47,7 @@ class HTTPTests(unittest.TestCase):
  def test_wrong_origin_csrf_and_actor_rejected(self):
   self.login();self.assertEqual(self.post('/serv/riskLevel/save',self.form(),Origin='http://other.invalid')[0],403);self.assertEqual(self.post('/serv/riskLevel/save',self.form(),**{'X-XNBY-CSRF':'forged'})[0],403);f=self.form();f['actor']='admin';self.assertEqual(self.post('/serv/riskLevel/save',f)[0],400)
  def test_unsupported_apis_explicit_and_no_side_effect(self):
-  self.login();self.assertEqual(self.req('GET','/replica-api/serv/riskLevel/export')[0],501);self.assertEqual(self.post('/serv/work/save',{})[0],501)
+  self.login();self.assertEqual(self.req('GET','/replica-api/serv/riskLevel/dockAll')[0],501);self.assertEqual(self.post('/serv/work/save',{})[0],501)
   self.assertEqual(self.s.store.query(self._principal(),self.s.directory)['total'],0)
  def _principal(self):
   from services.replica_risk_units import RiskPrincipal

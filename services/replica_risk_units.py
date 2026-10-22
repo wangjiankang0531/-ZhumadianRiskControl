@@ -170,16 +170,41 @@ class RiskUnitStore:
   if identity:text(identity,'单元标识',64);integer(revision,'单元版本')
   payload=dict(action='update' if identity else 'create',id=identity,revision=revision,form=value)
   with self.transaction(True) as db:
-   old=self.replay(db,principal,key,payload)
-   if old is not None:return old
-   at=datetime.now(timezone.utc).isoformat();unit_id=identity or uuid.uuid4().hex
-   if identity:
-    current=self.read(db,principal,identity)
-    if current['revision']!=revision:raise DemoError(409,'风险单元已更新，请刷新后重新编辑')
-    self.write_update(db,principal.project,identity,revision,normalized,at)
-   else:
-    db.execute('INSERT INTO rp_risk_units VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',(principal.project,unit_id,normalized['departmentId'],normalized['personId'],normalized['department'],normalized['person'],normalized['analysisObject'],normalized['analysisUnit'],normalized['riskLevel'],normalized['coordinate'],normalized['longitude'],normalized['latitude'],normalized['coordinateSystem'],1,0,at,principal.subject,at))
-   result=self.read(db,principal,unit_id);self.event(db,principal,key,payload,result,directory.version,at);return result
+   return self.save_command(db,principal,directory,key,payload,normalized,identity,revision)
+ def save_command(self,db,principal,directory,key,payload,normalized,identity=None,revision=None):
+  old=self.replay(db,principal,key,payload)
+  if old is not None:return old
+  at=datetime.now(timezone.utc).isoformat();unit_id=identity or uuid.uuid4().hex
+  if identity:
+   current=self.read(db,principal,identity)
+   if current['revision']!=revision:raise DemoError(409,'风险单元已更新，请刷新后重新编辑')
+   self.write_update(db,principal.project,identity,revision,normalized,at)
+  else:
+   db.execute('INSERT INTO rp_risk_units VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',(principal.project,unit_id,normalized['departmentId'],normalized['personId'],normalized['department'],normalized['person'],normalized['analysisObject'],normalized['analysisUnit'],normalized['riskLevel'],normalized['coordinate'],normalized['longitude'],normalized['latitude'],normalized['coordinateSystem'],1,0,at,principal.subject,at))
+  result=self.read(db,principal,unit_id);self.event(db,principal,key,payload,result,directory.version,at);return result
+ def import_rows(self,principal,directory,key,entries,source_sha256):
+  directory.require(principal,'import');directory.require(principal,'create')
+  if not isinstance(key,str) or not re.fullmatch('[a-f0-9]{32}',key):raise DemoError(400,'请求幂等键无效')
+  if not isinstance(source_sha256,str) or not re.fullmatch('[a-f0-9]{64}',source_sha256):raise DemoError(400,'导入文件摘要无效')
+  if not isinstance(entries,list) or not 1<=len(entries)<=10000:raise DemoError(400,'请导入1至10000条数据')
+  batch_digest=digest(dict(entries=entries,sourceSHA256=source_sha256));normalized=[];seen=set()
+  for entry in entries:
+   if not isinstance(entry,dict) or set(entry)!={'rowNumber','values'}:raise DemoError(400,'导入行格式无效')
+   row=integer(entry['rowNumber'],'Excel行号',2,1048576)
+   if row in seen:raise DemoError(400,'导入行号重复')
+   seen.add(row)
+   try:normalized.append(directory.form(principal,entry['values']))
+   except DemoError as error:raise DemoError(error.status,f'第{row}行：{error.message}')
+  ids=[]
+  with self.transaction(True) as db:
+   for index,(entry,value) in enumerate(zip(entries,normalized)):
+    row_key=hashlib.sha256(f'import:{key}:{index}'.encode()).hexdigest()[:32]
+    metadata=dict(id=key,sourceSHA256=source_sha256,rowNumber=entry['rowNumber'],rowCount=len(entries),batchDigest=batch_digest)
+    payload=dict(action='create',id=None,revision=None,form=entry['values'],importBatch=metadata)
+    try:result=self.save_command(db,principal,directory,row_key,payload,value)
+    except DemoError as error:raise DemoError(error.status,f"第{entry['rowNumber']}行：{error.message}")
+    ids.append(result['id'])
+  return dict(imported=len(ids),ids=ids,batchId=key,sourceSHA256=source_sha256)
  @staticmethod
  def write_update(db,project,identity,revision,value,at):
   result=db.execute('UPDATE rp_risk_units SET department_id=?,person_id=?,department=?,person=?,analysis_object=?,analysis_unit=?,risk_level=?,coordinate=?,longitude=?,latitude=?,coordinate_system=?,revision=revision+1,updated_at=? WHERE project=? AND id=? AND revision=? AND deleted=0',(value['departmentId'],value['personId'],value['department'],value['person'],value['analysisObject'],value['analysisUnit'],value['riskLevel'],value['coordinate'],value['longitude'],value['latitude'],value['coordinateSystem'],at,project,identity,revision))
@@ -208,7 +233,9 @@ class RiskUnitStore:
   return None
  @staticmethod
  def event(db,principal,key,payload,result,directory_version,at):
-  event=dict(record=result,actor=principal.subject,policyVersion=principal.policy_version,directoryVersion=directory_version,action=payload['action']);raw=canonical(event);sha=hashlib.sha256(raw.encode('utf-8')).hexdigest()
+  event=dict(record=result,actor=principal.subject,policyVersion=principal.policy_version,directoryVersion=directory_version,action=payload['action'])
+  if 'importBatch' in payload:event['importBatch']=payload['importBatch']
+  raw=canonical(event);sha=hashlib.sha256(raw.encode('utf-8')).hexdigest()
   db.execute('INSERT INTO rp_risk_events VALUES (?,?,?,?,?,?,?,?,?)',(principal.project,result['id'],result['revision'],payload['action'],principal.subject,principal.policy_version,at,raw,sha))
   db.execute('INSERT INTO rp_risk_requests VALUES (?,?,?,?,?,?,?)',(principal.project,principal.subject,key,digest(payload),result['id'],result['revision'],canonical(result)))
   db.execute('INSERT INTO rp_risk_outbox VALUES (?,?,?,?,?,?,?,?)',(principal.project,result['id'],result['revision'],'pending','risk-unit.'+payload['action'],raw,sha,at))

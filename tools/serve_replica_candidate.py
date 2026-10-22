@@ -7,8 +7,10 @@ from contextlib import closing
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from http.cookies import SimpleCookie,CookieError
 from pathlib import Path
-from urllib.parse import parse_qs,urlsplit,unquote
-import argparse,html,json,mimetypes,secrets,sys,threading
+from urllib.parse import parse_qs,urlsplit,unquote,quote
+from email.parser import BytesParser
+from email.policy import default as email_policy
+import argparse,hashlib,html,json,mimetypes,re,secrets,sys,threading
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from services.reference_access import AccessGate
 from services.reference_errors import DemoError
@@ -29,7 +31,7 @@ def profile(principal,directory):
 
 class Server(ThreadingHTTPServer):
  daemon_threads=True
- def __init__(self,*args,**kwargs):self.slots=threading.BoundedSemaphore(16);super().__init__(*args,**kwargs)
+ def __init__(self,*args,**kwargs):self.slots=threading.BoundedSemaphore(16);self.import_slots=threading.BoundedSemaphore(1);super().__init__(*args,**kwargs)
  def process_request(self,request,address):
   if not self.slots.acquire(False):self.shutdown_request(request);return
   try:super().process_request(request,address)
@@ -69,15 +71,18 @@ class Handler(BaseHTTPRequestHandler):
   self.server.directory.require(principal,'read')
   if write and (self.headers.get_all('Origin',[])!=[self.server.origin] or self.headers.get_all('X-XNBY-CSRF',[])!=[self.session['csrf']]):raise DemoError(403,'操作来源或 CSRF 无效')
   return principal
- def body(self,form=False):
+ def raw_body(self,maximum):
   if self.headers.get('Transfer-Encoding') or len(self.headers.get_all('Content-Length',[]))!=1:raise DemoError(400,'请求长度无效')
   try:length=int(self.headers['Content-Length'])
   except ValueError:raise DemoError(400,'请求长度无效')
-  if not 0<length<=16384:raise DemoError(413,'请求大小无效')
-  expected='application/x-www-form-urlencoded' if form else 'application/json'
-  if self.headers.get('Content-Type','').split(';')[0]!=expected:raise DemoError(415,'请求类型无效')
+  if not 0<length<=maximum:raise DemoError(413,'请求大小无效')
   raw=self.rfile.read(length)
   if len(raw)!=length:raise DemoError(400,'请求不完整')
+  return raw
+ def body(self,form=False):
+  expected='application/x-www-form-urlencoded' if form else 'application/json'
+  if self.headers.get('Content-Type','').split(';')[0]!=expected:raise DemoError(415,'请求类型无效')
+  raw=self.raw_body(16384)
   if form:
    value=parse_qs(raw.decode(),keep_blank_values=True,max_num_fields=4)
    if set(value)!={'username','password','csrf'} or any(len(v)!=1 for v in value.values()):raise DemoError(400,'登录字段无效')
@@ -91,6 +96,28 @@ class Handler(BaseHTTPRequestHandler):
   value=json.loads(raw,object_pairs_hook=pairs,parse_constant=lambda _:(_ for _ in ()).throw(ValueError('Nonfinite JSON')))
   if not isinstance(value,dict):raise DemoError(400,'请求需为对象')
   return value
+ def excel_upload(self,principal):
+  from services.replica_risk_excel import FILE_LIMIT,read_rows
+  self.server.directory.require(principal,'import');self.server.directory.require(principal,'create')
+  key=self.headers.get('Idempotency-Key','')
+  if not re.fullmatch('[a-f0-9]{32}',key):raise DemoError(400,'请求幂等键无效')
+  content_type=self.headers.get('Content-Type','')
+  if len(content_type)>512 or not content_type.startswith('multipart/form-data;'):raise DemoError(415,'请使用Excel文件上传')
+  if not self.server.import_slots.acquire(False):raise DemoError(429,'已有Excel导入进行中，请稍后再试')
+  try:
+   raw=self.raw_body(FILE_LIMIT+8192);message=BytesParser(policy=email_policy).parsebytes(b'Content-Type: '+content_type.encode('ascii')+b'\r\nMIME-Version: 1.0\r\n\r\n'+raw)
+   if message.defects or not message.is_multipart():raise DemoError(400,'文件上传格式无效')
+   parts=list(message.iter_parts())
+   if len(parts)!=1 or parts[0].is_multipart() or parts[0].get_content_disposition()!='form-data' or parts[0].get_param('name',header='content-disposition')!='file':raise DemoError(400,'每次仅接受一个file文件字段')
+   part=parts[0];filename=part.get_filename();data=part.get_payload(decode=True)
+   rows=read_rows(filename,data,self.server.directory)
+   return self.success(self.server.store.import_rows(principal,self.server.directory,key,rows,hashlib.sha256(data).hexdigest()))
+  finally:self.server.import_slots.release()
+ def excel_download(self,principal,template=False):
+  from services.replica_risk_excel import workbook_bytes,XLSX_MIME
+  records=[] if template else self.server.store.query(principal,self.server.directory,{k:v for k,v in self.params.items() if k not in ('current','size')},export=True)['records']
+  raw=workbook_bytes(records);name='风险分析单元模板.xlsx' if template else '风险分析单元.xlsx'
+  return self.respond(200,raw,XLSX_MIME,[('Content-Disposition','attachment; filename="risk-analysis-units.xlsx"; filename*=UTF-8\'\''+quote(name))])
  def success(self,data):return self.respond(200,dict(code=200,msg='操作成功',data=data))
  def dispatch(self,write=False):
   try:
@@ -123,8 +150,11 @@ class Handler(BaseHTTPRequestHandler):
      if endpoint=='/serv/riskLevel/getPage':
       filters={k:v for k,v in q.items() if k not in ('current','size')};return self.success(s.query(p,d,filters,int(q.get('current','1')),int(q.get('size','10'))))
      if endpoint=='/serv/riskLevel/getById':return self.success(s.get(p,d,q.get('id')))
+     if endpoint=='/serv/riskLevel/getModel':return self.excel_download(p,True)
+     if endpoint=='/serv/riskLevel/export':return self.excel_download(p)
      if endpoint=='/serv/riskLevel/removeById':raise DemoError(405,'删除需 POST、版本和 CSRF')
     else:
+     if endpoint=='/serv/riskLevel/importExcel':return self.excel_upload(p)
      if endpoint=='/jnpf/permission/Users/getDepartmentIdByUserList':
       if q.get('organizeId') not in p.departments:raise DemoError(403,'不允许访问此部门人员')
       return self.success([dict(id=u['id'],realName=u['name']) for u in d.users.values() if u['enabled'] and q['organizeId'] in u['departments']])
@@ -170,18 +200,19 @@ class Handler(BaseHTTPRequestHandler):
  def do_GET(self):self.dispatch()
  def do_POST(self):self.dispatch(True)
 
-def make_server(config,static,database,port=0):
+def make_server(config,static,database,port=0,origin_host='127.0.0.1'):
+ if origin_host not in ('127.0.0.1','localhost'):raise ValueError('Candidate origin must be loopback')
  if set(config)!={'users','directory','identities','policyVersion'}:raise ValueError('Invalid candidate config')
  gate=AccessGate(config['users']);d=ProjectDirectory(**config['directory'])
  for name,grant in config['identities'].items():
   if name not in gate.users or name not in d.users or set(grant)!={'permissions','departments'} or not set(grant['departments'])<=d.departments.keys():raise ValueError('Invalid candidate identity')
  static=Path(static).resolve()
  if not (static/'index.html').is_file():raise ValueError('Build the dedicated frontend first')
- server=Server(('127.0.0.1',port),Handler);server.authority='127.0.0.1:'+str(server.server_port);server.origin='http://'+server.authority;server.gate=gate;server.directory=d;server.identities=config['identities'];server.policy_version=config['policyVersion'];server.static=static;server.store=RiskUnitStore(database);return server
+ server=Server(('127.0.0.1',port),Handler);server.authority=origin_host+':'+str(server.server_port);server.origin='http://'+server.authority;server.gate=gate;server.directory=d;server.identities=config['identities'];server.policy_version=config['policyVersion'];server.static=static;server.store=RiskUnitStore(database);return server
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--config',type=Path,required=True);p.add_argument('--static',type=Path,required=True);p.add_argument('--database',type=Path,required=True);p.add_argument('--port',type=int,default=0);p.add_argument('--seconds',type=int,default=1800);a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--config',type=Path,required=True);p.add_argument('--static',type=Path,required=True);p.add_argument('--database',type=Path,required=True);p.add_argument('--port',type=int,default=0);p.add_argument('--seconds',type=int,default=1800);p.add_argument('--origin-host',choices=['127.0.0.1','localhost'],default='127.0.0.1');a=p.parse_args()
  if not 60<=a.seconds<=3600:raise ValueError('Candidate duration must be 60..3600 seconds')
- s=make_server(json.loads(a.config.read_text('utf-8')),a.static,a.database,a.port);timer=threading.Timer(a.seconds,s.shutdown);timer.daemon=True;timer.start();print(json.dumps(dict(url=s.origin+'/candidate/login',seconds=a.seconds,mode='isolated-candidate')),flush=True)
+ s=make_server(json.loads(a.config.read_text('utf-8')),a.static,a.database,a.port,a.origin_host);timer=threading.Timer(a.seconds,s.shutdown);timer.daemon=True;timer.start();print(json.dumps(dict(url=s.origin+'/candidate/login',seconds=a.seconds,mode='isolated-candidate')),flush=True)
  try:s.serve_forever()
  finally:s.server_close();timer.cancel()
