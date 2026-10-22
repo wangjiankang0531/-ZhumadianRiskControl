@@ -92,4 +92,6 @@ if __name__=="__main__":
         for name in (f"schema_mysql_v{SCHEMA_VERSION}.sql","schema_manifest.json"):shutil.copy2(a.output/name,target/name)
     from tools.generate_business_workflow_docs import generate as generate_workflow
     generate_workflow(a.output,publish_source=a.publish_source)
+    from tools.generate_replica_risk_docs import generate as generate_risk
+    generate_risk(a.output,publish_source=a.publish_source)
     print(json.dumps({"version":m["schemaVersion"],"tables":len(m["tables"]),"sha256":m["schemaDefinitionSHA256"]}))
