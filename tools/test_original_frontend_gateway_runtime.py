@@ -33,7 +33,7 @@ def run(runtime, roots, output, runtime_sha256):
             return r.status,dict(r.getheaders()),data
         finally:conn.close()
     
-    processes=[]
+    processes=[];process_configs={}
     def start(config_dir,port):
         command=[str(NGINX/'nginx.exe'),'-p',config_dir.as_posix()+'/', '-c',(config_dir/'nginx.conf').as_posix()]
         flags=subprocess.CREATE_NO_WINDOW if hasattr(subprocess,'CREATE_NO_WINDOW') else 0
@@ -41,7 +41,7 @@ def run(runtime, roots, output, runtime_sha256):
         (config_dir/'config_test.log').write_bytes(check.stdout+check.stderr)
         assert check.returncode==0,'nginx configuration check failed'
         process=subprocess.Popen(command,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,creationflags=flags)
-        processes.append(process)
+        processes.append(process);process_configs[process.pid]=config_dir
         deadline=time.monotonic()+8
         while time.monotonic()<deadline:
             assert process.poll() is None,'Owned nginx exited during startup'
@@ -73,9 +73,26 @@ def run(runtime, roots, output, runtime_sha256):
         report['unavailablePlatformStatus']=request(port,'/tianjinrisk/api/jnpf/oauth/CurrentUser')[0]
         assert report['unavailablePlatformStatus']==503
         assert request(port,'/tianjinrisk/api/unknown-operation')[0]==404
+        redirects=[]
+        for kind,prefix in [('emergency_pc','/tianjinrisk/emergency/'),
+                            ('mobile','/tianjinrisk/h5/'),('bigscreen','/reference-bigscreen/')]:
+            for query in ('','?entry=portal&mode=readonly'):
+                status,headers,data=request(port,prefix.rstrip('/')+query)
+                assert status==301,kind+': bare mount must redirect before security SPA fallback'
+                location=headers['Location']
+                from urllib.parse import urlsplit
+                parsed=urlsplit(location)
+                assert parsed.path==prefix and ('?'+parsed.query if parsed.query else '')==query
+                assert not parsed.netloc or parsed.netloc=='127.0.0.1:'+str(port)
+                status,headers,data=request(port,parsed.path+('?' + parsed.query if parsed.query else ''))
+                assert status==200 and data==(ROOTS[kind]/'index.html').read_bytes()
+                redirects.append({'kind':kind,'queryPreserved':bool(query),'status':301,'correctIndexSHA256':True})
+        report['bareMountRedirectsVerified']=redirects
         counts={};byte_count=0
         for kind,prefix in [('security_pc','/tianjinrisk/'),('emergency_pc','/tianjinrisk/emergency/'),
                             ('mobile','/tianjinrisk/h5/'),('bigscreen','/reference-bigscreen/')]:
+            status,headers,data=request(port,prefix)
+            assert status==200 and data==(ROOTS[kind]/'index.html').read_bytes()
             count=0
             for path in sorted(ROOTS[kind].rglob('*')):
                 if not path.is_file():continue
@@ -174,7 +191,7 @@ def run(runtime, roots, output, runtime_sha256):
     finally:
         if fixture:fixture.shutdown();fixture.server_close()
         for p in processes:
-            if p.poll() is None:p.terminate();p.wait(timeout=4)
+            if p.poll() is None:stop(p,process_configs[p.pid])
 
 def main():
     import argparse

@@ -30,7 +30,7 @@ prepare_original_frontend_gateway.py生成仅绑定127.0.0.1的Nginx配置，静
 
 原/api/jnpf/转发到本机平台/api/，原/api/serv/转发到本机业务/，原/api/serv/websocket/转发到本机业务/websocket/，保留查询、表单、鉴权头、Cookie、错误正文、二进制下载及WebSocket。真实后台未配置时返回503；未知API返回404，不能以SPA或伪造业务JSON代替。
 
-四套本地静态入口为/tianjinrisk/、/tianjinrisk/emergency/、/tianjinrisk/h5/及/reference-bigscreen/。最后一个仅为显式本地QA挂载，尚未证明是原门户目标；/zhumadian/也仅为本地重定向，公网子路径映射仍待实际部署验证。共享地图同时挂载/tianjinrisk/map/和/tianjinrisk/api/map/。非静态深层路由回原index，缺失静态文件及瓦片返回404。
+四套本地静态入口为/tianjinrisk/、/tianjinrisk/emergency/、/tianjinrisk/h5/及/reference-bigscreen/。最后一个仅为显式本地QA挂载；现场原门户应急指挥链接使用本机18080端口的独立桌面组件，不能将此QA地址当成已接通的原门户目标；/zhumadian/也仅为本地重定向，公网子路径映射仍待实际部署验证。共享地图同时挂载/tianjinrisk/map/和/tianjinrisk/api/map/。非静态深层路由回原index，缺失静态文件及瓦片返回404。
 
 默认不配置业务/平台上游；如配置必须同时给出两个本机端口，不能代理回网关自身。后台配置隔离、原库恢复、用户权限和真实业务仍单独验收。日志不记请求查询串或认证头；独立目录的主进程/工作进程均须在测试后正常退出，验证端口关闭。原共享服务、公网入口和用户业务库不重启。
 
@@ -48,3 +48,11 @@ python -B -X utf8 tools/test_original_frontend_gateway_runtime.py --runtime <已
 依据：[Vite环境变量优先级](https://vite.dev/guide/env-and-mode.html)、[Nginx Windows运行与管理](https://nginx.org/en/docs/windows.html)、[官方签名公钥](https://nginx.org/en/pgp_keys.html)。原网关配置及原Reference留私有目录，不复制进Git。数据库模型没有变化。
 
 原完整性CLI已修正Windows目录链接可能落在Path.walk文件名列表的识别差异，仍只排除原有明确的构建目录名称；实际对Reference及六套副本7566输入逐SHA校验全部通过，不将目录链接误计成业务源码，也不跳过其它文件。
+
+## 原门户实测后的入口修正
+
+原门户应急管理菜单链接没有末尾斜杠，先前静态root/rewrite配置会将它落入安全PC。网关为应急、H5、本地QA大屏的裸挂载地址明确返回301到各自带斜杠的入口，保留查询串。四套应用带斜杠根地址明确返回各自index.html，避免rewrite后目录index模块内部跳转到/index.html、再匹配站点默认404。
+
+真实HTTP回归覆盖三个裸挂载×有无查询串共六项重定向、四个根入口、四个深层路由、1606个静态文件SHA、共享地图与七组透传协议。首轮回归确实发现根入口404，保留失败日志；其失败收尾原先只终止主进程、留下一个自有worker，已核验PID/父PID/专用运行时路径后单独关闭，测试finally已改正常quit整个自有进程组。修正后的第二轮全部通过，两个测试端口关闭，未遗留Nginx进程。该回归没有启动原后台或连接原库，不能当作完整业务验收。
+
+本轮只改自有网关、运行回归和本说明三个文件；此前待审11文件镜像仍保持原提交，不将后续修改加入其既有确认范围。Reference原业务源码、原数据库和原站配置未改。原门户实际二维码指向独立端口的/h5入口，与参考包图片不同；二维码本身和实际内网地址仅在私有验收资料保留，不随本源码提交。手机统一子路径部署的鉴权和真实业务仍需独立验证。

@@ -79,6 +79,15 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
     mounts=[('/tianjinrisk/emergency/','emergency_pc'),('/tianjinrisk/h5/','mobile'),
             ('/reference-bigscreen/','bigscreen'),('/tianjinrisk/','security_pc')]
     for mount,kind in mounts:
+        # Original portal menus use the bare emergency path. With a static
+        # root/rewrite mount nginx does not add the proxy_pass slash redirect.
+        if kind!='security_pc':
+            lines+=[' location = '+mount.rstrip('/')+' { return 301 '+mount+'$is_args$args; }']
+        # Serving a directory through try_files $uri/ would cause nginx's
+        # index module to redirect to /index.html after the prefix rewrite.
+        lines+=[' location = '+mount+' {',
+                '  root '+quoted(roots[kind])+';',
+                '  try_files /index.html =404;',' }']
         name='spa_'+kind
         lines+=[' location ^~ '+mount+' {',
                 '  rewrite ^'+mount+'(.*)$ /$1 break;',
@@ -104,7 +113,7 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
              'nginxExecutableSHA256':hashlib.sha256((runtime/'nginx.exe').read_bytes()).hexdigest(),
              'configSHA256':hashlib.sha256(config.read_bytes()).hexdigest(),
              'businessAPISynthesized':False,'staticResourcesCopied':False,'publicProductionReady':False,
-             'notes':['/reference-bigscreen/ is an explicit local QA mount; the original portal target is not yet verified.',
+             'notes':['/reference-bigscreen/ is a local QA mount. The observed original command link targets the desktop component on 127.0.0.1:18080/daping/index.html; that integration remains unverified.',
                       '/zhumadian/ is a local redirect only; public /zhumadian deployment mapping remains unverified.']}
     (output/'receipt.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     return receipt
