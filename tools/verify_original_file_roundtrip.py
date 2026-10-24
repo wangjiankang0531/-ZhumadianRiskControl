@@ -34,16 +34,20 @@ MINIO_COMMIT = '9e49d5e7a648f00e26f2246f4dc28e6b07f8c84a'
 
 
 
-def verify(workspace, provider_receipt, provider_receipt_pin, output):
+def verify(workspace, provider_receipt, provider_receipt_pin, output, reference_runtime=None, reference_runtime_pin=None):
     w, provider_receipt, root = map(lambda p: Path(p).resolve(), (workspace, provider_receipt, output))
-    require(not root.exists(), 'FRESH_OUTPUT_REQUIRED')
+    require(root.is_relative_to(w) and not root.exists(), 'FRESH_OWN_OUTPUT_REQUIRED')
     require(sha(provider_receipt) == provider_receipt_pin, 'EXPLICIT_PROVIDER_RECEIPT_PIN_MISMATCH')
     provider = json.loads(provider_receipt.read_bytes()); binary = Path(provider['binary']).resolve()
     require(provider['minioCommit'] == MINIO_COMMIT and provider['buildExitCode'] == 0, 'FIXED_OFFICIAL_PROVIDER_COMMIT_REQUIRED')
     require(binary == w / 'own-minio-source-build-r1/bin/minio.exe' and sha(binary) == provider['binarySHA256'], 'OWN_PROVIDER_BINARY_PIN_MISMATCH')
     require(('-' + MINIO_COMMIT[:12]).encode() in (provider_receipt.parent / 'minio-buildinfo.txt').read_bytes(), 'INDEPENDENT_PROVIDER_BUILDINFO_COMMIT_CHECK')
-    flat = w / 'original-shared-runtime-r1_20261024/flat'; jar = flat / 'application.jar'; meta = json.loads((flat / 'receipt.json').read_bytes())
-    require(sha(jar) == meta['applicationJarSHA256'] == 'c4637e950664ff2ee26746b80366ca12e8c1f36f69288d35e126871f9afe30ae', 'ORIGINAL_FLAT_JAR_PIN_MISMATCH')
+    from reference_business_runtime import select as select_runtime
+    flat, selected_runtime = select_runtime(w, reference_runtime, reference_runtime_pin)
+    jar = flat / 'application.jar'; meta = json.loads((flat / 'receipt.json').read_bytes())
+    require(sha(jar) == meta['applicationJarSHA256'], 'SELECTED_FLAT_JAR_PIN_MISMATCH')
+    if selected_runtime['mode'] == 'deployed-archive':
+        require(meta['applicationJarSHA256'] == 'c4637e950664ff2ee26746b80366ca12e8c1f36f69288d35e126871f9afe30ae', 'ORIGINAL_FLAT_JAR_PIN_MISMATCH')
     for row in meta['dependencies']:
         require(sha(flat / row['relativePath']) == row['sha256'], 'ORIGINAL_DEPENDENCY_PIN_MISMATCH')
     dbmeta = json.loads((w / 'own-mysql-r13/fixture_compile.json').read_bytes()); boundary = Path(dbmeta['boundaryJar'])
@@ -64,7 +68,7 @@ def verify(workspace, provider_receipt, provider_receipt_pin, output):
     command = [str(binary), '--quiet', '--certs-dir', str(root / 'certs'), 'server', '--address', '127.0.0.1:' + str(port), '--console-address', '127.0.0.1:' + str(console), str(root / 'data')]
     receipt = {'startedAt': datetime.datetime.now().astimezone().isoformat(), 'providerBinarySHA256': sha(binary), 'providerCommit': MINIO_COMMIT,
                'providerBind': 'loopback-only', 'configuredProviderAddress': '127.0.0.1', 'providerPort': port, 'sourceObjectsOrCredentialsUsed': False, 'originalApplicationStarted': False,
-               'historicalObjectsRecovered': False, 'fullCloneReady': False, 'forcedTermination': False}
+               'historicalObjectsRecovered': False, 'fullCloneReady': False, 'forcedTermination': False, 'businessRuntimeSelection': selected_runtime, 'selectedApplicationJarSHA256': sha(jar)}
     result = None; stop = None; process = None
     logback = root / 'own-logback.xml'; logback.write_text('<configuration><root level="OFF"/></configuration>', encoding='ascii')
     try:
@@ -127,7 +131,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     for name in ('workspace', 'provider-receipt', 'provider-receipt-sha256', 'output'):
         p.add_argument('--' + name, required=True)
-    a = p.parse_args(); print(json.dumps(verify(a.workspace, a.provider_receipt, a.provider_receipt_sha256, a.output)))
+    p.add_argument('--reference-business-runtime'); p.add_argument('--reference-business-runtime-sha256')
+    a = p.parse_args(); print(json.dumps(verify(a.workspace, a.provider_receipt, a.provider_receipt_sha256, a.output, a.reference_business_runtime, a.reference_business_runtime_sha256)))
 
 
 if __name__ == '__main__':
