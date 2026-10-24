@@ -13,9 +13,10 @@ import socket
 import subprocess
 import threading
 import time
-from prepare_original_frontend_gateway import prepare
+from prepare_original_frontend_gateway import prepare,checked_base_path
 
-def run(runtime, roots, output, runtime_sha256):
+def run(runtime, roots, output, runtime_sha256,base_path='/tianjinrisk'):
+    base_path=checked_base_path(base_path)
     NGINX=Path(runtime).resolve()
     ROOTS={k:Path(v).resolve() for k,v in roots.items()}
     RUN=Path(output).resolve()
@@ -61,21 +62,21 @@ def run(runtime, roots, output, runtime_sha256):
             raise RuntimeError('Owned nginx required forced shutdown')
         assert result.returncode==0 and code==0
     
-    report={'runtimePinnedSHA256Verified':True,'localTransportOnly':True,'businessAPISynthesized':False,
+    report={'runtimePinnedSHA256Verified':True,'localTransportOnly':True,'appBasePath':base_path,'businessAPISynthesized':False,
             'originalBusinessConnections':0,'publicDeployed':False,'businessParityVerified':False}
     fixture=None
     try:
         port=free_port();site=RUN/'unavailable'
-        prepare(site,NGINX,ROOTS,port)
+        prepare(site,NGINX,ROOTS,port,base_path=base_path)
         process=start(site,port)
-        report['unavailableAPIStatus']=request(port,'/tianjinrisk/api/serv/work/getPage?current=1&size=100')[0]
+        report['unavailableAPIStatus']=request(port,base_path+'/api/serv/work/getPage?current=1&size=100')[0]
         assert report['unavailableAPIStatus']==503
-        report['unavailablePlatformStatus']=request(port,'/tianjinrisk/api/jnpf/oauth/CurrentUser')[0]
+        report['unavailablePlatformStatus']=request(port,base_path+'/api/jnpf/oauth/CurrentUser')[0]
         assert report['unavailablePlatformStatus']==503
-        assert request(port,'/tianjinrisk/api/unknown-operation')[0]==404
+        assert request(port,base_path+'/api/unknown-operation')[0]==404
         redirects=[]
-        for kind,prefix in [('emergency_pc','/tianjinrisk/emergency/'),
-                            ('mobile','/tianjinrisk/h5/'),('bigscreen','/reference-bigscreen/')]:
+        for kind,prefix in [('emergency_pc',base_path+'/emergency/'),
+                            ('mobile',base_path+'/h5/'),('bigscreen','/reference-bigscreen/')]:
             for query in ('','?entry=portal&mode=readonly'):
                 status,headers,data=request(port,prefix.rstrip('/')+query)
                 assert status==301,kind+': bare mount must redirect before security SPA fallback'
@@ -89,8 +90,8 @@ def run(runtime, roots, output, runtime_sha256):
                 redirects.append({'kind':kind,'queryPreserved':bool(query),'status':301,'correctIndexSHA256':True})
         report['bareMountRedirectsVerified']=redirects
         counts={};byte_count=0
-        for kind,prefix in [('security_pc','/tianjinrisk/'),('emergency_pc','/tianjinrisk/emergency/'),
-                            ('mobile','/tianjinrisk/h5/'),('bigscreen','/reference-bigscreen/')]:
+        for kind,prefix in [('security_pc',base_path+'/'),('emergency_pc',base_path+'/emergency/'),
+                            ('mobile',base_path+'/h5/'),('bigscreen','/reference-bigscreen/')]:
             status,headers,data=request(port,prefix)
             assert status==200 and data==(ROOTS[kind]/'index.html').read_bytes()
             count=0
@@ -108,10 +109,10 @@ def run(runtime, roots, output, runtime_sha256):
         report['staticBytesServed']=byte_count
         tile=next(ROOTS['tiles'].rglob('*.png'))
         rel=quote(tile.relative_to(ROOTS['tiles']).as_posix())
-        for prefix in ('/tianjinrisk/map/','/tianjinrisk/api/map/'):
+        for prefix in (base_path+'/map/',base_path+'/api/map/'):
             status,headers,data=request(port,prefix+rel)
             assert status==200 and data==tile.read_bytes()
-        assert request(port,'/tianjinrisk/map/9999/no-such-tile.png')[0]==404
+        assert request(port,base_path+'/map/9999/no-such-tile.png')[0]==404
         assert request(port,'/not-an-original-mount')[0]==404
         report['sharedTileRoutesVerified']=2
         stop(process,site)
@@ -149,24 +150,24 @@ def run(runtime, roots, output, runtime_sha256):
         thread=threading.Thread(target=fixture.serve_forever,daemon=True);thread.start()
         fixture_port=fixture.server_address[1]
         proxy_port=free_port();proxy_site=RUN/'transport-fixture'
-        prepare(proxy_site,NGINX,ROOTS,proxy_port,fixture_port,fixture_port)
+        prepare(proxy_site,NGINX,ROOTS,proxy_port,fixture_port,fixture_port,base_path=base_path)
         process=start(proxy_site,proxy_port)
         fixture_header={'Authorization':'Bearer gateway-fixture-only'}
-        status,headers,body=request(proxy_port,'/tianjinrisk/api/serv/work/getPage?current=1&size=100',headers=fixture_header)
+        status,headers,body=request(proxy_port,base_path+'/api/serv/work/getPage?current=1&size=100',headers=fixture_header)
         assert status==200 and json.loads(body)['path']=='/work/getPage?current=1&size=100'
         assert headers['Set-Cookie']=='fixture_only=1; Path=/; HttpOnly'
         payload=b'fixture=only&not_a_real_account=1'
-        status,headers,body=request(proxy_port,'/tianjinrisk/api/jnpf/oauth/Login','POST',payload,fixture_header)
+        status,headers,body=request(proxy_port,base_path+'/api/jnpf/oauth/Login','POST',payload,fixture_header)
         assert status==200 and json.loads(body)=={'path':'/api/oauth/Login','method':'POST','receivedBytes':len(payload)}
         assert observed[-1]['bodySHA256']==hashlib.sha256(payload).hexdigest()
         assert all(r['fixtureAuthorization']=='Bearer gateway-fixture-only' for r in observed)
-        status,headers,body=request(proxy_port,'/tianjinrisk/api/serv/download?kind=fixture')
+        status,headers,body=request(proxy_port,base_path+'/api/serv/download?kind=fixture')
         assert status==206 and body==b'\x00\xff\x01\x80' and headers['Content-Disposition']=='attachment; filename="fixture.bin"'
         assert headers['Content-Range']=='bytes 0-3/4'
-        status,headers,body=request(proxy_port,'/tianjinrisk/api/serv/missing')
+        status,headers,body=request(proxy_port,base_path+'/api/serv/missing')
         assert status==404 and body==b'original-style-error-fixture'
         with socket.create_connection(('127.0.0.1',proxy_port),timeout=4) as ws:
-            ws.sendall(b'GET /tianjinrisk/api/serv/websocket/fixture?mode=only HTTP/1.1\r\nHost: 127.0.0.1\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: Z2F0ZXdheS1maXh0dXJlIQ==\r\nSec-WebSocket-Version: 13\r\n\r\n')
+            ws.sendall(('GET '+base_path+'/api/serv/websocket/fixture?mode=only HTTP/1.1\r\nHost: 127.0.0.1\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: Z2F0ZXdheS1maXh0dXJlIQ==\r\nSec-WebSocket-Version: 13\r\n\r\n').encode('ascii'))
             head=b''
             while b'\r\n\r\n' not in head:head+=ws.recv(4096)
             assert head.startswith(b'HTTP/1.1 101')
@@ -199,9 +200,10 @@ def main():
     ap.add_argument('--runtime',type=Path,required=True)
     ap.add_argument('--runtime-sha256',required=True)
     ap.add_argument('--output',type=Path,required=True)
+    ap.add_argument('--base-path',default='/tianjinrisk')
     for kind in ('security_pc','emergency_pc','mobile','bigscreen','tiles'):
         ap.add_argument('--'+kind.replace('_','-'),type=Path,required=True)
     a=ap.parse_args()
-    run(a.runtime,{k:getattr(a,k) for k in ('security_pc','emergency_pc','mobile','bigscreen','tiles')},a.output,a.runtime_sha256)
+    run(a.runtime,{k:getattr(a,k) for k in ('security_pc','emergency_pc','mobile','bigscreen','tiles')},a.output,a.runtime_sha256,a.base_path)
 
 if __name__=='__main__':main()

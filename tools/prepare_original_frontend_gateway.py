@@ -8,6 +8,7 @@ from pathlib import Path
 import argparse
 import hashlib
 import json
+import re
 
 def quoted(path):
     value=Path(path).resolve().as_posix()
@@ -20,9 +21,16 @@ def checked_port(port):
         raise ValueError('Explicit nonprivileged local port required')
     return port
 
-def prepare(output, runtime, roots, port, business_port=None, platform_port=None):
+def checked_base_path(value):
+    if not isinstance(value,str) or len(value)>128 or not re.fullmatch(r'/[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*',value):
+        raise ValueError('Explicit same-origin application base without trailing slash required')
+    return value
+
+
+def prepare(output, runtime, roots, port, business_port=None, platform_port=None, base_path='/tianjinrisk'):
     output=Path(output).resolve();runtime=Path(runtime).resolve()
     checked_port(port)
+    base_path=checked_base_path(base_path)
     if (business_port is None)!=(platform_port is None):
         raise ValueError('Both isolated upstreams must be provided together')
     if business_port is not None:
@@ -52,15 +60,15 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
            ' server {',' listen 127.0.0.1:'+str(port)+';',
            ' server_name 127.0.0.1 localhost;',' server_tokens off;',' autoindex off;',
            ' client_max_body_size 100m;',
-           ' location = / { return 302 /tianjinrisk/home; }',
-           ' location = /zhumadian/ { return 302 /tianjinrisk/home; }',
-           ' location = /tianjinrisk { return 302 /tianjinrisk/home; }']
-    lines+=[' location = /tianjinrisk/api { return 404; }',
-            ' location ^~ /tianjinrisk/api/ { return 404; }']
+           ' location = / { return 302 '+base_path+'/home; }',
+           *([' location = /zhumadian/ { return 302 /tianjinrisk/home; }'] if base_path=='/tianjinrisk' else []),
+           ' location = '+base_path+' { return 302 '+base_path+'/home; }']
+    lines+=[' location = '+base_path+'/api { return 404; }',
+            ' location ^~ '+base_path+'/api/ { return 404; }']
     for external,upstream,target,timeout in (
-            ('/tianjinrisk/api/jnpf/',platform_port,'/api/',15),
-            ('/tianjinrisk/api/serv/websocket/',business_port,'/websocket/',300),
-            ('/tianjinrisk/api/serv/',business_port,'/',15)):
+            (base_path+'/api/jnpf/',platform_port,'/api/',15),
+            (base_path+'/api/serv/websocket/',business_port,'/websocket/',300),
+            (base_path+'/api/serv/',business_port,'/',15)):
         lines+=[' location ^~ '+external+' {']
         if upstream is None:
             lines+=['  add_header X-Original-Backend unavailable always;','  return 503;']
@@ -76,8 +84,8 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
                     '  proxy_connect_timeout 15s;','  proxy_read_timeout '+str(timeout)+'s;',
                     '  proxy_send_timeout '+str(timeout)+'s;']
         lines+=[' }']
-    mounts=[('/tianjinrisk/emergency/','emergency_pc'),('/tianjinrisk/h5/','mobile'),
-            ('/reference-bigscreen/','bigscreen'),('/tianjinrisk/','security_pc')]
+    mounts=[(base_path+'/emergency/','emergency_pc'),(base_path+'/h5/','mobile'),
+            ('/reference-bigscreen/','bigscreen'),(base_path+'/','security_pc')]
     for mount,kind in mounts:
         # Original portal menus use the bare emergency path. With a static
         # root/rewrite mount nginx does not add the proxy_pass slash redirect.
@@ -97,7 +105,7 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
                 '  if ($uri ~ "\\.[^/]+$") { return 404; }',
                 '  root '+quoted(roots[kind])+';',
                 '  try_files /index.html =404;',' }']
-    for mount in ('/tianjinrisk/map/','/tianjinrisk/api/map/'):
+    for mount in (base_path+'/map/',base_path+'/api/map/'):
         lines+=[' location ^~ '+mount+' {',
                 '  rewrite ^'+mount+'(.*)$ /$1 break;',
                 '  root '+quoted(roots['tiles'])+';','  try_files $uri =404;',' }']
@@ -107,14 +115,14 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
     (output/'temp').mkdir()
     config=output/'nginx.conf'
     config.write_text('\n'.join(lines)+'\n',encoding='utf-8')
-    receipt={'bind':'127.0.0.1','port':port,'backendMode':'unavailable' if business_port is None else 'isolated-loopback',
+    receipt={'bind':'127.0.0.1','port':port,'appBasePath':base_path,'backendMode':'unavailable' if business_port is None else 'isolated-loopback',
              'businessPort':business_port,'platformPort':platform_port,
              'roots':{k:str(Path(v).resolve()) for k,v in roots.items()},
              'nginxExecutableSHA256':hashlib.sha256((runtime/'nginx.exe').read_bytes()).hexdigest(),
              'configSHA256':hashlib.sha256(config.read_bytes()).hexdigest(),
              'businessAPISynthesized':False,'staticResourcesCopied':False,'publicProductionReady':False,
              'notes':['/reference-bigscreen/ is a local QA mount. The observed original command link targets the desktop component on 127.0.0.1:18080/daping/index.html; that integration remains unverified.',
-                      '/zhumadian/ is a local redirect only; public /zhumadian deployment mapping remains unverified.']}
+                      'The selected application base is a local integration candidate; public production mapping remains unverified.']}
     (output/'receipt.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     return receipt
 
@@ -124,7 +132,8 @@ def main():
     ap.add_argument('--port',type=int,required=True)
     for kind in ('security_pc','emergency_pc','mobile','bigscreen','tiles'):ap.add_argument('--'+kind.replace('_','-'),type=Path,required=True)
     ap.add_argument('--business-port',type=int);ap.add_argument('--platform-port',type=int)
-    a=ap.parse_args();r=prepare(a.output,a.runtime,{k:getattr(a,k) for k in ('security_pc','emergency_pc','mobile','bigscreen','tiles')},a.port,a.business_port,a.platform_port)
+    ap.add_argument('--base-path',default='/tianjinrisk')
+    a=ap.parse_args();r=prepare(a.output,a.runtime,{k:getattr(a,k) for k in ('security_pc','emergency_pc','mobile','bigscreen','tiles')},a.port,a.business_port,a.platform_port,a.base_path)
     print(json.dumps({k:r[k] for k in ('bind','port','backendMode','businessAPISynthesized','staticResourcesCopied','publicProductionReady')}))
 
 if __name__=='__main__':main()

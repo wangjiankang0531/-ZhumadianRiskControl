@@ -14,6 +14,8 @@ import re
 import subprocess
 import time
 import shutil
+from contextlib import nullcontext
+from original_frontend_deployment_assets import local_command_override, mobile_entry_url, replace_output_mobile_qr
 
 KINDS = {'security_pc': '/tianjinrisk/', 'emergency_pc': '/tianjinrisk/emergency/',
          'mobile': '/tianjinrisk/h5/'}
@@ -96,13 +98,25 @@ def restore_mobile_generated_manifest(project, expected, source_project, public_
     verify_inputs(project,expected)
     return True
 
-def build(kind, project, manifest_path, node, output, api_prefix, public_base, source_project=None):
+def build(kind, project, manifest_path, node, output, api_prefix, public_base, source_project=None,
+          use_local_command=False,mobile_qr_url=None):
     project, manifest_path, node, output = (Path(x).resolve() for x in (project,manifest_path,node,output))
     if kind not in KINDS or not project.is_dir() or not node.is_file():
         raise ValueError('Missing original project or explicit Node executable')
     route(api_prefix,False);route(public_base,True)
+    if (use_local_command or mobile_qr_url) and kind!='security_pc':
+        raise ValueError('Portal deployment adapters apply only to original security PC')
+    if use_local_command:
+        if source_project is None:
+            raise ValueError('Command deployment adapter requires a pristine original source root')
+        verify_inputs(Path(source_project).resolve(),baseline_files(json.loads(manifest_path.read_text(encoding='utf-8-sig')),kind))
+    if mobile_qr_url:mobile_entry_url(mobile_qr_url)
     if output.exists() or output.is_relative_to(project) or project.is_relative_to(output):
         raise ValueError('Fresh independent output required')
+    if source_project is not None:
+        pristine=Path(source_project).resolve()
+        if output.is_relative_to(pristine) or pristine.is_relative_to(output):
+            raise ValueError('Build output must not overlap the pristine source tree')
     manifest = json.loads(manifest_path.read_text(encoding='utf-8-sig'))
     expected = baseline_files(manifest,kind)
     verify_inputs(project,expected)
@@ -120,9 +134,12 @@ def build(kind, project, manifest_path, node, output, api_prefix, public_base, s
     if kind!='mobile':command+=['--base',public_base]
     start=time.monotonic()
     restored=False
+    command_adapter=None;qr_adapter=None
     try:
-        with (output/'build.log').open('wb') as log:
-            process=subprocess.run(command,cwd=project,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=300)
+        with (local_command_override(project,source_project) if use_local_command else nullcontext()) as command_adapter:
+            with (output/'build.log').open('wb') as log:
+                process=subprocess.run(command,cwd=project,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=300,
+                                       creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
     finally:
         if kind=='mobile':
             restored=restore_mobile_generated_manifest(project,expected,source_project,public_base,output)
@@ -130,6 +147,7 @@ def build(kind, project, manifest_path, node, output, api_prefix, public_base, s
     success=process.returncode==0 and (dist/'index.html').is_file()
     if not success:
         raise RuntimeError('Original compiler failed; private build.log retained')
+    if mobile_qr_url:qr_adapter=replace_output_mobile_qr(dist,mobile_qr_url)
     files=[{'path':p.relative_to(dist).as_posix(),'bytes':p.stat().st_size,'sha256':sha(p)} for p in sorted(dist.rglob('*')) if p.is_file()]
     counts={k:0 for k in ('undefined/serv','undefined/jnpf',api_prefix)}
     for p in dist.rglob('*.js'):
@@ -139,7 +157,8 @@ def build(kind, project, manifest_path, node, output, api_prefix, public_base, s
         raise ValueError('Compiled API address verification failed')
     receipt={'recordedAt':datetime.now().astimezone().isoformat(timespec='seconds'),'kind':kind,
              'mode':'replica-deploy','command':command,'nodeSHA256':sha(node),'sourceManifestSHA256':sha(manifest_path),
-             'sourceInputFilesVerified':len(expected),'sourceFilesUnchanged':True,'sourceLogicPatched':False,
+             'sourceInputFilesVerified':len(expected),'sourceFilesUnchanged':True,'sourceLogicPatched':bool(command_adapter),
+             'localCommandDeploymentAdapter':command_adapter,'mobileQRDeploymentAdapter':qr_adapter,
              'compilerGeneratedManifestRestored':restored,
              'deploymentOverrides':{k:v for k,v in env.items() if k.startswith(('VITE_','UNI_'))},
              'seconds':round(time.monotonic()-start,3),'exitCode':process.returncode,'output':str(dist),
@@ -156,8 +175,10 @@ def main():
     ap.add_argument('--api-prefix',default='/tianjinrisk/api')
     ap.add_argument('--public-base')
     ap.add_argument('--source-project',type=Path)
+    ap.add_argument('--use-local-command',action='store_true')
+    ap.add_argument('--mobile-qr-url')
     a=ap.parse_args()
-    r=build(a.kind,a.project,a.source_manifest,a.node,a.output,a.api_prefix,a.public_base or KINDS[a.kind],a.source_project)
+    r=build(a.kind,a.project,a.source_manifest,a.node,a.output,a.api_prefix,a.public_base or KINDS[a.kind],a.source_project,a.use_local_command,a.mobile_qr_url)
     print(json.dumps({k:r[k] for k in ('kind','fileCount','bytes','seconds','sourceInputFilesVerified','sourceFilesUnchanged','compiledPathOccurrences','backendConnected','publicDeployed')}))
 
 if __name__=='__main__':main()
