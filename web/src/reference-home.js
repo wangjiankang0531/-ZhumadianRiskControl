@@ -37,6 +37,6 @@ export function renderReferenceHome({app,deployment,catalog,el,anchor,button,log
  const sceneURL=new URL(referenceSceneURL(deployment));
  scene.append(graphic,el('p','home-scene-note','点线面选择 / 分层浏览 / 近景细节'),entry('进入园区一张图',sceneURL.href,true));
  main.append(cards);
- const footer=el('footer','home-footer');footer.append(el('span','','项目业务测试环境 · 业务协同与三维场景'),el('span','','重大风险防控 · 应急协同'));
+ const footer=el('footer','home-footer');footer.append(el('span','','项目业务测试环境 · 演示更新 2026-10-24'),el('span','','重大风险防控 · 应急协同'));
  app.replaceChildren(header,main,footer);
 }
