@@ -6,6 +6,7 @@ parser.add_argument('--name',required=True)
 parser.add_argument('--previous-receipt',type=pathlib.Path,required=True)
 parser.add_argument('--gateway-port',type=int,default=18891)
 parser.add_argument('--minutes',type=int,default=60)
+parser.add_argument('--public-origin',help='Explicit canonical HTTPS origin of an existing TLS frontend; listener remains loopback')
 parser.add_argument('--original-business-config',type=pathlib.Path)
 parser.add_argument('--original-business-config-sha256')
 parser.add_argument('--object-store-provider-receipt',type=pathlib.Path)
@@ -16,6 +17,8 @@ parser.add_argument('--platform-storage',action='store_true')
 parser.add_argument('--platform-files-recover',action='store_true')
 args=parser.parse_args();assert 1<=args.minutes<=120 and 1024<=args.gateway_port<=65535,'OWN_EXPLICIT_CANDIDATE_LEASE_AND_PORT'
 assert re.fullmatch(r'own-j[1-9][0-9]{0,3}',args.name),'OWN_EXPLICIT_RUN_NAME_REQUIRED'
+from prepare_original_frontend_gateway import checked_public_origin
+public_origin=checked_public_origin(args.public_origin)
 from original_candidate_platform_gate import require_semantics_pair,wait_for_platform,allowed_ports
 semantics_requested=require_semantics_pair(args.original_business_config,args.original_business_config_sha256)
 store_requested=require_semantics_pair(args.object_store_provider_receipt,args.object_store_provider_receipt_sha256)
@@ -133,6 +136,7 @@ result={'startedAt':datetime.datetime.now().astimezone().isoformat(),'ownerId':o
 result['objectStoreRequested']=store_requested
 result['platformStorageRequested']=args.platform_storage
 result['platformFilesRecoverRequested']=args.platform_files_recover
+result['gatewayCanonicalPublicOrigin']=public_origin
 if platform_files is not None:result['platformFileData']=platform_files.observation()
 if prior_platform_recovery is not None:result['platformFileRecoveryBasis']=prior_platform_recovery
 (root/'attempt_started.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
@@ -328,7 +332,7 @@ try:
  archive_server=readonly_original_static_archive.ArchiveServer(admin_files,mount_prefix='/zhumadian/admin');archive_worker=threading.Thread(target=archive_server.serve_forever,daemon=True);archive_worker.start()
  oldroots=json.loads((W/'original-home-map-gateway-r3/unavailable/receipt.json').read_bytes())['roots'];roots={name:pathlib.Path(value) for name,value in oldroots.items()};roots['security_pc']=W/'original-admin-home-deployment-r1/dist'
  nginx_runtime=W/'local-gateway-runtime_20261024/nginx-1.31.8';gateway=root/'gw'
- gate=prepare_original_frontend_gateway.prepare(gateway,nginx_runtime,roots,args.gateway_port,business_port,platform_port,'/zhumadian',archive_server.server_port)
+ gate=prepare_original_frontend_gateway.prepare(gateway,nginx_runtime,roots,args.gateway_port,business_port,platform_port,'/zhumadian',archive_server.server_port,public_origin=public_origin)
  assert gate['nginxExecutableSHA256']=='c321bdc2a6eccdaad3c702e4da37e2f7bbfa4ffb3cabb9e70c586f5a5e95da44'
  (gateway/'tmp').mkdir()
  config=gateway/'nginx.conf';text=config.read_text('utf-8');text=text.replace("log_format without_query '$request_method $uri $status';","log_format without_query '$request_method $status';");config.write_text(text,encoding='utf-8')

@@ -2,13 +2,15 @@
 
 Static roots are referenced, never copied. Upstreams are either explicitly
 unavailable (503), or explicit loopback ports of isolated local services.
-This is a local integration candidate, not a public production configuration.
+An explicit canonical HTTPS origin supports an existing TLS frontend. This
+does not configure TLS or make the gateway a complete production deployment.
 """
 from pathlib import Path
 import argparse
 import hashlib
 import json
 import re
+from urllib.parse import urlsplit
 
 def quoted(path):
     value=Path(path).resolve().as_posix()
@@ -27,10 +29,44 @@ def checked_base_path(value):
     return value
 
 
-def prepare(output, runtime, roots, port, business_port=None, platform_port=None, base_path='/tianjinrisk',admin_frontend_port=None):
+def checked_public_origin(value):
+    if value is None:
+        return None
+    if not isinstance(value,str) or len(value)>320 or not re.fullmatch(r'https://[A-Za-z0-9.-]+(?::[0-9]{1,5})?/?',value):
+        raise ValueError('Explicit canonical HTTPS DNS origin required')
+    parsed=urlsplit(value)
+    host=parsed.hostname
+    try:
+        port=parsed.port
+    except ValueError as error:
+        raise ValueError('Valid canonical HTTPS port required') from error
+    if (not host or len(host)>253 or '.' not in host or
+        not re.search(r'[a-z]',host.rsplit('.',1)[1]) or
+        any(not re.fullmatch(r'[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?',label) for label in host.split('.')) or
+        port is not None and not 1<=port<=65535):
+        raise ValueError('Explicit canonical HTTPS DNS origin required')
+    return 'https://'+host+(':'+str(port) if port not in (None,443) else '')
+
+
+def forwarding_headers(origin):
+    if origin is None:
+        return ['  proxy_set_header Host $http_host;',
+                '  proxy_set_header X-Forwarded-Proto $scheme;']
+    parsed=urlsplit(origin)
+    return ['  proxy_set_header Host '+parsed.netloc+';',
+            '  proxy_set_header X-Forwarded-Host '+parsed.netloc+';',
+            '  proxy_set_header X-Forwarded-Proto https;',
+            '  proxy_set_header X-Forwarded-Port '+str(parsed.port or 443)+';',
+            '  proxy_set_header Forwarded "";',
+            '  proxy_set_header X-Forwarded-Prefix "";',
+            '  proxy_set_header X-Forwarded-Server "";']
+
+
+def prepare(output, runtime, roots, port, business_port=None, platform_port=None, base_path='/tianjinrisk',admin_frontend_port=None,public_origin=None):
     output=Path(output).resolve();runtime=Path(runtime).resolve()
     checked_port(port)
     base_path=checked_base_path(base_path)
+    public_origin=checked_public_origin(public_origin)
     if (business_port is None)!=(platform_port is None):
         raise ValueError('Both isolated upstreams must be provided together')
     if business_port is not None:
@@ -62,6 +98,7 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
            " map $http_upgrade $connection_upgrade { default upgrade; '' close; }",
            ' server {',' listen 127.0.0.1:'+str(port)+';',
            ' server_name 127.0.0.1 localhost;',' server_tokens off;',' autoindex off;',
+           *([' absolute_redirect off;'] if public_origin is not None else []),
            ' client_max_body_size 100m;',
            ' location = / { return 302 '+base_path+'/home; }',
            *([' location = /zhumadian/ { return 302 /tianjinrisk/home; }'] if base_path=='/tianjinrisk' else []),
@@ -81,8 +118,7 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
         else:
             lines+=['  proxy_pass http://127.0.0.1:'+str(upstream)+target+';',
                     '  proxy_http_version 1.1;',
-                    '  proxy_set_header Host $http_host;',
-                    '  proxy_set_header X-Forwarded-Proto $scheme;',
+                    *forwarding_headers(public_origin),
                     '  proxy_set_header X-Real-IP $remote_addr;',
                     '  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;',
                     '  proxy_set_header Upgrade $http_upgrade;',
@@ -95,8 +131,7 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
         lines+=[' location = '+admin_mount.rstrip('/')+' { return 301 '+admin_mount+'$is_args$args; }',
                 ' location ^~ '+admin_mount+' {',
                 '  proxy_pass http://127.0.0.1:'+str(admin_frontend_port)+admin_mount+';',
-                '  proxy_http_version 1.1;','  proxy_set_header Host $http_host;',
-                '  proxy_set_header X-Forwarded-Proto $scheme;',
+                '  proxy_http_version 1.1;',*forwarding_headers(public_origin),
                 '  proxy_connect_timeout 5s;','  proxy_read_timeout 15s;',
                 ' }']
     mounts=[(base_path+'/emergency/','emergency_pc'),(base_path+'/h5/','mobile'),
@@ -133,6 +168,8 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
     receipt={'bind':'127.0.0.1','port':port,'appBasePath':base_path,'backendMode':'unavailable' if business_port is None else 'isolated-loopback',
              'businessPort':business_port,'platformPort':platform_port,'adminFrontendPort':admin_frontend_port,
              'adminBasePath':base_path+'/admin' if admin_frontend_port is not None else None,
+             'canonicalPublicOrigin':public_origin,
+             'nginxRedirectsRelative':public_origin is not None,
              'roots':{k:str(Path(v).resolve()) for k,v in roots.items()},
              'nginxExecutableSHA256':hashlib.sha256((runtime/'nginx.exe').read_bytes()).hexdigest(),
              'configSHA256':hashlib.sha256(config.read_bytes()).hexdigest(),
@@ -150,7 +187,8 @@ def main():
     ap.add_argument('--business-port',type=int);ap.add_argument('--platform-port',type=int)
     ap.add_argument('--base-path',default='/tianjinrisk')
     ap.add_argument('--admin-frontend-port',type=int)
-    a=ap.parse_args();r=prepare(a.output,a.runtime,{k:getattr(a,k) for k in ('security_pc','emergency_pc','mobile','bigscreen','tiles')},a.port,a.business_port,a.platform_port,a.base_path,a.admin_frontend_port)
+    ap.add_argument('--public-origin',help='Canonical HTTPS origin of the existing TLS frontend; does not expose a listener')
+    a=ap.parse_args();r=prepare(a.output,a.runtime,{k:getattr(a,k) for k in ('security_pc','emergency_pc','mobile','bigscreen','tiles')},a.port,a.business_port,a.platform_port,a.base_path,a.admin_frontend_port,a.public_origin)
     print(json.dumps({k:r[k] for k in ('bind','port','backendMode','businessAPISynthesized','staticResourcesCopied','publicProductionReady')}))
 
 if __name__=='__main__':main()
