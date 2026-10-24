@@ -27,7 +27,7 @@ def checked_base_path(value):
     return value
 
 
-def prepare(output, runtime, roots, port, business_port=None, platform_port=None, base_path='/tianjinrisk'):
+def prepare(output, runtime, roots, port, business_port=None, platform_port=None, base_path='/tianjinrisk',admin_frontend_port=None):
     output=Path(output).resolve();runtime=Path(runtime).resolve()
     checked_port(port)
     base_path=checked_base_path(base_path)
@@ -36,6 +36,9 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
     if business_port is not None:
         checked_port(business_port);checked_port(platform_port)
         if port in (business_port,platform_port):raise ValueError('Gateway cannot proxy to itself')
+    if admin_frontend_port is not None:
+        checked_port(admin_frontend_port)
+        if admin_frontend_port in (port,business_port,platform_port):raise ValueError('Admin static service must be a distinct loopback port')
     if output.exists():raise ValueError('Fresh gateway output required')
     if set(roots)!={'security_pc','emergency_pc','mobile','bigscreen','tiles'}:
         raise ValueError('All original static roots required')
@@ -65,10 +68,13 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
            ' location = '+base_path+' { return 302 '+base_path+'/home; }']
     lines+=[' location = '+base_path+'/api { return 404; }',
             ' location ^~ '+base_path+'/api/ { return 404; }']
-    for external,upstream,target,timeout in (
+    if admin_frontend_port is not None:lines+=[' location = '+base_path+'/admin/api { return 404; }']
+    proxies=[
             (base_path+'/api/jnpf/',platform_port,'/api/',15),
             (base_path+'/api/serv/websocket/',business_port,'/websocket/',300),
-            (base_path+'/api/serv/',business_port,'/',15)):
+            (base_path+'/api/serv/',business_port,'/',15)]
+    if admin_frontend_port is not None:proxies.append((base_path+'/admin/api/',platform_port,'/api/',300))
+    for external,upstream,target,timeout in proxies:
         lines+=[' location ^~ '+external+' {']
         if upstream is None:
             lines+=['  add_header X-Original-Backend unavailable always;','  return 503;']
@@ -84,6 +90,15 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
                     '  proxy_connect_timeout 15s;','  proxy_read_timeout '+str(timeout)+'s;',
                     '  proxy_send_timeout '+str(timeout)+'s;']
         lines+=[' }']
+    if admin_frontend_port is not None:
+        admin_mount=base_path+'/admin/'
+        lines+=[' location = '+admin_mount.rstrip('/')+' { return 301 '+admin_mount+'$is_args$args; }',
+                ' location ^~ '+admin_mount+' {',
+                '  proxy_pass http://127.0.0.1:'+str(admin_frontend_port)+admin_mount+';',
+                '  proxy_http_version 1.1;','  proxy_set_header Host $http_host;',
+                '  proxy_set_header X-Forwarded-Proto $scheme;',
+                '  proxy_connect_timeout 5s;','  proxy_read_timeout 15s;',
+                ' }']
     mounts=[(base_path+'/emergency/','emergency_pc'),(base_path+'/h5/','mobile'),
             ('/reference-bigscreen/','bigscreen'),(base_path+'/','security_pc')]
     for mount,kind in mounts:
@@ -116,7 +131,8 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
     config=output/'nginx.conf'
     config.write_text('\n'.join(lines)+'\n',encoding='utf-8')
     receipt={'bind':'127.0.0.1','port':port,'appBasePath':base_path,'backendMode':'unavailable' if business_port is None else 'isolated-loopback',
-             'businessPort':business_port,'platformPort':platform_port,
+             'businessPort':business_port,'platformPort':platform_port,'adminFrontendPort':admin_frontend_port,
+             'adminBasePath':base_path+'/admin' if admin_frontend_port is not None else None,
              'roots':{k:str(Path(v).resolve()) for k,v in roots.items()},
              'nginxExecutableSHA256':hashlib.sha256((runtime/'nginx.exe').read_bytes()).hexdigest(),
              'configSHA256':hashlib.sha256(config.read_bytes()).hexdigest(),
@@ -133,7 +149,8 @@ def main():
     for kind in ('security_pc','emergency_pc','mobile','bigscreen','tiles'):ap.add_argument('--'+kind.replace('_','-'),type=Path,required=True)
     ap.add_argument('--business-port',type=int);ap.add_argument('--platform-port',type=int)
     ap.add_argument('--base-path',default='/tianjinrisk')
-    a=ap.parse_args();r=prepare(a.output,a.runtime,{k:getattr(a,k) for k in ('security_pc','emergency_pc','mobile','bigscreen','tiles')},a.port,a.business_port,a.platform_port,a.base_path)
+    ap.add_argument('--admin-frontend-port',type=int)
+    a=ap.parse_args();r=prepare(a.output,a.runtime,{k:getattr(a,k) for k in ('security_pc','emergency_pc','mobile','bigscreen','tiles')},a.port,a.business_port,a.platform_port,a.base_path,a.admin_frontend_port)
     print(json.dumps({k:r[k] for k in ('bind','port','backendMode','businessAPISynthesized','staticResourcesCopied','publicProductionReady')}))
 
 if __name__=='__main__':main()
