@@ -1,0 +1,39 @@
+{
+  "schema": "xnby.minio.source.provenance.v1",
+  "purpose": "Owned local original-file-service integration candidate; not an original-environment version assertion",
+  "officialRelease": "RELEASE.2025-10-15T17-29-55Z",
+  "officialReleaseURL": "https://github.com/minio/minio/releases/tag/RELEASE.2025-10-15T17-29-55Z",
+  "officialRepository": "https://github.com/minio/minio",
+  "officialCommit": "9e49d5e7a648f00e26f2246f4dc28e6b07f8c84a",
+  "goModuleVersion": "v0.0.0-20251015172955-9e49d5e7a648",
+  "moduleZipSHA256": "b137c35bf9708b4032a6a8301495a2563cab25111c28b80fd609812a3252a2f8",
+  "moduleDirectoryChecksum": "h1:6TdolSCLSs2nwm8i0PpWDqf9iX2Ty9WQK8wmr7dCnUM=",
+  "goSDKVersion": "go1.26.10",
+  "goSDKURL": "https://go.dev/dl/go1.26.10.windows-amd64.zip",
+  "goSDKSHA256": "7ecd2d7260e82c59bcbd7f1077a07cee2dea607295b858df67195a1e4e09629b",
+  "buildCommand": [
+    "go",
+    "install",
+    "-p=2",
+    "-trimpath",
+    "github.com/minio/minio@RELEASE.2025-10-15T17-29-55Z"
+  ],
+  "buildEnvironment": {
+    "GOOS": "windows",
+    "GOARCH": "amd64",
+    "CGO_ENABLED": "0",
+    "GOTOOLCHAIN": "local",
+    "GOSUMDB": "sum.golang.org"
+  },
+  "binarySHA256": "c77e84bcf783e72a2d20f89767b0076369939dd1e693d11706205dabbfd89fda",
+  "binaryBytes": 151191040,
+  "buildInfoSHA256": "824602cc1ea0c146f01f146333107df32a84c8b15864ea3bb68caeac11f98dbe",
+  "fixedSourceCommitIndependentlyVerifiedFromBuildInfo": true,
+  "buildRepeatedForBitReproducibility": false,
+  "upstreamLicenseLabel": "GNU AGPLv3; retained upstream LICENSE",
+  "upstreamLicenseURL": "https://github.com/minio/minio/blob/RELEASE.2025-10-15T17-29-55Z/LICENSE",
+  "binaryOrThirdPartySourceIncludedInGit": false,
+  "originalEnvironmentVersionKnown": false,
+  "wholeApplicationIntegrationVerified": false,
+  "fullCloneReady": false
+}
