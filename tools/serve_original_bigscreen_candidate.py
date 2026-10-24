@@ -2,15 +2,17 @@
 import argparse,datetime,hashlib,http.client,json,os,pathlib,re,subprocess,threading,time,traceback
 from original_bigscreen_runtime import OriginalBigscreen
 from original_bigscreen_mock_snapshot import SnapshotServer,load_capture
-from prepare_original_bigscreen_gateway import prepare
+from prepare_original_bigscreen_gateway import prepare,load_renderer_probe,ORIGINAL_RENDERER_SDK_SHA256
 
 def closed_normally(result):
  backend=result.get('backendClose',{})
  return (not result.get('failed') and not result.get('gatewayForcedTermination') and result.get('gatewayExitCode')==0 and result.get('mockStopped') is True and backend.get('ownExitCode')==0 and backend.get('contextClosed') is True and not backend.get('forcedTermination') and backend.get('referenceDatabaseUnchanged') is True and backend.get('sourceArchiveUnchanged') is True)
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--workspace',type=pathlib.Path,required=True);p.add_argument('--name',required=True);p.add_argument('--build-receipt',type=pathlib.Path,required=True);p.add_argument('--build-sha256',required=True);p.add_argument('--capture-receipt',type=pathlib.Path,required=True);p.add_argument('--capture-sha256',required=True);p.add_argument('--joint-ready',type=pathlib.Path,required=True);p.add_argument('--joint-sha256',required=True);p.add_argument('--port',type=int,default=18893);p.add_argument('--minutes',type=int,default=30);a=p.parse_args();assert re.fullmatch('own-bigscreen-j[1-9][0-9]{0,3}',a.name) and 1024<=a.port<=65535 and 1<=a.minutes<=45
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--workspace',type=pathlib.Path,required=True);p.add_argument('--name',required=True);p.add_argument('--build-receipt',type=pathlib.Path,required=True);p.add_argument('--build-sha256',required=True);p.add_argument('--capture-receipt',type=pathlib.Path,required=True);p.add_argument('--capture-sha256',required=True);p.add_argument('--joint-ready',type=pathlib.Path,required=True);p.add_argument('--joint-sha256',required=True);p.add_argument('--renderer-probe',type=pathlib.Path);p.add_argument('--renderer-probe-sha256');p.add_argument('--port',type=int,default=18893);p.add_argument('--minutes',type=int,default=30);a=p.parse_args();assert re.fullmatch('own-bigscreen-j[1-9][0-9]{0,3}',a.name) and 1024<=a.port<=65535 and 1<=a.minutes<=45
  W=a.workspace.resolve(strict=True);A=W.parents[1];assert A.name=='Application';root=W/a.name;assert not root.exists();sha=lambda f:hashlib.sha256(pathlib.Path(f).read_bytes()).hexdigest()
+ assert bool(a.renderer_probe)==bool(a.renderer_probe_sha256),'EXPLICIT_RENDERER_PROBE_AND_PIN_REQUIRED'
+ renderer=load_renderer_probe(W,a.renderer_probe,a.renderer_probe_sha256) if a.renderer_probe else None
  for file,pin in [(a.build_receipt,a.build_sha256),(a.capture_receipt,a.capture_sha256),(a.joint_ready,a.joint_sha256)]:assert file.resolve(strict=True).is_relative_to(W) and sha(file)==pin,'EXPLICIT_KNOWN_INPUT_PIN_REQUIRED'
  build=json.loads(a.build_receipt.read_bytes());assert build['buildCompleted'] and build['bothPinnedOverlaysActuallyCompiled'] and build['externalMockLiteralAbsent'] and not build['publicAssetsCopied'];dist=a.build_receipt.resolve().parent/'dist';assert build['mount']=='/zhumadian/bigscreen/' and build['mockBase']=='/zhumadian/api/reference-mock'
  for rel,pin in build['outputSHA256'].items():assert sha(dist/rel)==pin
@@ -29,9 +31,10 @@ def main():
  root.mkdir();(root/'controller-source.py').write_bytes(pathlib.Path(__file__).read_bytes());result={'startedAt':datetime.datetime.now().astimezone().isoformat(),'name':a.name,'upstreamOwnerId':joint['ownerId'],'upstreamReadySHA256':a.joint_sha256,'buildReceiptSHA256':a.build_sha256,'captureReceiptSHA256':a.capture_sha256,'publicAssetsCopied':False,'originalSourceChanged':False,'businessAPISynthesized':False,'referenceDatabaseOpenedWritable':False,'originalRendererAvailable':False,'realVideoQueryOrControlAttempted':False,'publicDeployed':False,'fullCloneReady':False};service=None;mock=None;worker=None;nginx=None;log=None;flags=subprocess.CREATE_NO_WINDOW
  try:
   config_command=['D:/Program Files/nodejs/node.exe',str(A/'tools/prepare_original_bigscreen_config.mjs'),'--source',str(public/'config.js'),'--parser',str(W/'security_pc/node_modules/@babel/parser/lib/index.js'),'--parser-sha256','82d72e197e27bf909ae10ffc8d1a969aeb94fe96ec96c4e9cb685a0a8229e40c','--origin','http://127.0.0.1:'+str(a.port),'--output',str(root/'runtime')]
+  if renderer:config_command+=['--renderer-sdk-sha256',renderer['sdkSHA256']]
   run=subprocess.run(config_command,capture_output=True,timeout=20,creationflags=flags);(root/'config.private.log').write_bytes(run.stdout+run.stderr);assert run.returncode==0,'ORIGINAL_RUNTIME_CONFIG_PREPARATION_FAILED'
   service=OriginalBigscreen(W,root/'backend',a.minutes+1);native_port=service.start();print('ORIGINAL_BIGSCREEN_BACKEND_READY',flush=True)
-  mock=SnapshotServer(dataset);worker=threading.Thread(target=mock.serve_forever,daemon=True);worker.start();runtime=W/'local-gateway-runtime_20261024/nginx-1.31.8';gateway=root/'gateway';prepared=prepare(gateway,runtime,dist,public,root/'runtime/config.js',a.port,18891,native_port,mock.server_port)
+  mock=SnapshotServer(dataset);worker=threading.Thread(target=mock.serve_forever,daemon=True);worker.start();runtime=W/'local-gateway-runtime_20261024/nginx-1.31.8';gateway=root/'gateway';prepared=prepare(gateway,runtime,dist,public,root/'runtime/config.js',a.port,18891,native_port,mock.server_port,renderer['upstream'] if renderer else None)
   command=[str(runtime/'nginx.exe'),'-p',str(gateway)+'/', '-c',str(gateway/'nginx.conf')];run=subprocess.run([*command,'-t'],cwd=gateway,capture_output=True,timeout=10,creationflags=flags);(gateway/'config-check.private.log').write_bytes(run.stdout+run.stderr);assert run.returncode==0,'BIGSCREEN_GATEWAY_CONFIGURATION_FAILED'
   log=(gateway/'process.private.log').open('wb');nginx=subprocess.Popen(command,cwd=gateway,stdout=log,stderr=subprocess.STDOUT,creationflags=flags)
   end=time.monotonic()+12
@@ -50,6 +53,9 @@ def main():
   for rel,pin in build['outputSHA256'].items():
    status,body,_=get('/zhumadian/bigscreen/'+rel);assert status==200 and hashlib.sha256(body).hexdigest()==pin,'ALL_COMPILED_RESOURCES_MUST_BE_SERVED_EXACTLY'
   status,_,_=get('/zhumadian/unavailable-renderer/libac');assert status==503
+  if renderer:
+   status,body,_=get('/zhumadian/renderer/libac');assert status==200 and hashlib.sha256(body).hexdigest()==ORIGINAL_RENDERER_SDK_SHA256,'EXACT_ORIGINAL_RENDERER_SDK_THROUGH_GATEWAY_REQUIRED'
+   result.update(rendererEndpointConfigured=True,rendererProbeSHA256=renderer['probeSHA256'],rendererSDKHTTPExact=True,originalRendererAvailabilityRequiresBrowserVerification=True)
   c=http.client.HTTPConnection('127.0.0.1',a.port,timeout=5)
   try:c.request('POST','/zhumadian/api/bigscreen/hikvideo/query',body=b'{}',headers={'Content-Type':'application/json'});response=c.getresponse();assert response.status==200 and json.loads(response.read())['success'] is False
   finally:c.close()
