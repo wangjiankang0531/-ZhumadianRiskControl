@@ -48,14 +48,16 @@ def request_name(target):
 class ArchiveServer(http.server.ThreadingHTTPServer):
     daemon_threads=True
     allow_reuse_address=False
-    def __init__(self,files,platform_port=None):
+    def __init__(self,files,platform_port=None,mount_prefix='/'):
         if platform_port is not None and (isinstance(platform_port,bool) or not isinstance(platform_port,int) or not 1024<=platform_port<=65535):raise ValueError('Explicit loopback platform port required')
+        if mount_prefix!='/' and (not isinstance(mount_prefix,str) or len(mount_prefix)>128 or not re.fullmatch(r'/[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*',mount_prefix)):raise ValueError('Explicit safe mount prefix required')
         self.files=files;self.counts=collections.Counter();self.api_reads=collections.Counter();self.unavailable_reads=collections.Counter();self.bytes_served=0;self.static_bytes_served=0
-        self.platform_port=platform_port;self.original_reads=[]
+        self.platform_port=platform_port;self.original_reads=[];self.mount_prefix=mount_prefix;self.missing_paths=collections.Counter()
         super().__init__(('127.0.0.1',0),ArchiveHandler)
 
 
 class ArchiveHandler(http.server.BaseHTTPRequestHandler):
+    disable_nagle_algorithm=True
     server_version='OriginalStaticQA'
     sys_version=''
     protocol_version='HTTP/1.1'
@@ -68,11 +70,12 @@ class ArchiveHandler(http.server.BaseHTTPRequestHandler):
     do_PUT=do_POST
     do_PATCH=do_POST
     do_DELETE=do_POST
-    def respond(self,status,data,kind,body,static=False):
+    def respond(self,status,data,kind,body,static=False,headers=None):
         self.server.counts[status]+=1
         self.send_response(status);self.send_header('Content-Type',kind);self.send_header('Content-Length',str(len(data)))
         self.send_header('X-Content-Type-Options','nosniff');self.send_header('Cache-Control','no-store')
         self.send_header('Content-Security-Policy',"connect-src 'self'")
+        for key,value in (headers or {}).items():self.send_header(key,value)
         self.end_headers()
         if body:
             try:
@@ -82,6 +85,17 @@ class ArchiveHandler(http.server.BaseHTTPRequestHandler):
     def serve(self,body):
         try:name=request_name(self.path)
         except (ValueError,UnicodeError):self.respond(400,b'Invalid path','text/plain',body);return
+        external_name=name
+        if self.server.mount_prefix!='/':
+            mount=self.server.mount_prefix.lstrip('/')
+            if name=='favicon.ico' and 'favicon.ico' in self.server.files:
+                self.respond(301,b'','text/plain',body,headers={'Location':self.server.mount_prefix+'/favicon.ico'});return
+            if name==mount:
+                query=urlsplit(self.path).query
+                self.respond(301,b'','text/plain',body,headers={'Location':self.server.mount_prefix+'/'+('?' + query if query else '')});return
+            if not name.startswith(mount+'/'):
+                self.server.missing_paths['/'+external_name]+=1;self.respond(404,b'Outside original static mount','text/plain',body);return
+            name=name[len(mount)+1:]
         if name=='api' or name.startswith('api/'):
             self.server.api_reads['/'+name]+=1
             if self.server.platform_port and name in ('api/oauth/getLoginConfig','api/oauth/CurrentUser'):
@@ -90,7 +104,7 @@ class ArchiveHandler(http.server.BaseHTTPRequestHandler):
                     connection.request('GET','/'+name+('?' + urlsplit(self.path).query if urlsplit(self.path).query else ''))
                     response=connection.getresponse();data=response.read(2*1024**2+1)
                     if len(data)>2*1024**2:raise ValueError('Original read response limit exceeded')
-                    self.server.original_reads.append({'path':'/'+name,'status':response.status,'bodyBytes':len(data),'bodySHA256':hashlib.sha256(data).hexdigest()})
+                    self.server.original_reads.append({'path':'/'+name,'externalPath':'/'+external_name,'status':response.status,'bodyBytes':len(data),'bodySHA256':hashlib.sha256(data).hexdigest()})
                     self.respond(response.status,data,response.getheader('Content-Type') or 'application/octet-stream',body)
                 except (OSError,http.client.HTTPException,ValueError):self.respond(502,b'Owned original backend unavailable','text/plain',body)
                 finally:connection.close()
@@ -99,11 +113,28 @@ class ArchiveHandler(http.server.BaseHTTPRequestHandler):
             self.respond(503,b'Original backend unavailable','text/plain; charset=utf-8',body);return
         key=name
         if not key or (key not in self.server.files and '.' not in key.rsplit('/',1)[-1]):key='index.html'
-        if key not in self.server.files:self.respond(404,b'Not found','text/plain',body);return
+        if key not in self.server.files:
+            self.server.missing_paths['/'+external_name]+=1;self.respond(404,b'Not found','text/plain',body);return
         kind=mimetypes.guess_type(key)[0] or 'application/octet-stream'
         if key.endswith(('.js','.mjs')):kind='application/javascript'
         if key.endswith(('.html','.css','.js','.mjs','.json')):kind+='; charset=utf-8'
         self.respond(200,self.server.files[key],kind,body,static=True)
+
+
+def verified_platform_owner(owner_root):
+    owner_root=pathlib.Path(owner_root).resolve()
+    if not re.fullmatch(r'own-pboot-r[1-9][0-9]*',owner_root.name):raise ValueError('Owned platform run required')
+    preparation=json.loads((owner_root/'preparation.json').read_bytes())
+    if preparation['sourceJarSHA256']!='294f809b830374656f8100b3fb6091387d619ff8d7ecf8685e7c61788843eda8':raise ValueError('Original runtime identity differs')
+    if not (owner_root/'own-platform-ready.txt').is_file() or (owner_root/'receipt.json').exists():raise ValueError('Original context not currently running')
+    platform_port=int((owner_root/'own-platform-http-port.txt').read_text())
+    if not 1024<=platform_port<=65535:raise ValueError('Invalid original loopback port')
+    marker=('-Down.platform.root='+str(owner_root)+' ').replace("'","''")
+    java_path=str(pathlib.Path(preparation.get('platformJavaHome',preparation['javaHome']))/'bin/java.exe').replace("'","''")
+    script="$ErrorActionPreference='Stop'; $listener=Get-NetTCPConnection -LocalAddress 127.0.0.1 -LocalPort "+str(platform_port)+" -State Listen; $owner=Get-CimInstance Win32_Process -Filter ('ProcessId='+$listener.OwningProcess); if ($owner.CommandLine.IndexOf('"+marker+"',[StringComparison]::OrdinalIgnoreCase) -lt 0 -or -not [String]::Equals($owner.ExecutablePath,'"+java_path+"',[StringComparison]::OrdinalIgnoreCase)) { throw 'Different platform owner' }; $owner.ProcessId"
+    checked=subprocess.run(['powershell.exe','-NoProfile','-NonInteractive','-Command',script],capture_output=True,timeout=10,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+    if checked.returncode!=0:raise ValueError('Original loopback listener ownership not verified')
+    return platform_port,int(checked.stdout.strip())
 
 
 def main():
@@ -119,20 +150,7 @@ def main():
     files,receipt=load_archive(args.archive,args.sha256)
     platform_port=None;owner_pid=None
     if args.platform_owner_root:
-        owner_root=args.platform_owner_root.resolve()
-        if not re.fullmatch(r'own-pboot-r[1-9][0-9]*',owner_root.name):raise ValueError('Owned platform run required')
-        preparation=json.loads((owner_root/'preparation.json').read_bytes())
-        if preparation['sourceJarSHA256']!='294f809b830374656f8100b3fb6091387d619ff8d7ecf8685e7c61788843eda8':raise ValueError('Original runtime identity differs')
-        if not (owner_root/'own-platform-ready.txt').is_file():raise ValueError('Original context not ready')
-        platform_port=int((owner_root/'own-platform-http-port.txt').read_text())
-        if not 1024<=platform_port<=65535:raise ValueError('Invalid original loopback port')
-        marker='-Down.platform.root='+str(owner_root)+' '
-        literal=marker.replace("'","''")
-        java_path=str(pathlib.Path(preparation.get('platformJavaHome',preparation['javaHome']))/'bin/java.exe').replace("'","''")
-        script="$ErrorActionPreference='Stop'; $listener=Get-NetTCPConnection -LocalAddress 127.0.0.1 -LocalPort "+str(platform_port)+" -State Listen; $owner=Get-CimInstance Win32_Process -Filter ('ProcessId='+$listener.OwningProcess); if ($owner.CommandLine.IndexOf('"+literal+"',[StringComparison]::OrdinalIgnoreCase) -lt 0 -or -not [String]::Equals($owner.ExecutablePath,'"+java_path+"',[StringComparison]::OrdinalIgnoreCase)) { throw 'Different platform owner' }; $owner.ProcessId"
-        checked=subprocess.run(['powershell.exe','-NoProfile','-NonInteractive','-Command',script],capture_output=True,timeout=10,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
-        if checked.returncode!=0:raise ValueError('Original loopback listener ownership not verified')
-        owner_pid=int(checked.stdout.strip())
+        platform_port,owner_pid=verified_platform_owner(args.platform_owner_root)
     server=ArchiveServer(files,platform_port);worker=threading.Thread(target=server.serve_forever,daemon=True);worker.start()
     receipt.update(recordedAt=datetime.datetime.now().astimezone().isoformat(),pid=os.getpid(),url='http://127.0.0.1:'+str(server.server_port)+'/',
                    businessBackendConnected=False,originalPlatformReadOnlyProxy=platform_port is not None,originalPlatformOwnerPID=owner_pid,
@@ -150,6 +168,7 @@ def main():
                        statusCounts=dict(server.counts),apiReadPaths=dict(server.api_reads),unavailableAPIReads=dict(server.unavailable_reads),
                        responseBytesServed=server.bytes_served,staticBytesServed=server.static_bytes_served,
                        originalReadResponses=server.original_reads,
+                       missingPaths=dict(server.missing_paths),
                        resourcesExtracted=False,originalSourceChanged=False)
         (output/'receipt.json').write_text(json.dumps(receipt,indent=2),encoding='utf-8')
     assert receipt['ownedServerStopped'];print(json.dumps({'state':'stopped'}),flush=True)
