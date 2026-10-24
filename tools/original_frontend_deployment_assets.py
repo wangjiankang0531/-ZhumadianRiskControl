@@ -16,11 +16,15 @@ ORIGINAL_HOME_OPEN=b'window.open(item.path, "_blank");'
 HOME_HANDLER=b'const handleTo = item => {'
 
 
-def home_navigation_adapter(base_path):
+def home_navigation_adapter(base_path,admin_home=None):
     if (not isinstance(base_path,str) or len(base_path)>128
             or not re.fullmatch(r'/[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*',base_path)):
         raise ValueError('Explicit same-origin application base required')
-    return ('''const deploymentHomePath = value => {
+    if admin_home is not None and admin_home!=base_path+'/admin':
+        raise ValueError('Admin deployment entry must be the same application admin base')
+    declaration='const deploymentHomePath = value => {' if admin_home is None else 'const deploymentHomePath = (value, code) => {'
+    admin_branch='' if admin_home is None else '  if (code === "syslink") return '+json.dumps(admin_home+'/')+';\n'
+    return (declaration+'\n'+admin_branch+'''
   if (typeof value !== "string") return value;
   const legacy = "/tianjinrisk";
   const deployed = '''+json.dumps(base_path)+''';
@@ -36,7 +40,7 @@ def home_navigation_adapter(base_path):
 
 
 @contextmanager
-def home_deployment_override(project, pristine_source, use_local_command=False, home_base=None):
+def home_deployment_override(project, pristine_source, use_local_command=False, home_base=None,admin_home=None):
     project,pristine_source=Path(project).resolve(),Path(pristine_source).resolve()
     if project==pristine_source or project.is_relative_to(pristine_source) or pristine_source.is_relative_to(project):
         raise ValueError('Command override requires a distinct build copy')
@@ -45,6 +49,7 @@ def home_deployment_override(project, pristine_source, use_local_command=False, 
         raise ValueError('Build input must not alias or escape the pristine reference')
     if original!=(pristine_source/rel).read_bytes():
         raise ValueError('Original home build input differs from pristine source')
+    if admin_home is not None:home_navigation_adapter(home_base,admin_home)
     if not use_local_command and home_base is None:
         raise ValueError('At least one explicit home deployment adapter required')
     if use_local_command and original.count(ORIGINAL_COMMAND)!=1:
@@ -54,13 +59,15 @@ def home_deployment_override(project, pristine_source, use_local_command=False, 
     if home_base is not None:
         if original.count(HOME_HANDLER)!=1 or original.count(ORIGINAL_HOME_OPEN)!=1:
             raise ValueError('Pinned original home navigation branch is missing or changed')
-        patched=patched.replace(HOME_HANDLER,home_navigation_adapter(home_base)+HOME_HANDLER)
-        patched=patched.replace(ORIGINAL_HOME_OPEN,b'window.open(deploymentHomePath(item.path), "_blank");')
+        patched=patched.replace(HOME_HANDLER,home_navigation_adapter(home_base,admin_home)+HOME_HANDLER)
+        deployed_open=b'window.open(deploymentHomePath(item.path), "_blank");' if admin_home is None else b'window.open(deploymentHomePath(item.path, item.enCode), "_blank");'
+        patched=patched.replace(ORIGINAL_HOME_OPEN,deployed_open)
     receipt={'file':rel.as_posix(),'originalSHA256':hashlib.sha256(original).hexdigest(),
              'compiledInputSHA256':hashlib.sha256(patched).hexdigest(),'commandURL':COMMAND_URL if use_local_command else None,
              'onlyCommandTargetChanged':home_base is None,'homeNavigationBase':home_base,
              'legacyHomePrefix':'/tianjinrisk' if home_base is not None else None,
-             'externalHomeLinksRewritten':False,'menuRowsChanged':False,
+             'externalHomeLinksRewritten':admin_home is not None,'menuRowsChanged':False,
+             'adminHomeBase':admin_home,'adminLoginTokenOrUserForwarded':False,
              'publicLoginTokenForwarded':not use_local_command,'sourceRestored':False}
     try:
         target.write_bytes(patched)

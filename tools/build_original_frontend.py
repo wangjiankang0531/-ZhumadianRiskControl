@@ -100,12 +100,14 @@ def restore_mobile_generated_manifest(project, expected, source_project, public_
     return True
 
 def build(kind, project, manifest_path, node, output, api_prefix, public_base, source_project=None,
-          use_local_command=False,mobile_qr_url=None,adapt_home_navigation=False,map_tile_base=None):
+          use_local_command=False,mobile_qr_url=None,adapt_home_navigation=False,map_tile_base=None,admin_home_base=None):
     project, manifest_path, node, output = (Path(x).resolve() for x in (project,manifest_path,node,output))
     if kind not in KINDS or not project.is_dir() or not node.is_file():
         raise ValueError('Missing original project or explicit Node executable')
     route(api_prefix,False);route(public_base,True)
-    if (use_local_command or mobile_qr_url or adapt_home_navigation) and kind!='security_pc':
+    if admin_home_base is not None and not adapt_home_navigation:
+        raise ValueError('Admin entry requires explicit home navigation deployment adaptation')
+    if (use_local_command or mobile_qr_url or adapt_home_navigation or admin_home_base) and kind!='security_pc':
         raise ValueError('Portal deployment adapters apply only to original security PC')
     if map_tile_base:
         if kind not in ('security_pc','emergency_pc'):raise ValueError('Map URL adapter applies only to original PC frontends')
@@ -143,7 +145,7 @@ def build(kind, project, manifest_path, node, output, api_prefix, public_base, s
         with ExitStack() as adapters:
             if use_local_command or adapt_home_navigation:
                 command_adapter=adapters.enter_context(home_deployment_override(project,source_project,use_local_command,
-                          public_base.rstrip('/') if adapt_home_navigation else None))
+                          public_base.rstrip('/') if adapt_home_navigation else None,admin_home_base))
             if map_tile_base:map_adapter=adapters.enter_context(map_tile_override(project,source_project,map_tile_base))
             with (output/'build.log').open('wb') as log:
                 process=subprocess.run(command,cwd=project,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=300,
@@ -190,8 +192,9 @@ def main():
     ap.add_argument('--mobile-qr-url')
     ap.add_argument('--adapt-home-navigation',action='store_true')
     ap.add_argument('--map-tile-base')
+    ap.add_argument('--admin-home-base')
     a=ap.parse_args()
-    r=build(a.kind,a.project,a.source_manifest,a.node,a.output,a.api_prefix,a.public_base or KINDS[a.kind],a.source_project,a.use_local_command,a.mobile_qr_url,a.adapt_home_navigation,a.map_tile_base)
+    r=build(a.kind,a.project,a.source_manifest,a.node,a.output,a.api_prefix,a.public_base or KINDS[a.kind],a.source_project,a.use_local_command,a.mobile_qr_url,a.adapt_home_navigation,a.map_tile_base,a.admin_home_base)
     print(json.dumps({k:r[k] for k in ('kind','fileCount','bytes','seconds','sourceInputFilesVerified','sourceFilesUnchanged','compiledPathOccurrences','backendConnected','publicDeployed')}))
 
 if __name__=='__main__':main()
