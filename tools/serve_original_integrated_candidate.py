@@ -17,6 +17,8 @@ parser.add_argument('--portable-business-runtime',type=pathlib.Path)
 parser.add_argument('--portable-business-runtime-sha256')
 parser.add_argument('--platform-support-receipt',type=pathlib.Path)
 parser.add_argument('--platform-support-sha256')
+parser.add_argument('--admin-frontend-runtime',type=pathlib.Path)
+parser.add_argument('--admin-frontend-runtime-sha256')
 parser.add_argument('--platform-storage',action='store_true')
 parser.add_argument('--platform-files-recover',action='store_true')
 args=parser.parse_args();assert 1<=args.minutes<=120 and 1024<=args.gateway_port<=65535,'OWN_EXPLICIT_CANDIDATE_LEASE_AND_PORT'
@@ -30,6 +32,8 @@ from portable_reference_business_runtime import validate_launch_options,select_f
 portable_requested=validate_launch_options(args.reference_business_runtime,args.reference_business_runtime_sha256,args.portable_business_runtime,args.portable_business_runtime_sha256,semantics_requested)
 from build_original_platform_support import validate_support_selection,select_support
 support_requested=validate_support_selection(args.platform_support_receipt,args.platform_support_sha256)
+from portable_original_admin_frontend import validate_selection as validate_admin_runtime,load as load_admin_runtime
+prepared_admin_requested=validate_admin_runtime(args.admin_frontend_runtime,args.admin_frontend_runtime_sha256)
 if store_requested and not semantics_requested:raise ValueError('OWN_OBJECT_STORE_REQUIRES_ORIGINAL_BUSINESS_SEMANTICS')
 if args.platform_storage and not store_requested:raise ValueError('OWN_PLATFORM_FILES_REQUIRE_OWN_OBJECT_STORE')
 if args.platform_files_recover and not args.platform_storage:raise ValueError('OWN_PLATFORM_RECOVERY_REQUIRES_PLATFORM_STORAGE')
@@ -40,6 +44,7 @@ if semantics_requested:
  assert hashlib.sha256(args.original_business_config.read_bytes()).hexdigest()==args.original_business_config_sha256,'OWN_ORIGINAL_BUSINESS_CONFIG_PIN_MISMATCH'
 P=pathlib.Path(__file__).parent;W=args.workspace.resolve(strict=True);A=W.parents[1];R=A.parent
 assert A.name=='Application' and (A/'tools/reference_flat_runtime.py').is_file(),'OWN_KNOWN_APPLICATION_WORKSPACE_REQUIRED'
+preloaded_admin=load_admin_runtime(args.admin_frontend_runtime,args.admin_frontend_runtime_sha256,'/zhumadian/admin') if prepared_admin_requested else None
 platform_support_root,platform_support_proof=select_support(args.platform_support_receipt,args.platform_support_sha256) if support_requested else (W/'own-pboot-r32',{'mode':'legacy-prepared-platform-support'})
 flat,business_runtime=select_for_launch(W,args.reference_business_runtime,args.reference_business_runtime_sha256,args.portable_business_runtime,args.portable_business_runtime_sha256,semantics_requested)
 previous=json.loads(args.previous_receipt.read_bytes())
@@ -152,6 +157,7 @@ result['objectStoreRequested']=store_requested
 result['platformStorageRequested']=args.platform_storage
 result['platformFilesRecoverRequested']=args.platform_files_recover
 result['platformSupportSelection']=platform_support_proof
+result['adminFrontendRuntimeSelection']=preloaded_admin[1] if prepared_admin_requested else {'mode':'legacy-adapt-on-startup','sourceArchiveReadAtRuntime':True,'nodeOrParserRequiredAtRuntime':True}
 result['gatewayCanonicalPublicOrigin']=public_origin
 if platform_files is not None:result['platformFileData']=platform_files.observation()
 if prior_platform_recovery is not None:result['platformFileRecoveryBasis']=prior_platform_recovery
@@ -341,10 +347,14 @@ try:
  boot=read_properties(platform_root/'bootstrap-rehydration-observation.properties')
  assert boot.get('originalBootstrapMethodCompleted')=='true' and boot.get('outsideBootstrapCriticalFieldsSignaturePreserved')=='true','OWN_ORIGINAL_BOOTSTRAP_PARITY_FAILED'
  result['bootstrapRehydration']=boot;result['platformOriginalMainReturned']=True
- import readonly_original_static_archive,adapt_original_admin_archive,prepare_original_frontend_gateway
- archive=pathlib.Path('//192.168.0.107/Fofme/TJZY/home/tool/nginx/www/ap/dist_new.tar.gz')
- original_admin,archive_receipt=readonly_original_static_archive.load_archive(archive,'f64765343660b98322554a800f05ff8b76da14c92e3729d7f01ff2d9f85a3b08')
- admin_files,admin_recipe=adapt_original_admin_archive.adapt_admin_files(original_admin,'/zhumadian/admin',pathlib.Path('D:/Program Files/nodejs/node.exe'),W/'security_pc/node_modules/@babel/parser/lib/index.js')
+ import readonly_original_static_archive,prepare_original_frontend_gateway
+ if prepared_admin_requested:
+  admin_files,admin_runtime_proof=preloaded_admin;archive_receipt=admin_runtime_proof['sourceArchive']
+ else:
+  import adapt_original_admin_archive
+  archive=pathlib.Path('//192.168.0.107/Fofme/TJZY/home/tool/nginx/www/ap/dist_new.tar.gz')
+  original_admin,archive_receipt=readonly_original_static_archive.load_archive(archive,'f64765343660b98322554a800f05ff8b76da14c92e3729d7f01ff2d9f85a3b08')
+  admin_files,admin_recipe=adapt_original_admin_archive.adapt_admin_files(original_admin,'/zhumadian/admin',pathlib.Path('D:/Program Files/nodejs/node.exe'),W/'security_pc/node_modules/@babel/parser/lib/index.js')
  archive_server=readonly_original_static_archive.ArchiveServer(admin_files,mount_prefix='/zhumadian/admin');archive_worker=threading.Thread(target=archive_server.serve_forever,daemon=True);archive_worker.start()
  oldroots=json.loads((W/'original-home-map-gateway-r3/unavailable/receipt.json').read_bytes())['roots'];roots={name:pathlib.Path(value) for name,value in oldroots.items()};roots['security_pc']=W/'original-admin-home-deployment-r1/dist'
  nginx_runtime=W/'local-gateway-runtime_20261024/nginx-1.31.8';gateway=root/'gw'
