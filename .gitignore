@@ -34,3 +34,5 @@ services/.venv/
 
 # Persistent owned attachment objects and private service credentials.
 /UserData/TianjinOriginalObjectStore/
+
+/UserData/TianjinOriginalPlatform/

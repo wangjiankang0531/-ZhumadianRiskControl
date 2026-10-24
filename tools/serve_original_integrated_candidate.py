@@ -10,12 +10,16 @@ parser.add_argument('--original-business-config',type=pathlib.Path)
 parser.add_argument('--original-business-config-sha256')
 parser.add_argument('--object-store-provider-receipt',type=pathlib.Path)
 parser.add_argument('--object-store-provider-receipt-sha256')
+parser.add_argument('--platform-storage',action='store_true')
+parser.add_argument('--platform-files-recover',action='store_true')
 args=parser.parse_args();assert 1<=args.minutes<=120 and 1024<=args.gateway_port<=65535,'OWN_EXPLICIT_CANDIDATE_LEASE_AND_PORT'
 assert re.fullmatch(r'own-j[1-9][0-9]{0,3}',args.name),'OWN_EXPLICIT_RUN_NAME_REQUIRED'
 from original_candidate_platform_gate import require_semantics_pair,wait_for_platform,allowed_ports
 semantics_requested=require_semantics_pair(args.original_business_config,args.original_business_config_sha256)
 store_requested=require_semantics_pair(args.object_store_provider_receipt,args.object_store_provider_receipt_sha256)
 if store_requested and not semantics_requested:raise ValueError('OWN_OBJECT_STORE_REQUIRES_ORIGINAL_BUSINESS_SEMANTICS')
+if args.platform_storage and not store_requested:raise ValueError('OWN_PLATFORM_FILES_REQUIRE_OWN_OBJECT_STORE')
+if args.platform_files_recover and not args.platform_storage:raise ValueError('OWN_PLATFORM_RECOVERY_REQUIRES_PLATFORM_STORAGE')
 if store_requested:
  from original_object_store_runtime import OwnedObjectStore
 if semantics_requested:
@@ -28,10 +32,29 @@ assert previous['ownMySQLExited'] and previous['ownMySQLExitCode']==0 and previo
 assert previous['ownBusinessExited'] and previous['ownPlatformExited']
 if previous.get('objectStoreRequested'):
  assert previous.get('ownObjectStoreExited') and previous.get('ownObjectStoreExitCode')==0 and not previous.get('ownObjectStoreTerminated'),'PREVIOUS_OWN_OBJECT_STORE_MUST_HAVE_CLOSED_NORMALLY'
+prior_platform_recovery=None
+if args.platform_files_recover:
+ assert previous.get('platformStorageRequested') and previous.get('platformOriginalMainReturned') and previous.get('platformContextClosed') and previous.get('ownPlatformExitCode')==0 and not previous.get('ownPlatformTerminated') and previous.get('platformFileOwnerLockReleased'),'PREVIOUS_NORMALLY_CLOSED_ORIGINAL_PLATFORM_REQUIRED'
+ data_root=A/'UserData/TianjinOriginalPlatform';prior_run=args.previous_receipt.resolve().parent.name
+ assert re.fullmatch(r'own-j[1-9][0-9]{0,3}',prior_run),'KNOWN_PREVIOUS_PLATFORM_RUN_REQUIRED'
+ expected_run=data_root/'runs'/prior_run.removeprefix('own-')
+ assert pathlib.Path(previous['platformFileData']['dataRoot'])==data_root and pathlib.Path(previous['platformFileData']['runRoot'])==expected_run,'PREVIOUS_EXACT_PLATFORM_ROOT_REQUIRED'
+ def bounded_probe_properties(path):
+  stat=path.lstat();assert path.is_file() and not path.is_symlink() and not getattr(stat,'st_file_attributes',0)&0x400 and stat.st_size<=16384,'PREVIOUS_REGULAR_BOUNDED_OWN_PROBE_REQUIRED'
+  return dict(line.split('=',1) for line in path.read_text('ascii').splitlines() if line and not line.startswith(('#','!')))
+ observed_prior=bounded_probe_properties(expected_run/'platform-files-observation.private.properties');marker_prior=bounded_probe_properties(data_root/'owned-restart-probe.private.properties')
+ assert observed_prior.get('passed')=='true' and observed_prior.get('originalLogicalPathBeanBindingsMatched')=='13' and observed_prior.get('originalSpringStaticHelperUploadOrRestartReadbackExact')=='true','PREVIOUS_ACTUAL_ORIGINAL_PLATFORM_FILE_READBACK_REQUIRED'
+ assert observed_prior.get('dataOwnerId')==previous['platformFileData']['dataOwnerId'] and observed_prior.get('runOwnerId')==previous['ownerId'],'PREVIOUS_PLATFORM_PROBE_OWNER_REQUIRED'
+ assert all(observed_prior.get(k)==marker_prior.get(k) for k in ('dataOwnerId','runOwnerId','logicalPath','filename','payloadSHA256','payloadBytes')),'PREVIOUS_PLATFORM_PROBE_MARKER_MISMATCH'
+ prior_platform_recovery={'priorRun':prior_run,'priorRunFailed':bool(previous.get('failed')),'priorPlatformNaturalExit0':True,'priorOriginalHelperReadbackExact':True,'priorHTTPCheckWasNotPassed':not previous.get('platformFileGatewayObservation',{}).get('originalHTTPBytesExact',False),'priorPrivateObservationSHA256':hashlib.sha256((expected_run/'platform-files-observation.private.properties').read_bytes()).hexdigest()}
 root=W/args.name;assert not root.exists();root.mkdir();platform_root=root/'p';business_root=root/'b'
+platform_files=None
+if args.platform_storage:
+ from original_platform_files import OwnedPlatformFiles
+ platform_files=OwnedPlatformFiles(A,args.name).acquire();platform_root=platform_files.run_root
 (root/'controller-source.py').write_bytes(pathlib.Path(__file__).read_bytes())
 for folder in (platform_root,business_root):
- folder.mkdir()
+ if folder!=platform_root or not args.platform_storage:folder.mkdir()
  for name in ('tmp','home','files','logs','classes'):(folder/name).mkdir()
 assert len(str(business_root/'tmp'))<=80 and len(str(platform_root/'tmp'))<=80,'OWN_JDK_UNIX_SOCKET_TEMP_PATH_TOO_LONG'
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
@@ -68,12 +91,24 @@ for directory in ('wrapper-classes','builder-classes'):
  for old in (W/'own-pboot-r32'/directory).rglob('*'):
   if old.is_file():
    target=platform_root/directory/old.relative_to(W/'own-pboot-r32'/directory);target.parent.mkdir(parents=True,exist_ok=True);os.link(old,target)
+platform_storage_lib=None
+if args.platform_storage:
+ platform_storage_lib=W/'own-platform-storage-verification-r5/deps/jnpf-file-core-starter-3.6.0-RELEASE.jar'
+ assert sha(platform_storage_lib)=='5142d072b498e94e6f6bbe53f451229e26658ce2a5b8d09e9793269d90e51b9b','OWN_ORIGINAL_PLATFORM_STORAGE_LIBRARY_PIN'
 env={key:value for key,value in os.environ.items() if key.upper() not in ('JAVA_TOOL_OPTIONS','JDK_JAVA_OPTIONS','_JAVA_OPTIONS','CLASSPATH') and not key.upper().startswith('LOADER_')}
 env['TMP']=env['TEMP']=str(root/'tmp');(root/'tmp').mkdir();flags=subprocess.CREATE_NO_WINDOW
 observer=P/'java/OriginalJointRedisObservation.java'
 for target,classpath in [(platform_root,[pathlib.Path(row['file']) for row in meta['compileDependencies']]),(business_root,[flat/'application.jar',pathlib.Path(rowmeta['boundaryJar']),*deps])]:
- run=subprocess.run([str(java17/'bin/javac.exe'),'-proc:none','--release','8','-encoding','UTF-8','-cp',os.pathsep.join(map(str,classpath)),'-d',str(target/'classes'),str(observer),str(P/'java/CandidateLifecycleObservation.java'),*([str(P/'java/OriginalWritableServiceObservation.java')]+([str(P/'java/OriginalInternalPlatformObservation.java'),str(P/'java/OriginalBusinessLaunch.java')] if semantics_requested else [])+([str(P/'java/OriginalObjectStoreObservation.java')] if store_requested else []) if target==business_root else [])],cwd=target,env=env,capture_output=True,creationflags=flags,timeout=30)
+ extra=[]
+ if target==platform_root and args.platform_storage:
+  classpath += [platform_storage_lib,pathlib.Path(meta['yamlJar'])]
+  extra=[str(P/'java'/n) for n in ('OriginalPlatformFilesObservation.java','OriginalBusinessConfigInventory.java','OriginalPlatformStorageInventory.java','OriginalPlatformStorageOverlay.java')]
+ run=subprocess.run([str(java17/'bin/javac.exe'),'-proc:none','--release','8','-encoding','UTF-8','-cp',os.pathsep.join(map(str,classpath)),'-d',str(target/'classes'),str(observer),str(P/'java/CandidateLifecycleObservation.java'),*extra,*([str(P/'java/OriginalWritableServiceObservation.java')]+([str(P/'java/OriginalInternalPlatformObservation.java'),str(P/'java/OriginalBusinessLaunch.java')] if semantics_requested else [])+([str(P/'java/OriginalObjectStoreObservation.java')] if store_requested else []) if target==business_root else [])],cwd=target,env=env,capture_output=True,creationflags=flags,timeout=30)
  (target/'observer-compile.log').write_bytes(run.stdout+run.stderr);assert run.returncode==0,'OWN_JOINT_OBSERVER_COMPILE_FAILED'
+if args.platform_storage:
+ (platform_root/'persistent-launcher-classes').mkdir()
+ run=subprocess.run([str(java17/'bin/javac.exe'),'-proc:none','--release','8','-encoding','UTF-8','-cp',os.pathsep.join([meta['bootstrapParentJar'],str(platform_root/'wrapper-classes'),meta['guardJar']]),'-d',str(platform_root/'persistent-launcher-classes'),*[str(P/'java'/n) for n in ('OriginalPlatformStorageScope.java','OriginalPersistentPlatformLaunch.java')]],cwd=platform_root,env=env,capture_output=True,creationflags=flags,timeout=30)
+ (platform_root/'persistent-launcher-compile.log').write_bytes(run.stdout+run.stderr);assert run.returncode==0,'OWN_PERSISTENT_PLATFORM_LAUNCHER_COMPILE_FAILED'
 with zipfile.ZipFile(W/'own-pboot-r32/own-platform-observation.jar') as old,zipfile.ZipFile(platform_root/'own-platform-observation.jar','w',zipfile.ZIP_DEFLATED) as new:
  for info in old.infolist():new.writestr(info,old.read(info))
  for path in (platform_root/'classes').rglob('*.class'):new.write(path,path.relative_to(platform_root/'classes').as_posix())
@@ -91,6 +126,10 @@ result={'startedAt':datetime.datetime.now().astimezone().isoformat(),'ownerId':o
  'ownedBusinessLauncherClass':'xnby.replica.OriginalBusinessLaunch' if semantics_requested else 'xnby.replica.OriginalIsolatedLaunch',
  'ownedBusinessLauncherSourceSHA256':sha(P/'java/OriginalBusinessLaunch.java') if semantics_requested else None}
 result['objectStoreRequested']=store_requested
+result['platformStorageRequested']=args.platform_storage
+result['platformFilesRecoverRequested']=args.platform_files_recover
+if platform_files is not None:result['platformFileData']=platform_files.observation()
+if prior_platform_recovery is not None:result['platformFileRecoveryBasis']=prior_platform_recovery
 (root/'attempt_started.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
 object_store=None;object_probe_cleaned=False
 db=redis=platform=business=nginx=None;archive_server=archive_worker=None;handles=[];lock=(dbroot/'own-joint-controller.lock').open('a+b');lock.seek(0);lock.write(b'0');lock.flush();lock.seek(0);msvcrt.locking(lock.fileno(),msvcrt.LK_NBLCK,1)
@@ -176,7 +215,15 @@ try:
   (folder/'own-process-only.policy').write_text('grant { permission java.security.AllPermission; };\n',encoding='ascii')
  platform_config=prepare_original_shared_redis.own_properties(platform_root/'application.properties')
  platform_config['context.initializer.classes']='xnby.platform.PlatformStartupObservation,xnby.platform.PlatformWritableObservation,xnby.platform.OriginalIdGeneratorShutdown,xnby.platform.OriginalBootstrapOrphanGuard,xnby.replica.CandidateLifecycleObservation,xnby.replica.OriginalJointRedisObservation'
+ if args.platform_storage:platform_config['context.initializer.classes']+=',xnby.platform.OriginalPlatformFilesObservation'
  (platform_root/'application.properties').write_text('\n'.join(key+'='+value for key,value in platform_config.items())+'\n',encoding='ascii')
+ if args.platform_storage:
+  connection=platform_root/'object-store-connection.private.properties';object_store.write_private_connection(connection)
+  config_before=sha(platform_root/'application.properties');prepared=platform_root/'platform-storage-application.private.properties'
+  prepared_run=subprocess.run([str(java17/'bin/java.exe'),'-Xmx96m','-cp',os.pathsep.join([str(platform_root/'classes'),meta['yamlJar']]),'xnby.replica.OriginalPlatformStorageOverlay',meta['sourceArchive'],str(platform_root/'application.properties'),str(connection),str(platform_files.files),str(prepared)],cwd=platform_root,env=env,capture_output=True,creationflags=flags,timeout=30)
+  (platform_root/'platform-storage-prepare.private.log').write_bytes(prepared_run.stdout+prepared_run.stderr);assert prepared_run.returncode==0,'OWN_PLATFORM_STORAGE_PREPARATION_FAILED'
+  (platform_root/'diagnostic-platform-before-storage.private.properties').write_bytes((platform_root/'application.properties').read_bytes());(platform_root/'application.properties').write_bytes(prepared.read_bytes())
+  result['platformFilePreparation']={'inputSHA256':config_before,'preparedSHA256':sha(prepared),'originalProviderIdentitiesAndLogicalPathsPreserved':True,'originalPhysicalRootOrCredentialsCopied':False}
  print('START_TWO_ORIGINAL_APPLICATIONS_ON_SHARED_RESOURCES',flush=True)
  start_order=[('platform',platform_root),('business',business_root)] if semantics_requested else [('business',business_root),('platform',platform_root)]
  for side,folder in start_order:
@@ -205,7 +252,7 @@ try:
     print('OWN_OBJECT_STORE_APPLIED_TO_NEW_BUSINESS_PROCESS_ONLY',flush=True)
   common=['-Xmx512m','-Dfile.encoding=UTF-8','-Djava.io.tmpdir='+str(folder/'tmp'),'-Duser.home='+str(folder/'home'),
    '-Djdk.net.unixdomain.tmpdir='+str(folder/'tmp'),'-Djava.security.policy=='+(folder/'own-process-only.policy').as_uri(),
-   '-Down.allowed.loopback.ports='+allowed_ports(dbport,redisport,internal_platform_port)+(','+str(object_store.port) if side=='business' and store_requested else ''),'-Down.joint.root='+str(folder),'-Down.candidate.root='+str(folder),'-Down.candidate.maximum-seconds='+str(args.minutes*60),'-Down.expected.database.uuid='+dbspec['ownServerUUID'],'-Down.expected.database.port='+str(dbport),
+   '-Down.allowed.loopback.ports='+allowed_ports(dbport,redisport,internal_platform_port)+(','+str(object_store.port) if (side=='business' and store_requested) or (side=='platform' and args.platform_storage) else ''),'-Down.joint.root='+str(folder),'-Down.candidate.root='+str(folder),'-Down.candidate.maximum-seconds='+str(args.minutes*60),'-Down.expected.database.uuid='+dbspec['ownServerUUID'],'-Down.expected.database.port='+str(dbport),
    '-Dspring.config.location='+(folder/'application.properties').as_uri()+','+(folder/'redis-overlay.private.properties').as_uri()]
   if side=='business':
    if internal_platform_base:common+=['-Down.internal.platform.base='+internal_platform_base,'-Down.expected.redis.port='+str(redisport)]
@@ -216,10 +263,11 @@ try:
    argfile=folder/'java-arguments.private.txt';argfile.write_text('\n'.join('"'+a.replace('\\','\\\\').replace('"','\\"')+'"' for a in java_args)+'\n',encoding='utf-8')
    business=start([str(java17/'bin/java.exe'),'@'+str(argfile)],folder,'startup.private.log');result['ownBusinessPID']=business.pid
   else:
+   if args.platform_storage:common+=['-Down.expected.redis.port='+str(redisport),'-Down.internal.object-store.base=http://127.0.0.1:'+str(object_store.port),'-Down.platform.data.root='+str(platform_files.root),'-Down.platform.data.owner='+platform_files.identity['ownerId'],'-Down.platform.file-probe.owner='+owner,'-Down.platform.file-probe.recover='+str(args.platform_files_recover).lower()]
    java_args=common+['-Down.platform.manage.id-generator-shutdown=true','-Down.platform.rehydrate-existing-definitions=true','-Djava.awt.headless=true','-Down.platform.root='+str(folder),'-Down.platform.cached.resources=true','-Down.platform.source.path='+meta['sourceArchive'],
     '-Down.platform.independent.jar.wrappers=true','-Djava.protocol.handler.pkgs=xnby.platform.protocol','-Dlogging.config='+(folder/'own-logback.xml').as_uri(),
-    '-Dspring.cloud.bootstrap.enabled=false','-Dspring.profiles.active=own-platform-isolation','-cp',os.pathsep.join([meta['bootstrapParentJar'],str(folder/'wrapper-classes'),meta['guardJar']]),
-    'xnby.platform.OriginalPlatformLaunch',meta['sourceArchive'],str(folder)]
+    '-Dspring.cloud.bootstrap.enabled=false','-Dspring.profiles.active=own-platform-isolation','-cp',os.pathsep.join([meta['bootstrapParentJar'],*([str(folder/'persistent-launcher-classes')] if args.platform_storage else []),str(folder/'wrapper-classes'),meta['guardJar']]),
+    ('xnby.platform.OriginalPersistentPlatformLaunch' if args.platform_storage else 'xnby.platform.OriginalPlatformLaunch'),meta['sourceArchive'],str(folder)]
    platform=start([str(java8/'bin/java.exe'),*java_args],folder,'startup.private.log');result['ownPlatformPID']=platform.pid
  start_at=time.monotonic();last=-30
  while True:
@@ -310,6 +358,34 @@ try:
   result['originalObjectStoreGatewayObservation']={'originalBeanBindingsMatched':6,'originalSpringBeanUploadAndReadbackExact':True,'originalAnonymousDownloadHTTPStatus':200,'gatewayBytes':len(raw),'gatewayBodySHA256':hashlib.sha256(raw).hexdigest(),'authenticatedHTTPUploadVerified':False,'historicalObjectsRecovered':False}
   result['originalObjectStoreGatewayObservation']['probeCleanup']=object_store.cleanup_spring_probe(observed,owner);object_probe_cleaned=True
   print('ORIGINAL_SPRING_FILE_BEAN_AND_GATEWAY_BYTE_READBACK_VERIFIED',flush=True)
+ if args.platform_storage:
+  observation=platform_root/'platform-files-observation.private.properties';limit=time.monotonic()+35
+  while not observation.exists():
+   assert all(process.poll() is None for process in (db,redis,platform,business,nginx,object_store.process)),'OWN_COMPONENT_EXITED_DURING_PLATFORM_FILE_CHECK'
+   assert time.monotonic()<limit,'OWN_PLATFORM_FILE_OBSERVATION_TIMEOUT';time.sleep(.2)
+  observed=read_properties(observation)
+  assert observed.get('passed')=='true' and observed.get('originalLogicalPathBeanBindingsMatched')=='13' and observed.get('dataOwnerId')==platform_files.identity['ownerId'],'OWN_ORIGINAL_PLATFORM_FILES_FAILED'
+  assert (observed.get('probeDataRetainedFromPreviousRun')=='true')==args.platform_files_recover,'OWN_PLATFORM_RESTART_PROOF_MISMATCH'
+  filename=observed['filename'];assert re.fullmatch(r'[A-Za-z0-9_-]{8,128}\.txt',filename),'OWN_PLATFORM_PROBE_FILENAME_SHAPE'
+  connection=http.client.HTTPConnection('127.0.0.1',args.gateway_port,timeout=8)
+  try:
+   connection.request('GET','/zhumadian/api/jnpf/file/Image/annex/'+filename);response=connection.getresponse();raw=response.read(8193)
+   exact=response.status==200 and len(raw)==int(observed['payloadBytes']) and hashlib.sha256(raw).hexdigest()==observed['payloadSHA256']
+   auth_required=False
+   if not exact:
+    try:auth_required=json.loads(raw).get('code')==600
+    except (ValueError,AttributeError):pass
+   assert exact or auth_required,'OWN_PLATFORM_ORIGINAL_FILE_HTTP_UNEXPECTED_RESPONSE'
+  finally:connection.close()
+  result['platformFileGatewayObservation']={'originalLogicalPathBeanBindingsMatched':13,'actualOriginalSpringHelperReadbackExact':True,'previousRunProbeRecovered':args.platform_files_recover,'originalHTTPStatus':response.status,'originalHTTPBytesExact':exact,'originalHTTPAuthenticationRequired':auth_required,'gatewayBytes':len(raw),'gatewaySHA256':hashlib.sha256(raw).hexdigest(),'originalFileRecorderDatabasePersistenceVerified':False,'authenticatedHTTPUploadVerified':False}
+  if args.platform_files_recover:
+   (platform_root/'cleanup-owned-file-probe').write_text('remove-only-owned-restart-probe\n',encoding='ascii');limit=time.monotonic()+15
+   while not (platform_root/'platform-file-probe-cleaned.properties').exists():
+    assert platform.poll() is None and time.monotonic()<limit,'OWN_PLATFORM_PROBE_CLEANUP_TIMEOUT';time.sleep(.2)
+   cleaned=read_properties(platform_root/'platform-file-probe-cleaned.properties');assert cleaned.get('onlyOwnedSyntheticProbeRemoved')=='true' and cleaned.get('dataOwnerId')==platform_files.identity['ownerId'],'OWN_PLATFORM_PROBE_CLEANUP_IDENTITY'
+   result['platformFileGatewayObservation']['onlyOwnedSyntheticProbeRemoved']=True
+  else:result['ownedPlatformProbeRetainedForRestart']=True
+  print('ORIGINAL_PLATFORM_FILE_BEANS_AND_HELPER_VERIFIED',flush=True)
  ready_age=max(time.time()-(folder/'candidate-ready.txt').stat().st_mtime for folder in (platform_root,business_root))
  remaining=max(1,args.minutes*60-ready_age-5)
  result['remainingLeaseSeconds']=int(remaining)
@@ -373,5 +449,6 @@ finally:
   ownMySQLExited=db is None or db.poll() is not None,ownMySQLExitCode=db.returncode if db else None,
   businessContextClosed=(business_root/'own-context-closed.txt').exists(),platformContextClosed=(platform_root/'own-platform-context-closed.txt').exists(),
   fullCloneReady=False,authenticatedBusinessVerified=False,sourceDatabaseConnected=False)
+ if platform_files is not None:platform_files.release();result['platformFileOwnerLockReleased']=True;result['platformFileDataRetainedAfterStop']=True
  (root/'receipt.json').write_text(json.dumps(result,indent=2),encoding='utf-8');lock.seek(0);msvcrt.locking(lock.fileno(),msvcrt.LK_UNLCK,1);lock.close()
  print(json.dumps({key:result.get(key) for key in ('jointOriginalRedisReadWriteVerified','failed','ownBusinessExitCode','ownPlatformExitCode','ownRedisExitCode','ownMySQLExitCode','fullCloneReady')}),flush=True)
