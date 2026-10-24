@@ -1,16 +1,96 @@
 from pathlib import Path
 import hashlib
 import os
+import json
+import shutil
 import struct
+import subprocess
 import tempfile
 import unittest
 import zlib
 from original_frontend_deployment_assets import (
-    COMMAND_URL,ORIGINAL_COMMAND,local_command_override,mobile_entry_url,deployment_qr_png)
+    COMMAND_URL,ORIGINAL_COMMAND,HOME_HANDLER,ORIGINAL_HOME_OPEN,home_deployment_override,
+    home_navigation_adapter,map_tile_override,map_tile_path,local_command_override,mobile_entry_url,deployment_qr_png)
 from prepare_original_frontend_gateway import checked_base_path,prepare
 
 
 class DeploymentAdapters(unittest.TestCase):
+    def test_map_adapter_preserves_coordinates_drawing_and_restores_on_failure(self):
+        source=b'const url = origin + (prod ? "/tianjinrisk/map/" : "/map/") + "{z}/{x}/{y}.png";\r\nconst point=[117.53,38.6789];'
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);original=root/'reference';project=root/'build'
+            for folder in (original,project):
+                (folder/'src/components/Map').mkdir(parents=True);(folder/'src/components/Map/index.vue').write_bytes(source)
+            with self.assertRaisesRegex(RuntimeError,'compile failed'):
+                with map_tile_override(project,original,'/zhumadian/map/') as receipt:
+                    self.assertEqual((project/'src/components/Map/index.vue').read_bytes(),source.replace(b'"/tianjinrisk/map/"',b'"/zhumadian/map/"'))
+                    self.assertEqual((original/'src/components/Map/index.vue').read_bytes(),source)
+                    raise RuntimeError('compile failed')
+            self.assertTrue(receipt['sourceRestored']);self.assertFalse(receipt['coordinateAndDrawingLogicChanged'])
+            self.assertEqual((project/'src/components/Map/index.vue').read_bytes(),source)
+            (project/'src/components/Map/index.vue').unlink()
+            os.link(original/'src/components/Map/index.vue',project/'src/components/Map/index.vue')
+            with self.assertRaisesRegex(ValueError,'alias'):
+                with map_tile_override(project,original,'/zhumadian/map/'):pass
+            for value in ['/map/','https://other/map/','/a/../map/','/a/map/?token=x','/a//map/']:
+                with self.subTest(value=value),self.assertRaises(ValueError):map_tile_path(value)
+
+    @unittest.skipUnless(shutil.which('node'),'Existing Node runtime required for actual JavaScript semantics')
+    def test_original_home_click_handler_maps_paths_without_mutating_backend_menu(self):
+        source=(HOME_HANDLER+b'\nif (!item.path) return;\nif (item.enCode == "mjyjzh") {\n'+
+                ORIGINAL_COMMAND+b'\nreturn;\n}\n'+ORIGINAL_HOME_OPEN+b'\n};\n')
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);original=root/'reference';project=root/'build'
+            for folder in (original,project):
+                (folder/'src/views/home').mkdir(parents=True);(folder/'src/views/home/index.vue').write_bytes(source)
+            with home_deployment_override(project,original,True,'/zhumadian') as receipt:
+                script=(project/'src/views/home/index.vue').read_text('utf-8')
+                calls='''
+const routes = [
+ ["/tianjinrisk/workplace", "/zhumadian/workplace"],
+ ["/tianjinrisk/emergency", "/zhumadian/emergency"],
+ ["/tianjinrisk/emergency/emergencyResponse?view=open#row", "/zhumadian/emergency/emergencyResponse?view=open#row"],
+ ["/tianjinrisk/workflow/flowTodo", "/zhumadian/workflow/flowTodo"],
+ ["/tianjinrisk", "/zhumadian"], ["/tianjinrisk?x=1#top", "/zhumadian?x=1#top"],
+ ["/tianjinrisk-other/work", "/tianjinrisk-other/work"],
+ ["https://other.example/tianjinrisk/work", "https://other.example/tianjinrisk/work"],
+ ["/zhumadian/work", "/zhumadian/work"]
+];
+for (const [before, after] of routes) {
+ const item = Object.freeze({path:before,enCode:"fixture"});
+ handleTo(item);
+ const actual = opened.pop();
+ if(actual[0] !== after || actual[1] !== "_blank" || item.path !== before) throw Error("Wrong route: " + before);
+}
+handleTo(Object.freeze({path:"http://old.example/command", enCode:"mjyjzh"}));
+const command = opened.pop();
+if (command[0] !== '''+json.dumps(COMMAND_URL)+''' || command[2] !== "noopener,noreferrer") throw Error("Wrong local command");
+handleTo({path:null});
+if (opened.length) throw Error("Empty menu navigation attempted");
+console.log("home-handler-js-passed");
+'''
+                code='const opened=[];const window={open:(...args)=>opened.push(args)};\n'+script+calls
+                run=subprocess.run([shutil.which('node'),'--input-type=module','-e',code],capture_output=True,text=True,timeout=15)
+                self.assertEqual(run.returncode,0,run.stderr)
+                self.assertIn('home-handler-js-passed',run.stdout)
+                self.assertFalse(receipt['menuRowsChanged']);self.assertFalse(receipt['externalHomeLinksRewritten'])
+                self.assertFalse(receipt['publicLoginTokenForwarded'])
+            self.assertTrue(receipt['sourceRestored'])
+            self.assertEqual((project/'src/views/home/index.vue').read_bytes(),source)
+            self.assertEqual((original/'src/views/home/index.vue').read_bytes(),source)
+
+    def test_home_adapter_requires_exact_original_marker_and_safe_base(self):
+        for value in ['/','/zhumadian/','//other','/a/../b','/a?token=x','/a\\b','/a\nnext']:
+            with self.subTest(value=value),self.assertRaises(ValueError):home_navigation_adapter(value)
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);original=root/'reference';project=root/'build'
+            source=HOME_HANDLER+b'\n'+ORIGINAL_HOME_OPEN*2+b'\n};'
+            for folder in (original,project):
+                (folder/'src/views/home').mkdir(parents=True);(folder/'src/views/home/index.vue').write_bytes(source)
+            with self.assertRaisesRegex(ValueError,'Pinned original home navigation'):
+                with home_deployment_override(project,original,False,'/zhumadian'):pass
+            self.assertEqual((project/'src/views/home/index.vue').read_bytes(),source)
+
     def test_local_command_isolated_and_restored_even_on_build_failure(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp);original=root/'reference';project=root/'build'

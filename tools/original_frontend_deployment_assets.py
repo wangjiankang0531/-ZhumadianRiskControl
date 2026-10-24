@@ -1,6 +1,7 @@
 """Narrow deployment adaptations; original reference files and business modules stay intact."""
 from contextlib import contextmanager
 import hashlib
+import json
 from pathlib import Path
 import re
 import struct
@@ -11,22 +12,56 @@ import zlib
 COMMAND_URL='http://127.0.0.1:8767/?topic=emergency&mode=command'
 ORIGINAL_COMMAND=b'window.open(`${item.path}?t=${token}&user=${userStore.info!.userName}`);'
 DEPLOYED_COMMAND=b'window.open("'+COMMAND_URL.encode('ascii')+b'", "_blank", "noopener,noreferrer");'
+ORIGINAL_HOME_OPEN=b'window.open(item.path, "_blank");'
+HOME_HANDLER=b'const handleTo = item => {'
+
+
+def home_navigation_adapter(base_path):
+    if (not isinstance(base_path,str) or len(base_path)>128
+            or not re.fullmatch(r'/[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*',base_path)):
+        raise ValueError('Explicit same-origin application base required')
+    return ('''const deploymentHomePath = value => {
+  if (typeof value !== "string") return value;
+  const legacy = "/tianjinrisk";
+  const deployed = '''+json.dumps(base_path)+''';
+  const delimiter = value.search(/[?#]/);
+  const path = delimiter < 0 ? value : value.slice(0, delimiter);
+  if (path === legacy || path.startsWith(legacy + "/")) {
+    return deployed + value.slice(legacy.length);
+  }
+  return value;
+};
+
+''').encode('utf-8')
 
 
 @contextmanager
-def local_command_override(project, pristine_source):
+def home_deployment_override(project, pristine_source, use_local_command=False, home_base=None):
     project,pristine_source=Path(project).resolve(),Path(pristine_source).resolve()
     if project==pristine_source or project.is_relative_to(pristine_source) or pristine_source.is_relative_to(project):
         raise ValueError('Command override requires a distinct build copy')
     rel=Path('src/views/home/index.vue');target=project/rel;original=target.read_bytes()
     if not target.resolve(strict=True).is_relative_to(project) or target.samefile(pristine_source/rel):
         raise ValueError('Build input must not alias or escape the pristine reference')
-    if original!=(pristine_source/rel).read_bytes() or original.count(ORIGINAL_COMMAND)!=1:
+    if original!=(pristine_source/rel).read_bytes():
+        raise ValueError('Original home build input differs from pristine source')
+    if not use_local_command and home_base is None:
+        raise ValueError('At least one explicit home deployment adapter required')
+    if use_local_command and original.count(ORIGINAL_COMMAND)!=1:
         raise ValueError('Pinned original command branch is missing or changed')
-    patched=original.replace(ORIGINAL_COMMAND,DEPLOYED_COMMAND)
+    patched=original
+    if use_local_command:patched=patched.replace(ORIGINAL_COMMAND,DEPLOYED_COMMAND)
+    if home_base is not None:
+        if original.count(HOME_HANDLER)!=1 or original.count(ORIGINAL_HOME_OPEN)!=1:
+            raise ValueError('Pinned original home navigation branch is missing or changed')
+        patched=patched.replace(HOME_HANDLER,home_navigation_adapter(home_base)+HOME_HANDLER)
+        patched=patched.replace(ORIGINAL_HOME_OPEN,b'window.open(deploymentHomePath(item.path), "_blank");')
     receipt={'file':rel.as_posix(),'originalSHA256':hashlib.sha256(original).hexdigest(),
-             'compiledInputSHA256':hashlib.sha256(patched).hexdigest(),'commandURL':COMMAND_URL,
-             'onlyCommandTargetChanged':True,'publicLoginTokenForwarded':False,'sourceRestored':False}
+             'compiledInputSHA256':hashlib.sha256(patched).hexdigest(),'commandURL':COMMAND_URL if use_local_command else None,
+             'onlyCommandTargetChanged':home_base is None,'homeNavigationBase':home_base,
+             'legacyHomePrefix':'/tianjinrisk' if home_base is not None else None,
+             'externalHomeLinksRewritten':False,'menuRowsChanged':False,
+             'publicLoginTokenForwarded':not use_local_command,'sourceRestored':False}
     try:
         target.write_bytes(patched)
         yield receipt
@@ -34,6 +69,44 @@ def local_command_override(project, pristine_source):
         target.write_bytes(original)
         if target.read_bytes()!=original:
             raise RuntimeError('Original build-copy input was not restored')
+        receipt['sourceRestored']=True
+
+
+@contextmanager
+def local_command_override(project, pristine_source):
+    with home_deployment_override(project,pristine_source,use_local_command=True) as receipt:
+        yield receipt
+
+
+def map_tile_path(value):
+    if (not isinstance(value,str) or len(value)>160
+            or not re.fullmatch(r'/[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*/map/',value)):
+        raise ValueError('Explicit same-origin application map path required')
+    return value
+
+
+@contextmanager
+def map_tile_override(project, pristine_source, tile_base):
+    tile_base=map_tile_path(tile_base)
+    project,pristine_source=Path(project).resolve(),Path(pristine_source).resolve()
+    if project==pristine_source or project.is_relative_to(pristine_source) or pristine_source.is_relative_to(project):
+        raise ValueError('Map override requires a distinct build copy')
+    rel=Path('src/components/Map/index.vue');target=project/rel;original=target.read_bytes()
+    if not target.resolve(strict=True).is_relative_to(project) or target.samefile(pristine_source/rel):
+        raise ValueError('Map build input must not alias or escape the pristine reference')
+    marker=b'"/tianjinrisk/map/"'
+    if original!=(pristine_source/rel).read_bytes() or original.count(marker)!=1:
+        raise ValueError('Pinned original map URL is missing or changed')
+    patched=original.replace(marker,json.dumps(tile_base).encode('ascii'))
+    receipt={'file':rel.as_posix(),'originalSHA256':hashlib.sha256(original).hexdigest(),
+             'compiledInputSHA256':hashlib.sha256(patched).hexdigest(),'tileBase':tile_base,
+             'onlyMapURLChanged':True,'coordinateAndDrawingLogicChanged':False,'sourceRestored':False}
+    try:
+        target.write_bytes(patched)
+        yield receipt
+    finally:
+        target.write_bytes(original)
+        if target.read_bytes()!=original:raise RuntimeError('Original map build input was not restored')
         receipt['sourceRestored']=True
 
 
