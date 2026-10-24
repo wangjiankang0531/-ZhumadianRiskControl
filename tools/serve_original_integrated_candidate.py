@@ -10,6 +10,8 @@ parser.add_argument('--original-business-config',type=pathlib.Path)
 parser.add_argument('--original-business-config-sha256')
 parser.add_argument('--object-store-provider-receipt',type=pathlib.Path)
 parser.add_argument('--object-store-provider-receipt-sha256')
+parser.add_argument('--reference-business-runtime',type=pathlib.Path)
+parser.add_argument('--reference-business-runtime-sha256')
 parser.add_argument('--platform-storage',action='store_true')
 parser.add_argument('--platform-files-recover',action='store_true')
 args=parser.parse_args();assert 1<=args.minutes<=120 and 1024<=args.gateway_port<=65535,'OWN_EXPLICIT_CANDIDATE_LEASE_AND_PORT'
@@ -27,6 +29,9 @@ if semantics_requested:
  assert hashlib.sha256(args.original_business_config.read_bytes()).hexdigest()==args.original_business_config_sha256,'OWN_ORIGINAL_BUSINESS_CONFIG_PIN_MISMATCH'
 P=pathlib.Path(__file__).parent;W=args.workspace.resolve(strict=True);A=W.parents[1];R=A.parent
 assert A.name=='Application' and (A/'tools/reference_flat_runtime.py').is_file(),'OWN_KNOWN_APPLICATION_WORKSPACE_REQUIRED'
+from reference_business_runtime import select as select_business_runtime
+if (args.reference_business_runtime or args.reference_business_runtime_sha256) and not semantics_requested:raise ValueError('REFERENCE_SOURCE_RUNTIME_REQUIRES_ORIGINAL_BUSINESS_SEMANTICS')
+flat,business_runtime=select_business_runtime(W,args.reference_business_runtime,args.reference_business_runtime_sha256)
 previous=json.loads(args.previous_receipt.read_bytes())
 assert previous['ownMySQLExited'] and previous['ownMySQLExitCode']==0 and previous['ownRedisExited'] and previous['ownRedisExitCode']==0
 assert previous['ownBusinessExited'] and previous['ownPlatformExited']
@@ -62,7 +67,7 @@ def digest(p):
  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
 meta=json.loads((W/'own-pboot-r32/preparation.json').read_bytes());java17=pathlib.Path(meta['javaHome']);java8=pathlib.Path(meta['platformJavaHome'])
 dbroot=W/'own-mysql-r27';mysql_home=W/'mysql-8.0.46-original-restore-runtime_20261024';mysql_exe=mysql_home/'bin/mysqld.exe'
-rowmeta=json.loads((W/'own-mysql-r13/fixture_compile.json').read_bytes());flat=W/'original-shared-runtime-r1_20261024/flat'
+rowmeta=json.loads((W/'own-mysql-r13/fixture_compile.json').read_bytes())
 dbspec=json.loads((dbroot/'receipt.json').read_bytes());dbconf=dict(line.split('=',1) for line in (dbroot/'own-connection.properties').read_text('ascii').splitlines())
 assert dbconf['serverUUID']==dbspec['ownServerUUID']=='c4ae2011-cf86-11f1-9da8-10ffe0e39b19'
 for previous in ('own-pboot-r27','own-dbboot-r5'):
@@ -86,7 +91,7 @@ for uri in paths:
  path=urllib.parse.unquote(urllib.parse.urlsplit(uri).path)
  if re.match(r'^/[A-Za-z]:',path):path=path[1:]
  deps.append(pathlib.Path(path) if uri.startswith('file:') else flat/path)
-assert len(deps)==219
+assert len(deps)==business_runtime['dependencyCount']
 for directory in ('wrapper-classes','builder-classes'):
  for old in (W/'own-pboot-r32'/directory).rglob('*'):
   if old.is_file():
@@ -120,7 +125,7 @@ dbport,redisport=port(),port();assert dbport!=redisport
 redis_password=secrets.token_urlsafe(32);owner=str(uuid.uuid4());probe_key='__xnby_joint_wire_'+owner
 result={'startedAt':datetime.datetime.now().astimezone().isoformat(),'ownerId':owner,'readOnlyOwnedDatabase':False,'oneSharedMySQL':True,'oneSharedRedis':True,
  'runnerSourceSHA256':sha(pathlib.Path(__file__)),'observerSourceSHA256':sha(observer),
- 'platformSourceSHA256':meta['sourceJarSHA256'],'businessSourceSHA256':'4c5bcf1bb3f76a3865c0cd6969cfef845934a11343d2987413f33715411dc902',
+ 'platformSourceSHA256':meta['sourceJarSHA256'],'businessSourceSHA256':business_runtime['sourceArchiveSHA256'],'businessRuntimeSelection':business_runtime,
  'sourceDatabaseConnected':False,'loginOrJwtAttempted':False,'syntheticProbeKeyIsAuthenticationKey':False,'fullCloneReady':False,'publicDeployed':False,
  'originalBusinessSemanticsRequested':semantics_requested,'originalBusinessConfigSHA256':args.original_business_config_sha256 if semantics_requested else None,
  'ownedBusinessLauncherClass':'xnby.replica.OriginalBusinessLaunch' if semantics_requested else 'xnby.replica.OriginalIsolatedLaunch',
