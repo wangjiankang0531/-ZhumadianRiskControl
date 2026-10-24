@@ -90,7 +90,7 @@ deps=[]
 for uri in paths:
  path=urllib.parse.unquote(urllib.parse.urlsplit(uri).path)
  if re.match(r'^/[A-Za-z]:',path):path=path[1:]
- deps.append(pathlib.Path(path) if uri.startswith('file:') else flat/path)
+ deps.append((pathlib.Path(path) if uri.startswith('file:') else flat/path).resolve(strict=True))
 assert len(deps)==business_runtime['dependencyCount']
 for directory in ('wrapper-classes','builder-classes'):
  for old in (W/'own-pboot-r32'/directory).rglob('*'):
