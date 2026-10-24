@@ -9,6 +9,7 @@ import uuid
 import zipfile
 import subprocess
 import sys
+from unittest.mock import patch
 
 import portable_reference_business_runtime as runtime
 
@@ -28,6 +29,39 @@ class RelativePaths(unittest.TestCase):
                       'lib/x.jar.','lib/x.jar ','lib/NUL.jar','lib/COM1.jar','lib/a\x00.jar']:
             with self.subTest(path=value),self.assertRaises(ValueError):runtime.relative(value)
         self.assertEqual(runtime.relative('lib/a-1.2+test.jar'),'lib/a-1.2+test.jar')
+
+    def test_launch_options_refuse_mixed_or_unbounded_selectors(self):
+        self.assertFalse(runtime.validate_launch_options(None,None,None,None,False))
+        self.assertTrue(runtime.validate_launch_options(None,None,Path('portable.json'),'a'*64,True))
+        cases=[('source','a'*64,'portable','b'*64,True),
+               (None,None,'portable',None,True),(None,None,None,'a'*64,True),
+               (None,None,'portable','invalid',True),(None,None,'portable','a'*64,False),
+               (None,None,'portable','a'*64,1),(None,None,'portable','a'*64,'True')]
+        for args in cases:
+            with self.subTest(args=args),self.assertRaises(ValueError):runtime.validate_launch_options(*args)
+
+    def test_legacy_modes_delegate_without_loading_portable_data(self):
+        import types
+        calls=[]
+        def legacy(*args):calls.append(args);return Path('legacy'),{'mode':'legacy-fixture'}
+        with patch.dict(sys.modules,{'reference_business_runtime':types.SimpleNamespace(select=legacy)}):
+            runtime.select_for_launch('workspace')
+            runtime.select_for_launch('workspace','reference','a'*64,original_semantics=True)
+        self.assertEqual(calls,[('workspace',None,None),('workspace','reference','a'*64)])
+
+    def test_integrated_bad_selectors_fail_before_workspace_or_locks(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace=Path(tmp)/'never-created'
+            command=[sys.executable,'-B',str(Path(__file__).with_name('serve_original_integrated_candidate.py')),
+                     '--workspace',str(workspace),'--name','own-j999','--previous-receipt',str(Path(tmp)/'absent.json')]
+            cases=[(['--portable-business-runtime','absent.json'],'PORTABLE_MANIFEST_AND_PIN_REQUIRED_TOGETHER'),
+                   (['--portable-business-runtime','absent.json','--portable-business-runtime-sha256','bad'],'EXPLICIT_PORTABLE_MANIFEST_PIN_REQUIRED'),
+                   (['--portable-business-runtime','absent.json','--portable-business-runtime-sha256','a'*64],'PORTABLE_RUNTIME_REQUIRES_ORIGINAL_BUSINESS_SEMANTICS'),
+                   (['--portable-business-runtime','absent.json','--portable-business-runtime-sha256','a'*64,'--reference-business-runtime','absent.json','--reference-business-runtime-sha256','b'*64],'BUSINESS_RUNTIME_SELECTORS_ARE_EXCLUSIVE')]
+            for flags,code in cases:
+                result=subprocess.run(command+flags,capture_output=True,timeout=8,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+                self.assertNotEqual(result.returncode,0);self.assertIn(code.encode(),result.stderr)
+                self.assertFalse(workspace.exists())
 
 
 class PortablePayloadIntegrity(unittest.TestCase):
@@ -150,6 +184,20 @@ class PortablePayloadIntegrity(unittest.TestCase):
                 if header in ['d0.jar','d1.jar']:
                     self.assertEqual(runtime.verify(self.manifest,self.pin)['dependencyJarIndexFilesChecked'],1)
                 else:self.rejected('DEPENDENCY_JAR_INDEX_ESCAPES_PAYLOAD')
+
+    def test_selected_metadata_is_portable_and_unexpected_main_is_rejected(self):
+        root,proof=runtime.select(self.manifest,self.pin)
+        self.assertEqual(root,self.root.resolve());self.assertEqual(proof['mode'],'reference-source-portable')
+        self.assertEqual(proof['dependencyCount'],220);self.assertFalse(proof['businessSelectionReadReferenceOrBootArchive'])
+        with self.assertRaisesRegex(ValueError,'PORTABLE_CONTROLLED_APPLICATION_MAIN_REQUIRED'):
+            runtime.select_for_launch('absent-workspace',portable_manifest=self.manifest,portable_pin=self.pin,original_semantics=True)
+
+    def test_isolated_selection_without_reference_modules(self):
+        script=self.root.parent/'isolated-selection.py'
+        module=Path(__file__).with_name('portable_reference_business_runtime.py')
+        script.write_text('import importlib.util,json,sys\ns=importlib.util.spec_from_file_location("portable_only",sys.argv[1]);m=importlib.util.module_from_spec(s);s.loader.exec_module(m)\nroot,p=m.select(sys.argv[2],sys.argv[3]);print(json.dumps(p))\n',encoding='utf-8')
+        result=subprocess.run([sys.executable,'-I','-B',str(script),str(module),str(self.manifest),self.pin],capture_output=True,timeout=8,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+        self.assertEqual(result.returncode,0,result.stderr);self.assertEqual(json.loads(result.stdout)['mode'],'reference-source-portable')
 
 
 if __name__=='__main__':unittest.main()

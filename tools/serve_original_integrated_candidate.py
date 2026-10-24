@@ -13,6 +13,8 @@ parser.add_argument('--object-store-provider-receipt',type=pathlib.Path)
 parser.add_argument('--object-store-provider-receipt-sha256')
 parser.add_argument('--reference-business-runtime',type=pathlib.Path)
 parser.add_argument('--reference-business-runtime-sha256')
+parser.add_argument('--portable-business-runtime',type=pathlib.Path)
+parser.add_argument('--portable-business-runtime-sha256')
 parser.add_argument('--platform-storage',action='store_true')
 parser.add_argument('--platform-files-recover',action='store_true')
 args=parser.parse_args();assert 1<=args.minutes<=120 and 1024<=args.gateway_port<=65535,'OWN_EXPLICIT_CANDIDATE_LEASE_AND_PORT'
@@ -22,6 +24,8 @@ public_origin=checked_public_origin(args.public_origin)
 from original_candidate_platform_gate import require_semantics_pair,wait_for_platform,allowed_ports
 semantics_requested=require_semantics_pair(args.original_business_config,args.original_business_config_sha256)
 store_requested=require_semantics_pair(args.object_store_provider_receipt,args.object_store_provider_receipt_sha256)
+from portable_reference_business_runtime import validate_launch_options,select_for_launch
+portable_requested=validate_launch_options(args.reference_business_runtime,args.reference_business_runtime_sha256,args.portable_business_runtime,args.portable_business_runtime_sha256,semantics_requested)
 if store_requested and not semantics_requested:raise ValueError('OWN_OBJECT_STORE_REQUIRES_ORIGINAL_BUSINESS_SEMANTICS')
 if args.platform_storage and not store_requested:raise ValueError('OWN_PLATFORM_FILES_REQUIRE_OWN_OBJECT_STORE')
 if args.platform_files_recover and not args.platform_storage:raise ValueError('OWN_PLATFORM_RECOVERY_REQUIRES_PLATFORM_STORAGE')
@@ -32,9 +36,7 @@ if semantics_requested:
  assert hashlib.sha256(args.original_business_config.read_bytes()).hexdigest()==args.original_business_config_sha256,'OWN_ORIGINAL_BUSINESS_CONFIG_PIN_MISMATCH'
 P=pathlib.Path(__file__).parent;W=args.workspace.resolve(strict=True);A=W.parents[1];R=A.parent
 assert A.name=='Application' and (A/'tools/reference_flat_runtime.py').is_file(),'OWN_KNOWN_APPLICATION_WORKSPACE_REQUIRED'
-from reference_business_runtime import select as select_business_runtime
-if (args.reference_business_runtime or args.reference_business_runtime_sha256) and not semantics_requested:raise ValueError('REFERENCE_SOURCE_RUNTIME_REQUIRES_ORIGINAL_BUSINESS_SEMANTICS')
-flat,business_runtime=select_business_runtime(W,args.reference_business_runtime,args.reference_business_runtime_sha256)
+flat,business_runtime=select_for_launch(W,args.reference_business_runtime,args.reference_business_runtime_sha256,args.portable_business_runtime,args.portable_business_runtime_sha256,semantics_requested)
 previous=json.loads(args.previous_receipt.read_bytes())
 assert previous['ownMySQLExited'] and previous['ownMySQLExitCode']==0 and previous['ownRedisExited'] and previous['ownRedisExitCode']==0
 assert previous['ownBusinessExited'] and previous['ownPlatformExited']
@@ -77,7 +79,7 @@ for previous in ('own-pboot-r27','own-dbboot-r5'):
  receipt=json.loads((W/previous/'receipt.json').read_bytes());assert receipt['ownMySQLExited'] and receipt['ownMySQLExitCode']==0 and receipt['ownRedisExited'] and receipt['ownRedisExitCode']==0
 wire=json.loads((W/'own-original-redis-wire-cli-r1/receipt.json').read_bytes());assert wire['passed'] and wire['originalSerializationCompatibilityVerified']
 sys.path.insert(0,str(A/'tools'));import reference_flat_runtime,prepare_original_shared_redis
-reference_flat_runtime.verify(flat)
+if not portable_requested:reference_flat_runtime.verify(flat)
 assert digest(mysql_exe)=='47ffd2c32f36e5cb79f78bed0ff5272d7559c383f88c43c753470d5a5dfbe8a0'
 assert digest(pathlib.Path(meta['sourceArchive']))==meta['sourceJarSHA256']
 assert sha(pathlib.Path(meta['guardJar']))==meta['guardJarSHA256'] and sha(pathlib.Path(rowmeta['boundaryJar']))==rowmeta['boundaryJarSHA256']
@@ -95,6 +97,8 @@ for uri in paths:
  if re.match(r'^/[A-Za-z]:',path):path=path[1:]
  deps.append((pathlib.Path(path) if uri.startswith('file:') else flat/path).resolve(strict=True))
 assert len(deps)==business_runtime['dependencyCount']
+if portable_requested:assert all(dep.is_relative_to(flat) for dep in deps),'PORTABLE_DEPENDENCY_ESCAPES_PAYLOAD'
+business_deps=[] if portable_requested else deps
 for directory in ('wrapper-classes','builder-classes'):
  for old in (W/'own-pboot-r32'/directory).rglob('*'):
   if old.is_file():
@@ -106,7 +110,7 @@ if args.platform_storage:
 env={key:value for key,value in os.environ.items() if key.upper() not in ('JAVA_TOOL_OPTIONS','JDK_JAVA_OPTIONS','_JAVA_OPTIONS','CLASSPATH') and not key.upper().startswith('LOADER_')}
 env['TMP']=env['TEMP']=str(root/'tmp');(root/'tmp').mkdir();flags=subprocess.CREATE_NO_WINDOW
 observer=P/'java/OriginalJointRedisObservation.java'
-for target,classpath in [(platform_root,[pathlib.Path(row['file']) for row in meta['compileDependencies']]),(business_root,[flat/'application.jar',pathlib.Path(rowmeta['boundaryJar']),*deps])]:
+for target,classpath in [(platform_root,[pathlib.Path(row['file']) for row in meta['compileDependencies']]),(business_root,[flat/'application.jar',pathlib.Path(rowmeta['boundaryJar']),*business_deps])]:
  extra=[]
  if target==platform_root and args.platform_storage:
   classpath += [platform_storage_lib,pathlib.Path(meta['yamlJar'])]
@@ -267,7 +271,7 @@ try:
    if internal_platform_base:common+=['-Down.internal.platform.base='+internal_platform_base,'-Down.expected.redis.port='+str(redisport)]
    if store_requested:common+=['-Down.internal.object-store.base=http://127.0.0.1:'+str(object_store.port),'-Down.object-store.probe.owner='+owner]
    java_args=common+['-Down.direct.main=true','-Down.startup.observation='+str(folder/'startup-observation.txt'),'-Down.startup.bean.definitions='+str(folder/'startup-bean-definitions.tsv'),'-Down.startup.lifecycle.directory='+str(folder),
-    '-cp',os.pathsep.join(map(str,[folder/'classes',W/'own-dbboot-r5/classes',pathlib.Path(rowmeta['boundaryJar']),schedule,flat/'application.jar',*deps])),
+    '-cp',os.pathsep.join(map(str,[folder/'classes',W/'own-dbboot-r5/classes',pathlib.Path(rowmeta['boundaryJar']),schedule,flat/'application.jar',*business_deps])),
     ('xnby.replica.OriginalBusinessLaunch' if semantics_requested else 'xnby.replica.OriginalIsolatedLaunch'),str(folder)]
    argfile=folder/'java-arguments.private.txt';argfile.write_text('\n'.join('"'+a.replace('\\','\\\\').replace('"','\\"')+'"' for a in java_args)+'\n',encoding='utf-8')
    business=start([str(java17/'bin/java.exe'),'@'+str(argfile)],folder,'startup.private.log');result['ownBusinessPID']=business.pid

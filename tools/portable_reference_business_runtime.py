@@ -228,6 +228,43 @@ def prepare(workspace,selection,selection_sha256,output):
     return result
 
 
+def select(manifest,expected_sha256):
+    require(manifest is not None and expected_sha256 is not None,'PORTABLE_MANIFEST_AND_PIN_REQUIRED_TOGETHER')
+    checked=verify(manifest,expected_sha256)
+    manifest=Path(manifest).absolute();raw=manifest.read_bytes()
+    require(hashlib.sha256(raw).hexdigest()==expected_sha256,'PORTABLE_MANIFEST_CHANGED_AFTER_VERIFICATION')
+    spec=json.loads(raw)
+    return manifest.parent.resolve(strict=True),{
+        'mode':'reference-source-portable','dependencyCount':220,'compiledClasses':768,
+        'sourceArchiveSHA256':SOURCE_SHA,'referenceArchiveSHA256':REFERENCE_SHA,
+        'selectionSHA256':expected_sha256,'sourceInputsSHA256':spec['sourceInputsSHA256'],
+        'mainClass':spec['mainClass'],'controlledLauncherRequired':True,
+        'businessSelectionReadReferenceOrBootArchive':False,'payloadBytes':checked['payloadBytes']}
+
+
+def validate_launch_options(reference_manifest,reference_pin,portable_manifest,portable_pin,original_semantics):
+    reference_requested=reference_manifest is not None or reference_pin is not None
+    portable_requested=portable_manifest is not None or portable_pin is not None
+    require(not (reference_requested and portable_requested),'BUSINESS_RUNTIME_SELECTORS_ARE_EXCLUSIVE')
+    if portable_requested:
+        require(portable_manifest is not None and portable_pin is not None,'PORTABLE_MANIFEST_AND_PIN_REQUIRED_TOGETHER')
+        require(isinstance(portable_pin,str) and re.fullmatch('[0-9a-f]{64}',portable_pin),'EXPLICIT_PORTABLE_MANIFEST_PIN_REQUIRED')
+        require(original_semantics is True,'PORTABLE_RUNTIME_REQUIRES_ORIGINAL_BUSINESS_SEMANTICS')
+    elif reference_requested:
+        require(original_semantics is True,'REFERENCE_SOURCE_RUNTIME_REQUIRES_ORIGINAL_BUSINESS_SEMANTICS')
+    return portable_requested
+
+
+def select_for_launch(workspace,reference_manifest=None,reference_pin=None,portable_manifest=None,portable_pin=None,original_semantics=False):
+    portable=validate_launch_options(reference_manifest,reference_pin,portable_manifest,portable_pin,original_semantics)
+    if portable:
+        root,proof=select(portable_manifest,portable_pin)
+        require(proof['mainClass']=='com.iemp.endanger.Application','PORTABLE_CONTROLLED_APPLICATION_MAIN_REQUIRED')
+        return root,proof
+    from reference_business_runtime import select as legacy
+    return legacy(workspace,reference_manifest,reference_pin)
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__);sub=parser.add_subparsers(dest='command',required=True)
     plan=sub.add_parser('plan');build=sub.add_parser('prepare')
