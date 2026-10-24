@@ -1,0 +1,10 @@
+import fs from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';
+const source=fs.readFileSync(new URL('./original_browser_error_observer.js',import.meta.url),'utf8');
+let node=null,calls=[],handlers={};const document={body:{appendChild(value){node=value;}},getElementById(){return node;},createElement(){return {};},addEventListener(name,fn){handlers[name]=fn;}};
+const receiver={};const marker={};let context={console:{error:function(...args){calls.push({receiver:this,args});return marker;}},window:{addEventListener(name,fn){handlers[name]=fn;}},document};vm.runInNewContext(source,context);
+const error=new Error('fixture ?token=secret');error.code=42;
+assert.equal(context.console.error.call(receiver,error,'message'),marker);assert.equal(calls[0].receiver,receiver);assert.equal(calls[0].args[0],error);let records=JSON.parse(node.textContent);assert.equal(records[0].args[0].code,'42');assert(!node.textContent.includes('token=secret'));
+let read=0;const getter={};Object.defineProperty(getter,'message',{get(){read++;throw Error('do not read');}});context.console.error(getter);assert.equal(read,0);
+handlers.unhandledrejection({reason:Error('promise fixture')});assert.equal(JSON.parse(node.textContent).at(-1).kind,'unhandledrejection');
+for(let i=0;i<50;i++) context.console.error(i);assert.equal(JSON.parse(node.textContent).length,40);assert.equal(calls.length,52);
+console.log(JSON.stringify({checks:7,delegationResultAndReceiverAndArgumentsPreserved:true,getterNotInvoked:true,credentialsRedacted:true,passiveRejectionObserved:true,bounded:true,originalSDKOrNetworkStarted:false}));
