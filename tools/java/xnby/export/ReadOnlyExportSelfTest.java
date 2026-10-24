@@ -80,10 +80,17 @@ public final class ReadOnlyExportSelfTest {
         rejects(()->ReadOnlyDatabaseExport.Config.parse("!!xnby.export.ReadOnlyExportSelfTest$YamlTripwire {}","192.168.12.34"),"YAML object construction rejected");
         check(!Boolean.getBoolean("xnby.export.yamlTripwire"),"untrusted YAML never constructs the fixture object");
         rejects(()->ReadOnlyDatabaseExport.Config.parse(config("'same'","'same'").replace("password: 'same'","password: 'same'\n          password: 'same'"),"192.168.12.34"),"duplicate keys in otherwise valid datasource rejected");
-        var columns=List.<Map<String,Object>>of(Map.of("COLUMN_NAME","numeric`column"),Map.of("COLUMN_NAME","text"));
+        var columns=List.<Map<String,Object>>of(Map.of("COLUMN_NAME","numeric`column","DATA_TYPE","bigint"),Map.of("COLUMN_NAME","text","DATA_TYPE","varchar"));
         String sql=ReadOnlyDatabaseExport.tableSql("jnpf","own`fixture",columns);
         check(sql.contains("HEX(CAST(`numeric``column` AS BINARY))") && sql.contains("OCTET_LENGTH") && sql.endsWith("FROM `jnpf`.`own``fixture`"),"numeric representation and row size use server binary casts");
         rejects(()->ReadOnlyDatabaseExport.tableSql("mysql","user",columns),"system database rows cannot be selected");
+        check(ReadOnlyDatabaseExport.FORMAT.equals("tj-original-jdbc-hex-v2"),"new producer identifies its v2 format");
+        check(ReadOnlyDatabaseExport.binaryExpression(Map.of("COLUMN_NAME","f`x","DATA_TYPE","FLOAT")).equals("CAST(CAST(`f``x` AS DOUBLE) AS BINARY)"),"FLOAT promotion preserves quoted identifiers");
+        String floatSql=ReadOnlyDatabaseExport.tableSql("jnpf","own",List.of(Map.of("COLUMN_NAME","f","DATA_TYPE","float")));
+        check(floatSql.contains("OCTET_LENGTH(CAST(CAST(`f` AS DOUBLE) AS BINARY))") && floatSql.contains("HEX(CAST(CAST(`f` AS DOUBLE) AS BINARY))"),"row budget and payload use identical FLOAT projection");
+        rejects(()->ReadOnlyDatabaseExport.binaryExpression(Map.of("COLUMN_NAME","f")),"missing column type cannot silently use the old FLOAT encoding");
+        check(ReadOnlyDatabaseExport.floatProjectionSupported("8.0.17") && ReadOnlyDatabaseExport.floatProjectionSupported("8.0.44-log") && ReadOnlyDatabaseExport.floatProjectionSupported("8.4.0"),"supported MySQL FLOAT cast versions recognized");
+        check(!ReadOnlyDatabaseExport.floatProjectionSupported("8.0.16") && !ReadOnlyDatabaseExport.floatProjectionSupported("5.7.44") && !ReadOnlyDatabaseExport.floatProjectionSupported("10.11.0-MariaDB") && !ReadOnlyDatabaseExport.floatProjectionSupported("8.0.fixture"),"unsupported or unknown versions rejected for FLOAT");
         var budget=new ReadOnlyDatabaseExport.Control(60000,3);
         ByteArrayOutputStream bytes=new ByteArrayOutputStream();
         boolean limited=false;

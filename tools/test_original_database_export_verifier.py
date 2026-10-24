@@ -27,7 +27,7 @@ class Fixture:
                       'version': '8.0.fixture', 'sqlMode': 'STRICT_TRANS_TABLES', 'lowerCaseTableNames': '0',
                       'sourceTime': '2025-01-02 03:04:05.123456', 'connectionCharset': 'utf8mb4',
                       'connectionCollation': 'utf8mb4_bin'}
-        self.catalog = {'format': v.FORMAT, 'sourceState': self.state,
+        self.catalog = {'format': v.FORMAT, 'rowProjection': v.ROW_PROJECTION_V2.copy(), 'sourceState': self.state,
                         'databases': [{'Database': s, 'Create Database': 'CREATE DATABASE `' + s + '`'}
                                       for s in v.SCHEMAS], 'tablesAndViews': []}
         for schema, name in [('jnpf', 'users_fixture'), ('jnpf', 'zero_rows'), ('tj_endanger', 'types_fixture')]:
@@ -45,7 +45,7 @@ class Fixture:
                              ('users_fixture', ['30', ''])],
                      'tj_endanger': [('types_fixture', ['31', 'E4B8ADE69687F09F9880']),
                                      ('types_fixture', ['32', '00017FFF5C0A'])]}
-        self.manifest = {'format': v.FORMAT, 'completed': True, 'schemas': list(v.SCHEMAS),
+        self.manifest = {'format': v.FORMAT, 'rowProjection': v.ROW_PROJECTION_V2.copy(), 'completed': True, 'schemas': list(v.SCHEMAS),
             'sourceState': copy.deepcopy(self.state), 'readOnlySnapshotVerified': True,
             'fullMetadataPrivilegesVerified': True, 'sourceBusinessDmlOrDdlExecuted': False,
             'directPhysicalDatadirAccess': False, 'generatedColumnsExcludedFromRows': True}
@@ -281,6 +281,50 @@ class ExportVerification(unittest.TestCase):
         result = subprocess.run(command, capture_output=True, text=True, timeout=15)
         self.assertEqual(result.returncode, 2)
         self.assertEqual(json.loads(result.stderr)['errorCode'], 'REPORT_MUST_BE_OUTSIDE_EXPORT')
+
+
+class ExportV2Verification(unittest.TestCase):
+    setUp = ExportVerification.setUp
+    reject = ExportVerification.reject
+    # Run new cases against the same pinned, intentionally private fixture.
+    def test_v2_projection_must_match_in_catalog_and_manifest(self):
+        self.f.catalog['rowProjection']['float'] = 'legacy'
+        self.f.write()
+        self.reject('ROW_PROJECTION_CONTRACT_INVALID')
+
+    def test_catalog_and_manifest_format_cannot_be_relabelled_independently(self):
+        self.f.catalog['format'] = v.FORMAT_V1
+        self.f.write()
+        self.reject('CATALOG_MANIFEST_FORMAT_MISMATCH')
+
+    def test_v1_float_is_diagnostic_and_not_type_restore_proof(self):
+        self.f.catalog['format'] = self.f.manifest['format'] = v.FORMAT_V1
+        self.f.catalog['tablesAndViews'][0]['columns'][0]['DATA_TYPE'] = 'float'
+        self.f.catalog['tablesAndViews'][0]['columns'][0]['COLUMN_TYPE'] = 'float'
+        self.f.write()
+        report = v.verify(self.f.root, self.f.sha)
+        self.assertTrue(report['artifactIntegrityVerified'])
+        self.assertTrue(report['legacyFormatDiagnosticOnly'])
+        self.assertTrue(report['legacyFloatEncodingRisk'])
+        self.assertFalse(report['fieldTypeRestorationVerified'])
+
+    def test_v2_float_checks_actual_server_version(self):
+        col = self.f.catalog['tablesAndViews'][0]['columns'][0]
+        col['DATA_TYPE'] = col['COLUMN_TYPE'] = 'float'
+        self.f.write()
+        self.reject('FLOAT_PROJECTION_SERVER_VERSION_UNSUPPORTED')
+        self.f.state['version'] = '8.0.44'
+        self.f.manifest['sourceState'] = copy.deepcopy(self.f.state)
+        self.f.write()
+        self.assertEqual(v.verify(self.f.root, self.f.sha)['writableFloatColumns'], 1)
+
+    def test_generated_float_is_not_part_of_row_projection(self):
+        col = self.f.catalog['tablesAndViews'][0]['columns'][2]
+        col['DATA_TYPE'] = col['COLUMN_TYPE'] = 'float'
+        self.f.write()
+        report = v.verify(self.f.root, self.f.sha)
+        self.assertEqual(report['floatColumns'], 1)
+        self.assertEqual(report['writableFloatColumns'], 0)
 
 
 if __name__ == '__main__':

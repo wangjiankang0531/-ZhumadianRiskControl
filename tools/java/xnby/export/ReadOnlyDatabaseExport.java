@@ -24,6 +24,10 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 /** One-shot, bounded, read-only logical export. No Spring, OS commands, or source DDL/DML. */
 public final class ReadOnlyDatabaseExport {
+    static final String FORMAT="tj-original-jdbc-hex-v2";
+    static final Map<String,String> ROW_PROJECTION=Map.of(
+        "float","hex(cast(cast(column as double) as binary))",
+        "default","hex(cast(column as binary))","sqlNull","json-null","generatedColumns","excluded");
     static final List<String> SCHEMAS = List.of("jnpf", "tj_endanger");
     static final long MAX_BYTES = 512L * 1024 * 1024;
     static final long MAX_MILLIS = 20L * 60 * 1000;
@@ -193,13 +197,27 @@ public final class ReadOnlyDatabaseExport {
         Files.writeString(root.resolve("attempt_started.json"),json(Map.of("startedAt",Instant.now().toString(),"automaticRetry",false))+"\n",StandardCharsets.UTF_8,StandardOpenOption.CREATE_NEW);
     }
 
+    static String binaryExpression(Map<String,Object> column) {
+        String name=identifier((String)column.get("COLUMN_NAME"));
+        Object type=column.get("DATA_TYPE");
+        if(!(type instanceof String text) || !text.matches("[a-zA-Z]+"))throw new IllegalArgumentException("COLUMN_DATA_TYPE_REQUIRED");
+        return text.equalsIgnoreCase("float")?"CAST(CAST("+name+" AS DOUBLE) AS BINARY)":"CAST("+name+" AS BINARY)";
+    }
+    static boolean floatProjectionSupported(String version) {
+        var match=java.util.regex.Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)(?:[^0-9].*)?$").matcher(version);
+        if(!match.matches() || version.toLowerCase(Locale.ROOT).contains("mariadb"))return false;
+        try {
+            int major=Integer.parseInt(match.group(1)),minor=Integer.parseInt(match.group(2)),patch=Integer.parseInt(match.group(3));
+            return major>8 || major==8 && (minor>0 || patch>=17);
+        }catch(NumberFormatException ignored){return false;}
+    }
     static String tableSql(String database,String table,List<Map<String,Object>> columns) {
         if(!SCHEMAS.contains(database) || columns.isEmpty()) throw new IllegalArgumentException("TABLE_SCOPE_INVALID");
         List<String> fields=new ArrayList<>(), lengths=new ArrayList<>();
-        for(var column:columns) lengths.add("COALESCE(OCTET_LENGTH(CAST("+identifier((String)column.get("COLUMN_NAME"))+" AS BINARY)),0)");
+        for(var column:columns) lengths.add("COALESCE(OCTET_LENGTH("+binaryExpression(column)+"),0)");
         String sizeOk="("+String.join("+",lengths)+"<="+MAX_ROW_BYTES+")";
         fields.add(sizeOk);
-        for(var column:columns) fields.add("CASE WHEN "+sizeOk+" THEN HEX(CAST("+identifier((String)column.get("COLUMN_NAME"))+" AS BINARY)) ELSE NULL END");
+        for(var column:columns) fields.add("CASE WHEN "+sizeOk+" THEN HEX("+binaryExpression(column)+") ELSE NULL END");
         return "SELECT "+String.join(",",fields)+" FROM "+identifier(database)+"."+identifier(table);
     }
 
@@ -233,7 +251,7 @@ public final class ReadOnlyDatabaseExport {
         if(tables.isEmpty() || !tables.stream().map(row->row.get("TABLE_SCHEMA")).collect(java.util.stream.Collectors.toSet()).containsAll(SCHEMAS)) throw new SQLException("SOURCE_SCHEMAS_MISSING","HY000");
         for(var table:tables) if("BASE TABLE".equals(table.get("TABLE_TYPE")) && !"InnoDB".equals(table.get("ENGINE"))) throw new SQLException("NON_TRANSACTIONAL_SOURCE_TABLE","HY000");
         Map<String,Object> catalog=new LinkedHashMap<>();
-        catalog.put("format","tj-original-jdbc-hex-v1");
+        catalog.put("format",FORMAT);catalog.put("rowProjection",ROW_PROJECTION);
         catalog.put("sourceState",state);
         List<Map<String,Object>> databases=new ArrayList<>();
         for(String schema:SCHEMAS) databases.add(one(connection,"SHOW CREATE DATABASE "+identifier(schema)));
@@ -264,6 +282,8 @@ public final class ReadOnlyDatabaseExport {
             objects.add(object);
         }
         catalog.put("tablesAndViews",objects);
+        boolean hasFloat=writableColumns.values().stream().flatMap(List::stream).anyMatch(c->"float".equalsIgnoreCase(Objects.toString(c.get("DATA_TYPE"),"")));
+        if(hasFloat && !floatProjectionSupported(Objects.toString(state.get("version"),"")))throw new SQLException("FLOAT_PROJECTION_SERVER_VERSION_UNSUPPORTED","HY000");
         for(String kind:List.of("TRIGGER","EVENT","PROCEDURE","FUNCTION")) {
             control.check();
             String sql=switch(kind) {
@@ -334,13 +354,13 @@ public final class ReadOnlyDatabaseExport {
         }
         connection.rollback();
         Map<String,Object> receipt=new LinkedHashMap<>();
-        receipt.put("format","tj-original-jdbc-hex-v1");receipt.put("completed",true);
+        receipt.put("format",FORMAT);receipt.put("rowProjection",ROW_PROJECTION);receipt.put("completed",true);
         receipt.put("readOnlySnapshotVerified",true);receipt.put("sourceState",state);
         receipt.put("fullMetadataPrivilegesVerified",true);
         receipt.put("schemas",SCHEMAS);receipt.put("tableCounts",counts);receipt.put("files",files);
         receipt.put("completedAt",Instant.now().toString());receipt.put("sourceBusinessDmlOrDdlExecuted",false);
         receipt.put("directPhysicalDatadirAccess",false);receipt.put("generatedColumnsExcludedFromRows",true);
-        receipt.put("rowEncoding","HEX(CAST(column AS BINARY)), SQL NULL retained as JSON null");
+        receipt.put("rowEncoding","FLOAT promoted to DOUBLE before BINARY; all values HEX encoded; SQL NULL retained as JSON null");
         receipt.put("restoreVerified",false);receipt.put("fullCloneReady",false);
         return receipt;
     }

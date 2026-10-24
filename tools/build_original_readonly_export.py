@@ -95,7 +95,7 @@ def main():
     run('javac', [jdk / 'bin/javac.exe', '--release', '17', '-encoding', 'UTF-8', '-cp', cp, '-d', classes, *sources])
     run('self_tests', [jdk / 'bin/java.exe', '-Xmx256m', '-Djava.awt.headless=true', '-Dfile.encoding=UTF-8',
                        '-cp', str(classes) + os.pathsep + cp, 'xnby.export.ReadOnlyExportSelfTest'])
-    expected = 'SELF_TESTS_PASSED=28 realDatabaseConnections=0 sourceWrites=0'
+    expected = 'SELF_TESTS_PASSED=34 realDatabaseConnections=0 sourceWrites=0'
     if expected not in (output / 'self_tests.log').read_text(encoding='utf-8'):
         raise RuntimeError('Own fixture coverage was not verified')
     run('config_preflight', [jdk / 'bin/java.exe', '-Xmx128m', '-Djava.awt.headless=true', '-Dfile.encoding=UTF-8',
@@ -124,11 +124,11 @@ def main():
     receipt = {'recordedAt': datetime.now(timezone.utc).isoformat(), 'platformSHA256': args.platform_sha256.lower(),
                'sourceConfigSHA256': args.source_config_sha256.lower(), 'dependencies': dependency_receipts,
                'ownSources': [{'name': path.name, 'sha256': sha(path)} for path in sources], 'files': files,
-               'ownTests': 28, 'packagedRuntimeTests': 28, 'imageBytes': sum(row['bytes'] for row in files),
+               'ownTests': 34, 'packagedRuntimeTests': 34, 'imageBytes': sum(row['bytes'] for row in files),
                'guiStarted': False, 'realDatabaseConnections': 0, 'originalDatabaseExportPerformed': False,
                'exportRestoreVerified': False, 'fullCloneReady': False}
     (output / 'build_receipt.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'imageRoot': str(image), 'imageBytes': receipt['imageBytes'], 'tests': 28,
+    print(json.dumps({'imageRoot': str(image), 'imageBytes': receipt['imageBytes'], 'tests': 34,
                       'realDatabaseConnections': 0, 'guiStarted': False}))
 
 

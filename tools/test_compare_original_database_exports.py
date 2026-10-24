@@ -52,6 +52,14 @@ class CompareExports(unittest.TestCase):
                     'generatedColumnValuesCompared'):
             self.assertIs(report[key], False)
 
+    def test_same_rows_under_different_encoding_versions_do_not_pass_as_equal(self):
+        self.right.catalog['format'] = self.right.manifest['format'] = c.export.FORMAT_V1
+        self.right.write()
+        report = self.compare()
+        self.assertTrue(report['rowMultisetsEqual'])
+        self.assertFalse(report['exportFormatEqual'])
+        self.assertFalse(report['exportedContentEqual'])
+
     def test_duplicate_multiplicity_difference_is_detected(self):
         self.right.rows['jnpf'].pop()
         self.right.write()

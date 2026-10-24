@@ -1,4 +1,4 @@
-"""Validate a sealed tj-original-jdbc-hex-v1 export without a DB connection.
+"""Validate sealed original v1/v2 exports without a DB connection.
 
 SQL definitions and row values remain data. This module never executes them.
 A successful verification proves artifact consistency, not source authenticity,
@@ -15,8 +15,9 @@ import re
 import stat
 import sys
 import time
+from original_export_codec import FORMAT_V1, FORMAT_V2, FORMATS, ROW_PROJECTION_V2, float_projection_supported
 
-FORMAT = 'tj-original-jdbc-hex-v1'
+FORMAT = FORMAT_V2
 SCHEMAS = ('jnpf', 'tj_endanger')
 PAYLOAD_FILES = ('catalog.json', 'jnpf.rows.jsonl.gz', 'tj_endanger.rows.jsonl.gz')
 HEX = re.compile(r'[0-9A-F]*\Z')
@@ -147,7 +148,7 @@ def source_state(value):
 
 
 def catalog_tables(catalog):
-    require(isinstance(catalog, dict) and catalog.get('format') == FORMAT, 'CATALOG_FORMAT_INVALID')
+    require(isinstance(catalog, dict) and catalog.get('format') in FORMATS, 'CATALOG_FORMAT_INVALID')
     source_state(catalog.get('sourceState'))
     databases = catalog.get('databases')
     require(isinstance(databases, list) and len(databases) == 2
@@ -246,7 +247,7 @@ def verify(directory, manifest_sha256, limits=None):
     raw_manifest = metadata_bytes(manifest_path, limits.metadata_bytes, 'MANIFEST_SIZE_LIMIT')
     require(digest(raw_manifest) == sha_string(manifest_sha256), 'MANIFEST_SHA_MISMATCH')
     manifest = parse_json(raw_manifest)
-    require(isinstance(manifest, dict) and manifest.get('format') == FORMAT
+    require(isinstance(manifest, dict) and manifest.get('format') in FORMATS
             and manifest.get('completed') is True, 'MANIFEST_NOT_COMPLETE')
     require(manifest.get('schemas') == list(SCHEMAS), 'MANIFEST_SCHEMA_SCOPE_INVALID')
     for field, expected in (('readOnlySnapshotVerified', True), ('fullMetadataPrivilegesVerified', True),
@@ -279,7 +280,18 @@ def verify(directory, manifest_sha256, limits=None):
     raw_catalog = metadata_bytes(catalog_path, limits.metadata_bytes, 'CATALOG_SIZE_LIMIT')
     require(digest(raw_catalog) == named['catalog.json']['sha256'], 'CATALOG_CHANGED_DURING_VERIFICATION')
     catalog = parse_json(raw_catalog)
+    require(isinstance(catalog, dict), 'CATALOG_FORMAT_INVALID')
+    require(catalog.get('format') == manifest['format'], 'CATALOG_MANIFEST_FORMAT_MISMATCH')
+    if manifest['format'] == FORMAT_V2:
+        require(catalog.get('rowProjection') == manifest.get('rowProjection') == ROW_PROJECTION_V2,
+                'ROW_PROJECTION_CONTRACT_INVALID')
     tables, metadata = catalog_tables(catalog)
+    float_columns = metadata['columnTypes'].get('float', 0)
+    writable_float_columns = sum(col['DATA_TYPE'].lower() == 'float'
+        for entries in tables.values() for _, columns in entries for col in columns)
+    if writable_float_columns and manifest['format'] == FORMAT_V2:
+        require(float_projection_supported(catalog['sourceState']['version']),
+                'FLOAT_PROJECTION_SERVER_VERSION_UNSUPPORTED')
     require(manifest['sourceState'] == catalog['sourceState'], 'SOURCE_STATE_MISMATCH')
     expected_counts = manifest.get('tableCounts')
     require(isinstance(expected_counts, list), 'TABLE_COUNTS_MISSING')
@@ -343,7 +355,10 @@ def verify(directory, manifest_sha256, limits=None):
     require(metadata_bytes(manifest_path, limits.metadata_bytes, 'MANIFEST_SIZE_LIMIT') == raw_manifest,
             'MANIFEST_CHANGED_DURING_VERIFICATION')
     budget.check()
-    return {'format': FORMAT, 'manifestSHA256': manifest_sha256, 'artifactIntegrityVerified': True,
+    return {'format': manifest['format'], 'manifestSHA256': manifest_sha256, 'artifactIntegrityVerified': True,
+            'legacyFormatDiagnosticOnly': manifest['format'] == FORMAT_V1,
+            'floatColumns': float_columns, 'writableFloatColumns': writable_float_columns,
+            'legacyFloatEncodingRisk': manifest['format'] == FORMAT_V1 and writable_float_columns > 0,
             'fileBytesVerified': compressed_total + len(raw_manifest), 'uncompressedRowBytesVerified': budget.uncompressed,
             'schemas': list(SCHEMAS), 'tables': len(table_reports), 'rows': total_rows, 'tableCounts': table_reports,
             'sqlNullValues': nulls, 'nonNullEmptyValues': empty_values, **metadata,

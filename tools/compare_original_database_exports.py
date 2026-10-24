@@ -204,6 +204,7 @@ def compare(source_directory, source_manifest_sha256, target_directory,
     row_equal = not differences
     metadata_equal = not metadata_differences
     context_equal = not context_differences
+    format_equal = reports[0]['format'] == reports[1]['format']
     return {'comparisonFormat': 'tj-original-export-multiset-comparison-v1',
             'sourceManifestSHA256': source_manifest_sha256,
             'targetManifestSHA256': target_manifest_sha256,
@@ -213,7 +214,10 @@ def compare(source_directory, source_manifest_sha256, target_directory,
             'sourceContextEqualExceptCaptureTime': context_equal,
             'metadataDifferences': metadata_differences, 'sourceContextDifferenceKeys': context_differences,
             'tableComparisons': table_results,
-            'exportedContentEqual': row_equal and metadata_equal and context_equal,
+            'exportFormatEqual': format_equal,
+            'sourceExportFormat': reports[0]['format'], 'targetExportFormat': reports[1]['format'],
+            'legacyFloatEncodingRisk': any(r['legacyFloatEncodingRisk'] for r in reports),
+            'exportedContentEqual': row_equal and metadata_equal and context_equal and format_equal,
             'spoolBudgetBytes': limits.spool_bytes, 'observedSpoolBytesBeforeClose': peak_spool,
             'diskFreeBefore': free_before, 'minimumFreeAfterSpoolBudget': limits.minimum_free_after_spool,
             'temporarySpoolRemoved': True, 'sourceFilesChanged': False,
