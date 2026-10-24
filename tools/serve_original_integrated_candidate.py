@@ -8,10 +8,16 @@ parser.add_argument('--gateway-port',type=int,default=18891)
 parser.add_argument('--minutes',type=int,default=60)
 parser.add_argument('--original-business-config',type=pathlib.Path)
 parser.add_argument('--original-business-config-sha256')
+parser.add_argument('--object-store-provider-receipt',type=pathlib.Path)
+parser.add_argument('--object-store-provider-receipt-sha256')
 args=parser.parse_args();assert 1<=args.minutes<=120 and 1024<=args.gateway_port<=65535,'OWN_EXPLICIT_CANDIDATE_LEASE_AND_PORT'
 assert re.fullmatch(r'own-j[1-9][0-9]{0,3}',args.name),'OWN_EXPLICIT_RUN_NAME_REQUIRED'
 from original_candidate_platform_gate import require_semantics_pair,wait_for_platform,allowed_ports
 semantics_requested=require_semantics_pair(args.original_business_config,args.original_business_config_sha256)
+store_requested=require_semantics_pair(args.object_store_provider_receipt,args.object_store_provider_receipt_sha256)
+if store_requested and not semantics_requested:raise ValueError('OWN_OBJECT_STORE_REQUIRES_ORIGINAL_BUSINESS_SEMANTICS')
+if store_requested:
+ from original_object_store_runtime import OwnedObjectStore
 if semantics_requested:
  assert args.original_business_config.is_file() and args.original_business_config.stat().st_size<=65536,'OWN_ORIGINAL_BUSINESS_CONFIG_REQUIRED'
  assert hashlib.sha256(args.original_business_config.read_bytes()).hexdigest()==args.original_business_config_sha256,'OWN_ORIGINAL_BUSINESS_CONFIG_PIN_MISMATCH'
@@ -20,6 +26,8 @@ assert A.name=='Application' and (A/'tools/reference_flat_runtime.py').is_file()
 previous=json.loads(args.previous_receipt.read_bytes())
 assert previous['ownMySQLExited'] and previous['ownMySQLExitCode']==0 and previous['ownRedisExited'] and previous['ownRedisExitCode']==0
 assert previous['ownBusinessExited'] and previous['ownPlatformExited']
+if previous.get('objectStoreRequested'):
+ assert previous.get('ownObjectStoreExited') and previous.get('ownObjectStoreExitCode')==0 and not previous.get('ownObjectStoreTerminated'),'PREVIOUS_OWN_OBJECT_STORE_MUST_HAVE_CLOSED_NORMALLY'
 root=W/args.name;assert not root.exists();root.mkdir();platform_root=root/'p';business_root=root/'b'
 (root/'controller-source.py').write_bytes(pathlib.Path(__file__).read_bytes())
 for folder in (platform_root,business_root):
@@ -64,7 +72,7 @@ env={key:value for key,value in os.environ.items() if key.upper() not in ('JAVA_
 env['TMP']=env['TEMP']=str(root/'tmp');(root/'tmp').mkdir();flags=subprocess.CREATE_NO_WINDOW
 observer=P/'java/OriginalJointRedisObservation.java'
 for target,classpath in [(platform_root,[pathlib.Path(row['file']) for row in meta['compileDependencies']]),(business_root,[flat/'application.jar',pathlib.Path(rowmeta['boundaryJar']),*deps])]:
- run=subprocess.run([str(java17/'bin/javac.exe'),'-proc:none','--release','8','-encoding','UTF-8','-cp',os.pathsep.join(map(str,classpath)),'-d',str(target/'classes'),str(observer),str(P/'java/CandidateLifecycleObservation.java'),*([str(P/'java/OriginalWritableServiceObservation.java')]+([str(P/'java/OriginalInternalPlatformObservation.java'),str(P/'java/OriginalBusinessLaunch.java')] if semantics_requested else []) if target==business_root else [])],cwd=target,env=env,capture_output=True,creationflags=flags,timeout=30)
+ run=subprocess.run([str(java17/'bin/javac.exe'),'-proc:none','--release','8','-encoding','UTF-8','-cp',os.pathsep.join(map(str,classpath)),'-d',str(target/'classes'),str(observer),str(P/'java/CandidateLifecycleObservation.java'),*([str(P/'java/OriginalWritableServiceObservation.java')]+([str(P/'java/OriginalInternalPlatformObservation.java'),str(P/'java/OriginalBusinessLaunch.java')] if semantics_requested else [])+([str(P/'java/OriginalObjectStoreObservation.java')] if store_requested else []) if target==business_root else [])],cwd=target,env=env,capture_output=True,creationflags=flags,timeout=30)
  (target/'observer-compile.log').write_bytes(run.stdout+run.stderr);assert run.returncode==0,'OWN_JOINT_OBSERVER_COMPILE_FAILED'
 with zipfile.ZipFile(W/'own-pboot-r32/own-platform-observation.jar') as old,zipfile.ZipFile(platform_root/'own-platform-observation.jar','w',zipfile.ZIP_DEFLATED) as new:
  for info in old.infolist():new.writestr(info,old.read(info))
@@ -82,7 +90,9 @@ result={'startedAt':datetime.datetime.now().astimezone().isoformat(),'ownerId':o
  'originalBusinessSemanticsRequested':semantics_requested,'originalBusinessConfigSHA256':args.original_business_config_sha256 if semantics_requested else None,
  'ownedBusinessLauncherClass':'xnby.replica.OriginalBusinessLaunch' if semantics_requested else 'xnby.replica.OriginalIsolatedLaunch',
  'ownedBusinessLauncherSourceSHA256':sha(P/'java/OriginalBusinessLaunch.java') if semantics_requested else None}
+result['objectStoreRequested']=store_requested
 (root/'attempt_started.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
+object_store=None;object_probe_cleaned=False
 db=redis=platform=business=nginx=None;archive_server=archive_worker=None;handles=[];lock=(dbroot/'own-joint-controller.lock').open('a+b');lock.seek(0);lock.write(b'0');lock.flush();lock.seek(0);msvcrt.locking(lock.fileno(),msvcrt.LK_NBLCK,1)
 def start(command,folder,log):
  output=(folder/log).open('wb');handles.append(output);ownenv=dict(env,TMP=str(folder/'tmp'),TEMP=str(folder/'tmp'));return subprocess.Popen(command,cwd=folder,env=ownenv,stdout=output,stderr=subprocess.STDOUT,creationflags=flags)
@@ -106,6 +116,10 @@ def probe_http(port,path):
   return {'status':response.status,'applicationCode':code,'bodyBytes':len(raw),'bodySHA256':hashlib.sha256(raw).hexdigest(),'authenticated':False}
  finally:connection.close()
 try:
+ if store_requested:
+  print('START_OWN_PERSISTENT_OBJECT_STORE',flush=True)
+  object_store=OwnedObjectStore(W,root/'s',args.object_store_provider_receipt,args.object_store_provider_receipt_sha256);object_store.start()
+  result['objectStoreRuntime']=dict(object_store.result)
  print('START_OWN_SHARED_MYSQL_REDIS',flush=True)
  db=start([str(mysql_exe),'--no-defaults','--no-monitor','--basedir='+str(mysql_home),'--datadir='+str(dbroot/'data'),'--lower-case-table-names=1',
  '--skip-log-bin','--mysqlx=0','--innodb-buffer-pool-size=64M','--innodb-redo-log-capacity=64M','--innodb-data-file-path=ibdata1:12M:autoextend:max:256M',
@@ -147,7 +161,7 @@ try:
  (platform_root/'builder.private.log').write_bytes(config_build.stdout+config_build.stderr);assert config_build.returncode==0,'OWN_PLATFORM_CONFIG_FAILED'
  base=prepare_original_shared_redis.own_properties(W/'own-dbboot-r5/application.properties')
  base['spring.data.redis.port']=str(redisport);base['spring.data.redis.password']=redis_password
- base['context.initializer.classes']='xnby.replica.OriginalStartupObservation,xnby.replica.CandidateLifecycleObservation,xnby.replica.OriginalWritableServiceObservation,xnby.replica.OriginalJointRedisObservation'+(',xnby.replica.OriginalInternalPlatformObservation' if semantics_requested else '')
+ base['context.initializer.classes']='xnby.replica.OriginalStartupObservation,xnby.replica.CandidateLifecycleObservation,xnby.replica.OriginalWritableServiceObservation,xnby.replica.OriginalJointRedisObservation'+(',xnby.replica.OriginalInternalPlatformObservation' if semantics_requested else '')+(',xnby.replica.OriginalObjectStoreObservation' if store_requested else '')
  base['logging.level.root']='WARN'
  for name,schema in [('master','tj_endanger'),('tow','jnpf')]:
   prefix='spring.datasource.dynamic.datasource.'+name+'.';base[prefix+'password']=dbconf['password']
@@ -181,12 +195,21 @@ try:
    (folder/'application.properties').write_bytes((folder/'business-semantics/application.private.properties').read_bytes())
    result['originalBusinessSemanticsPreparation']=semantics;result['businessPlatformPortPermitted']=True
    print('ORIGINAL_BUSINESS_SEMANTICS_APPLIED_TO_NEW_BUSINESS_PROCESS_ONLY',flush=True)
+   if store_requested:
+    assert object_store.process.poll() is None,'OWN_STORE_EXITED_BEFORE_BUSINESS'
+    connection=folder/'object-store-connection.private.properties';object_store.write_private_connection(connection)
+    import prepare_original_object_store
+    store_overlay=prepare_original_object_store.prepare(java17,meta['yamlJar'],'1467931448a0817696ae2805b7b8b20bfb082652bf9c4efaed528930dc49389b',args.original_business_config,args.original_business_config_sha256,folder/'application.properties',connection,folder/'object-store-overlay')
+    (folder/'application.properties').write_bytes((folder/'object-store-overlay/application.private.properties').read_bytes())
+    result['objectStoreOverlayPreparation']=store_overlay
+    print('OWN_OBJECT_STORE_APPLIED_TO_NEW_BUSINESS_PROCESS_ONLY',flush=True)
   common=['-Xmx512m','-Dfile.encoding=UTF-8','-Djava.io.tmpdir='+str(folder/'tmp'),'-Duser.home='+str(folder/'home'),
    '-Djdk.net.unixdomain.tmpdir='+str(folder/'tmp'),'-Djava.security.policy=='+(folder/'own-process-only.policy').as_uri(),
-   '-Down.allowed.loopback.ports='+allowed_ports(dbport,redisport,internal_platform_port),'-Down.joint.root='+str(folder),'-Down.candidate.root='+str(folder),'-Down.candidate.maximum-seconds='+str(args.minutes*60),'-Down.expected.database.uuid='+dbspec['ownServerUUID'],'-Down.expected.database.port='+str(dbport),
+   '-Down.allowed.loopback.ports='+allowed_ports(dbport,redisport,internal_platform_port)+(','+str(object_store.port) if side=='business' and store_requested else ''),'-Down.joint.root='+str(folder),'-Down.candidate.root='+str(folder),'-Down.candidate.maximum-seconds='+str(args.minutes*60),'-Down.expected.database.uuid='+dbspec['ownServerUUID'],'-Down.expected.database.port='+str(dbport),
    '-Dspring.config.location='+(folder/'application.properties').as_uri()+','+(folder/'redis-overlay.private.properties').as_uri()]
   if side=='business':
    if internal_platform_base:common+=['-Down.internal.platform.base='+internal_platform_base,'-Down.expected.redis.port='+str(redisport)]
+   if store_requested:common+=['-Down.internal.object-store.base=http://127.0.0.1:'+str(object_store.port),'-Down.object-store.probe.owner='+owner]
    java_args=common+['-Down.direct.main=true','-Down.startup.observation='+str(folder/'startup-observation.txt'),'-Down.startup.bean.definitions='+str(folder/'startup-bean-definitions.tsv'),'-Down.startup.lifecycle.directory='+str(folder),
     '-cp',os.pathsep.join(map(str,[folder/'classes',W/'own-dbboot-r5/classes',pathlib.Path(rowmeta['boundaryJar']),schedule,flat/'application.jar',*deps])),
     ('xnby.replica.OriginalBusinessLaunch' if semantics_requested else 'xnby.replica.OriginalIsolatedLaunch'),str(folder)]
@@ -270,6 +293,23 @@ try:
  entry='http://127.0.0.1:'+str(args.gateway_port)
  for path in ('/zhumadian/home','/zhumadian/h5/','/zhumadian/admin/'):
   connection=http.client.HTTPConnection('127.0.0.1',args.gateway_port,timeout=8);connection.request('GET',path);response=connection.getresponse();raw=response.read(4*1024**2);assert response.status==200 and b'<html' in raw.lower(),'OWN_ORIGINAL_FRONTEND_ENTRY_FAILED';connection.close()
+ if store_requested:
+  observation=business_root/'object-store-observation.private.properties';limit=time.monotonic()+30
+  while not observation.exists():
+   assert all(process.poll() is None for process in (db,redis,platform,business,nginx,object_store.process)),'OWN_COMPONENT_EXITED_DURING_OBJECT_STORE_CHECK'
+   assert time.monotonic()<limit,'OWN_SPRING_OBJECT_STORE_OBSERVATION_TIMEOUT'
+   time.sleep(.2)
+  observed=read_properties(observation)
+  assert observed.get('passed')=='true' and observed.get('originalBeanBindingsMatched')=='6' and observed.get('probeOwner')==owner,'OWN_ORIGINAL_SPRING_OBJECT_STORE_FAILED'
+  assert observed['url']=='/sys-file/'+observed['bucket']+'/'+observed['object'],'OWN_SYNTHETIC_FILE_URL_MISMATCH'
+  connection=http.client.HTTPConnection('127.0.0.1',args.gateway_port,timeout=8)
+  try:
+   connection.request('GET','/zhumadian/api/serv'+observed['url']);response=connection.getresponse();raw=response.read(8193)
+   assert response.status==200 and len(raw)==int(observed['payloadBytes']) and hashlib.sha256(raw).hexdigest()==observed['payloadSHA256'],'OWN_ORIGINAL_FILE_GATEWAY_BYTES_MISMATCH'
+  finally:connection.close()
+  result['originalObjectStoreGatewayObservation']={'originalBeanBindingsMatched':6,'originalSpringBeanUploadAndReadbackExact':True,'originalAnonymousDownloadHTTPStatus':200,'gatewayBytes':len(raw),'gatewayBodySHA256':hashlib.sha256(raw).hexdigest(),'authenticatedHTTPUploadVerified':False,'historicalObjectsRecovered':False}
+  result['originalObjectStoreGatewayObservation']['probeCleanup']=object_store.cleanup_spring_probe(observed,owner);object_probe_cleaned=True
+  print('ORIGINAL_SPRING_FILE_BEAN_AND_GATEWAY_BYTE_READBACK_VERIFIED',flush=True)
  ready_age=max(time.time()-(folder/'candidate-ready.txt').stat().st_mtime for folder in (platform_root,business_root))
  remaining=max(1,args.minutes*60-ready_age-5)
  result['remainingLeaseSeconds']=int(remaining)
@@ -282,6 +322,7 @@ try:
  while time.monotonic()<deadline and not (root/'stop').exists():
   assert all(process.poll() is None for process in (db,redis,platform,business,nginx)),'OWN_INTEGRATED_COMPONENT_EXITED'
   assert archive_worker.is_alive(),'OWN_STATIC_COMPONENT_EXITED'
+  if store_requested:assert object_store.process.poll() is None,'OWN_OBJECT_STORE_COMPONENT_EXITED'
   time.sleep(.5)
  result['interactiveLeaseFinished']=True
 
@@ -306,6 +347,13 @@ finally:
  for process,name in [(business,'Business'),(platform,'Platform')]:
   if process is not None and process.poll() is None:process.terminate();process.wait(timeout=15);result['own'+name+'Terminated']=True
   result['own'+name+'Exited']=process is None or process.poll() is not None;result['own'+name+'ExitCode']=process.returncode if process else None
+ if object_store is not None:
+  if not object_probe_cleaned and object_store.process is not None and object_store.process.poll() is None:
+   try:
+    observation=business_root/'object-store-observation.private.properties'
+    if observation.exists() and read_properties(observation).get('passed')=='true':object_store.cleanup_spring_probe(read_properties(observation),owner);object_probe_cleaned=True
+   except Exception as error:result['ownObjectProbeCleanupErrorType']=type(error).__name__
+  store_end=object_store.stop();result.update(ownObjectStoreExited=store_end.get('exited',False),ownObjectStoreExitCode=store_end.get('exitCode'),ownObjectStoreTerminated=store_end.get('forcedTermination',False),objectStoreEnd=store_end,ownedSyntheticObjectProbeCleaned=object_probe_cleaned)
  if redis is not None and redis.poll() is None:
   try:
    sock,stream=session()

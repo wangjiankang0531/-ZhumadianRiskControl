@@ -17,61 +17,21 @@ import socket
 import subprocess
 import time
 
+from original_object_store_runtime import require, sha, own_port, checked_owned_listeners, request_owned_http, stop_owned_provider
+
 MINIO_COMMIT = '9e49d5e7a648f00e26f2246f4dc28e6b07f8c84a'
 
 
-def require(value, code):
-    if not value:
-        raise ValueError(code)
 
 
-def sha(path):
-    with Path(path).open('rb') as f:
-        return hashlib.file_digest(f, 'sha256').hexdigest()
 
 
-def own_port():
-    with socket.socket() as s:
-        s.bind(('127.0.0.1', 0))
-        return s.getsockname()[1]
 
 
-def checked_owned_listeners(listeners, api_port):
-    require(isinstance(listeners, list) and listeners, 'OWN_PROVIDER_LISTENERS_REQUIRED')
-    require(all(isinstance(r, dict) and r.get('LocalAddress') in ('127.0.0.1', '::1') and
-                type(r.get('LocalPort')) is int and r['LocalPort'] == api_port for r in listeners), 'OWN_PROVIDER_LISTENER_SCOPE_MISMATCH')
-    require(any(r['LocalAddress'] == '127.0.0.1' for r in listeners), 'OWN_PROVIDER_IPV4_LISTENER_REQUIRED')
-    return listeners
 
 
-def request_owned_http(port, method, path, headers=None):
-    conn = http.client.HTTPConnection('127.0.0.1', port, timeout=4)
-    try:
-        conn.request(method, path, headers=headers or {'Connection': 'close'})
-        response = conn.getresponse(); body = response.read(16385)
-        require(len(body) <= 16384, 'OWN_PROVIDER_HTTP_BODY_LIMIT')
-        return response.status, body
-    finally:
-        conn.close()
 
 
-def stop_owned_provider(port, access, secret):
-    # Matches the fixed source's madmin v3 ServiceStopV2 request.
-    stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ'); day = stamp[:8]
-    path = '/minio/admin/v3/service'; query = 'action=stop&dry-run=false&type=2'
-    payload = hashlib.sha256(b'').hexdigest(); host = '127.0.0.1:' + str(port)
-    signed = 'host;x-amz-content-sha256;x-amz-date'
-    headers = 'host:' + host + '\nx-amz-content-sha256:' + payload + '\nx-amz-date:' + stamp + '\n'
-    canonical = '\n'.join(('POST', path, query, headers, signed, payload))
-    scope = day + '/us-east-1/s3/aws4_request'
-    to_sign = 'AWS4-HMAC-SHA256\n' + stamp + '\n' + scope + '\n' + hashlib.sha256(canonical.encode()).hexdigest()
-    key = ('AWS4' + secret).encode()
-    for value in (day, 'us-east-1', 's3', 'aws4_request'):
-        key = hmac.new(key, value.encode(), hashlib.sha256).digest()
-    signature = hmac.new(key, to_sign.encode(), hashlib.sha256).hexdigest()
-    authorization = 'AWS4-HMAC-SHA256 Credential=' + access + '/' + scope + ', SignedHeaders=' + signed + ', Signature=' + signature
-    status, body = request_owned_http(port, 'POST', path + '?' + query, {'Host': host, 'X-Amz-Content-Sha256': payload, 'X-Amz-Date': stamp, 'Authorization': authorization, 'Connection': 'close'})
-    return {'status': status, 'responseSHA256': hashlib.sha256(body).hexdigest(), 'requestTargetIsOwnedLoopback': True}
 
 
 def verify(workspace, provider_receipt, provider_receipt_pin, output):
