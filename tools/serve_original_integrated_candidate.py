@@ -63,8 +63,8 @@ for directory in ('wrapper-classes','builder-classes'):
 env={key:value for key,value in os.environ.items() if key.upper() not in ('JAVA_TOOL_OPTIONS','JDK_JAVA_OPTIONS','_JAVA_OPTIONS','CLASSPATH') and not key.upper().startswith('LOADER_')}
 env['TMP']=env['TEMP']=str(root/'tmp');(root/'tmp').mkdir();flags=subprocess.CREATE_NO_WINDOW
 observer=P/'java/OriginalJointRedisObservation.java'
-for target,classpath in [(platform_root,[pathlib.Path(row['file']) for row in meta['compileDependencies']]),(business_root,[flat/'application.jar',*deps])]:
- run=subprocess.run([str(java17/'bin/javac.exe'),'-proc:none','--release','8','-encoding','UTF-8','-cp',os.pathsep.join(map(str,classpath)),'-d',str(target/'classes'),str(observer),str(P/'java/CandidateLifecycleObservation.java'),*([str(P/'java/OriginalWritableServiceObservation.java')]+([str(P/'java/OriginalInternalPlatformObservation.java')] if semantics_requested else []) if target==business_root else [])],cwd=target,env=env,capture_output=True,creationflags=flags,timeout=30)
+for target,classpath in [(platform_root,[pathlib.Path(row['file']) for row in meta['compileDependencies']]),(business_root,[flat/'application.jar',pathlib.Path(rowmeta['boundaryJar']),*deps])]:
+ run=subprocess.run([str(java17/'bin/javac.exe'),'-proc:none','--release','8','-encoding','UTF-8','-cp',os.pathsep.join(map(str,classpath)),'-d',str(target/'classes'),str(observer),str(P/'java/CandidateLifecycleObservation.java'),*([str(P/'java/OriginalWritableServiceObservation.java')]+([str(P/'java/OriginalInternalPlatformObservation.java'),str(P/'java/OriginalBusinessLaunch.java')] if semantics_requested else []) if target==business_root else [])],cwd=target,env=env,capture_output=True,creationflags=flags,timeout=30)
  (target/'observer-compile.log').write_bytes(run.stdout+run.stderr);assert run.returncode==0,'OWN_JOINT_OBSERVER_COMPILE_FAILED'
 with zipfile.ZipFile(W/'own-pboot-r32/own-platform-observation.jar') as old,zipfile.ZipFile(platform_root/'own-platform-observation.jar','w',zipfile.ZIP_DEFLATED) as new:
  for info in old.infolist():new.writestr(info,old.read(info))
@@ -79,7 +79,9 @@ result={'startedAt':datetime.datetime.now().astimezone().isoformat(),'ownerId':o
  'runnerSourceSHA256':sha(pathlib.Path(__file__)),'observerSourceSHA256':sha(observer),
  'platformSourceSHA256':meta['sourceJarSHA256'],'businessSourceSHA256':'4c5bcf1bb3f76a3865c0cd6969cfef845934a11343d2987413f33715411dc902',
  'sourceDatabaseConnected':False,'loginOrJwtAttempted':False,'syntheticProbeKeyIsAuthenticationKey':False,'fullCloneReady':False,'publicDeployed':False,
- 'originalBusinessSemanticsRequested':semantics_requested,'originalBusinessConfigSHA256':args.original_business_config_sha256 if semantics_requested else None}
+ 'originalBusinessSemanticsRequested':semantics_requested,'originalBusinessConfigSHA256':args.original_business_config_sha256 if semantics_requested else None,
+ 'ownedBusinessLauncherClass':'xnby.replica.OriginalBusinessLaunch' if semantics_requested else 'xnby.replica.OriginalIsolatedLaunch',
+ 'ownedBusinessLauncherSourceSHA256':sha(P/'java/OriginalBusinessLaunch.java') if semantics_requested else None}
 (root/'attempt_started.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
 db=redis=platform=business=nginx=None;archive_server=archive_worker=None;handles=[];lock=(dbroot/'own-joint-controller.lock').open('a+b');lock.seek(0);lock.write(b'0');lock.flush();lock.seek(0);msvcrt.locking(lock.fileno(),msvcrt.LK_NBLCK,1)
 def start(command,folder,log):
@@ -184,10 +186,10 @@ try:
    '-Down.allowed.loopback.ports='+allowed_ports(dbport,redisport,internal_platform_port),'-Down.joint.root='+str(folder),'-Down.candidate.root='+str(folder),'-Down.candidate.maximum-seconds='+str(args.minutes*60),'-Down.expected.database.uuid='+dbspec['ownServerUUID'],'-Down.expected.database.port='+str(dbport),
    '-Dspring.config.location='+(folder/'application.properties').as_uri()+','+(folder/'redis-overlay.private.properties').as_uri()]
   if side=='business':
-   if internal_platform_base:common+=['-Down.internal.platform.base='+internal_platform_base]
+   if internal_platform_base:common+=['-Down.internal.platform.base='+internal_platform_base,'-Down.expected.redis.port='+str(redisport)]
    java_args=common+['-Down.direct.main=true','-Down.startup.observation='+str(folder/'startup-observation.txt'),'-Down.startup.bean.definitions='+str(folder/'startup-bean-definitions.tsv'),'-Down.startup.lifecycle.directory='+str(folder),
     '-cp',os.pathsep.join(map(str,[folder/'classes',W/'own-dbboot-r5/classes',pathlib.Path(rowmeta['boundaryJar']),schedule,flat/'application.jar',*deps])),
-    'xnby.replica.OriginalIsolatedLaunch',str(folder)]
+    ('xnby.replica.OriginalBusinessLaunch' if semantics_requested else 'xnby.replica.OriginalIsolatedLaunch'),str(folder)]
    argfile=folder/'java-arguments.private.txt';argfile.write_text('\n'.join('"'+a.replace('\\','\\\\').replace('"','\\"')+'"' for a in java_args)+'\n',encoding='utf-8')
    business=start([str(java17/'bin/java.exe'),'@'+str(argfile)],folder,'startup.private.log');result['ownBusinessPID']=business.pid
   else:
