@@ -1,5 +1,5 @@
 """Bounded original frontend/backend integration on one owned writable clone."""
-import argparse,datetime,hashlib,http.client,json,msvcrt,os,pathlib,re,secrets,socket,subprocess,sys,threading,time,traceback,urllib.parse,uuid,zipfile
+import argparse,datetime,hashlib,http.client,json,msvcrt,os,pathlib,re,secrets,shutil,socket,subprocess,sys,threading,time,traceback,urllib.parse,uuid,zipfile
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--workspace',type=pathlib.Path,required=True)
 parser.add_argument('--name',required=True)
@@ -15,6 +15,8 @@ parser.add_argument('--reference-business-runtime',type=pathlib.Path)
 parser.add_argument('--reference-business-runtime-sha256')
 parser.add_argument('--portable-business-runtime',type=pathlib.Path)
 parser.add_argument('--portable-business-runtime-sha256')
+parser.add_argument('--platform-support-receipt',type=pathlib.Path)
+parser.add_argument('--platform-support-sha256')
 parser.add_argument('--platform-storage',action='store_true')
 parser.add_argument('--platform-files-recover',action='store_true')
 args=parser.parse_args();assert 1<=args.minutes<=120 and 1024<=args.gateway_port<=65535,'OWN_EXPLICIT_CANDIDATE_LEASE_AND_PORT'
@@ -26,6 +28,8 @@ semantics_requested=require_semantics_pair(args.original_business_config,args.or
 store_requested=require_semantics_pair(args.object_store_provider_receipt,args.object_store_provider_receipt_sha256)
 from portable_reference_business_runtime import validate_launch_options,select_for_launch
 portable_requested=validate_launch_options(args.reference_business_runtime,args.reference_business_runtime_sha256,args.portable_business_runtime,args.portable_business_runtime_sha256,semantics_requested)
+from build_original_platform_support import validate_support_selection,select_support
+support_requested=validate_support_selection(args.platform_support_receipt,args.platform_support_sha256)
 if store_requested and not semantics_requested:raise ValueError('OWN_OBJECT_STORE_REQUIRES_ORIGINAL_BUSINESS_SEMANTICS')
 if args.platform_storage and not store_requested:raise ValueError('OWN_PLATFORM_FILES_REQUIRE_OWN_OBJECT_STORE')
 if args.platform_files_recover and not args.platform_storage:raise ValueError('OWN_PLATFORM_RECOVERY_REQUIRES_PLATFORM_STORAGE')
@@ -36,6 +40,7 @@ if semantics_requested:
  assert hashlib.sha256(args.original_business_config.read_bytes()).hexdigest()==args.original_business_config_sha256,'OWN_ORIGINAL_BUSINESS_CONFIG_PIN_MISMATCH'
 P=pathlib.Path(__file__).parent;W=args.workspace.resolve(strict=True);A=W.parents[1];R=A.parent
 assert A.name=='Application' and (A/'tools/reference_flat_runtime.py').is_file(),'OWN_KNOWN_APPLICATION_WORKSPACE_REQUIRED'
+platform_support_root,platform_support_proof=select_support(args.platform_support_receipt,args.platform_support_sha256) if support_requested else (W/'own-pboot-r32',{'mode':'legacy-prepared-platform-support'})
 flat,business_runtime=select_for_launch(W,args.reference_business_runtime,args.reference_business_runtime_sha256,args.portable_business_runtime,args.portable_business_runtime_sha256,semantics_requested)
 previous=json.loads(args.previous_receipt.read_bytes())
 assert previous['ownMySQLExited'] and previous['ownMySQLExitCode']==0 and previous['ownRedisExited'] and previous['ownRedisExitCode']==0
@@ -86,7 +91,8 @@ assert sha(pathlib.Path(meta['guardJar']))==meta['guardJarSHA256'] and sha(pathl
 assert sha(pathlib.Path(meta['bootstrapParentJar']))==meta['bootstrapParentJarSHA256']
 for name,pin in meta['platformRuntimePins'].items():assert digest(java8/name)==pin
 for row in meta['compileDependencies']:assert sha(pathlib.Path(row['file']))==row['sha256']
-for name,pin in meta['preflightRelevantClassesSHA256'].items():assert sha(W/'own-pboot-r32'/name)==pin
+if not support_requested:
+ for name,pin in meta['preflightRelevantClassesSHA256'].items():assert sha(W/'own-pboot-r32'/name)==pin
 schedule_spec=json.loads((W/'original-scheduling-isolation-fixture-r2_20261024/receipt.json').read_bytes());schedule=pathlib.Path(schedule_spec['packagedGuardJar']['path']);assert sha(schedule)==schedule_spec['packagedGuardJar']['sha256']
 with zipfile.ZipFile(flat/'application.jar') as archive:
  manifest=archive.read('META-INF/MANIFEST.MF').decode('utf-8').replace('\r\n ','').replace('\n ','')
@@ -100,9 +106,13 @@ assert len(deps)==business_runtime['dependencyCount']
 if portable_requested:assert all(dep.is_relative_to(flat) for dep in deps),'PORTABLE_DEPENDENCY_ESCAPES_PAYLOAD'
 business_deps=[] if portable_requested else deps
 for directory in ('wrapper-classes','builder-classes'):
- for old in (W/'own-pboot-r32'/directory).rglob('*'):
+ for old in (platform_support_root/directory).rglob('*'):
   if old.is_file():
-   target=platform_root/directory/old.relative_to(W/'own-pboot-r32'/directory);target.parent.mkdir(parents=True,exist_ok=True);os.link(old,target)
+   target=platform_root/directory/old.relative_to(platform_support_root/directory);target.parent.mkdir(parents=True,exist_ok=True)
+   if support_requested:
+    shutil.copyfile(old,target)
+    assert sha(target)==platform_support_proof['launchHelperClassSHA256'][directory+'/'+old.relative_to(platform_support_root/directory).as_posix()],'OWN_INSTALLED_PLATFORM_HELPER_CHANGED'
+   else:os.link(old,target)
 platform_storage_lib=None
 if args.platform_storage:
  platform_storage_lib=W/'own-platform-storage-verification-r5/deps/jnpf-file-core-starter-3.6.0-RELEASE.jar'
@@ -121,7 +131,8 @@ if args.platform_storage:
  (platform_root/'persistent-launcher-classes').mkdir()
  run=subprocess.run([str(java17/'bin/javac.exe'),'-proc:none','--release','8','-encoding','UTF-8','-cp',os.pathsep.join([meta['bootstrapParentJar'],str(platform_root/'wrapper-classes'),meta['guardJar']]),'-d',str(platform_root/'persistent-launcher-classes'),*[str(P/'java'/n) for n in ('OriginalPlatformStorageScope.java','OriginalPersistentPlatformLaunch.java')]],cwd=platform_root,env=env,capture_output=True,creationflags=flags,timeout=30)
  (platform_root/'persistent-launcher-compile.log').write_bytes(run.stdout+run.stderr);assert run.returncode==0,'OWN_PERSISTENT_PLATFORM_LAUNCHER_COMPILE_FAILED'
-with zipfile.ZipFile(W/'own-pboot-r32/own-platform-observation.jar') as old,zipfile.ZipFile(platform_root/'own-platform-observation.jar','w',zipfile.ZIP_DEFLATED) as new:
+if support_requested:assert sha(platform_support_root/'own-platform-observation.jar')==platform_support_proof['observationJarSHA256'],'OWN_SELECTED_PLATFORM_OBSERVATION_CHANGED'
+with zipfile.ZipFile(platform_support_root/'own-platform-observation.jar') as old,zipfile.ZipFile(platform_root/'own-platform-observation.jar','w',zipfile.ZIP_DEFLATED) as new:
  for info in old.infolist():new.writestr(info,old.read(info))
  for path in (platform_root/'classes').rglob('*.class'):new.write(path,path.relative_to(platform_root/'classes').as_posix())
 for name in ('expected-current-item-ids.txt','expected-platform-organization-count.txt','expected-database-server-uuid.txt'):
@@ -140,6 +151,7 @@ result={'startedAt':datetime.datetime.now().astimezone().isoformat(),'ownerId':o
 result['objectStoreRequested']=store_requested
 result['platformStorageRequested']=args.platform_storage
 result['platformFilesRecoverRequested']=args.platform_files_recover
+result['platformSupportSelection']=platform_support_proof
 result['gatewayCanonicalPublicOrigin']=public_origin
 if platform_files is not None:result['platformFileData']=platform_files.observation()
 if prior_platform_recovery is not None:result['platformFileRecoveryBasis']=prior_platform_recovery

@@ -169,6 +169,100 @@ def build(inputs_file, output, tools=None):
     return receipt
 
 
+def validate_support_selection(receipt, pin):
+    requested = receipt is not None or pin is not None
+    if requested:
+        require(receipt is not None and pin is not None, 'PLATFORM_SUPPORT_RECEIPT_AND_PIN_REQUIRED_TOGETHER')
+        require(isinstance(pin, str) and re.fullmatch('[0-9a-f]{64}', pin), 'EXPLICIT_PLATFORM_SUPPORT_RECEIPT_PIN_REQUIRED')
+    return requested
+
+
+def select_support(receipt_file, expected_sha256, lock_file=None):
+    require(validate_support_selection(receipt_file, expected_sha256), 'EXPLICIT_PLATFORM_SUPPORT_SELECTION_REQUIRED')
+    receipt_file = regular(receipt_file)
+    require(receipt_file.name == 'receipt.json' and digest(receipt_file) == expected_sha256,
+            'PLATFORM_SUPPORT_RECEIPT_PIN_MISMATCH')
+    receipt = json_document(receipt_file)
+    lock_file = regular(lock_file or Path(__file__).with_name(LOCK))
+    lock = json_document(lock_file)
+    require(lock.get('schema') == 'xnby.original-platform-support.build.v1'
+            and receipt.get('lockSHA256') == digest(lock_file), 'PLATFORM_SUPPORT_BUILD_LOCK_MISMATCH')
+    require(receipt.get('schema') == 'xnby.original-platform-support.result.v1'
+            and receipt.get('passed') is True, 'SUCCESSFUL_PLATFORM_SUPPORT_BUILD_REQUIRED')
+    owner = receipt.get('ownerId')
+    require(isinstance(owner, str) and str(uuid.UUID(owner)) == owner, 'PLATFORM_SUPPORT_OWNER_UUID_REQUIRED')
+    require(receipt.get('compiledClassCount') == lock.get('expectedClassCount') == 21
+            and receipt.get('classSHA256') == lock.get('expectedClassSHA256'), 'PLATFORM_SUPPORT_CLASS_PROOF_MISMATCH')
+    for key in ['originalApplicationStarted', 'databaseConnected', 'originalArchiveRead',
+                'originalClassesModified', 'originalReferenceOrTrialReceiptsUsedByBuilder']:
+        require(receipt.get(key) is False, 'PLATFORM_SUPPORT_BUILD_BOUNDARY_PROOF_REQUIRED')
+    classes = lock['expectedClassSHA256']
+    require(len(classes) == 21, 'EXACT_PLATFORM_SUPPORT_CLASS_SET')
+    for name in classes:
+        path = PurePosixPath(name)
+        require(not path.is_absolute() and '..' not in path.parts and '\\' not in name
+                and path.parts[0] in {'wrapper-classes', 'observer-classes', 'builder-classes'}
+                and path.suffix == '.class', 'RELATIVE_PLATFORM_SUPPORT_CLASS_REQUIRED')
+    root = receipt_file.parent
+    require(not root.is_symlink() and not getattr(root.lstat(), 'st_file_attributes', 0) & 0x400,
+            'PLATFORM_SUPPORT_ROOT_REDIRECTION_REJECTED')
+    expected_files = set(classes) | {'receipt.json', 'own-platform-observation.jar',
+                                     'wrappers.private.log', 'observers.private.log', 'builder.private.log'}
+    expected_dirs = {'tmp'}
+    for name in expected_files:
+        expected_dirs.update(str(parent) for parent in PurePosixPath(name).parents if str(parent) != '.')
+    found_files, found_dirs, pending = set(), set(), [root]
+    optional_empty_perf_dirs = set()
+    while pending:
+        current = pending.pop()
+        for child in current.iterdir():
+            info = child.lstat()
+            require(not child.is_symlink() and not getattr(info, 'st_file_attributes', 0) & 0x400,
+                    'PLATFORM_SUPPORT_MEMBER_REDIRECTION_REJECTED')
+            name = child.relative_to(root).as_posix()
+            if stat.S_ISDIR(info.st_mode):
+                # javac on Windows can leave its empty, process-owned perf directory.
+                # It is outside every classpath; no file or nested directory is allowed.
+                if child.parent == root / 'tmp' and re.fullmatch(r'hsperfdata_[\w.-]{1,80}', child.name):
+                    require(not any(child.iterdir()) and not optional_empty_perf_dirs,
+                            'EMPTY_SINGLE_COMPILER_PERF_DIRECTORY_REQUIRED')
+                    optional_empty_perf_dirs.add(name)
+                    continue
+                require(name in expected_dirs, 'UNEXPECTED_PLATFORM_SUPPORT_DIRECTORY')
+                found_dirs.add(name); pending.append(child)
+            else:
+                require(stat.S_ISREG(info.st_mode) and name in expected_files, 'UNEXPECTED_PLATFORM_SUPPORT_FILE')
+                found_files.add(name)
+                if name.endswith('.private.log'):
+                    require(info.st_size <= 128 * 1024, 'BOUNDED_PLATFORM_SUPPORT_BUILD_LOG_REQUIRED')
+            require(len(found_dirs) + len(found_files) <= 96, 'PLATFORM_SUPPORT_MEMBER_COUNT_BOUND')
+    require(found_files == expected_files and found_dirs == expected_dirs, 'EXACT_PLATFORM_SUPPORT_OUTPUT_SET')
+    for name, pin in classes.items():
+        require(digest(root / name) == pin, 'PLATFORM_SUPPORT_CLASS_BYTES_MISMATCH')
+    jar = root / 'own-platform-observation.jar'
+    require(jar.stat().st_size <= 1024 * 1024 and digest(jar) == receipt.get('observationJarSHA256'),
+            'PLATFORM_SUPPORT_OBSERVATION_JAR_MISMATCH')
+    jar_classes = {name.removeprefix('observer-classes/'): pin for name, pin in classes.items()
+                   if name.startswith('observer-classes/')}
+    with zipfile.ZipFile(jar) as archive:
+        names = archive.namelist()
+        require(len(names) == 13 and set(names) == set(jar_classes) | {'META-INF/spring.factories'},
+                'EXACT_PLATFORM_SUPPORT_OBSERVATION_MEMBERS')
+        require(archive.read('META-INF/spring.factories') == FACTORIES, 'PLATFORM_SUPPORT_FACTORIES_MISMATCH')
+        for name, pin in jar_classes.items():
+            require(archive.getinfo(name).file_size <= 1024 * 1024
+                    and hashlib.sha256(archive.read(name)).hexdigest() == pin,
+                    'PLATFORM_SUPPORT_OBSERVATION_CLASS_MISMATCH')
+    require(digest(receipt_file) == expected_sha256, 'PLATFORM_SUPPORT_RECEIPT_CHANGED_AFTER_VERIFICATION')
+    return root, {'mode': 'source-rebuilt-platform-support', 'selectionSHA256': expected_sha256,
+                  'lockSHA256': receipt['lockSHA256'], 'ownerId': owner, 'compiledClassCount': 21,
+                  'observationJarSHA256': receipt['observationJarSHA256'],
+                  'launchHelperClassSHA256': {name: pin for name, pin in classes.items()
+                                             if not name.startswith('observer-classes/')},
+                  'legacyPreparationReceiptsReadBySelector': False,
+                  'originalArchiveReadBySelector': False}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--inputs', type=Path, required=True, help='Private explicit dependency paths; never commit')
