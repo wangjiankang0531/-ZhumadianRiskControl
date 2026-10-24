@@ -33,3 +33,27 @@ act_re_procdef原77行、flow_run_add_node原10行；其中9条临时节点记�
 本轮29份自有诊断源码按SHA私有封存于Application/work/tianjin_native_20261023/capture_tools_v4/original_platform_bootstrap_r24_20261024；运行收据、原字节码形状和只读关系审查在同一工作根目录及Document/Deployment/original_platform_bootstrap_20261024。它们不作为生产发布包；Reference原源码、业务数据、原class、运行包、凭据、私有日志及14项held不入Git。本次Git仅新增本说明文件。7份设计、实现、验收与部署运维连续性文档已更新；数据库字段、索引和归属没有变化。
 
 仍需完成原认证/权限与工作流初始化、原业务HTTP、全部PC/手机模块操作、保存/审批/Excel/地图，以及公网同版验收。阶段达成后再通知用户复核。
+
+<!-- LOGIN_IMAGE_TRANSPORT_20261024 -->
+## 原登录图片接口与独立运行时工具接续
+
+本轮只读核对原compose、Nginx和4份移交手册：原平台声明Java8、业务服务声明Java17；共享日志止于2025年，不作为当前VM状态。先前真实CurrentUser响应的系统版本为V3.6.0。当前UU进入原安全平台后实际跳到带验证码的登录页，原登录已过期，已请用户恢复，不要求聊天发送密码。当前源站profile及外部配置仍未验证。
+
+原安全平台login/index.vue实际加载/jnpf/oauth/ImageCode/4/<timestamp>；旧/captcha辅助函数没有在该登录页调用。原Login、CurrentUser和Nginx到/api/的映射也已核对，没有添加一个与原页面不符的验证码代理。
+
+为使既有JDK8正确生成原验证码图片，先独立检查固定文字图像。原约束拦截了JDK的awt，补齐第一轮后又定位到随附freetype；两次失败保留。最终只增加已存在且固定SHA的5个JDK自带库名awt/fontmanager/lcms/freetype/jpeg，绝对路径仍须在JDK的bin范围，第三方库拒绝不变。26项约束及headless字体PNG/JPEG均通过。
+
+own-pboot-r25在原ApplicationReady后按原前端真实路径请求ImageCode：HTTP200、image/jpeg;charset=UTF-8、1727字节、JPEG魔数匹配；未登录CurrentUser返回原应用码600、data=null。原图片接口及认证拒绝通过，没有识别、填写或提交验证码，没有登录尝试。原main仍因原存储流程定义引用问题抛异常，完整启动和全部业务仍未通过；180秒上限后结束本轮Java，MySQL和Redis正常退出0，演示8767不改。
+
+新增可复现工具tools/verify_original_java8_runtime.py，配套tools/java/original_runtime8下5个自有Java源（Java8IO、OriginalProcessBoundary、OriginalProcessBoundaryFixture、BoundaryClassLoadingCanary、OwnJava8GraphicsProbe）。独立验证不需要原JAR、数据库、原账号或网络下载，从源码使用已有完整Windows JDK8编译，验证class major52、26个真实约束案例及固定文字PNG/JPEG输出。
+
+在Application目录运行：
+
+```powershell
+python tools/verify_original_java8_runtime.py --java-home "<已有完整Windows JDK8目录>" --output "<全新验证目录>"
+```
+
+输出目录必须不存在，且与JDK安装目录分离。工具只运行本次自有短时子进程，记录JDK二进制及源码SHA、退出码和检查收据；超时结束自有子进程，不重试。它不是原平台启动器，不做原服务、认证、业务写入或OS设置操作，也不把进程内约束冒称恶意代码的OS沙箱。Java11 HttpClient不适用于Java8，不计为执行；其余检查范围按26项夹具的实际结果记录。
+
+本机从这批应用源码用JDK8u504独立编译及运行已通过，收据位于Application/work/tianjin_native_20261023/own-java8-standalone-r1/receipt.json。原平台真实图片接口收据在own-pboot-r25/original-login-image-probe.json。当前Git载荷只含上述6个自有源码和本handbook，共7文件；没有原Reference代码、原class、原始行、图库、运行包、凭据或14项held。完整复刻fullCloneReady=false，下一步继续核对实际源环境、原认证及全模块行为。
+<!-- LOGIN_IMAGE_TRANSPORT_20261024_END -->
