@@ -1,0 +1,65 @@
+{
+  "schema": "xnby.original-platform-support.build.v1",
+  "sourceSHA256": {
+    "java/original_platform_runtime8/OriginalPlatformLaunch.java": "43c49ec5a52953354c10959c013bcc1d08141408ed6d4a1e3ac0773eac9f1115",
+    "java/original_platform_runtime8/OriginalJarResourceCache.java": "87feecef24a983e172f622feb4efa696f1bcf96da8f194df386d9b7ffa8c9a84",
+    "java/original_platform_runtime8/OriginalResourceCachedClassLoader.java": "11cc83991e4dd82da0b8b2e50318caa3932bc9eda543c53aff89dd55d41deb41",
+    "java/original_platform_runtime8/IndependentJarFileWrapper.java": "50bd2bcfec230c3882620794298078ebf75def9c5df371856a311dd844cfcb4e",
+    "java/original_platform_runtime8/protocol/jar/Handler.java": "dd3815fb1e1e562bcbbfef7a83ad4dbd4985daedac9098ddb0d3dcdb4aa43937",
+    "java/original_platform_runtime8/PlatformStartupObservation.java": "e7f0b32f059d704f9539a54bd5a4f1bb1efd07d6080fcd247326581f9b261e62",
+    "java/original_platform_runtime8/ObservedPlatformBeanNameGenerator.java": "009855543ec11e4748eb7a0631971535ddfb4dd34bcc47c14c3f11a8bc3ccfa4",
+    "java/original_platform_runtime8/PlatformFailureObservation.java": "64277a1849b3f9aea3621e61505699c697a5851aa0a23a3269620d89ed34e4ff",
+    "java/original_platform_runtime8/PlatformJava8MetadataProbe.java": "df3236ec4d36effbb957c358fd557a287d58c9aa5d6ae2059db3ce52e9f0a305",
+    "java/OriginalPlatformConfigBuilder.java": "1e5d9098dcc4824876a3ddc7d0d77561d66563d4d943f9230b9019c50bfd0637",
+    "java/SourceClasspathProbe.java": "92787172c9775c3d7fbd29c76e1c469f787a41382b9f9eab3f7a01ed306f0dde",
+    "java/OriginalIdGeneratorShutdown.java": "90e3e72b4b1ec2af36594d9eed38df9f64f86341981e23969b96ba2e43ae1dfa",
+    "java/PlatformWritableObservation.java": "924572a1fe6b74c8385a07899ba4d64f86e0580eb3c944275d425b3304d28154",
+    "java/OriginalBootstrapOrphanGuard.java": "8b819c2a239176d5665295962ecc594e85a6eda3b183844008b093ee263f2fb2"
+  },
+  "inputSHA256": {
+    "bootLoader": "3a283820aee2fb4429a92352f69eb71677118a75642f0b8749ea491b592eafaf",
+    "guard": "799d1289e3122b0e73ef4b6a3c9639bc5c59d820c7670800c673a1b7acd5a508",
+    "yaml": "1467931448a0817696ae2805b7b8b20bfb082652bf9c4efaed528930dc49389b"
+  },
+  "compilerSHA256": {
+    "bin/java.exe": "6db7759259dc79800c5c6014f0ec68961a1fe69c36bb9b2a15a42c3b0c413f6a",
+    "bin/javac.exe": "50b7d8d069b58e10cd8cc6a36d647d8049144d0a0508da8a0a892b76610cc68b",
+    "release": "0655f5dbfedac3edb51ad80aa4ac8d3eb6d99121a3291f1e5e3fb7a4e2827387"
+  },
+  "librarySHA256": {
+    "spring-boot-2.7.18.jar": "530f4e0fdfeb3a0e2b3a369d15cdea38fbdc1696f8b030c35a6ad65c27524950",
+    "spring-core-5.3.31.jar": "7013ed3da15a8d4be797f5c310f9aa1b196b97f2313bc41e60ef3f5627224fe9",
+    "spring-jcl-5.3.31.jar": "eee0df6a25a9c56d228ea86272546aa5a0656caf2f14e7b375417b066abbc0db",
+    "spring-beans-5.3.31.jar": "a8d6d99003d0a28049cba4273afbcfc64e1107ee3c33f67935853e9711544aa7",
+    "spring-context-5.3.31.jar": "38def055d1e22b5514b1cb19cef4474e5c1b0d2127c483e7d014bde87c4a4cf3",
+    "spring-expression-5.3.31.jar": "e027f122b8a4e3030339068220bed02d1c9d397eb5897f1e33ba2f63b22591ac",
+    "spring-web-5.3.31.jar": "7b7b4db19acc8c0cdb0dea93a3aa4b1b706db4bcc7b77f677a0c56e86d379ac7",
+    "spring-aop-5.3.31.jar": "3f0c666f317abaa845fc3a24fba219b1f469716bf309cccd755eecb8fee20430"
+  },
+  "expectedClassSHA256": {
+    "wrapper-classes/xnby/platform/OriginalJarResourceCache$1.class": "50da11c5caf7b6a8a72b94f8dc8e0c20b62d130e8f2c560393de8c75adb3bf4a",
+    "wrapper-classes/xnby/platform/OriginalJarResourceCache$2.class": "9e233cc27c8a765743ff378eba3ae19ea66f184d3dd839bd07ac7e562e027daa",
+    "wrapper-classes/xnby/platform/OriginalJarResourceCache.class": "82cc4c84e11574d3d5d3b8fa4f3f24dbacf0a616ec3da1a3cb91607ad289265b",
+    "wrapper-classes/xnby/platform/OriginalPlatformLaunch.class": "3c369b71d2f262c41cb2047b7de83895bac6e6754394a316a21a93242087109d",
+    "wrapper-classes/xnby/platform/OriginalResourceCachedClassLoader$1.class": "9e425ace69fb9514ae8e2044afa3c5e176aca18d5d95a3516418b69458c803ab",
+    "wrapper-classes/xnby/platform/OriginalResourceCachedClassLoader.class": "0270eb55c926f6f181ed91948417b55484515092ed6c01978a7848163b7321e6",
+    "wrapper-classes/xnby/platform/protocol/jar/Handler.class": "a98cfe1449a1f4bb7a41c828cc5272e72d787344a1a86349b26d820c27000546",
+    "wrapper-classes/org/springframework/boot/loader/jar/IndependentJarFileWrapper.class": "74026a323fa534b1f54d0de7cab9102d903e9bc9315a53648a0b164ae88ab906",
+    "builder-classes/xnby/platform/OriginalPlatformConfigBuilder.class": "3a45f8b2de103b704a50cd1f33b2a61ee9380f3b655b4e31f0785f1babe2ef21",
+    "observer-classes/xnby/audit/SourceClasspathProbe.class": "e294b87a72998c9ee579a6b923f64d9c8954f54fc39cac9d7a30dc55e11de07b",
+    "observer-classes/xnby/platform/ObservedPlatformBeanNameGenerator.class": "7e104b756ce48badccd339ffd2c8991e7cfb0def7793617b083660a033d47c2b",
+    "observer-classes/xnby/platform/PlatformFailureObservation.class": "3ad51dadaacf37e904adbd030037d4bddb0ba2149cfd9289abed85c0f06fe5f1",
+    "observer-classes/xnby/platform/PlatformJava8MetadataProbe.class": "8d5a2675c3b7408ea9126be4e8ccbfba97e828336b8e5e899a3df1cff1c6ebe3",
+    "observer-classes/xnby/platform/PlatformStartupObservation.class": "3c54d102abab152ccd2b1348b3d18d58977c22e9e78078a8474dc74afcf9f972",
+    "observer-classes/xnby/platform/OriginalIdGeneratorShutdown.class": "eb8c5ea680638d9f72b48c56024451b218d7f0e20edfc4297f90f8327cdba4a3",
+    "observer-classes/xnby/platform/PlatformWritableObservation.class": "9692bfdf0f5060c9fe6bc756c50c4623fb4d4555bbd1797546a94240d59d4b04",
+    "observer-classes/xnby/platform/OriginalBootstrapOrphanGuard$1.class": "455133890eb8f2db55eac70e8ddc2e0309212a3406b5fc603fbd8037082a05e6",
+    "observer-classes/xnby/platform/OriginalBootstrapOrphanGuard$2.class": "7da77ccf4cc546f9781b7919494332574cbfacea4067a108b078c033a2ad6db3",
+    "observer-classes/xnby/platform/OriginalBootstrapOrphanGuard$Lookup.class": "f166f0ade3deb559f7d641eac524ccf58789349a13e5f08aaba08ec5939589e6",
+    "observer-classes/xnby/platform/OriginalBootstrapOrphanGuard$Scope.class": "60d957b24dcbca57130a7389efe62d3aecf13981d51003ffccbb9ccd3120f9b1",
+    "observer-classes/xnby/platform/OriginalBootstrapOrphanGuard.class": "06f4ed3d16477cc9268cf536e9e7fcb6530f6b6ddb7701b7ec3bb240fc92d9c0"
+  },
+  "originalArchiveRequiredForBuild": false,
+  "originalClassesModified": false,
+  "expectedClassCount": 21
+}
