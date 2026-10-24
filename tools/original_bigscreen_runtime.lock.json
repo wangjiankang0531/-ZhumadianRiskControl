@@ -1,0 +1,36 @@
+{
+  "recordedAt": "2026-10-24T21:58:32.220880+08:00",
+  "artifacts": [
+    {
+      "artifact": "sqlite-jdbc",
+      "version": "3.36.0.3",
+      "bytes": 9731064,
+      "pinnedSHA256": "af3a3376391e186a0fed63ecd414b72a882bf452667b490a0be3abf85b637d3f",
+      "officialSHA1URL": "https://repo.maven.apache.org/maven2/org/xerial/sqlite-jdbc/3.36.0.3/sqlite-jdbc-3.36.0.3.jar.sha1",
+      "officialSHA1": "7fa71c4dfab806490cb909714fb41373ec552c29",
+      "officialSHA1Matched": true,
+      "officialSHA256Verified": false
+    },
+    {
+      "artifact": "lombok",
+      "version": "1.18.2",
+      "bytes": 1667918,
+      "pinnedSHA256": "f13db210efa2092a58bb7befce58ffa502e5fefc5e1099f45007074008756bc0",
+      "officialSHA1URL": "https://repo.maven.apache.org/maven2/org/projectlombok/lombok/1.18.2/lombok-1.18.2.jar.sha1",
+      "officialSHA1": "524e0a697e9d62950b2f763d88d35cd8dc82a9a1",
+      "officialSHA1Matched": true,
+      "officialSHA256Verified": false
+    }
+  ],
+  "providedOriginalArchiveSHA256": "97c2f1662a3a4494f01da4c2e83d7fa960e6832bda870e90424ffbaddf667cca",
+  "originalSourceClassEquivalence": {
+    "javaSources": 26,
+    "classes": 27,
+    "exact": 27
+  },
+  "sqliteWindowsX64": {
+    "bytes": 867840,
+    "sha256": "b0c53ebfcddc4031daad36aac9a2967921703431deba5e51234da5008ae45b2a"
+  },
+  "providedArchiveOrThirdPartyBinariesIncluded": false
+}
