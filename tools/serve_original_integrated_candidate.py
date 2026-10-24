@@ -6,8 +6,15 @@ parser.add_argument('--name',required=True)
 parser.add_argument('--previous-receipt',type=pathlib.Path,required=True)
 parser.add_argument('--gateway-port',type=int,default=18891)
 parser.add_argument('--minutes',type=int,default=60)
+parser.add_argument('--original-business-config',type=pathlib.Path)
+parser.add_argument('--original-business-config-sha256')
 args=parser.parse_args();assert 1<=args.minutes<=120 and 1024<=args.gateway_port<=65535,'OWN_EXPLICIT_CANDIDATE_LEASE_AND_PORT'
 assert re.fullmatch(r'own-j[1-9][0-9]{0,3}',args.name),'OWN_EXPLICIT_RUN_NAME_REQUIRED'
+from original_candidate_platform_gate import require_semantics_pair,wait_for_platform,allowed_ports
+semantics_requested=require_semantics_pair(args.original_business_config,args.original_business_config_sha256)
+if semantics_requested:
+ assert args.original_business_config.is_file() and args.original_business_config.stat().st_size<=65536,'OWN_ORIGINAL_BUSINESS_CONFIG_REQUIRED'
+ assert hashlib.sha256(args.original_business_config.read_bytes()).hexdigest()==args.original_business_config_sha256,'OWN_ORIGINAL_BUSINESS_CONFIG_PIN_MISMATCH'
 P=pathlib.Path(__file__).parent;W=args.workspace.resolve(strict=True);A=W.parents[1];R=A.parent
 assert A.name=='Application' and (A/'tools/reference_flat_runtime.py').is_file(),'OWN_KNOWN_APPLICATION_WORKSPACE_REQUIRED'
 previous=json.loads(args.previous_receipt.read_bytes())
@@ -57,7 +64,7 @@ env={key:value for key,value in os.environ.items() if key.upper() not in ('JAVA_
 env['TMP']=env['TEMP']=str(root/'tmp');(root/'tmp').mkdir();flags=subprocess.CREATE_NO_WINDOW
 observer=P/'java/OriginalJointRedisObservation.java'
 for target,classpath in [(platform_root,[pathlib.Path(row['file']) for row in meta['compileDependencies']]),(business_root,[flat/'application.jar',*deps])]:
- run=subprocess.run([str(java17/'bin/javac.exe'),'-proc:none','--release','8','-encoding','UTF-8','-cp',os.pathsep.join(map(str,classpath)),'-d',str(target/'classes'),str(observer),str(P/'java/CandidateLifecycleObservation.java'),*([str(P/'java/OriginalWritableServiceObservation.java')] if target==business_root else [])],cwd=target,env=env,capture_output=True,creationflags=flags,timeout=30)
+ run=subprocess.run([str(java17/'bin/javac.exe'),'-proc:none','--release','8','-encoding','UTF-8','-cp',os.pathsep.join(map(str,classpath)),'-d',str(target/'classes'),str(observer),str(P/'java/CandidateLifecycleObservation.java'),*([str(P/'java/OriginalWritableServiceObservation.java')]+([str(P/'java/OriginalInternalPlatformObservation.java')] if semantics_requested else []) if target==business_root else [])],cwd=target,env=env,capture_output=True,creationflags=flags,timeout=30)
  (target/'observer-compile.log').write_bytes(run.stdout+run.stderr);assert run.returncode==0,'OWN_JOINT_OBSERVER_COMPILE_FAILED'
 with zipfile.ZipFile(W/'own-pboot-r32/own-platform-observation.jar') as old,zipfile.ZipFile(platform_root/'own-platform-observation.jar','w',zipfile.ZIP_DEFLATED) as new:
  for info in old.infolist():new.writestr(info,old.read(info))
@@ -71,7 +78,8 @@ redis_password=secrets.token_urlsafe(32);owner=str(uuid.uuid4());probe_key='__xn
 result={'startedAt':datetime.datetime.now().astimezone().isoformat(),'ownerId':owner,'readOnlyOwnedDatabase':False,'oneSharedMySQL':True,'oneSharedRedis':True,
  'runnerSourceSHA256':sha(pathlib.Path(__file__)),'observerSourceSHA256':sha(observer),
  'platformSourceSHA256':meta['sourceJarSHA256'],'businessSourceSHA256':'4c5bcf1bb3f76a3865c0cd6969cfef845934a11343d2987413f33715411dc902',
- 'sourceDatabaseConnected':False,'loginOrJwtAttempted':False,'syntheticProbeKeyIsAuthenticationKey':False,'fullCloneReady':False,'publicDeployed':False}
+ 'sourceDatabaseConnected':False,'loginOrJwtAttempted':False,'syntheticProbeKeyIsAuthenticationKey':False,'fullCloneReady':False,'publicDeployed':False,
+ 'originalBusinessSemanticsRequested':semantics_requested,'originalBusinessConfigSHA256':args.original_business_config_sha256 if semantics_requested else None}
 (root/'attempt_started.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
 db=redis=platform=business=nginx=None;archive_server=archive_worker=None;handles=[];lock=(dbroot/'own-joint-controller.lock').open('a+b');lock.seek(0);lock.write(b'0');lock.flush();lock.seek(0);msvcrt.locking(lock.fileno(),msvcrt.LK_NBLCK,1)
 def start(command,folder,log):
@@ -137,7 +145,7 @@ try:
  (platform_root/'builder.private.log').write_bytes(config_build.stdout+config_build.stderr);assert config_build.returncode==0,'OWN_PLATFORM_CONFIG_FAILED'
  base=prepare_original_shared_redis.own_properties(W/'own-dbboot-r5/application.properties')
  base['spring.data.redis.port']=str(redisport);base['spring.data.redis.password']=redis_password
- base['context.initializer.classes']='xnby.replica.OriginalStartupObservation,xnby.replica.CandidateLifecycleObservation,xnby.replica.OriginalWritableServiceObservation,xnby.replica.OriginalJointRedisObservation'
+ base['context.initializer.classes']='xnby.replica.OriginalStartupObservation,xnby.replica.CandidateLifecycleObservation,xnby.replica.OriginalWritableServiceObservation,xnby.replica.OriginalJointRedisObservation'+(',xnby.replica.OriginalInternalPlatformObservation' if semantics_requested else '')
  base['logging.level.root']='WARN'
  for name,schema in [('master','tj_endanger'),('tow','jnpf')]:
   prefix='spring.datasource.dynamic.datasource.'+name+'.';base[prefix+'password']=dbconf['password']
@@ -154,12 +162,29 @@ try:
  platform_config['context.initializer.classes']='xnby.platform.PlatformStartupObservation,xnby.platform.PlatformWritableObservation,xnby.platform.OriginalIdGeneratorShutdown,xnby.platform.OriginalBootstrapOrphanGuard,xnby.replica.CandidateLifecycleObservation,xnby.replica.OriginalJointRedisObservation'
  (platform_root/'application.properties').write_text('\n'.join(key+'='+value for key,value in platform_config.items())+'\n',encoding='ascii')
  print('START_TWO_ORIGINAL_APPLICATIONS_ON_SHARED_RESOURCES',flush=True)
- for side,folder in [('business',business_root),('platform',platform_root)]:
+ start_order=[('platform',platform_root),('business',business_root)] if semantics_requested else [('business',business_root),('platform',platform_root)]
+ for side,folder in start_order:
+  internal_platform_port=None;internal_platform_base=None
+  if side=='business' and semantics_requested:
+   print('WAIT_FOR_OWN_PLATFORM_ORIGINAL_MAIN_BEFORE_BUSINESS',flush=True)
+   internal_platform_port=wait_for_platform(platform_root,platform,[db,redis],progress=lambda:print('OWN_PLATFORM_ORIGINAL_INITIALIZATION_PENDING',flush=True))
+   allowed_ports(dbport,redisport,internal_platform_port)
+   config_probe=probe_http(internal_platform_port,'/api/oauth/getLoginConfig');assert config_probe['applicationCode']==200,'OWN_PLATFORM_CONFIG_BEFORE_BUSINESS_FAILED'
+   assert platform.poll() is None,'OWN_PLATFORM_EXITED_BEFORE_BUSINESS_CONFIGURATION'
+   internal_platform_base='http://127.0.0.1:'+str(internal_platform_port)
+   diagnostic=folder/'diagnostic-application.private.properties';diagnostic.write_bytes((folder/'application.properties').read_bytes())
+   import prepare_original_business_semantics
+   semantics=prepare_original_business_semantics.prepare(java17,meta['yamlJar'],'1467931448a0817696ae2805b7b8b20bfb082652bf9c4efaed528930dc49389b',args.original_business_config,args.original_business_config_sha256,diagnostic,internal_platform_base,folder/'business-semantics')
+   assert semantics['originalSemanticKeysCopied']==20 and not semantics['originalCredentialsCopied'],'OWN_ORIGINAL_BUSINESS_SEMANTICS_FAILED'
+   (folder/'application.properties').write_bytes((folder/'business-semantics/application.private.properties').read_bytes())
+   result['originalBusinessSemanticsPreparation']=semantics;result['businessPlatformPortPermitted']=True
+   print('ORIGINAL_BUSINESS_SEMANTICS_APPLIED_TO_NEW_BUSINESS_PROCESS_ONLY',flush=True)
   common=['-Xmx512m','-Dfile.encoding=UTF-8','-Djava.io.tmpdir='+str(folder/'tmp'),'-Duser.home='+str(folder/'home'),
    '-Djdk.net.unixdomain.tmpdir='+str(folder/'tmp'),'-Djava.security.policy=='+(folder/'own-process-only.policy').as_uri(),
-   '-Down.allowed.loopback.ports='+str(dbport)+','+str(redisport),'-Down.joint.root='+str(folder),'-Down.candidate.root='+str(folder),'-Down.candidate.maximum-seconds='+str(args.minutes*60),'-Down.expected.database.uuid='+dbspec['ownServerUUID'],'-Down.expected.database.port='+str(dbport),
+   '-Down.allowed.loopback.ports='+allowed_ports(dbport,redisport,internal_platform_port),'-Down.joint.root='+str(folder),'-Down.candidate.root='+str(folder),'-Down.candidate.maximum-seconds='+str(args.minutes*60),'-Down.expected.database.uuid='+dbspec['ownServerUUID'],'-Down.expected.database.port='+str(dbport),
    '-Dspring.config.location='+(folder/'application.properties').as_uri()+','+(folder/'redis-overlay.private.properties').as_uri()]
   if side=='business':
+   if internal_platform_base:common+=['-Down.internal.platform.base='+internal_platform_base]
    java_args=common+['-Down.direct.main=true','-Down.startup.observation='+str(folder/'startup-observation.txt'),'-Down.startup.bean.definitions='+str(folder/'startup-bean-definitions.tsv'),'-Down.startup.lifecycle.directory='+str(folder),
     '-cp',os.pathsep.join(map(str,[folder/'classes',W/'own-dbboot-r5/classes',pathlib.Path(rowmeta['boundaryJar']),schedule,flat/'application.jar',*deps])),
     'xnby.replica.OriginalIsolatedLaunch',str(folder)]
@@ -189,6 +214,16 @@ try:
  assert observations['business']['originalBusinessReadFieldsMatched']=='6' and observations['business']['syntheticKeyDeleted']=='true'
  writable=read_properties(business_root/'original-writable-service-observation.properties');assert writable.get('passed')=='true','OWN_WRITABLE_SERVICE_OBSERVATION_FAILED'
  result['originalWritableServiceObservation']=writable
+ if semantics_requested:
+  observation=business_root/'internal-platform-observation.properties';limit=time.monotonic()+30
+  while not observation.exists():
+   assert all(process.poll() is None for process in (db,redis,platform,business)),'OWN_PROCESS_EXITED_DURING_INTERNAL_HTTP_CHECK'
+   assert time.monotonic()<limit,'OWN_BUSINESS_INTERNAL_PLATFORM_TIMEOUT'
+   time.sleep(.2)
+  internal=read_properties(observation);result['businessInternalPlatformObservation']=internal
+  assert internal.get('passed')=='true' and internal.get('originalBeanBusinessBindingsMatched')=='14' and internal.get('businessProcessAnonymousPlatformHTTPVerified')=='true','OWN_BUSINESS_INTERNAL_PLATFORM_CHECK_FAILED'
+  result['originalBusinessSemanticsAppliedToNewProcess']=True
+  print('ORIGINAL_BUSINESS_BINDINGS_AND_ANONYMOUS_INTERNAL_HTTP_VERIFIED',flush=True)
  platform_port=int((platform_root/'own-platform-http-port.txt').read_text());business_port=int((business_root/'own-http-port.txt').read_text())
  result['platformAnonymousConfig']=probe_http(platform_port,'/api/oauth/getLoginConfig');assert result['platformAnonymousConfig']['applicationCode']==200
  result['platformAnonymousCurrentUser']=probe_http(platform_port,'/api/oauth/CurrentUser?systemCode=safety')
