@@ -64,12 +64,23 @@ def apply_update(application,patch_manifest,patch_sha):
     if any(p.name not in allowed for p in data.iterdir()):raise ValueError('INITIALIZED_SERVER_UPDATE_REFUSED')
     guard=data/'offline-update.private.json'
     reservation={'schema':'zhumadian.original.offline-update.reservation.v1','updateId':spec['updateId'],'patchSHA256':patch_sha}
-    if guard.exists() and json.loads(bounded(guard))!=reservation:raise ValueError('OTHER_OFFLINE_UPDATE_RESERVATION')
     import msvcrt
     lock=regular(data/'server-owner.lock').open('a+b')
     try:
         lock.seek(0);lock.write(b'0');lock.flush();lock.seek(0);msvcrt.locking(lock.fileno(),msvcrt.LK_NBLCK,1)
         if any(p.name not in allowed for p in data.iterdir()):raise ValueError('INITIALIZED_SERVER_UPDATE_REFUSED')
+        # A pinned successor may replace only the exact known completed base
+        # reservation. This check runs under the same controller ownership lock.
+        if guard.exists():
+            observed=json.loads(bounded(guard))
+            if observed!=reservation:
+                prior=spec.get('previousReservation')
+                approved=(isinstance(prior,dict) and set(prior)==set(reservation) and prior==observed and
+                          prior.get('schema')==reservation['schema'] and prior.get('updateId')!=spec['updateId'] and
+                          isinstance(prior.get('updateId'),str) and re.fullmatch('[0-9a-f-]{36}',prior['updateId']) and
+                          str(uuid.UUID(prior['updateId']))==prior['updateId'] and
+                          isinstance(prior.get('patchSHA256'),str) and re.fullmatch('[0-9a-f]{64}',prior['patchSHA256']))
+                if not approved:raise ValueError('OTHER_OFFLINE_UPDATE_RESERVATION')
         atomic(guard,json.dumps(reservation,indent=2).encode('ascii'))
         backup=regular(app/'UserData/OriginalOfflineUpdate'/str(uuid.uuid4()));backup.mkdir(parents=True)
         for rel,body in old.items():p=backup/rel;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(body)

@@ -30,6 +30,37 @@ class OfflineUpdate(unittest.TestCase):
     def apply(self):return update.apply_update(self.app,self.manifest,self.pin)
     def assert_before(self):
         for rel,raw in self.before.items():self.assertEqual((self.app/rel).read_bytes(),raw)
+    def prepare_next_delta(self):
+        self.apply()
+        guard=self.app/'UserData/OriginalServer/offline-update.private.json'
+        prior=json.loads(guard.read_bytes())
+        self.before={rel:(self.app/rel).read_bytes() for rel in update.FILES}
+        self.after={rel:('third '+rel).encode() for rel in update.FILES if rel!='release-manifest.json'}
+        revised=json.loads(self.before['release-manifest.json'])
+        for rel in update.CONTROLLERS:revised['controllerFiles'][rel]=update.sha(self.after[rel])
+        self.after['release-manifest.json']=json.dumps(revised).encode()
+        self.spec=dict(self.spec,updateId=str(uuid.uuid4()),previousReservation=prior,
+            baseReleaseManifestSHA256=update.sha(self.before['release-manifest.json']),
+            updatedReleaseManifestSHA256=update.sha(self.after['release-manifest.json']),
+            files={rel:{'before':update.sha(self.before[rel]),'after':update.sha(self.after[rel]),'bytes':len(self.after[rel])} for rel in update.FILES})
+        for rel,raw in self.after.items():(self.bundle/'payload'/rel).write_bytes(raw)
+        self.save_spec()
+        return guard,prior
+    def test_exact_successor_before_initialization_keeps_prior_backup(self):
+        guard,prior=self.prepare_next_delta()
+        result=self.apply();self.assertTrue(result['applied']);self.assertFalse(result['databaseOpened'])
+        self.assertEqual(json.loads(guard.read_bytes())['updateId'],self.spec['updateId'])
+        self.assertNotEqual(prior['updateId'],self.spec['updateId'])
+        for rel,raw in self.after.items():self.assertEqual((self.app/rel).read_bytes(),raw)
+        self.assertEqual(len(list((self.app/'UserData/OriginalOfflineUpdate').glob('*/result.json'))),2)
+    def test_successor_without_exact_prior_reservation_is_refused(self):
+        guard,prior=self.prepare_next_delta();self.spec.pop('previousReservation');self.save_spec()
+        with self.assertRaisesRegex(ValueError,'OTHER_OFFLINE_UPDATE_RESERVATION'):self.apply()
+        self.assert_before();self.assertEqual(json.loads(guard.read_bytes()),prior)
+    def test_successor_with_changed_prior_pin_is_refused(self):
+        guard,prior=self.prepare_next_delta();self.spec['previousReservation']=dict(prior,patchSHA256='f'*64);self.save_spec()
+        with self.assertRaisesRegex(ValueError,'OTHER_OFFLINE_UPDATE_RESERVATION'):self.apply()
+        self.assert_before();self.assertEqual(json.loads(guard.read_bytes()),prior)
     def test_apply_and_idempotent_after_runtime_initialization(self):
         result=self.apply();self.assertTrue(result['applied']);self.assertFalse(result['runtimeStarted']);self.assertFalse(result['iisChanged'])
         for rel,raw in self.after.items():self.assertEqual((self.app/rel).read_bytes(),raw)

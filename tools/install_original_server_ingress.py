@@ -3,7 +3,8 @@
 No IIS role installation, credential reset, old backend restart, or database migration.
 """
 from pathlib import Path
-import argparse,datetime,hashlib,http.client,json,os,re,socket,ssl,subprocess,sys,time,uuid,winreg,xml.etree.ElementTree as ET
+import http.client as http_client
+import argparse,datetime,hashlib,json,os,re,socket,ssl,subprocess,sys,time,uuid,winreg,xml.etree.ElementTree as ET
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from original_iis_cutover import apply,rollback,regular,atomic
 
@@ -12,13 +13,13 @@ IIS_ROOT=Path('C:/FTP_Root/Zhumadian/ZhumadianBusiness_0.8.7_public_1/iis')
 def sha(p):
     with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
 def http(port,path):
-    c=http.client.HTTPConnection('127.0.0.1',port,timeout=10)
+    c=http_client.HTTPConnection('127.0.0.1',port,timeout=10)
     try:
         c.request('GET',path,headers={'Connection':'close'});r=c.getresponse();b=r.read(4*1024*1024+1);assert len(b)<=4*1024*1024;return r.status,b
     finally:c.close()
 def tls_local(address,path):
     context=ssl.create_default_context();raw=socket.create_connection((address,443),timeout=12)
-    secure=context.wrap_socket(raw,server_hostname=HOST);c=http.client.HTTPConnection(HOST,timeout=12);c.sock=secure
+    secure=context.wrap_socket(raw,server_hostname=HOST);c=http_client.HTTPConnection(HOST,timeout=12);c.sock=secure
     try:
         c.request('GET',path,headers={'Host':HOST,'Connection':'close'});r=c.getresponse();b=r.read(4*1024*1024+1);assert len(b)<=4*1024*1024;return r.status,b
     finally:c.close()
@@ -91,7 +92,9 @@ def main():
     report={'schema':'zhumadian.original.server.deployment.v1','releaseId':release['releaseId'],'startedAt':datetime.datetime.now().astimezone().isoformat(),'publicAccepted':False,'oldBackendOrDatabaseChanged':False,'iisFilesChanged':False}
     attempt=data/str(uuid.uuid4());attempt.mkdir();controller=None;controller_log=None
     try:
+        print('PREFLIGHT: checking existing IIS, disk space, .NET, WebSocket and verified HTTPS',flush=True)
         address=preflight(app,IIS_ROOT,report)
+        print('PREFLIGHT: existing HTTPS accepted; checking proxy compilation',flush=True)
         xml=ET.fromstring((IIS_ROOT/'web.config').read_bytes());key=next(v.get('value') for v in xml.findall('./appSettings/add') if v.get('key')=='XnbyIngressKey')
         assert re.fullmatch('[0-9a-f]{64}',key) and key!='0'*64,'EXISTING_PRIVATE_INGRESS_KEY_REQUIRED'
         source=app/'deploy/iis_original/App_Code/XnbyReferenceProxy.cs';csc=Path(os.environ['SystemRoot'])/'Microsoft.NET/Framework64/v4.0.30319/csc.exe'
@@ -103,16 +106,20 @@ def main():
             if prior.get('releaseId')==release['releaseId'] and owned_controller(prior.get('controllerPID'),app,a.release_manifest_sha256):ready=prior
         if ready is None:
             with socket.socket() as s:s.setsockopt(socket.SOL_SOCKET,socket.SO_EXCLUSIVEADDRUSE,1);s.bind(('127.0.0.1',18892))
+            print('STARTUP: starting new original-system components; existing public entry retained',flush=True)
             controller_log=(attempt/'controller.log').open('wb')
             controller=subprocess.Popen([str(app/'runtime/python/python.exe'),'-I','-B',str(app/'tools/serve_original_server_release.py'),'--application',str(app),'--release-manifest-sha256',a.release_manifest_sha256],cwd=app,stdout=controller_log,stderr=subprocess.STDOUT,creationflags=subprocess.CREATE_NO_WINDOW,close_fds=True)
-            until=time.monotonic()+540
+            started=time.monotonic();until=started+540;next_progress=started+10
             while time.monotonic()<until:
                 assert controller.poll() is None,'NEW_OWN_CONTROLLER_EXITED_NO_ENTRY_CHANGED'
                 if current.exists():
                     row=json.loads(current.read_bytes())
                     if row.get('controllerPID')==controller.pid and row.get('releaseId')==release['releaseId'] and row.get('ready'):ready=row;break
+                if time.monotonic()>=next_progress:
+                    print('STARTUP: waiting for ready, elapsed '+str(int(time.monotonic()-started))+' seconds',flush=True);next_progress=time.monotonic()+10
                 time.sleep(.5)
             assert ready is not None,'NEW_ORIGINAL_SERVER_READY_TIMEOUT_NO_ENTRY_CHANGED'
+        print('STARTUP: ready; validating new backend before public cutover',flush=True)
         report['controllerPID']=ready['controllerPID'];report['newServerReady']=True
         for path in ['/zhumadian/home','/zhumadian/h5/','/zhumadian/api/jnpf/oauth/getLoginConfig']:
             code,body=http(18892,path);assert code==200
@@ -142,6 +149,7 @@ def main():
                 refreshed=refresh_rollback_owner(active_path,active_snapshot,active,ready,app,release['releaseId'])
                 report.update(alreadyApplied=True,rollbackOwnerRefreshed=refreshed,serverLocalTLSValidationPassed=True,externalPublicValidationPending=True)
                 print('OWN_RELEASE_ALREADY_RUNNING; NO_IIS_FILES_REWRITTEN',flush=True);return
+        print('CUTOVER: backing up and validating the existing IIS entry',flush=True)
         backup=attempt/'iis-backup';result=apply(IIS_ROOT,backup,new,validate);assert result['applied']
         report.update(iisFilesChanged=True,serverLocalTLSValidationPassed=True,externalPublicValidationPending=True,originalUserLoginVerified=False,webSocketBusinessFlowVerified=False)
         (data/'active-deployment.private.json').write_text(json.dumps({'releaseId':release['releaseId'],'backup':str(backup),'controllerPID':ready['controllerPID'],'run':ready['run']},indent=2),encoding='utf-8')
