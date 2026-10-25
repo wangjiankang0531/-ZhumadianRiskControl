@@ -5,7 +5,7 @@ No IIS role installation, credential reset, old backend restart, or database mig
 from pathlib import Path
 import argparse,datetime,hashlib,http.client,json,os,re,socket,ssl,subprocess,sys,time,uuid,winreg,xml.etree.ElementTree as ET
 sys.path.insert(0,str(Path(__file__).resolve().parent))
-from original_iis_cutover import apply,rollback,regular
+from original_iis_cutover import apply,rollback,regular,atomic
 
 HOST='www.joinlinksmart.com'
 IIS_ROOT=Path('C:/FTP_Root/Zhumadian/ZhumadianBusiness_0.8.7_public_1/iis')
@@ -54,6 +54,25 @@ def preflight(app,iis,report):
             if code in (200,301,302):report.update(dotNetRelease=net,httpsAddress=address,existingSiteTLSVerified=True);return address
         except (OSError,ssl.SSLError):pass
     raise RuntimeError('EXISTING_SITE_TLS_PREFLIGHT_FAILED_NO_FILES_CHANGED')
+def refresh_rollback_owner(active_path,expected_bytes,active,ready,app,release_id):
+    """Refresh process ownership only; preserve the existing IIS transaction."""
+    pid=ready.get('controllerPID');run_value=ready.get('run')
+    if (ready.get('releaseId')!=release_id or ready.get('ready') is not True or
+        type(pid)!=int or pid<=0 or not isinstance(run_value,str)):
+        raise ValueError('OWNED_READY_CONTROLLER_REQUIRED')
+    run=Path(run_value);regular(run)
+    if (not run.is_dir() or run.resolve()!=run or
+        not run.is_relative_to(app/'UserData/OriginalServer/runs') or
+        not re.fullmatch(r'j[1-9][0-9]{0,3}',run.name)):
+        raise ValueError('OWNED_READY_CONTROLLER_REQUIRED')
+    active_path=regular(active_path)
+    if active_path.read_bytes()!=expected_bytes:
+        raise ValueError('DEPLOYMENT_OWNER_CHANGED')
+    updated=dict(active,controllerPID=pid,run=str(run))
+    if updated==active:return False
+    atomic(active_path,json.dumps(updated,indent=2).encode('utf-8'))
+    return True
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--application',type=Path,required=True);parser.add_argument('--release-manifest-sha256',required=True);parser.add_argument('--rollback',action='store_true');a=parser.parse_args()
     app=a.application.resolve(strict=True);manifest=app/'release-manifest.json';assert sha(manifest)==a.release_manifest_sha256
@@ -115,12 +134,13 @@ def main():
         new={'App_Code/XnbyReferenceProxy.cs':source.read_bytes(),'web.config':template.replace('REPLACE_WITH_PRIVATE_64_HEX_KEY',key).encode('utf-8')}
         active_path=data/'active-deployment.private.json'
         if active_path.exists():
-            active=json.loads(active_path.read_bytes());backup=Path(active['backup'])
+            active_snapshot=regular(active_path).read_bytes();active=json.loads(active_snapshot);backup=Path(active['backup'])
             assert backup.resolve()==backup and backup.is_relative_to(data),'OWN_ACTIVE_DEPLOYMENT_BACKUP_REQUIRED'
             transaction=json.loads((backup/'transaction.private.json').read_bytes())
             same=active.get('releaseId')==release['releaseId'] and transaction.get('applied') and not transaction.get('rolledBack') and all(sha(IIS_ROOT/rel)==hashlib.sha256(body).hexdigest() for rel,body in new.items())
             if same and validate():
-                report.update(alreadyApplied=True,serverLocalTLSValidationPassed=True,externalPublicValidationPending=True)
+                refreshed=refresh_rollback_owner(active_path,active_snapshot,active,ready,app,release['releaseId'])
+                report.update(alreadyApplied=True,rollbackOwnerRefreshed=refreshed,serverLocalTLSValidationPassed=True,externalPublicValidationPending=True)
                 print('OWN_RELEASE_ALREADY_RUNNING; NO_IIS_FILES_REWRITTEN',flush=True);return
         backup=attempt/'iis-backup';result=apply(IIS_ROOT,backup,new,validate);assert result['applied']
         report.update(iisFilesChanged=True,serverLocalTLSValidationPassed=True,externalPublicValidationPending=True,originalUserLoginVerified=False,webSocketBusinessFlowVerified=False)
