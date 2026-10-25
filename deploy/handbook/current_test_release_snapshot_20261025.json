@@ -90,9 +90,9 @@
     "deploy/handbook/operations_runbook.md": "6de4fa2313e5c38882933a804339a205e46a725f400e5ca9ddfbaff783e20286",
     "deploy/handbook/field_acceptance_20261020.md": "4786eebc0b5fcd43d29ac4d910ad06d5c7c08ac1c3e0eb25567a993b73b0bff6",
     "deploy/handbook/current_test_release_design_20261025.md": "7e2512beda1f55081e8b54c18edeea469e97d5e2c1d3f7d18f68dde392e3942b",
-    "deploy/handbook/current_test_release_deployment_20261025.md": "de0dcbb4aaf3bbe46922a2a34d1bebd9aec226a777c014e8ea6fa9760c3a1a8c",
+    "deploy/handbook/current_test_release_deployment_20261025.md": "fee2888619c31cc6eeecd5ac4e9da5210daa2e219cb5b079945490af2970a50f",
     "deploy/handbook/current_test_release_user_guide_20261025.md": "c676ad3e7cf755f612738b733888e04fec0941926f12b67c7700a4513c53a93f",
-    "deploy/handbook/current_test_release_acceptance_20261025.md": "597806dbea19233acc6ebba5d7804717e0406a91d2ce490adb7c18876d963d29",
+    "deploy/handbook/current_test_release_acceptance_20261025.md": "bbbbbdba121b763d19542e9b6b65e8280bc4340a6cd90546baf3144f7ea97564",
     "deploy/handbook/current_test_release_next_tasks_20261025.md": "70f630f48865734ea83c32f1fb30b850bbfc6db80255bfc03b6db5bea361b561"
   },
   "nextPrioritiesStatus": "proposal-awaiting-user-adjustment",
@@ -104,6 +104,21 @@
     "emergencyActualReferencedIconVerified": true,
     "extraEmergency404PathReferencedByHTML": false,
     "allDynamicAssetsOrBusinessAccepted": false,
-    "serverChanged": false
+    "serverChanged": false,
+    "adminPreparedStaticManifest": {
+      "recordedAt": "2026-10-25T19:02:53.543678+08:00",
+      "manifestFiles": 1589,
+      "expectedBytes": 30217902,
+      "allMembersLengthAndSHA256MatchedAcrossTwoRounds": false,
+      "matchedFiles": 1140,
+      "notYetVerifiedFiles": 449,
+      "firstRoundTLSFailuresRetained": 4,
+      "firstRoundMatched": 821,
+      "serialRemainingMatched": 319,
+      "serialTLSFailuresRetained": 1,
+      "furtherRetryPerformed": false,
+      "tlsInterruptionCauseProven": false,
+      "businessFlowsVerified": false
+    }
   }
 }
