@@ -1,0 +1,99 @@
+{
+  "schema": "zhumadian.test.release.checkpoint.v1",
+  "checkpointId": "20261025-r4-dual-machine",
+  "recordedAt": "2026-10-25T18:44:44.603437+08:00",
+  "status": "deployed-test-stage",
+  "projectName": "驻马店重大风险防控",
+  "sourceBaseline": {
+    "repository": "wangjiankang0531/-ZhumadianRiskControl",
+    "branch": "main",
+    "commit": "8185111e1fdd0aa10d1f85907c8bdf2ad4b32473",
+    "localSourceCommit": "5934aaefc7630de33b8d2bd79c5f09ca2b694207"
+  },
+  "serverRelease": {
+    "releaseId": "e5385db1-3ca6-4399-9ae5-64dc3e442b27",
+    "controllerRevision": "20261025-r4-303-preflight",
+    "releaseManifestSHA256": "12b56e076bf9fa578d45b400155663242e4325798881336d1f8580b420e2d1d4",
+    "patchManifestSHA256": "b329ba3bc057718b63b92f30d3efdcb4d5cde86a7388cf1dc319ae6a0bbd9793",
+    "deltaFiles": 11,
+    "deltaBytes": 35576,
+    "completedAt": "2026-10-25T18:03:18.166932+08:00",
+    "newBackendReadyObserved": true,
+    "iisCutoverObserved": true,
+    "serverTLSVerifiedObserved": true,
+    "evidenceKind": "GUI-read server report, manually transcribed; not remote byte copy",
+    "oldBackendOrDatabaseChanged": false
+  },
+  "entrypoints": {
+    "pc": "https://www.joinlinksmart.com/zhumadian/",
+    "mobileWeb": "https://www.joinlinksmart.com/zhumadian/h5/",
+    "admin": "https://www.joinlinksmart.com/zhumadian/admin/",
+    "emergency": "https://www.joinlinksmart.com/zhumadian/emergency/",
+    "localCommand": "http://127.0.0.1:8767/?topic=emergency&mode=command"
+  },
+  "localScenes": {
+    "250": {
+      "identity": "f6a5758586635b70025773c3e40083e0c51c7bc01cc02db74cf491233dd7293a",
+      "readOnlyHTTPVerified": true,
+      "restartedDuring252Recovery": false
+    },
+    "252": {
+      "package": "F:/XNBY/ZhumadianScene_20261020",
+      "shortcut": "2_启动本地应急三维.lnk",
+      "userStartedOnce": true,
+      "actualPublicToLocalNavigationVerified": true,
+      "enterprises": 14,
+      "features": 16,
+      "nearViewObserved": true,
+      "wholePayloadHashesReverified": false
+    },
+    "autoStartConfigured": false
+  },
+  "validation": {
+    "independentSourceRegressions": 31,
+    "smallRealFileChainBaseR2R3R4Verified": true,
+    "publicAnonymousHTMLAndLoginConfig200": true,
+    "userConfirmed252Recovery": true,
+    "allBusinessFlowsAccepted": false,
+    "mobileRealDeviceAccepted": false,
+    "wholeArea20SecondClarityAccepted": false,
+    "serverRestartRestoreAccepted": false,
+    "allPublicAssetsIntegrityAccepted": false,
+    "fullCloneReady": false
+  },
+  "engine": {
+    "upstreamCommit": "8966e32b370a10b1e8f5d4fba512f42f439c2451",
+    "localIntegratedCommit": "b89578afd4374ae30c6a5ca0c16e26183026efd1",
+    "equalContentTree": "e02070b58d27067f82742bbb1de98f573ebaaf06",
+    "newContentToMergeAtCheck": false
+  },
+  "gitScope": {
+    "checkpointChangedFiles": [
+      "deploy/handbook/README.md",
+      "deploy/handbook/implementation_boundaries.md",
+      "deploy/handbook/operations_runbook.md",
+      "deploy/handbook/field_acceptance_20261020.md",
+      "deploy/handbook/current_test_release_design_20261025.md",
+      "deploy/handbook/current_test_release_deployment_20261025.md",
+      "deploy/handbook/current_test_release_user_guide_20261025.md",
+      "deploy/handbook/current_test_release_acceptance_20261025.md",
+      "deploy/handbook/current_test_release_next_tasks_20261025.md",
+      "deploy/handbook/current_test_release_snapshot_20261025.json"
+    ],
+    "localHeldTrackedModificationsExcluded": 14,
+    "privateInputsRequiredForFullRuntimeRebuild": true,
+    "runtimeOrReferenceOrDatabaseOrGISOrCredentialsIncluded": false
+  },
+  "documentationSHA256": {
+    "deploy/handbook/README.md": "55146ff0a7b5ddb3abc01ee5f0e2011b244b52ffea75e8b9776e4b361b1a7cc1",
+    "deploy/handbook/implementation_boundaries.md": "9895447c3950f0e8157d40f5f6c9f2c0f3e8c73d9c7df05eccc8e28eb80027d1",
+    "deploy/handbook/operations_runbook.md": "6de4fa2313e5c38882933a804339a205e46a725f400e5ca9ddfbaff783e20286",
+    "deploy/handbook/field_acceptance_20261020.md": "4786eebc0b5fcd43d29ac4d910ad06d5c7c08ac1c3e0eb25567a993b73b0bff6",
+    "deploy/handbook/current_test_release_design_20261025.md": "7e2512beda1f55081e8b54c18edeea469e97d5e2c1d3f7d18f68dde392e3942b",
+    "deploy/handbook/current_test_release_deployment_20261025.md": "7dad19174c714d213fc03d6afd881e491d27b0fe53b4f5c5093d0a75f2002fab",
+    "deploy/handbook/current_test_release_user_guide_20261025.md": "c676ad3e7cf755f612738b733888e04fec0941926f12b67c7700a4513c53a93f",
+    "deploy/handbook/current_test_release_acceptance_20261025.md": "50630adf327ebc403e0b70c531cd3d61cd779f1f3a6093fd85448bc2f61da23c",
+    "deploy/handbook/current_test_release_next_tasks_20261025.md": "70f630f48865734ea83c32f1fb30b850bbfc6db80255bfc03b6db5bea361b561"
+  },
+  "nextPrioritiesStatus": "proposal-awaiting-user-adjustment"
+}
