@@ -60,6 +60,59 @@ class PortableLayerWorkspace(unittest.TestCase):
             self.assertEqual([x[0] for x in features],['point','line','region']);self.assertEqual(features[0][1],'DEMO-E')
             self.assertEqual([json.loads(x[2]) for x in features],changed['layers'][0]['features'])
         self.assertEqual(get()[2]['X-XNBY-Layer-Revision'],'2')
+    def test_unrenderable_editor_save_preserves_current_snapshot(self):
+        repo=initialize_layer_repository(self.root)
+        publish_layer_bytes(repo,read_editor_publication(self.root,self.file))
+        changes={
+            "color":lambda d:d["layers"][0]["features"][0]["style"].update(color="red"),
+            "alpha":lambda d:d["layers"][0]["features"][0]["style"].update(opacity=1.01),
+            "fill":lambda d:d["layers"][0]["features"][0]["style"].update(fillOpacity=-.1),
+            "pattern":lambda d:d["layers"][0]["features"][0]["style"].update(pattern="unsupported"),
+            "icon":lambda d:d["layers"][0]["features"][0]["style"].update(icon="unsupported"),
+            "label":lambda d:d["layers"][0]["features"][0].update(label=None),
+            "visible":lambda d:d["layers"][0].update(visible="true"),
+            "crossing":lambda d:d["layers"][0]["features"][2].update(positions=[[0,0,0],[10,10,0],[0,10,0],[10,0,0]]),
+            "origin":lambda d:d["coordinates"].update(origin=[0,0,0]),
+            "position":lambda d:d["layers"][0]["features"][0].update(positions=[[100001,0,0]]),
+        }
+        for name,change in changes.items():
+            with self.subTest(name=name):
+                bad=sample();change(bad)
+                raw=json.dumps(bad,ensure_ascii=False).encode("utf8");self.file.write_bytes(raw)
+                with self.assertRaises(ValueError):
+                    publish_layer_bytes(repo,read_editor_publication(self.root,self.file))
+                self.assertEqual(repo.get("zhumadian")["raw"],self.raw)
+                self.assertEqual(repo.get("zhumadian")["revision"],1)
+                self.assertEqual(self.file.read_bytes(),raw)
+        with repo.transaction() as db:
+            self.assertEqual(db.execute("SELECT count(*) FROM dlg_versions").fetchone()[0],1)
+
+    def test_valid_rendering_options_and_web_layer_capacity_are_preserved(self):
+        doc=sample()
+        point,line,region=doc["layers"][0]["features"]
+        point["style"].update(icon="custom",iconData="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNQuvzuPwAF4QLj/AHgLgAAAABJRU5ErkJggg==",opacity=0)
+        point["label"].update(placement="billboard",heightM=500,opacity=.8)
+        line["style"].update(pattern="dot",widthPx=32,opacity=1)
+        region["positions"]=[[0,0,0],[8,0,0],[8,8,0],[4,4,0],[0,8,0]]
+        region["style"].update(fillOpacity=0)
+        doc["layers"].extend({"id":"extra-"+str(i),"name":"合成层","visible":False,"locked":True,"features":[]} for i in range(999))
+        raw=b"\xef\xbb\xbf"+json.dumps(doc,ensure_ascii=False,indent=2).encode("utf8")
+        self.file.write_bytes(raw)
+        repo=initialize_layer_repository(self.root)
+        self.assertEqual(read_editor_publication(self.root,self.file),raw)
+        stored=publish_layer_bytes(repo,raw)
+        self.assertEqual(stored["raw"],raw);self.assertEqual(stored["document"],doc)
+        self.assertEqual(stored["revision"],1);self.assertEqual(len(stored["document"]["layers"]),1000)
+        self.assertEqual(self.file.read_bytes(),raw)
+
+    def test_direct_invalid_publication_is_rejected_before_any_version_is_created(self):
+        repo=initialize_layer_repository(self.root)
+        bad=sample();bad["layers"][0]["features"][0]["style"]["opacity"]=True
+        with self.assertRaises(ValueError):publish_layer_bytes(repo,json.dumps(bad).encode())
+        with repo.transaction() as db:
+            for table in ("dlg_documents","dlg_versions","dlg_features","dlg_layers"):
+                self.assertEqual(db.execute("SELECT count(*) FROM "+table).fetchone()[0],0)
+
     def test_partial_editor_save_never_overwrites_valid_published_snapshot(self):
         repo=initialize_layer_repository(self.root);get=self.start(repo);self.assertEqual(get()[0],200)
         self.file.write_bytes(b'{partial editor save')

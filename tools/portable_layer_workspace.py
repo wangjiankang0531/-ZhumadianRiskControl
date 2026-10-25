@@ -11,7 +11,7 @@ from portable_source_runtime import regular, json_file, digest
 from services.database import SCHEMA_VERSION, SCHEMA_SQLITE
 from services.layers import LayerRepository
 from services.common import ApiError, loads
-from services.data import validate_layers
+from landscape_layer_validation import validate_editor_layers
 import os, re
 
 
@@ -91,12 +91,13 @@ def read_editor_publication(root, default_file):
         raise ApiError(413,"LAYER_SOURCE_TOO_LARGE")
     if identity is not None and (len(raw)!=identity["bytes"] or digest(raw)!=identity["sha256"]):
         raise ValueError("editor publication payload identity differs")
-    validate_layers(loads(raw))
+    validate_editor_layers(loads(raw))
     return raw
 
 
 def publish_layer_bytes(repository, raw):
     """CAS publication of the already validated immutable bytes, no file reread."""
+    validate_editor_layers(loads(raw))
     try:
         current = repository.get("zhumadian","default")
     except ApiError as error:

@@ -85,7 +85,7 @@
     "runtimeOrReferenceOrDatabaseOrGISOrCredentialsIncluded": false
   },
   "documentationSHA256": {
-    "deploy/handbook/README.md": "95577d78892b5f662ad47ac80cd08611ace7f01b8c89bedc6da0522b8ba449d9",
+    "deploy/handbook/README.md": "d78898e0c67f6283e71c2eba8f1d069a4aa7cb881e86056d42af3dcf6ff14020",
     "deploy/handbook/implementation_boundaries.md": "9895447c3950f0e8157d40f5f6c9f2c0f3e8c73d9c7df05eccc8e28eb80027d1",
     "deploy/handbook/operations_runbook.md": "6de4fa2313e5c38882933a804339a205e46a725f400e5ca9ddfbaff783e20286",
     "deploy/handbook/field_acceptance_20261020.md": "4786eebc0b5fcd43d29ac4d910ad06d5c7c08ac1c3e0eb25567a993b73b0bff6",
@@ -137,5 +137,20 @@
       "cloudVideoStreamingAccepted": false,
       "fullObjectiveComplete": false
     }
-  }
+  },
+  "sourceOnlyFixes": [
+    {
+      "id": "dlg-render-publication-validation-20261025",
+      "document": "dlg_render_publication_validation_20261025.md",
+      "sourceUnitTestsPassed": 54,
+      "webPublicationDifferentialCasesMatched": 28,
+      "deployed": false,
+      "runtimePackageChanged": false,
+      "nativeValidationInterruptedBy": "0xc0000043",
+      "nativeValidationSucceededCases": 1,
+      "furtherNativeAttempts": 0,
+      "native256VsWeb1000LayerLimitResolved": false,
+      "wholeNativeWebRoundtripAccepted": false
+    }
+  ]
 }
