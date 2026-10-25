@@ -49,11 +49,18 @@ def preflight(app,iis,report):
         ip,port,host=binding.get('bindingInformation','').rsplit(':',2)
         if port=='443' and host.lower() in ('',HOST):addresses.append('127.0.0.1' if ip in ('','*') else ip.strip('[]'))
     assert addresses,'EXISTING_CANONICAL_HTTPS_BINDING_REQUIRED'
+    checks=report.setdefault('existingSiteHTTPSChecks',[])
     for address in dict.fromkeys(addresses):
         try:
             code,_=tls_local(address,'/zhumadian/')
-            if code in (200,301,302):report.update(dotNetRelease=net,httpsAddress=address,existingSiteTLSVerified=True);return address
-        except (OSError,ssl.SSLError):pass
+            checks.append({'address':address,'httpStatus':code})
+            print('PREFLIGHT: verified HTTPS response status='+str(code),flush=True)
+            # Existing IIS may redirect to its login/home route with See Other.
+            # Only the verified response is inspected; no redirect is followed.
+            if code in (200,301,302,303,307,308):report.update(dotNetRelease=net,httpsAddress=address,existingSiteTLSVerified=True);return address
+        except (OSError,ssl.SSLError) as error:
+            checks.append({'address':address,'errorType':type(error).__name__,'error':str(error)})
+            print('PREFLIGHT: HTTPS check failed: '+type(error).__name__+': '+str(error),flush=True)
     raise RuntimeError('EXISTING_SITE_TLS_PREFLIGHT_FAILED_NO_FILES_CHANGED')
 def refresh_rollback_owner(active_path,expected_bytes,active,ready,app,release_id):
     """Refresh process ownership only; preserve the existing IIS transaction."""
