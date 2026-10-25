@@ -35,7 +35,8 @@
     "250": {
       "identity": "f6a5758586635b70025773c3e40083e0c51c7bc01cc02db74cf491233dd7293a",
       "readOnlyHTTPVerified": true,
-      "restartedDuring252Recovery": false
+      "restartedDuring252Recovery": false,
+      "lastRecheckAvailability": "connection-refused-at-2026-10-25T19:51"
     },
     "252": {
       "package": "F:/XNBY/ZhumadianScene_20261020",
@@ -45,7 +46,8 @@
       "enterprises": 14,
       "features": 16,
       "nearViewObserved": true,
-      "wholePayloadHashesReverified": false
+      "wholePayloadHashesReverified": false,
+      "currentAvailabilityReverifiedInLatestRound": false
     },
     "autoStartConfigured": false
   },
@@ -90,9 +92,9 @@
     "deploy/handbook/operations_runbook.md": "6de4fa2313e5c38882933a804339a205e46a725f400e5ca9ddfbaff783e20286",
     "deploy/handbook/field_acceptance_20261020.md": "4786eebc0b5fcd43d29ac4d910ad06d5c7c08ac1c3e0eb25567a993b73b0bff6",
     "deploy/handbook/current_test_release_design_20261025.md": "7e2512beda1f55081e8b54c18edeea469e97d5e2c1d3f7d18f68dde392e3942b",
-    "deploy/handbook/current_test_release_deployment_20261025.md": "fee2888619c31cc6eeecd5ac4e9da5210daa2e219cb5b079945490af2970a50f",
+    "deploy/handbook/current_test_release_deployment_20261025.md": "cdb3f9ad9f583a7899bf5de4b4fe728a589fe0599d7fdf17199f0eaf7e95f00d",
     "deploy/handbook/current_test_release_user_guide_20261025.md": "c676ad3e7cf755f612738b733888e04fec0941926f12b67c7700a4513c53a93f",
-    "deploy/handbook/current_test_release_acceptance_20261025.md": "bbbbbdba121b763d19542e9b6b65e8280bc4340a6cd90546baf3144f7ea97564",
+    "deploy/handbook/current_test_release_acceptance_20261025.md": "8ca4fa24b075d986a34bdfbf9014b6bceac57b9f5cbb9d1360c27c80fc986e4e",
     "deploy/handbook/current_test_release_next_tasks_20261025.md": "70f630f48865734ea83c32f1fb30b850bbfc6db80255bfc03b6db5bea361b561"
   },
   "nextPrioritiesStatus": "proposal-awaiting-user-adjustment",
@@ -157,6 +159,19 @@
       "failureWindowMatchingEvents": 0,
       "causeProven": false,
       "nativeRetried": false
+    },
+    "runtimeAvailability": {
+      "observationStartedAt": "2026-10-25T19:51:30+08:00",
+      "host": "250",
+      "loopback18891": "connection-refused",
+      "loopback8767": "connection-refused",
+      "knownApplicationProcessMatches": 0,
+      "publicHomeAnonymousHEAD": 200,
+      "uuOrChromeWindowPresent": false,
+      "remote252LiveStateVerified": false,
+      "staleReadyProvesLiveness": false,
+      "stopCauseProven": false,
+      "restarted": false
     }
   },
   "sourceOnlyFixes": [
