@@ -62,7 +62,7 @@ def forwarding_headers(origin):
             '  proxy_set_header X-Forwarded-Server "";']
 
 
-def prepare(output, runtime, roots, port, business_port=None, platform_port=None, base_path='/tianjinrisk',admin_frontend_port=None,public_origin=None):
+def prepare(output, runtime, roots, port, business_port=None, platform_port=None, base_path='/tianjinrisk',admin_frontend_port=None,public_origin=None,project_name=None):
     output=Path(output).resolve();runtime=Path(runtime).resolve()
     checked_port(port)
     base_path=checked_base_path(base_path)
@@ -164,11 +164,17 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
     (output/'logs').mkdir()
     (output/'temp').mkdir()
     config=output/'nginx.conf'
-    config.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+    config_text='\n'.join(lines)+'\n'
+    branding=None
+    if project_name is not None:
+        from original_project_branding import brand_static_config
+        config_text,branding=brand_static_config(config_text,project_name)
+    config.write_text(config_text,encoding='utf-8')
     receipt={'bind':'127.0.0.1','port':port,'appBasePath':base_path,'backendMode':'unavailable' if business_port is None else 'isolated-loopback',
              'businessPort':business_port,'platformPort':platform_port,'adminFrontendPort':admin_frontend_port,
              'adminBasePath':base_path+'/admin' if admin_frontend_port is not None else None,
              'canonicalPublicOrigin':public_origin,
+             'projectBranding':branding,
              'nginxRedirectsRelative':public_origin is not None,
              'roots':{k:str(Path(v).resolve()) for k,v in roots.items()},
              'nginxExecutableSHA256':hashlib.sha256((runtime/'nginx.exe').read_bytes()).hexdigest(),
@@ -188,7 +194,8 @@ def main():
     ap.add_argument('--base-path',default='/tianjinrisk')
     ap.add_argument('--admin-frontend-port',type=int)
     ap.add_argument('--public-origin',help='Canonical HTTPS origin of the existing TLS frontend; does not expose a listener')
-    a=ap.parse_args();r=prepare(a.output,a.runtime,{k:getattr(a,k) for k in ('security_pc','emergency_pc','mobile','bigscreen','tiles')},a.port,a.business_port,a.platform_port,a.base_path,a.admin_frontend_port,a.public_origin)
+    ap.add_argument('--project-name',help='Explicit project display name for static responses')
+    a=ap.parse_args();r=prepare(a.output,a.runtime,{k:getattr(a,k) for k in ('security_pc','emergency_pc','mobile','bigscreen','tiles')},a.port,a.business_port,a.platform_port,a.base_path,a.admin_frontend_port,a.public_origin,a.project_name)
     print(json.dumps({k:r[k] for k in ('bind','port','backendMode','businessAPISynthesized','staticResourcesCopied','publicProductionReady')}))
 
 if __name__=='__main__':main()

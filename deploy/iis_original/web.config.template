@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <!-- Materialize an existing private ingress key at installation. Never commit it. -->
+  <appSettings><add key="XnbyIngressKey" value="REPLACE_WITH_PRIVATE_64_HEX_KEY" /></appSettings>
+  <system.web>
+    <compilation debug="false" targetFramework="4.5" />
+    <httpRuntime targetFramework="4.5" maxRequestLength="102400" executionTimeout="150" />
+    <customErrors mode="On" />
+  </system.web>
+  <system.webServer>
+    <handlers>
+      <clear />
+      <add name="XnbyOriginalProject" path="*" verb="*" type="XnbyReferenceProxy" resourceType="Unspecified" preCondition="integratedMode,runtimeVersionv4.0" />
+    </handlers>
+    <security><requestFiltering><requestLimits maxAllowedContentLength="104857600" /></requestFiltering></security>
+    <httpErrors existingResponse="PassThrough" />
+  </system.webServer>
+</configuration>

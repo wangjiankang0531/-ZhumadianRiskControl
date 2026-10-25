@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="驻马店重大风险防控">
+  <title>驻马店重大风险防控</title>
+  <rect width="64" height="64" rx="14" fill="#0B2D50"/>
+  <path d="M32 6 53 14v16c0 13-9 22-21 28C20 52 11 43 11 30V14Z" fill="#1569A8" stroke="#7BE4F5" stroke-width="3" stroke-linejoin="round"/>
+  <path d="m32 18 14 25H18Z" fill="#FFD34D" stroke="#FFF0AE" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M32 27v7" stroke="#163756" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="32" cy="39" r="2" fill="#163756"/>
+</svg>

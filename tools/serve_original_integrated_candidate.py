@@ -385,7 +385,7 @@ try:
  else:
   oldroots=json.loads((W/'original-home-map-gateway-r3/unavailable/receipt.json').read_bytes())['roots'];roots={name:pathlib.Path(value) for name,value in oldroots.items()};roots['security_pc']=W/'original-admin-home-deployment-r1/dist'
  nginx_runtime=W/'local-gateway-runtime_20261024/nginx-1.31.8';gateway=root/'gw'
- gate=prepare_original_frontend_gateway.prepare(gateway,nginx_runtime,roots,args.gateway_port,business_port,platform_port,'/zhumadian',archive_server.server_port,public_origin=public_origin)
+ gate=prepare_original_frontend_gateway.prepare(gateway,nginx_runtime,roots,args.gateway_port,business_port,platform_port,'/zhumadian',archive_server.server_port,public_origin=public_origin,project_name='\u9a7b\u9a6c\u5e97\u91cd\u5927\u98ce\u9669\u9632\u63a7')
  assert gate['nginxExecutableSHA256']=='c321bdc2a6eccdaad3c702e4da37e2f7bbfa4ffb3cabb9e70c586f5a5e95da44'
  (gateway/'tmp').mkdir()
  config=gateway/'nginx.conf';text=config.read_text('utf-8');text=text.replace("log_format without_query '$request_method $uri $status';","log_format without_query '$request_method $status';");config.write_text(text,encoding='utf-8')
