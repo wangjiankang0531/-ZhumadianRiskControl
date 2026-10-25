@@ -21,6 +21,8 @@ def static_directives(project_name):
                      ('"敏捷应急管理"', '"' + project_name + '"')]
     icon_url = '/zhumadian/' + ICON_NAME
     replacements += [
+        # uni-image resolves absolute image paths against its own H5 base.
+        ('/zhumadian/h5/assets/logo-C4nOa3Mc.png', '/zhumadian/h5/' + ICON_NAME),
         ('href="/zhumadian/favicon.ico"', 'href="' + icon_url + '"'),
         ('href="/zhumadian/emergency/favicon.ico"', 'href="' + icon_url + '"'),
         ('href="/zhumadian/h5/assets/favicon-CB3x86W5.ico" type="image/x-icon"',
@@ -63,6 +65,11 @@ def brand_static_config(config, project_name):
         if line.lstrip().startswith('server_name '):
             result.append(' rewrite ^/(zhumadian(?:/emergency|/h5)?)/' + ASSET_VERSION + '/(assets/.*)$ /$1/$2 last;')
             result.extend([' location = /zhumadian/' + ICON_NAME + ' {',
+                           '  alias "' + icon_path + '";',
+                           '  default_type image/svg+xml;',
+                           '  add_header Cache-Control "no-store" always;',
+                           ' }'])
+            result.extend([' location = /zhumadian/h5/' + ICON_NAME + ' {',
                            '  alias "' + icon_path + '";',
                            '  default_type image/svg+xml;',
                            '  add_header Cache-Control "no-store" always;',
