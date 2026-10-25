@@ -1,7 +1,7 @@
 {
   "schema": "zhumadian.test.release.checkpoint.v1",
   "checkpointId": "20261025-r4-dual-machine",
-  "recordedAt": "2026-10-25T20:58:13.296608+08:00",
+  "recordedAt": "2026-10-25T21:12:47.065484+08:00",
   "status": "deployed-test-stage",
   "projectName": "驻马店重大风险防控",
   "sourceBaseline": {
@@ -91,14 +91,14 @@
     "runtimeOrReferenceOrDatabaseOrGISOrCredentialsIncluded": false
   },
   "documentationSHA256": {
-    "deploy/handbook/README.md": "6396c581a0909001f8beb32fc074718c2ef565a67c84759f6e9424fe174ca7ae",
+    "deploy/handbook/README.md": "26d16f1c20c86d226dc39d0cc1f58d56e27936a7f1f9474babb50983a77b425f",
     "deploy/handbook/implementation_boundaries.md": "9895447c3950f0e8157d40f5f6c9f2c0f3e8c73d9c7df05eccc8e28eb80027d1",
     "deploy/handbook/operations_runbook.md": "6de4fa2313e5c38882933a804339a205e46a725f400e5ca9ddfbaff783e20286",
     "deploy/handbook/field_acceptance_20261020.md": "4786eebc0b5fcd43d29ac4d910ad06d5c7c08ac1c3e0eb25567a993b73b0bff6",
-    "deploy/handbook/current_test_release_design_20261025.md": "c3460465014e09f53f328a06c0aec0a5e00d3453d156adc847146cdfde69a66e",
-    "deploy/handbook/current_test_release_deployment_20261025.md": "0cc72392e8bad00220e56025a5db4f6ef77fe620555b2fd9eec932babd0a0efa",
-    "deploy/handbook/current_test_release_user_guide_20261025.md": "c9a5c576f3962fd26fb64d050b8df7e45412c6b2e325693779fee64c95c46ef3",
-    "deploy/handbook/current_test_release_acceptance_20261025.md": "09c502f4b437b6062be90e0aa3916ee32f79ad42f3aff6b14a4fa0bfb04e5474",
+    "deploy/handbook/current_test_release_design_20261025.md": "3a73788ecc05f60bc6949a7caf8c6f7465d867b41e084821bf213112c20e3b92",
+    "deploy/handbook/current_test_release_deployment_20261025.md": "1b2d05b5b004ad6a75628d0b45655b301f28a56819efe5418f64307938d5e90e",
+    "deploy/handbook/current_test_release_user_guide_20261025.md": "43dd70361c2f5ae59ffd55f7235955aee4863115014be35e7134598a9109d0d5",
+    "deploy/handbook/current_test_release_acceptance_20261025.md": "fd83344941ec9a0694fd4ff6f3da7f900a559eec2e99f810b7b9ec8b3f087b28",
     "deploy/handbook/current_test_release_next_tasks_20261025.md": "18b556c59248c96293f4203bf0475fb981e29871c0eba69656634903de6c8a86"
   },
   "nextPrioritiesStatus": "proposal-awaiting-user-adjustment",
@@ -251,6 +251,25 @@
       "realWorkflowCasesExecuted": 0,
       "databaseConnected": false,
       "runtimeChanged": false
+    },
+    "localBusinessAcceptanceRecovery": {
+      "recordedAt": "2026-10-25T21:12:47.065484+08:00",
+      "document": "original_local_business_acceptance_20261025.md",
+      "application": "D:/Zqa20261025/Application",
+      "gatewayPort": 18891,
+      "run": "j3",
+      "persistent": true,
+      "userConfirmedLoggedInToHome": true,
+      "ownedDatabaseIdentityVerified": true,
+      "actualFormConfigurationHashesMatched": 21,
+      "formRelations": 19,
+      "roles": 13,
+      "anonymousCurrentUserRejected": true,
+      "oldJ18DataReused": false,
+      "newDatabaseOrPayloadCopied": false,
+      "publicServerOrScenesChanged": false,
+      "actualWorkflowCasesExecuted": 0,
+      "fullBusinessAccepted": false
     }
   },
   "sourceOnlyFixes": [
