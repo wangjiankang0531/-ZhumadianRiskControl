@@ -13,6 +13,7 @@
 - [天津原源码操作台账与未验收边界](tianjin_operation_inventory_20261025.md)
 - [核心后台源码契约与24条待执行用例](tianjin_core_backend_contract_20261025.md)
 - [原业务方法验证与未验收边界](original_business_method_probe_20261025.md)
+- [250本机三维晚间恢复与使用说明](local_scene_250_recovery_20261025.md)
 - [EXE、Web、云渲染与目录迁移总目标证据核对](goal_scope_evidence_audit_20261025.md)
 - [图层发布显示格式校验修复（源码候选，未部署）](dlg_render_publication_validation_20261025.md)
 
