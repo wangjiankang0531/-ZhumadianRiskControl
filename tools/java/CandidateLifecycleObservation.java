@@ -12,7 +12,7 @@ public final class CandidateLifecycleObservation implements ApplicationContextIn
   boolean servlet=false;for(Method m:context.getClass().getMethods())if(m.getName().equals("getServletContext")&&m.getParameterCount()==0)servlet=true;if(!servlet)return;
   final Path root=Paths.get(System.getProperty("own.candidate.root"));
   final int seconds=Integer.getInteger("own.candidate.maximum-seconds",3600);
-  if(seconds<60||seconds>7200)throw new IllegalArgumentException("OWN_CANDIDATE_LEASE_RANGE");
+  if(seconds<60||seconds>43200)throw new IllegalArgumentException("OWN_CANDIDATE_LEASE_RANGE");
   context.addApplicationListener(event->{
    try {
     if(event instanceof WebServerInitializedEvent&&((WebServerInitializedEvent)event).getApplicationContext()==context)Files.write(root.resolve("candidate-http-port.txt"),Integer.toString(((WebServerInitializedEvent)event).getWebServer().getPort()).getBytes("US-ASCII"));

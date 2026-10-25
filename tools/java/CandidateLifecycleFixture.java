@@ -31,7 +31,8 @@ public final class CandidateLifecycleFixture {
   };
   holder[0]=(ConfigurableApplicationContext)Proxy.newProxyInstance(CandidateLifecycleFixture.class.getClassLoader(),new Class<?>[]{ConfigurableApplicationContext.class,ServletMarker.class},handler);
   System.setProperty("own.candidate.maximum-seconds","0");boolean rejected=false;try{new CandidateLifecycleObservation().initialize(holder[0]);}catch(IllegalArgumentException expected){rejected=true;}check(rejected&&listeners.isEmpty());
-  System.setProperty("own.candidate.maximum-seconds","60");new CandidateLifecycleObservation().initialize(holder[0]);check(listeners.size()==1);
+  System.setProperty("own.candidate.maximum-seconds","43201");rejected=false;try{new CandidateLifecycleObservation().initialize(holder[0]);}catch(IllegalArgumentException expected){rejected=true;}check(rejected&&listeners.isEmpty());
+  System.setProperty("own.candidate.maximum-seconds","43200");new CandidateLifecycleObservation().initialize(holder[0]);check(listeners.size()==1);
   ApplicationReadyEvent event=new ApplicationReadyEvent(new SpringApplication(),new String[0],holder[0],Duration.ZERO);
   for(ApplicationListener l:listeners)l.onApplicationEvent(event);
   check(Files.exists(root.resolve("candidate-ready.txt"))&&active.get());

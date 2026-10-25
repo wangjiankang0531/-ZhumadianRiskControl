@@ -7,6 +7,16 @@ import java.util.zip.*;
 
 /** Original YAML is parsed as nodes only; external integration values are replaced before writing. */
 public final class OriginalPlatformConfigBuilder{
+ // This exact property is the public AES wire constant embedded in all original
+ // browser clients. It is not an account credential or a session/signing token.
+ // Rotating only the server side breaks PasswordTokenGranter before password
+ // verification; all other secret-like properties must still be replaced.
+ static boolean publicClientWireKey(String key,String value){
+  if(!key.equals("security.SecurityKey"))return false;
+  int bytes=value.getBytes(java.nio.charset.StandardCharsets.UTF_8).length;
+  if(!Set.of(16,24,32).contains(bytes))throw new IllegalArgumentException("CLIENT_WIRE_AES_KEY_LENGTH");
+  return true;
+ }
  static void flatten(Node node,String key,Map<String,String> out){
   if(node instanceof MappingNode m){
    for(NodeTuple tuple:m.getValue()){
@@ -35,7 +45,7 @@ public final class OriginalPlatformConfigBuilder{
   String secret=own.getProperty("ownSecret");
   for(var entry:source.entrySet()){
    String key=entry.getKey(),lower=key.toLowerCase(Locale.ROOT),value=entry.getValue();
-   if(lower.matches(".*(password|secret|token|access[-]?key|app[-]?key|securitykey|mastersecret).*")){value=secret;overridden.add(key);}
+   if(!publicClientWireKey(key,value)&&lower.matches(".*(password|secret|token|access[-]?key|app[-]?key|securitykey|mastersecret).*")){value=secret;overridden.add(key);}
    if(value.startsWith("http://")||value.startsWith("https://")||value.startsWith("jdbc:")||lower.matches(".*[.]host$")){value="http://127.0.0.1:9/own-unavailable";overridden.add(key);}
    if((key.startsWith("config.")&&key.endsWith("Path"))||lower.matches(".*(base-path|storage-path|logpath|log[.]path)$")){
     value=root.resolve("files").resolve(key.replaceAll("[^A-Za-z0-9_-]","_")).toString()+"/";Files.createDirectories(Paths.get(value));overridden.add(key);

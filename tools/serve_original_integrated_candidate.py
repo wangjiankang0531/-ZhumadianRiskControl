@@ -6,6 +6,7 @@ parser.add_argument('--name',required=True)
 parser.add_argument('--previous-receipt',type=pathlib.Path,required=True)
 parser.add_argument('--gateway-port',type=int,default=18891)
 parser.add_argument('--minutes',type=int,default=60)
+parser.add_argument('--check-sources-only',action='store_true',help='Read-only bounded source reachability; do not create or start a candidate')
 parser.add_argument('--public-origin',help='Explicit canonical HTTPS origin of an existing TLS frontend; listener remains loopback')
 parser.add_argument('--original-business-config',type=pathlib.Path)
 parser.add_argument('--original-business-config-sha256')
@@ -24,7 +25,7 @@ parser.add_argument('--frontend-roots-sha256')
 parser.add_argument('--frontend-roots-bindings',type=pathlib.Path)
 parser.add_argument('--platform-storage',action='store_true')
 parser.add_argument('--platform-files-recover',action='store_true')
-args=parser.parse_args();assert 1<=args.minutes<=120 and 1024<=args.gateway_port<=65535,'OWN_EXPLICIT_CANDIDATE_LEASE_AND_PORT'
+args=parser.parse_args();assert 1<=args.minutes<=720 and 1024<=args.gateway_port<=65535,'OWN_EXPLICIT_CANDIDATE_LEASE_AND_PORT'
 assert re.fullmatch(r'own-j[1-9][0-9]{0,3}',args.name),'OWN_EXPLICIT_RUN_NAME_REQUIRED'
 from prepare_original_frontend_gateway import checked_public_origin
 public_origin=checked_public_origin(args.public_origin)
@@ -44,17 +45,32 @@ if args.platform_storage and not store_requested:raise ValueError('OWN_PLATFORM_
 if args.platform_files_recover and not args.platform_storage:raise ValueError('OWN_PLATFORM_RECOVERY_REQUIRES_PLATFORM_STORAGE')
 if store_requested:
  from original_object_store_runtime import OwnedObjectStore
+P=pathlib.Path(__file__).parent;W=args.workspace.resolve(strict=True);A=W.parents[1];R=A.parent
+assert A.name=='Application' and (A/'tools/reference_flat_runtime.py').is_file(),'OWN_KNOWN_APPLICATION_WORKSPACE_REQUIRED'
+from original_candidate_source_preflight import require_source_files,SourcePreflightError
+source_meta_path=W/'own-pboot-r32/preparation.json'
+assert source_meta_path.stat().st_size<=1024**2,'BOUNDED_LOCAL_SOURCE_PREPARATION_REQUIRED'
+source_meta=json.loads(source_meta_path.read_bytes())
+source_files=[{'label':'platform_archive','path':str(source_meta['sourceArchive'])}]
+if semantics_requested:source_files.append({'label':'original_business_config','path':str(args.original_business_config)})
+try:source_preflight=require_source_files(source_files)
+except SourcePreflightError as error:
+ print(json.dumps({'state':'source-unavailable',**error.report}),flush=True)
+ raise SystemExit('OWN_REQUIRED_SHARED_SOURCE_NOT_READABLE') from None
+if args.check_sources_only:
+ print(json.dumps({'state':'sources-readable-only',**source_preflight}),flush=True)
+ raise SystemExit(0)
 if semantics_requested:
  assert args.original_business_config.is_file() and args.original_business_config.stat().st_size<=65536,'OWN_ORIGINAL_BUSINESS_CONFIG_REQUIRED'
  assert hashlib.sha256(args.original_business_config.read_bytes()).hexdigest()==args.original_business_config_sha256,'OWN_ORIGINAL_BUSINESS_CONFIG_PIN_MISMATCH'
-P=pathlib.Path(__file__).parent;W=args.workspace.resolve(strict=True);A=W.parents[1];R=A.parent
-assert A.name=='Application' and (A/'tools/reference_flat_runtime.py').is_file(),'OWN_KNOWN_APPLICATION_WORKSPACE_REQUIRED'
+
 preloaded_admin=load_admin_runtime(args.admin_frontend_runtime,args.admin_frontend_runtime_sha256,'/zhumadian/admin') if prepared_admin_requested else None
 preverified_frontends=select_frontend_roots(args.frontend_roots_manifest,args.frontend_roots_sha256,args.frontend_roots_bindings) if frontend_roots_requested else None
 platform_support_root,platform_support_proof=select_support(args.platform_support_receipt,args.platform_support_sha256) if support_requested else (W/'own-pboot-r32',{'mode':'legacy-prepared-platform-support'})
 flat,business_runtime=select_for_launch(W,args.reference_business_runtime,args.reference_business_runtime_sha256,args.portable_business_runtime,args.portable_business_runtime_sha256,semantics_requested)
 previous=json.loads(args.previous_receipt.read_bytes())
-assert previous['ownMySQLExited'] and previous['ownMySQLExitCode']==0 and previous['ownRedisExited'] and previous['ownRedisExitCode']==0
+from original_candidate_process_wait import validate_previous_database_shutdown
+validate_previous_database_shutdown(previous,args.previous_receipt)
 assert previous['ownBusinessExited'] and previous['ownPlatformExited']
 if previous.get('objectStoreRequested'):
  assert previous.get('ownObjectStoreExited') and previous.get('ownObjectStoreExitCode')==0 and not previous.get('ownObjectStoreTerminated'),'PREVIOUS_OWN_OBJECT_STORE_MUST_HAVE_CLOSED_NORMALLY'
@@ -159,6 +175,7 @@ result={'startedAt':datetime.datetime.now().astimezone().isoformat(),'ownerId':o
  'originalBusinessSemanticsRequested':semantics_requested,'originalBusinessConfigSHA256':args.original_business_config_sha256 if semantics_requested else None,
  'ownedBusinessLauncherClass':'xnby.replica.OriginalBusinessLaunch' if semantics_requested else 'xnby.replica.OriginalIsolatedLaunch',
  'ownedBusinessLauncherSourceSHA256':sha(P/'java/OriginalBusinessLaunch.java') if semantics_requested else None}
+result['sourcePreflight']=source_preflight
 result['objectStoreRequested']=store_requested
 result['platformStorageRequested']=args.platform_storage
 result['platformFilesRecoverRequested']=args.platform_files_recover
@@ -436,7 +453,7 @@ try:
  result['remainingLeaseSeconds']=int(remaining)
  result.update(state='ready-for-original-login',readyAt=datetime.datetime.now().astimezone().isoformat(),gatewayPID=nginx.pid,
   portalURL=entry+'/zhumadian/home',mobileURL=entry+'/zhumadian/h5/',adminURL=entry+'/zhumadian/admin/',
-  leaseMinutes=args.minutes,realLoginAttempted=False,authenticatedBusinessVerified=False,originalAdminResourcesCopied=False,sourceArchive=archive_receipt,
+  leaseMinutes=args.minutes,expiresAt=datetime.datetime.fromtimestamp(time.time()+remaining).astimezone().isoformat(),realLoginAttempted=False,authenticatedBusinessVerified=False,originalAdminResourcesCopied=False,sourceArchive=archive_receipt,
   stopFile=str(root/'stop'),legacyDataAnomaliesRemain=True,fullCloneReady=False,publicDeployed=False)
  (root/'ready.json').write_text(json.dumps(result,indent=2),encoding='utf-8');print(json.dumps({key:result[key] for key in ('state','portalURL','mobileURL','adminURL','leaseMinutes','fullCloneReady')}),flush=True)
  deadline=time.monotonic()+remaining
@@ -466,7 +483,8 @@ finally:
  deadline=time.monotonic()+20
  while time.monotonic()<deadline and any(process is not None and process.poll() is None for process in (business,platform)):time.sleep(.2)
  for process,name in [(business,'Business'),(platform,'Platform')]:
-  if process is not None and process.poll() is None:process.terminate();process.wait(timeout=15);result['own'+name+'Terminated']=True
+  from original_candidate_process_wait import finish_owned_process
+  result.update(finish_owned_process(process,name))
   result['own'+name+'Exited']=process is None or process.poll() is not None;result['own'+name+'ExitCode']=process.returncode if process else None
  if object_store is not None:
   if not object_probe_cleaned and object_store.process is not None and object_store.process.poll() is None:

@@ -8,9 +8,24 @@ HELPER_SHA256='799d1289e3122b0e73ef4b6a3c9639bc5c59d820c7670800c673a1b7acd5a508'
 def sha(path):return hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest()
 def properties(path):return dict(line.split('=',1) for line in pathlib.Path(path).read_text('ascii').splitlines() if line and not line.startswith(('#','!')))
 
+def compile_wrappers(root,jdk,helper,archive,deps,sources,env,native,lifecycle_proof=None):
+  cp=os.pathsep.join(map(str,[helper,archive,*sorted(deps.glob('*.jar'))]));compile=subprocess.run([str(jdk/'bin/javac.exe'),'-proc:none','-source','1.8','-target','1.8','-encoding','UTF-8','-cp',cp,'-d',str(root/'classes'),*map(str,sources)],cwd=root,env=env,capture_output=True,timeout=40,creationflags=subprocess.CREATE_NO_WINDOW);(root/'compile.private.log').write_bytes(compile.stdout+compile.stderr);assert compile.returncode==0,'ORIGINAL_BIGSCREEN_WRAPPER_COMPILE_FAILED'
+  class_pins={file.relative_to(root/'classes').as_posix():sha(file) for file in (root/'classes').rglob('*.class')}
+  lifecycle_prefix='xnby/replica/CandidateLifecycleObservation'
+  for rel,pin in class_pins.items():
+   expected=lifecycle_proof['compiledLifecycleClassesSHA256'].get(rel) if lifecycle_proof and rel.startswith(lifecycle_prefix) else sha(native/'classes'/rel)
+   assert expected==pin,'KNOWN_EXECUTED_WRAPPER_CLASS_REQUIRED'
+  if lifecycle_proof:
+   assert {rel:pin for rel,pin in class_pins.items() if rel.startswith(lifecycle_prefix)}==lifecycle_proof['compiledLifecycleClassesSHA256'],'EXACT_VERIFIED_LIFECYCLE_CLASS_SET_REQUIRED'
+
+  return class_pins
+
 class OriginalBigscreen:
- def __init__(self,workspace,output,minutes=30):
+ def __init__(self,workspace,output,minutes=30,lifecycle_receipt=None,lifecycle_sha256=None):
   self.workspace=pathlib.Path(workspace).resolve(strict=True);self.root=pathlib.Path(output).resolve();assert self.root.is_relative_to(self.workspace) and not self.root.exists();assert 1<=minutes<=60
+  from prepare_original_bigscreen_lifecycle import select as select_lifecycle
+  self.lifecycle_proof=select_lifecycle(self.workspace,lifecycle_receipt,lifecycle_sha256)
+  self.lifecycle_sha256=lifecycle_sha256
   self.tools=pathlib.Path(__file__).parent;self.minutes=minutes;self.process=None;self.log=None;self.result={'startedAt':datetime.datetime.now().astimezone().isoformat(),'originalApplicationStarted':False,'referenceDatabaseOpenedWritable':False,'realVideoQueryOrControlAttempted':False,'forcedTermination':False,'fullCloneReady':False}
  def start(self):
   W=self.workspace;root=self.root;native=W/'own-bigscreen-native-cli-r1';meta=json.loads((native/'preparation.json').read_bytes());proof=json.loads((native/'receipt.json').read_bytes());assert proof['passedChecks']==13 and proof['ownExitCode']==0
@@ -20,14 +35,16 @@ class OriginalBigscreen:
   assert jdk.resolve()==pathlib.Path(java_pins['platformJavaHome']).resolve()
   for name,pin in java_pins['platformRuntimePins'].items():assert sha(jdk/name)==pin
   sources=[self.tools/'java'/name for name in ('OriginalBigscreenProcessBoundary.java','OriginalBigscreenLaunch.java','OriginalBigscreenObservation.java','CandidateLifecycleObservation.java')]
-  for source in sources:assert sha(source)==meta['sourceSHA256'][source.name]
+  for source in sources:
+   expected=self.lifecycle_proof['lifecycleSourceSHA256'] if self.lifecycle_proof and source.name=='CandidateLifecycleObservation.java' else meta['sourceSHA256'][source.name]
+   assert sha(source)==expected,'KNOWN_BIGSCREEN_WRAPPER_SOURCE_REQUIRED'
   root.mkdir()
   for name in ('native','data','classes','tmp','home'):(root/name).mkdir()
   (root/'native/sqlitejdbc.dll').write_bytes((native/'native/sqlitejdbc.dll').read_bytes());(root/'data/working.db').write_bytes(self.reference.read_bytes());assert sha(root/'data/working.db')==DATABASE_SHA256
   self.env={k:v for k,v in os.environ.items() if k.upper() not in ('JAVA_TOOL_OPTIONS','JDK_JAVA_OPTIONS','_JAVA_OPTIONS','CLASSPATH')};self.env.update(TEMP=str(root/'tmp'),TMP=str(root/'tmp'))
-  cp=os.pathsep.join(map(str,[helper,self.archive,*sorted(deps.glob('*.jar'))]));compile=subprocess.run([str(jdk/'bin/javac.exe'),'-proc:none','-source','1.8','-target','1.8','-encoding','UTF-8','-cp',cp,'-d',str(root/'classes'),*map(str,sources)],cwd=root,env=self.env,capture_output=True,timeout=40,creationflags=subprocess.CREATE_NO_WINDOW);(root/'compile.private.log').write_bytes(compile.stdout+compile.stderr);assert compile.returncode==0,'ORIGINAL_BIGSCREEN_WRAPPER_COMPILE_FAILED'
-  class_pins={file.relative_to(root/'classes').as_posix():sha(file) for file in (root/'classes').rglob('*.class')}
-  for rel,pin in class_pins.items():assert sha(native/'classes'/rel)==pin,'KNOWN_EXECUTED_WRAPPER_CLASS_REQUIRED'
+  class_pins=compile_wrappers(root,jdk,helper,self.archive,deps,sources,self.env,native,self.lifecycle_proof)
+  if self.lifecycle_proof:
+   self.result['lifecycleCompatibility']={'receiptSHA256':self.lifecycle_sha256,'checks':self.lifecycle_proof['checks'],'eventConstructorArity':self.lifecycle_proof['eventConstructorArity'],'oldNativeReceiptModified':False,'nativeFixtureReexecuted':False}
   with zipfile.ZipFile(root/'own-launcher.jar','w',zipfile.ZIP_DEFLATED) as launch,zipfile.ZipFile(root/'own-observation.jar','w',zipfile.ZIP_DEFLATED) as observation:
    for file in (root/'classes').rglob('*.class'):
     target=launch if file.name.startswith(('OriginalBigscreenLaunch','OriginalBigscreenProcessBoundary')) else observation;target.write(file,file.relative_to(root/'classes').as_posix())
