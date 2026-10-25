@@ -11,6 +11,7 @@
 - [当前验收矩阵与限制](current_test_release_acceptance_20261025.md)
 - [下一步十项任务建议（待调整）](current_test_release_next_tasks_20261025.md)
 - [天津原源码操作台账与未验收边界](tianjin_operation_inventory_20261025.md)
+- [核心后台源码契约与24条待执行用例](tianjin_core_backend_contract_20261025.md)
 - [EXE、Web、云渲染与目录迁移总目标证据核对](goal_scope_evidence_audit_20261025.md)
 - [图层发布显示格式校验修复（源码候选，未部署）](dlg_render_publication_validation_20261025.md)
 

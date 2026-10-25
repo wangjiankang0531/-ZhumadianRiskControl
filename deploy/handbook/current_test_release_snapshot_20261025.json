@@ -87,7 +87,7 @@
     "runtimeOrReferenceOrDatabaseOrGISOrCredentialsIncluded": false
   },
   "documentationSHA256": {
-    "deploy/handbook/README.md": "9b276df9ab210dc947c47e2e60a065647d4bc0921df9307c380e16ff525d85d9",
+    "deploy/handbook/README.md": "955ebb24677d65d1aabcee07c60877eb8ea4dacc763f40675faa2ae725c9f13a",
     "deploy/handbook/implementation_boundaries.md": "9895447c3950f0e8157d40f5f6c9f2c0f3e8c73d9c7df05eccc8e28eb80027d1",
     "deploy/handbook/operations_runbook.md": "6de4fa2313e5c38882933a804339a205e46a725f400e5ca9ddfbaff783e20286",
     "deploy/handbook/field_acceptance_20261020.md": "4786eebc0b5fcd43d29ac4d910ad06d5c7c08ac1c3e0eb25567a993b73b0bff6",
@@ -172,6 +172,21 @@
       "staleReadyProvesLiveness": false,
       "stopCauseProven": false,
       "restarted": false
+    },
+    "coreBackendSourceContract": {
+      "recordedAt": "2026-10-25T20:16:40.001267+08:00",
+      "document": "tianjin_core_backend_contract_20261025.md",
+      "controllersReviewed": 5,
+      "directRoutes": 75,
+      "serviceMethodsReviewed": 28,
+      "frontendApiBindings": 68,
+      "shapeCandidatesIncludingVerifiedDownloadWrapper": 68,
+      "mutationOrIntegrationGETsDirectlyReviewed": 16,
+      "acceptanceCasesPrepared": 24,
+      "acceptanceCasesExecuted": 0,
+      "originalRuntimeBehaviorVerified": false,
+      "candidateRuntimeBehaviorVerified": false,
+      "runtimeChanged": false
     }
   },
   "sourceOnlyFixes": [
