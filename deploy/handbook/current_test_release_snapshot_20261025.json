@@ -1,7 +1,7 @@
 {
   "schema": "zhumadian.test.release.checkpoint.v1",
   "checkpointId": "20261025-r4-dual-machine",
-  "recordedAt": "2026-10-25T20:48:20.084315+08:00",
+  "recordedAt": "2026-10-25T20:58:13.296608+08:00",
   "status": "deployed-test-stage",
   "projectName": "驻马店重大风险防控",
   "sourceBaseline": {
@@ -91,14 +91,14 @@
     "runtimeOrReferenceOrDatabaseOrGISOrCredentialsIncluded": false
   },
   "documentationSHA256": {
-    "deploy/handbook/README.md": "d68b2bff64f0d67e2edf7ed964dd710b00ad4d5fa5a1a486a6b2584e40a59916",
+    "deploy/handbook/README.md": "6396c581a0909001f8beb32fc074718c2ef565a67c84759f6e9424fe174ca7ae",
     "deploy/handbook/implementation_boundaries.md": "9895447c3950f0e8157d40f5f6c9f2c0f3e8c73d9c7df05eccc8e28eb80027d1",
     "deploy/handbook/operations_runbook.md": "6de4fa2313e5c38882933a804339a205e46a725f400e5ca9ddfbaff783e20286",
     "deploy/handbook/field_acceptance_20261020.md": "4786eebc0b5fcd43d29ac4d910ad06d5c7c08ac1c3e0eb25567a993b73b0bff6",
     "deploy/handbook/current_test_release_design_20261025.md": "c3460465014e09f53f328a06c0aec0a5e00d3453d156adc847146cdfde69a66e",
     "deploy/handbook/current_test_release_deployment_20261025.md": "0cc72392e8bad00220e56025a5db4f6ef77fe620555b2fd9eec932babd0a0efa",
     "deploy/handbook/current_test_release_user_guide_20261025.md": "c9a5c576f3962fd26fb64d050b8df7e45412c6b2e325693779fee64c95c46ef3",
-    "deploy/handbook/current_test_release_acceptance_20261025.md": "1377d0b7ce35f3ae523cd0a520d46af0a3c5717fbdd206e7978e6bfd061ec3cb",
+    "deploy/handbook/current_test_release_acceptance_20261025.md": "09c502f4b437b6062be90e0aa3916ee32f79ad42f3aff6b14a4fa0bfb04e5474",
     "deploy/handbook/current_test_release_next_tasks_20261025.md": "18b556c59248c96293f4203bf0475fb981e29871c0eba69656634903de6c8a86"
   },
   "nextPrioritiesStatus": "proposal-awaiting-user-adjustment",
@@ -232,6 +232,25 @@
       "autoRestartConfigured": false,
       "userConfirmedLandscapeAndEnterpriseAnnotations": true,
       "userConfirmationRecordedAt": "2026-10-25T20:48:20.084315+08:00"
+    },
+    "workflowFormsAndCallbacks": {
+      "recordedAt": "2026-10-25T20:58:13.296608+08:00",
+      "document": "tianjin_workflow_forms_and_callbacks_20261025.md",
+      "sealedForms": 21,
+      "sealedRelations": 19,
+      "pcViewCandidates": 339,
+      "uniqueCoreComponentMatches": 5,
+      "otherFormsWithoutMatch": 16,
+      "unmatchedProvesRuntimeFailure": false,
+      "artifactsCompared": 3,
+      "callbackOutputsMatched": true,
+      "normalStateChecksPerArtifact": 3,
+      "unknownStatusCharacterizationsPerArtifact": 1,
+      "nullPointerCharacterizationsPerArtifact": 2,
+      "independentCompiledClassBytesMatched": 7,
+      "realWorkflowCasesExecuted": 0,
+      "databaseConnected": false,
+      "runtimeChanged": false
     }
   },
   "sourceOnlyFixes": [
