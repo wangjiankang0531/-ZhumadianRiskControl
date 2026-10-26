@@ -1,3 +1,4 @@
+import {validatePNGIconData} from './png_icon.js';
 import {labelOptions} from './label_options.js';
 import {validateBusiness} from './business_binding.js';
 
@@ -14,7 +15,7 @@ export function validateLandscapeDocument(doc){
       if(f.positions.some(p=>!Array.isArray(p)||p.length!==3||p.some(v=>!Number.isFinite(v)||Math.abs(v)>100000)))throw Error('标注坐标无效');
       const s=f.style;if(!record(s)||typeof s.color!=='string'||typeof s.fillColor!=='string'||!/^#[\da-f]{6}$/i.test(s.color)||!/^#[\da-f]{6}$/i.test(s.fillColor)||!['solid','dash','dot'].includes(s.pattern)||!['pin','circle','square','star','warning','custom'].includes(s.icon))throw Error('标注样式无效');
       for(const [k,lo,hi] of [['opacity',0,1],['fillOpacity',0,1],['widthPx',.5,32],['sizePx',8,128]])if(!Number.isFinite(s[k])||s[k]<lo||s[k]>hi)throw Error('标注样式数值超出范围');
-      if(s.icon==='custom'&&(typeof s.iconData!=='string'||!s.iconData.startsWith('data:image/png;base64,')||s.iconData.length>6*1048576))throw Error('自定义图标无效');
+      if(s.icon==='custom')validatePNGIconData(s.iconData);
       if(f.type==='region')validateRing(f.positions);
       if(Object.hasOwn(f,'business'))validateBusiness(f.business);
       if(Object.hasOwn(f,'label')){const l=f.label;if(!record(l)||typeof l.visible!=='boolean'||typeof l.text!=='string'||new TextEncoder().encode(l.text).length>768||typeof l.color!=='string'||!/^#[\da-f]{6}$/i.test(l.color)||!Number.isFinite(l.fontPx)||l.fontPx<8||l.fontPx>48||!Number.isFinite(l.opacity)||l.opacity<0||l.opacity>1||!Array.isArray(l.offset)||l.offset.length!==2||l.offset.some(v=>!Number.isFinite(v)||Math.abs(v)>1000))throw Error('文字标牌参数无效');labelOptions(l);}

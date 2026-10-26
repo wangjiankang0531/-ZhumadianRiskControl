@@ -1,3 +1,4 @@
+import {CustomIconCache} from './custom_icon_cache.js';
 import {SourceDrawOrder,SOURCE_CENTROID_POLICY} from './source_centroid_sampling.js';
 import {SourceWorkScheduler} from './source_work_scheduler.js';
 import {WitnessArchive} from './witness_archive.js';
@@ -128,7 +129,7 @@ const balancedRegions=new URLSearchParams(location.search).get('qa')==='1'&&new 
 function sourceResidentLimit(){return sourceLevelIndex?indexedCutsRequested?indexedResidentCapacity(sourceLevelIndex.index.records.length):residentLimit:Infinity;}
 const coverageGuard=new SourceCoverageGuard({renderer,scene,photoGroup,contextGroup,reserve:request=>pageBudget.reserve(request),measure:(name,fn)=>frameProfile.measure(name,fn),reference:new URLSearchParams(location.search).get('qa')==='1'&&new URLSearchParams(location.search).get('coverageReference')==='1'}),coverageRejected=new Set();
 let preparedTextures=new PreparedTextureIndex({schema:'xnby.prepared_texture_index.v1',entries:[]},location.href);
-const imageCache=new Map();let markerAtlas=null;
+const imageCache=new CustomIconCache({onError:fail});let markerAtlas=null;
 let baseEdges=new Map(),baseTexels=new Map(),focusId=0;const tierEdges=new Map(),tierTexels=new Map(),residentLimit=16;
 const layerOpacities=new Map(),layerLoading=new LayerLoading();let userLayerLoad=false;
 let activeTopic='all',spatialCatalog=null,spatialFingerprint='',spatialFingerprintPromise=Promise.resolve(''),spatialLoadGeneration=0,userSpatialLoad=false,userBusinessLoad=false;
@@ -300,7 +301,7 @@ function project(p){
   if(cameraSpace.z>=-camera.near||cameraSpace.z < -camera.far)return null;
   world.project(camera);return [(world.x+1)*width/2,(1-world.y)*height/2];
 }
-function iconImage(key){if(imageCache.has(key))return imageCache.get(key);const image=new Image();image.onload=()=>{if(image.width>2048||image.height>2048){imageCache.delete(key);fail(Error('自定义图标超过 2048×2048'));}};image.src=key;imageCache.set(key,image);return image;}
+function iconImage(key){return imageCache.get(key);}
 const tintedCache=new Map();
 function tintedIcon(style){
   if(!markerAtlas?.complete||!markerAtlas.naturalWidth)return null;
