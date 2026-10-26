@@ -22,3 +22,9 @@ export function validateLandscapeDocument(doc){
 }
 function validateRing(p){const cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);const on=(a,b,c)=>Math.abs(cross(a,b,c))<.0001&&c[0]>=Math.min(a[0],b[0])-.0001&&c[0]<=Math.max(a[0],b[0])+.0001&&c[1]>=Math.min(a[1],b[1])-.0001&&c[1]<=Math.max(a[1],b[1])+.0001;
   let area=0;for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length];if(Math.hypot(a[0]-b[0],a[1]-b[1])<.001)throw Error('区域存在重复顶点');area+=a[0]*b[1]-b[0]*a[1];for(let j=i+1;j<p.length;j++){if(j===i+1||(i===0&&j===p.length-1))continue;const c=p[j],d=p[(j+1)%p.length];if((cross(a,b,c)*cross(a,b,d)<0&&cross(c,d,a)*cross(c,d,b)<0)||on(a,b,c)||on(a,b,d)||on(c,d,a)||on(c,d,b))throw Error('区域边界自相交');}}if(Math.abs(area)<.001)throw Error('区域面积为零');}
+
+// Prepare fully before the viewer releases the current document or browsing state.
+export function prepareLandscapeDocument(doc){
+  validateLandscapeDocument(doc);
+  return structuredClone(doc);
+}

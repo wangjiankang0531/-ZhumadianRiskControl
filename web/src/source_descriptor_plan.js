@@ -17,11 +17,19 @@ export function validateIndexedView(view){if(!Array.isArray(view)||view.length!=
 export class SourcePlanChanged extends Error{constructor(){super('地景计划与实际资源版本不一致，保留当前地景');}}
 function freeze(value){if(value&&typeof value==='object'){for(const v of Object.values(value))freeze(v);Object.freeze(value);}return value;}
 export async function readSourcePlan(options){try{return await requestSourcePlan(options);}catch(error){ensureSourceWanted(options.stillWanted??(()=>true));throw error;}}
-async function requestSourcePlan({request,fetcher=fetch,stillWanted=()=>true,topology=null}){
- const response=await fetchSourcePlanResponse({url:sourcePlanURL(request),fetcher,stillWanted});ensureSourceWanted(stillWanted);if(!response.ok)throw new SourcePlanResponseError(response);
+async function requestSourcePlan({request,fetcher=fetch,stillWanted=()=>true,topology=null,metrics=null}){
+ const fetchPlan=()=>fetchSourcePlanResponse({url:sourcePlanURL(request),fetcher,stillWanted});
+ const response=await (metrics?metrics.measureAsync('source_plan_http_wait',fetchPlan):fetchPlan());ensureSourceWanted(stillWanted);if(!response.ok)throw new SourcePlanResponseError(response);
+ const readBody=()=>readSourcePlanBody(response,stillWanted),raw=await (metrics?metrics.measureAsync('source_plan_body_wait',readBody):readBody());
+ const validate=()=>validateSourcePlanBody(raw,request,topology,stillWanted);return metrics?metrics.measure('source_plan_validation',validate):validate();
+}
+async function readSourcePlanBody(response,stillWanted){
  const limit=16*1048576+2048,declared=Number(response.headers.get('Content-Length'));if(declared>limit)throw Error('Source plan exceeds bound');let raw;
  if(response.body?.getReader){const reader=response.body.getReader(),chunks=[];let total=0;try{for(;;){ensureSourceWanted(stillWanted);const {done,value}=await reader.read();ensureSourceWanted(stillWanted);if(done)break;total+=value.byteLength;if(total>limit)throw Error('Source plan exceeds bound');chunks.push(value);}raw=new Uint8Array(total);let at=0;for(const chunk of chunks){raw.set(chunk,at);at+=chunk.byteLength;}}finally{await reader.cancel().catch(()=>{});reader.releaseLock();}}
  else{raw=new Uint8Array(await response.arrayBuffer());if(raw.byteLength>limit)throw Error('Source plan exceeds bound');}
+ return raw;
+}
+function validateSourcePlanBody(raw,request,topology,stillWanted){
  ensureSourceWanted(stillWanted);const value=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw)),marker=value.marker;
  const indexed=request.view!==undefined;if(indexed){if(!/^[0-9a-f]{32}$/.test(value.indexedRequest)||value.requestedPixels!==request.view[9]||!Number.isFinite(value.selectedPixels)||value.selectedPixels<value.requestedPixels||value.selectedPixels>65536)throw Error('Invalid indexed plan request identity');if(marker?.schema==='zhumadian.indexed_quality_limit.v1'&&marker.tile_id===request.id&&marker.replacement_parent===request.parent&&marker.complete_parent_retained===true&&!Object.hasOwn(marker,'cache_lease')&&!Object.hasOwn(marker,'parts'))throw new IndexedSourceQualityLimit(marker);validateIndexedSourceReplacement(topology,marker,request.parent);}
  const expected=indexed?'availabilityVerified,indexedRequest,marker,markerSHA256,queryStats,requestedPixels,schema,selectedMaxDepth,selectedPixels,selectionLimitedByBudget,verification':'availabilityVerified,marker,markerSHA256,schema,verification';
@@ -31,6 +39,7 @@ async function requestSourcePlan({request,fetcher=fetch,stillWanted=()=>true,top
  if(request.parent!==undefined?!(marker.schema==='xnby.osgb_native_family.v1'||isMemoryFamily(marker))||marker.replacement_parent!==request.parent||(!indexed&&marker.complete_sibling_family!==true):!(marker.schema==='hongtu.osgb_native_chunk_bundle.v1'||marker.schema===MEMORY_ROOT_SCHEMA&&isMemoryFormat(marker.source_format))||marker.depth!==request.depth||marker.complete_frontier!==true)throw Error('Plan source differs from request');
  const result=freeze({marker,markerSHA256:value.markerSHA256,...(indexed?{indexedRequest:value.indexedRequest,bundleURL:`api/lod-index-family/${request.id}/${value.indexedRequest}`,sourceRequest:structuredClone(request)}:{})});plans.set(result,{identity:sourceBundleIdentity(marker),markerSHA256:value.markerSHA256});return result;
 }
+
 export function verifyPlannedSource(plan,response,marker){const pinned=plans.get(plan);if(!pinned||response.headers.get('X-XNBY-Source-Marker-SHA256')!==pinned.markerSHA256||!sha.test(pinned.markerSHA256)||!/^[0-9a-f]{32}$/.test(marker?.cache_lease??'')||sourceBundleIdentity(marker)!==pinned.identity)throw new SourcePlanChanged();return true;}
 
 

@@ -1,3 +1,4 @@
+import {validateSourceRasterMaterial,validateSourceSamplingProfile,validateSourceDrawOrder} from './source_centroid_sampling.js';
 import {isMemorySourcePart,memoryImageInfo,isMemoryFamily,isIndexedMemoryFamily,isMemoryFormat,MEMORY_ROOT_SCHEMA} from './source_page_format.js';
 import {validateRuntimeSourceTexture,sourcePageGeometryBytes} from './prepared_source_page.js';
 import {webSourceGeometryBytes,validateLoadedSourceGeometry} from './source_geometry_layout.js';
@@ -10,13 +11,13 @@ export function validateSourcePart(part,mesh){if(!mesh?.geometry?.index||mesh.ge
     const original=memory?memoryImageInfo(part):null;
     const rectangular=['edge_clamped_rect_v1','edge_packed_rect_v1'].includes(part.atlas_layout_policy);
     if(!memory&&Object.hasOwn(part,'atlas_extent')!==rectangular)throw Error('矩形源纹理需要显式格式');
-    const extent=memory?[original.width,original.height]:rectangular?part.atlas_extent:[side,side];
+    const extent=memory?(part.runtime_texture?.clientCropContract?[part.runtime_texture.textureWidth,part.runtime_texture.textureHeight]:[original.width,original.height]):rectangular?part.atlas_extent:[side,side];
     const bounded=Array.isArray(extent)&&extent.length===2&&extent.every(n=>Number.isInteger(n)&&n>=16&&n<=2048&&n%8===0)&&Math.max(...extent)===side;
     const declared=['tight_square_gutter4_v1','edge_clamped_square_v1','edge_clamped_rect_v1','edge_packed_rect_v1'].includes(part.atlas_layout_policy);
     if((!memory&&(!bounded||(![1024,2048].includes(side)&&!declared)))||image?.width!==extent[0]||image?.height!==extent[1]||memory&&!part.runtime_texture)throw Error('源纹理尺寸不一致');
     if(['edge_clamped_square_v1','edge_clamped_rect_v1','edge_packed_rect_v1'].includes(part.atlas_layout_policy)&&(texture.wrapS!==ClampToEdgeWrapping||texture.wrapT!==ClampToEdgeWrapping))throw Error('源纹理采样方式不一致');
     let textureBytes=0,w=extent[0],h=extent[1];if(part.runtime_texture){validateLoadedSourceGeometry(mesh.geometry,part);textureBytes=validateRuntimeSourceTexture(part,texture);}else{if(part.source_gpu_payload_bytes!==undefined||texture?.isCompressedTexture)throw Error('未协商压缩源页');for(;;){textureBytes+=w*h*4;if(w===1&&h===1)break;w=Math.max(1,Math.floor(w/2));h=Math.max(1,Math.floor(h/2));}}
-    if(part.gpu_payload_bytes!==(part.runtime_texture?webSourceGeometryBytes(part):sourcePageGeometryBytes(part))+textureBytes)throw Error('实际纹理及几何资源账目不一致');
+    if(part.gpu_payload_bytes!==(part.runtime_texture?webSourceGeometryBytes(part):sourcePageGeometryBytes(part))+textureBytes)throw Error('实际纹理及几何资源账目不一致');validateSourceRasterMaterial(part,Array.isArray(mesh.material)?mesh.material[0]:mesh.material);validateSourceDrawOrder(part,mesh);
 }
 
 function retireSourceGpu(mesh){if(mesh.userData.sourceGpuResident===false)return;mesh.geometry.dispose();const material=mesh.userData.sourceMaterial??(Array.isArray(mesh.material)?mesh.material[0]:mesh.material);material.map?.dispose();material.dispose();mesh.userData.sourceGpuResident=false;}
@@ -24,7 +25,7 @@ function retireSourceGpu(mesh){if(mesh.userData.sourceGpuResident===false)return
 export function validateSourceBundle(marker,meshes){
   if(marker.source_format!==undefined&&!isMemoryFormat(marker.source_format))throw Error("未知源页格式");
   const memory=isMemoryFormat(marker.source_format);if(memory&&!(marker.schema===MEMORY_ROOT_SCHEMA||isMemoryFamily(marker))||marker.parts?.some(p=>isMemorySourcePart(p)!==memory||memory&&p.source_format!==marker.source_format))throw Error('源包与物理页格式不一致');
-  if(!Array.isArray(marker.source_nodes)||!marker.source_nodes.length||!Array.isArray(marker.parts)||!marker.parts.length||marker.parts.length>64)throw Error('源节点信息不完整');
+  if(!Array.isArray(marker.source_nodes)||!marker.source_nodes.length||!Array.isArray(marker.parts)||!marker.parts.length||marker.parts.length>64)throw Error('源节点信息不完整');validateSourceSamplingProfile(marker);
   const names=new Set(),ownership=new Map(marker.parts.map(p=>[p.directory,[]]));let total=0;
   for(const node of marker.source_nodes){
     if(typeof node.name!=='string'||names.has(node.name)||!Array.isArray(node.children)||new Set(node.children).size!==node.children.length||!Number.isInteger(node.depth)||node.depth<0||!Number.isInteger(node.triangles)||node.triangles<0||!Number.isFinite(node.longest_edge_p90_m)||!Number.isFinite(node.texel_world_p90_m)||node.longest_edge_p90_m<0||node.texel_world_p90_m<0)throw Error('源节点身份无效');
@@ -43,7 +44,7 @@ export function validateSourceBundle(marker,meshes){
 // Initial cut was audited against the complete source forest by the converter.
 // Every later edit replaces exactly one visible parent with all direct children.
 export class SourceFrontier {
-  constructor(marker,meshes,{topology=null}={}){validateSourceBundle(marker,meshes);if(topology)validateSourceAgainstLevelTile(topology,marker);this.topology=topology;this.topologyNodes=topology?new Map(topology.nodes.map(n=>[n.name,n])):null;this.bundles=new Map([['$root',{marker,meshes}]]);this.visible=new Set(marker.source_nodes.map(n=>n.name));this.pending=null;this.sequence=0;this.cutVersion=0;}
+  constructor(marker,meshes,{topology=null}={}){validateSourceBundle(marker,meshes);if(topology)validateSourceAgainstLevelTile(topology,marker);this.samplingProfile=marker.runtime_sampling_profile??null;this.topology=topology;this.topologyNodes=topology?new Map(topology.nodes.map(n=>[n.name,n])):null;this.bundles=new Map([['$root',{marker,meshes}]]);this.visible=new Set(marker.source_nodes.map(n=>n.name));this.pending=null;this.sequence=0;this.cutVersion=0;}
   get bytes(){return this.bytesFor(this.visible);}
   get retainedPayloadBytes(){return [...this.bundles.values()].reduce((n,b)=>n+b.marker.parts.filter(p=>b.meshes.has(p.directory)).reduce((sum,p)=>sum+p.gpu_payload_bytes,0),0);}
   bytesFor(visible,bundles=this.bundles){let total=0;for(const bundle of bundles.values()){const active=new Set(bundle.marker.source_nodes.filter(n=>visible.has(n.name)).flatMap(n=>n.spans.map(s=>s.part)));for(const part of bundle.marker.parts)if(active.has(part.directory))total+=part.gpu_payload_bytes;}return total;}
@@ -59,6 +60,7 @@ export class SourceFrontier {
   get nodes(){const out=new Map();for(const bundle of this.bundles.values())for(const node of bundle.marker.source_nodes){if(out.has(node.name))throw Error('重复源节点');out.set(node.name,{node,bundle});}return out;}
   get maxDepth(){const nodes=this.nodes;return Math.max(...[...this.visible].map(n=>nodes.get(n).node.depth));}
   begin(marker,remainingBytes){
+    if((marker.runtime_sampling_profile??null)!==this.samplingProfile)throw Error('源页采样策略不一致');
     const parent=this.nodes.get(marker.replacement_parent)?.node,children=marker.source_nodes?.map(n=>n.name)??[];
     const indexed=isIndexedMemoryFamily(marker);if(indexed)validateIndexedSourceReplacement(this.topology,marker,marker.replacement_parent);
     if(this.pending||!parent||!this.visible.has(parent.name)||!(marker.schema==='xnby.osgb_native_family.v1'||isMemoryFamily(marker))||marker.source_format!==this.nodes.get(parent.name)?.bundle.marker.source_format||(!indexed&&!marker.complete_sibling_family)||marker.texture_policy!=='original_pixels_v1'||marker.parent_source_sha256!==parent.source_sha256||(!indexed&&(children.length!==parent.children.length||new Set(children).size!==children.length||children.some(n=>!parent.children.includes(n))))||!marker.parts?.length||marker.parts.length>64||!Number.isSafeInteger(marker.gpu_payload_bytes)||marker.gpu_payload_bytes<=0||marker.gpu_payload_bytes>remainingBytes)throw Error('完整源节点族或资源预算不满足');
@@ -67,7 +69,7 @@ export class SourceFrontier {
   markReady(ticket,index){if(this.pending?.ticket!==ticket||index<0||index>=this.pending.marker.parts.length)return false;this.pending.ready.add(index);return true;}
   commit(ticket,meshes){
     const state=this.pending;if(state?.ticket!==ticket||state.ready.size!==state.marker.parts.length||!this.visible.has(state.marker.replacement_parent))return false;
-    validateSourceBundle(state.marker,meshes);if(this.topology)validateSourceAgainstLevelTile(this.topology,state.marker);
+    if((state.marker.runtime_sampling_profile??null)!==this.samplingProfile)throw Error('源页采样策略不一致');validateSourceBundle(state.marker,meshes);if(this.topology)validateSourceAgainstLevelTile(this.topology,state.marker);
     const next=new Set(this.visible);next.delete(state.marker.replacement_parent);for(const node of state.marker.source_nodes)next.add(node.name);
     this.bundles.set(state.marker.replacement_parent,{marker:state.marker,meshes});this.visible=next;this.pending=null;this.cutVersion++;return true;
   }
@@ -88,6 +90,7 @@ export class SourceFrontier {
     }return {pages,bytes};
   }
   restorePages(bundle,meshes){
+    if((bundle.marker.runtime_sampling_profile??null)!==this.samplingProfile)throw Error('源页恢复采样策略不一致');validateSourceSamplingProfile(bundle.marker);
     if(![...this.bundles.values()].includes(bundle))throw Error('源包已退役');
     for(const [directory,mesh] of meshes){const part=bundle.marker.parts.find(p=>p.directory===directory);if(!part||bundle.meshes.has(directory))throw Error('源页恢复归属无效');validateSourcePart(part,mesh);}
     for(const [directory,mesh] of meshes)bundle.meshes.set(directory,mesh);

@@ -1,3 +1,15 @@
+import {ensureSourceWanted} from './lod_transaction.js';
+// Opportunity fairness is tied to completed family transactions. Metadata,
+// probes, cancellation, root coverage, and failed uploads never spend a turn.
+// This is not a wall-time or byte-share guarantee.
+export class SourceRefinementTurns {
+ constructor({mode='disabled'}={}){if(!['disabled','always','alternating'].includes(mode))throw Error('Invalid refinement turn mode');this.mode=mode;this.familyCommits=0;this.textureTurn=true;}
+ get textureFirst(){return this.mode==='always'||this.mode==='alternating'&&this.textureTurn;}
+ afterFamilyCommitTextureFirst(){return this.mode==='always'||this.mode==='alternating'&&!this.textureTurn;}
+ committedFamily(){this.familyCommits=Math.min(Number.MAX_SAFE_INTEGER,this.familyCommits+1);this.textureTurn=!this.textureTurn;}
+ snapshot(){return {mode:this.mode,familyCommits:this.familyCommits,textureFirst:this.textureFirst};}
+}
+
 // Lazy benefit-per-byte selection. Unknown costs need metadata only; measured
 // gains replace upper bounds before a candidate may reserve GPU memory.
 export function chooseRefinementCandidate(candidates){
@@ -26,10 +38,12 @@ export function chooseIndexedCoverageCandidate(candidates,hasRoot){
 
 // Sorting is independent of feasibility. Probe in exactly the previous winner
 // order and stop at its first admissible candidate, avoiding exhaustive plans.
-function orderedSourceCandidates(candidates,{indexed=false,hasRoot=()=>false}={}){
+function orderedSourceCandidates(candidates,{indexed=false,hasRoot=()=>false,textureFirst=false}={}){
+ if(typeof textureFirst!=='boolean')throw Error('Invalid texture priority policy');
  chooseRefinementCandidate(candidates);
+ if(textureFirst&&candidates.some(c=>!Number.isFinite(c.textureScore??0)||(c.textureScore??0)<0))throw Error('Invalid visible texture deficit');
  const coverage=c=>indexed&&c.kind==='root'&&!hasRoot(c.id),lex=(a,b)=>a.key<b.key?-1:a.key>b.key?1:0;
- const ordered=candidates.filter(c=>c.score>0).sort((a,b)=>{const ac=coverage(a),bc=coverage(b);if(ac!==bc)return ac?-1:1;if(ac)return b.score-a.score||lex(a,b);const au=a.cost===null,bu=b.cost===null;if(au!==bu)return au?-1:1;return (au?0:b.score/b.cost-a.score/a.cost)||b.score-a.score||lex(a,b);});
+ const ordered=candidates.filter(c=>c.score>0).sort((a,b)=>{const ac=coverage(a),bc=coverage(b);if(ac!==bc)return ac?-1:1;if(ac)return b.score-a.score||lex(a,b);if(textureFirst){const at=(a.textureScore??0)>0,bt=(b.textureScore??0)>0;if(at!==bt)return at?-1:1;}const au=a.cost===null,bu=b.cost===null;if(au!==bu)return au?-1:1;return (au?0:b.score/b.cost-a.score/a.cost)||b.score-a.score||lex(a,b);});
  return ordered;
 }
 
@@ -55,4 +69,19 @@ export class SourceAllocationScan{
    if(this.cursor<this.ordered.length){const now=clock();if(!Number.isFinite(now)||now<start)throw Error('Invalid allocation scan clock');if(now-start>=budgetMs){this.yields++;return this.snapshot();}}
   }this.done=true;return this.snapshot();}catch(error){this.cancel();throw error;}
  }
+}
+
+// Only a verified, negotiated cost reaches this gate. Unknown metadata still
+// follows the metadata path; every actual upload keeps its fresh admission.
+export function checkLearnedSourceCost(candidate,{feasible,stillWanted=()=>true}={}){
+ ensureSourceWanted(stillWanted);if(candidate?.cost===null)throw Error('Known source cost required');
+ const accepted=chooseFeasibleSourceCandidate([candidate],{feasible})===candidate;ensureSourceWanted(stillWanted);return accepted;
+}
+
+// Predict only an independent, still-visible family. This selects metadata, not
+// an admitted upload; all live checks run again when the real request arrives.
+export function chooseFamilyLookaheadCandidate(candidates,{activeRoot,hasRoot,textureFirst=false,feasible}={}){
+ if(!Number.isInteger(activeRoot)||activeRoot<1||activeRoot>2346||typeof hasRoot!=='function'||typeof feasible!=='function')throw Error('Invalid family lookahead forecast');
+ chooseRefinementCandidate(candidates);if(candidates.some(c=>c.kind==='root'&&c.score>0&&!hasRoot(c.id)))return null;
+ return chooseFeasibleSourceCandidate(candidates.filter(c=>c.kind==='family'&&c.id!==activeRoot),{textureFirst,feasible});
 }
