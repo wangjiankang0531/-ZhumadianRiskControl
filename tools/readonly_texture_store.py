@@ -5,8 +5,10 @@ from pathlib import Path
 import re
 if __package__:
     from .readonly_landscape_store import duplicates, owned, read_bytes, require
+    from .bc7_quality_contract import validate_bc7_quality, QUALITY_POLICY
 else:
     from readonly_landscape_store import duplicates, owned, read_bytes, require
+    from bc7_quality_contract import validate_bc7_quality, QUALITY_POLICY
 
 SHA = re.compile('[0-9a-f]{64}')
 
@@ -37,6 +39,7 @@ class ReadOnlyTextureStore:
     @staticmethod
     def _descriptor(manifest,source):
         require(manifest.get('schema')=='xnby.bc7.mip_chain.v1' and manifest.get('format')=='BC7_UNORM_BLOCK' and manifest.get('sourceSHA256')==source,'Prepared descriptor source/format differs')
+        quality=validate_bc7_quality(manifest)
         size=manifest.get('sourceSize')
         require(isinstance(size,list) and len(size)==2 and all(type(v) is int and 0<v<=2048 and v%4==0 for v in size),'Invalid prepared dimensions')
         total=manifest.get('payloadBytes');digest=manifest.get('payloadSHA256')
@@ -46,11 +49,11 @@ class ReadOnlyTextureStore:
         for i,row in enumerate(rows):
             count=((width+3)//4)*((height+3)//4)*16
             require(not complete and all(type(row.get(k)) is int for k in ('level','width','height','offset','bytes')) and (row['level'],row['width'],row['height'],row['offset'],row['bytes'])==(i,width,height,offset,count) and isinstance(row.get('sha256'),str) and SHA.fullmatch(row['sha256']),'Invalid complete mip layout')
-            mips.append({k:row[k] for k in ('level','width','height','offset','bytes','sha256')})
+            mips.append(dict({k:row[k] for k in ('level','width','height','offset','bytes','sha256')},accepted=True,quality=quality['mips'][i]))
             offset+=count;complete=width==height==1;width=max(1,width//2);height=max(1,height//2)
         require(complete and offset==total,'Incomplete mip chain')
         # Do not disclose producer paths, reference-image paths or timing fields.
-        return dict(schema=manifest['schema'],format=manifest['format'],sourceSHA256=source,sourceSize=list(size),payloadBytes=total,payloadSHA256=digest,mips=mips)
+        return dict(schema=manifest['schema'],format=manifest['format'],sourceSHA256=source,sourceSize=list(size),payloadBytes=total,payloadSHA256=digest,mips=mips,accepted=True,qualityThresholds=quality['thresholds'],qualityPolicy=QUALITY_POLICY)
 
     def _entry(self,source,digest):
         entry=self.entries.get(source)

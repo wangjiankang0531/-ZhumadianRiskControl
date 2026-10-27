@@ -7,6 +7,8 @@ import {isMemorySourcePart,memoryImageInfo,sourceImageMipBytes} from './source_p
 import {LoadingManager,TextureLoader,SRGBColorSpace,ClampToEdgeWrapping,LinearMipmapLinearFilter,LinearFilter,RepeatWrapping,MirroredRepeatWrapping,NearestFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter,LinearMipmapNearestFilter} from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {loadPreparedPhotograph,uploadPreparedBc7,sha256,rgbaMipBytes,PreparedTextureCancelled,describePreparedBc7} from './prepared_bc7.js';
+import {describeScenePhotograph,loadScenePhotograph,hybridPhotographIdentity} from './prepared_hybrid_scene.js';
+import {hybridSceneTextureIdentity} from './prepared_hybrid_material.js';
 import {stageSourceParts,ensureSourceWanted} from './lod_transaction.js';
 import {WEB_SOURCE_GEOMETRY_LAYOUT,webSourceGeometryLayout,webSourceGeometryBytes,validateSourceGltfGeometry,validateLoadedSourceGeometry} from './source_geometry_layout.js';
 const identities=new WeakMap(),plans=new WeakMap(),identityCrops=new WeakMap();
@@ -31,7 +33,7 @@ export async function planPreparedSourceBundle({marker,supported,loadManifest,fo
   if(forceRgbaParts.has(part.directory))reason='explicit_budget_replan';
   else if(clientCrop&&canClientSourceCrop(part)){const selected=validateClientSourceCropForPart(await clientCrop(part),part);wanted();if(selected.changed){crop=selected;bytes=crop.bitmapRect[2]*crop.bitmapRect[3]*4;reason=null;}}
   else if(!isMemorySourcePart(part)&&(typeof supported==='function'?supported(part):supported)){
-   try{manifest=structuredClone(await loadManifest(part));wanted();const info=describePreparedBc7(manifest,source);format='bc7';bytes=info.bytes;payload=info.payloadSHA256;reason=null;}
+   try{manifest=structuredClone(await loadManifest(part));wanted();const info=describeScenePhotograph(manifest,source);format=info.format;bytes=info.bytes;payload=info.payloadSHA256;reason=null;}
    catch(error){if(error instanceof PreparedTextureCancelled)throw error;manifest=null;reason='prepared_descriptor_unavailable_or_invalid';}
   }
   wanted();const order=samplingProfile?drawOrder(part):null;require(samplingProfile?Number.isInteger(order)&&order>0&&order<=2147483647&&!orders.has(order):order===null,'Invalid source draw order');orders.add(order);const identity=pageIdentity(source,geometry,format,bytes,payload,webSourceGeometryLayout(part),crop,sourceRasterContract(part,samplingProfile),order);require(identity.totalBytes<=32*1048576,'Planned source page exceeds upload limit');
@@ -83,8 +85,12 @@ async function checkedFile(part,name,load){
  const files=part.files?.filter(file=>file.name===name)??[];require(files.length===1,'Source page file identity missing');
  const bytes=await load(name);require(bytes instanceof ArrayBuffer&&bytes.byteLength===files[0].bytes&&await sha256(bytes)===files[0].sha256,'Source page file content mismatch: '+name);return bytes;
 }
-function validPageSampler(part,sampler){
- if(!sampler)return false;const expected=isMemorySourcePart(part)?memoryImageInfo(part).sampler:{wrapS:33071,wrapT:33071,minFilter:9987,magFilter:9729};
+function validPageSampler(part,sampler,texture,samplers){
+ // Historical atlas pages omit the sampler entirely. They use the same fixed
+ // edge-clamped mip sampling as loadPreparedPhotograph; do not treat a dangling
+ // explicit index or a versioned original-image page as this legacy contract.
+ if(!sampler)return !isMemorySourcePart(part)&&!Object.hasOwn(texture,'sampler')&&samplers===undefined;
+const expected=isMemorySourcePart(part)?memoryImageInfo(part).sampler:{wrapS:33071,wrapT:33071,minFilter:9987,magFilter:9729};
  return Object.keys(expected).every(key=>sampler[key]===expected[key]);
 }
 const wrapConstants=new Map([[10497,RepeatWrapping],[33071,ClampToEdgeWrapping],[33648,MirroredRepeatWrapping]]),filterConstants=new Map([[9728,NearestFilter],[9729,LinearFilter],[9984,NearestMipmapNearestFilter],[9985,LinearMipmapNearestFilter],[9986,NearestMipmapLinearFilter],[9987,LinearMipmapLinearFilter]]);
@@ -98,31 +104,31 @@ async function loadMemoryPhotograph({THREE,part,renderer,loadFile,reserve,stillW
   return {texture,format:'rgba8',bytes,payloadSHA256:null,crop,dispose(){try{texture.dispose();}finally{release();}}};
  }catch(error){texture?.dispose();decoded?.dispose();release();if(crop&&error instanceof OriginalImageCropUnavailable)throw new SourcePagePlanChanged(part.directory,'client_crop_unavailable');throw error;}
 }
-function validateGltf(json,part){
+export function validateSourcePageGltf(json,part){
  require(json.asset?.version==='2.0'&&json.buffers?.length===1&&json.buffers[0].uri==='geometry.bin'&&json.images?.length===1&&json.images[0].uri===(isMemorySourcePart(part)?'texture.png':'atlas.jpg'),'Unsupported source page GLTF files');
  require(json.textures?.length===1&&json.textures[0].source===0&&json.materials?.length===1&&json.meshes?.length===1&&json.meshes[0].primitives?.length===1,'Unsupported source page GLTF shape');
  require(!json.extensionsRequired?.length&&!json.extensionsUsed?.length,'Unexpected source page GLTF extensions');
  const primitive=json.meshes[0].primitives[0],sampler=json.samplers?.[json.textures[0].sampler];
  require(primitive.material===0&&primitive.mode===undefined&&Object.keys(primitive.attributes??{}).sort().join(',')===(isMemorySourcePart(part)?'POSITION,TEXCOORD_0':'NORMAL,POSITION,TEXCOORD_0'),'Unexpected source page primitive');
- require(json.materials[0].pbrMetallicRoughness?.baseColorTexture?.index===0&&!json.materials[0].pbrMetallicRoughness.baseColorTexture.texCoord&&validPageSampler(part,sampler),'Unexpected source page sampler');
+ require(json.materials[0].pbrMetallicRoughness?.baseColorTexture?.index===0&&!json.materials[0].pbrMetallicRoughness.baseColorTexture.texCoord&&validPageSampler(part,sampler,json.textures[0],json.samplers),'Unexpected source page sampler');
  require(json.accessors?.[primitive.indices]?.count===part.indices&&json.accessors?.[primitive.attributes.POSITION]?.count===part.vertices,'Source page GLTF geometry counts mismatch');
  validateSourceGltfGeometry(json,part);
 }
 // loadFile serves only the three SHA-pinned source files. Prepared loads are read-only.
 // Caller must provide the same budget allocator used by all live/staged pages.
-export async function loadPreparedSourcePage({THREE,renderer,part,supported,loadFile,loadManifest,loadPayload,reserve,stillWanted=()=>true,expectedIdentity,metrics=null,crop=null}){
+export async function loadPreparedSourcePage({THREE,renderer,part,supported,loadFile,loadManifest,loadPayload,reserve,stillWanted=()=>true,expectedIdentity,metrics=null,crop=null,hybridContext=null}){
  require(typeof reserve==='function','A shared page budget is required');
  if(crop)require(validateClientSourceCropForPart(crop,part).changed,'Client crop did not change the source page');
  const source=sourcePageSource(part),geometryBytes=webSourceGeometryBytes(part);let geometryLease,photo,model,objectURL;
  const wanted=()=>{if(!stillWanted())throw new PreparedTextureCancelled('Source page is no longer wanted');};
  let released=false;const releaseGeometry=()=>{if(!released){released=true;geometryLease?.release();}};
  try{
-  wanted();const jsonBytes=await checkedFile(part,'geometry.gltf',loadFile);wanted();const json=metrics?metrics.measure('source_json',()=>{const value=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(jsonBytes));validateGltf(value,part);return value;}):JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(jsonBytes));if(!metrics)validateGltf(json,part);
+  wanted();const jsonBytes=await checkedFile(part,'geometry.gltf',loadFile);wanted();const json=metrics?metrics.measure('source_json',()=>{const value=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(jsonBytes));validateSourcePageGltf(value,part);return value;}):JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(jsonBytes));if(!metrics)validateSourcePageGltf(json,part);
   const binary=await checkedFile(part,'geometry.bin',loadFile);wanted();require(json.buffers[0].byteLength===binary.byteLength,'GLTF buffer length mismatch');if(metrics)metrics.measure('source_geometry',()=>validateSourceGltfGeometry(json,part,binary));else validateSourceGltfGeometry(json,part,binary);
   geometryLease=await reserve({format:'geometry',bytes:geometryBytes});require(typeof geometryLease?.release==='function','Invalid geometry budget lease');wanted();
-  photo=isMemorySourcePart(part)?await loadMemoryPhotograph({THREE,part,renderer,loadFile,reserve,stillWanted,crop}):await loadPreparedPhotograph({supported,source,loadManifest,loadPayload,reserve:async request=>{require(geometryBytes+request.bytes<=32*1048576,'Source page exceeds upload limit');return reserve(request);},stillWanted,
+  photo=isMemorySourcePart(part)?await loadMemoryPhotograph({THREE,part,renderer,loadFile,reserve,stillWanted,crop}):await loadScenePhotograph({hybridContext,supported,source,loadManifest,loadPayload,reserve:async request=>{require(geometryBytes+request.bytes<=32*1048576,'Source page exceeds upload limit');return reserve(request);},stillWanted,
    upload:prepared=>uploadPreparedBc7(THREE,renderer,prepared),
-   onFallback:reason=>{if(expectedIdentity?.format==='bc7')throw new SourcePagePlanChanged(part.directory,reason);},
+   onFallback:reason=>{if(expectedIdentity&&expectedIdentity.format!=='rgba8')throw new SourcePagePlanChanged(part.directory,reason);},
    loadFallback:async()=>{
     const original=await checkedFile(part,'atlas.jpg',loadFile);wanted();const url=URL.createObjectURL(new Blob([original],{type:'image/jpeg'}));
     try{const texture=await new TextureLoader().loadAsync(url);if(!stillWanted()){texture.dispose();wanted();}texture.flipY=false;texture.colorSpace=SRGBColorSpace;texture.wrapS=texture.wrapT=ClampToEdgeWrapping;texture.minFilter=LinearMipmapLinearFilter;texture.magFilter=LinearFilter;return texture;}
@@ -153,6 +159,7 @@ export function validateRuntimeSourceTexture(part,texture){
  const identity=sourcePageTextureIdentity(texture),claimed=part.runtime_texture;require(identity&&claimed&&Object.keys(identity).length===Object.keys(claimed).length&&Object.keys(identity).every(k=>identity[k]===claimed[k]),'Runtime texture identity mismatch');
  const source=sourcePageSource(part),crop=identityCrops.get(identity);if(crop)validateClientSourceCropForPart(crop,part);require(Boolean(identity.clientCropContract)===Boolean(crop)&&(!crop||identity.clientCropContract===JSON.stringify(crop)&&identity.textureWidth===crop.bitmapRect[2]&&identity.textureHeight===crop.bitmapRect[3]),'Runtime client crop identity mismatch');require(identity.sourceSHA256===source.sha256&&identity.width===source.width&&identity.height===source.height&&identity.geometryLayout===webSourceGeometryLayout(part)&&identity.geometryBytes===webSourceGeometryBytes(part)&&part.gpu_payload_bytes===identity.totalBytes,'Runtime source page cost mismatch');
  if(identity.format==='bc7')require(texture.isCompressedTexture===true&&/^[0-9a-f]{64}$/.test(identity.payloadSHA256)&&texture.mipmaps?.reduce((sum,m)=>sum+m.data.byteLength,0)===identity.textureBytes,'Runtime compressed mip identity mismatch');
+ else if(identity.format==='bc7_rgba_overlap'){const proof=hybridPhotographIdentity(texture),pair=hybridSceneTextureIdentity(texture);require(proof&&pair&&proof.payloadSHA256===identity.payloadSHA256&&proof.sourceSHA256===source.sha256&&proof.bytes===identity.textureBytes&&pair.bytes===identity.textureBytes,'Runtime hybrid texture identity mismatch');}
  else require(identity.format==='rgba8'&&!texture.isCompressedTexture&&identity.payloadSHA256===null&&identity.textureBytes===(crop?crop.bitmapRect[2]*crop.bitmapRect[3]*4:originalTextureBytes(part,source)),'Runtime original texture identity mismatch');
  if(isMemorySourcePart(part)){const info=memoryImageInfo(part),sampler=info.sampler,t=crop?.transform??info.transform;require(identity.format==='rgba8'&&texture.flipY===false&&texture.wrapS===wrapConstants.get(sampler.wrapS)&&texture.wrapT===wrapConstants.get(sampler.wrapT)&&texture.minFilter===filterConstants.get(sampler.minFilter)&&texture.magFilter===filterConstants.get(sampler.magFilter),'Runtime original source sampler mismatch');require(texture.generateMipmaps===info.generateMipmaps&&texture.colorSpace===SRGBColorSpace&&texture.rotation===0&&texture.center.x===0&&texture.center.y===0&&texture.matrixAutoUpdate===true&&texture.repeat.x===t[0]&&texture.repeat.y===t[1]&&texture.offset.x===t[2]&&texture.offset.y===t[3]&&identity.samplingContract===info.cropContract&&(!info.cropContract||texture.anisotropy===1),'Runtime original source transform or mip mismatch');texture.updateMatrix();}
  return identity.textureBytes;
@@ -160,7 +167,7 @@ export function validateRuntimeSourceTexture(part,texture){
 
 // A staged bundle owns every page until the caller atomically commits the whole cut.
 // Failure/cancellation cannot attach a partial family to the live scene.
-export async function stagePreparedSourceBundle({THREE,renderer,marker,plan,supported,loadFile,loadManifest,loadPayload,reserve,stillWanted=()=>true,prepare=()=>{},upload,onReady,yieldFrame=()=>Promise.resolve(),metrics=null,loadConcurrency=1}){
+export async function stagePreparedSourceBundle({THREE,renderer,marker,plan,supported,loadFile,loadManifest,loadPayload,reserve,stillWanted=()=>true,prepare=()=>{},upload,onReady,yieldFrame=()=>Promise.resolve(),metrics=null,loadConcurrency=1,hybridContext=null}){
  require(loadConcurrency===1||loadConcurrency===2,'Source preparation concurrency must be 1 or 2');
  // Prepared compressed uploads may execute renderer work during load. Only
  // original memory PNG pages are CPU-only until the ordered upload callback.
@@ -173,7 +180,7 @@ export async function stagePreparedSourceBundle({THREE,renderer,marker,plan,supp
    downloads:{load:async (directory,batchWanted=stillWanted)=>{
     const part=marker.parts.find(p=>p.directory===directory);require(part,'Unknown staged source page');
     const choice=planned?.choices.get(directory);
-    const load=()=>loadPreparedSourcePage({THREE,renderer,part,metrics,supported:choice?choice.identity.format==='bc7':typeof supported==='function'?supported(part):supported,expectedIdentity:choice?.identity,crop:choice?.crop??null,loadFile:name=>loadFile(part,name),loadManifest:()=>choice?choice.manifest:loadManifest(part),loadPayload:()=>loadPayload(part),reserve,stillWanted:()=>stillWanted()&&batchWanted()});const page=await (metrics?metrics.measureAsync('source_load_wait',load):load());
+    const load=()=>loadPreparedSourcePage({THREE,renderer,part,metrics,hybridContext,supported:choice?choice.identity.format!=='rgba8':typeof supported==='function'?supported(part):supported,expectedIdentity:choice?.identity,crop:choice?.crop??null,loadFile:name=>loadFile(part,name),loadManifest:()=>choice?choice.manifest:loadManifest(part),loadPayload:()=>loadPayload(part),reserve,stillWanted:()=>stillWanted()&&batchWanted()});const page=await (metrics?metrics.measureAsync('source_load_wait',load):load());
     pages.push(page);meshes.set(directory,page.mesh);return page.model;
    }},
    dispose:scene=>{const page=pages.find(p=>p.model.scene===scene);page?.dispose();}});

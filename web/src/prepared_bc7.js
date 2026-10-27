@@ -1,5 +1,6 @@
 // Read-only prepared texture consumption. Never encodes or repairs a resource.
 import {SourceLoadCancelled} from './lod_transaction.js';
+import {validatePreparedBc7Quality} from './prepared_bc7_quality.js';
 export class PreparedTextureContextError extends Error {}
 export class PreparedTextureCancelled extends SourceLoadCancelled {constructor(message){super();this.name='PreparedTextureCancelled';this.message=message;}}
 const SHA=/^[0-9a-f]{64}$/;
@@ -19,6 +20,7 @@ export async function sha256(bytes){
 export function describePreparedBc7(manifest,source){
  require(manifest?.schema==='xnby.bc7.mip_chain.v1'&&manifest.format==='BC7_UNORM_BLOCK','Unsupported prepared BC7 descriptor');
  require(source&&SHA.test(source.sha256)&&manifest.sourceSHA256===source.sha256,'Prepared BC7 source identity mismatch');
+ validatePreparedBc7Quality(manifest);
  const [width,height]=manifest.sourceSize??[];rgbaMipBytes(width,height);
  require(width===source.width&&height===source.height&&width%4===0&&height%4===0,'Prepared BC7 dimensions do not match the source or WebGL format');
  require(positive(manifest.payloadBytes)&&manifest.payloadBytes<=32*1048576&&SHA.test(manifest.payloadSHA256),'Invalid prepared BC7 payload size or digest');
@@ -74,7 +76,7 @@ export async function loadPreparedPhotograph({supported,source,loadManifest,load
  };
  wanted();if(!supported)return fallback('unsupported');
  let prepared;
- try{const manifest=await loadManifest();wanted();const payload=await loadPayload(manifest);wanted();prepared=await validatePreparedBc7(manifest,payload,source);wanted();}
+ try{const manifest=await loadManifest();wanted();describePreparedBc7(manifest,source);const payload=await loadPayload(manifest);wanted();prepared=await validatePreparedBc7(manifest,payload,source);wanted();}
  catch(error){if(error instanceof PreparedTextureCancelled)throw error;return fallback('prepared_unavailable_or_invalid',error);}
  const owned=await lease('bc7',prepared.bytes);let texture;
  try{wanted();texture=await upload(prepared);wanted();return finish(texture,owned,'bc7',prepared.bytes,null,prepared.payloadSHA256);}

@@ -28,8 +28,8 @@ test('unsupported GLTF external files are rejected before geometry download',asy
 });
 
 function plannedFixture(){
- const p=part(),manifest={schema:'xnby.bc7.mip_chain.v1',format:'BC7_UNORM_BLOCK',sourceSHA256:'a'.repeat(64),sourceSize:[16,16],payloadSHA256:'b'.repeat(64),mips:[]};let size=16,offset=0;
- for(let level=0;;level++){const bytes=Math.ceil(size/4)**2*16;manifest.mips.push({level,width:size,height:size,offset,bytes,sha256:'c'.repeat(64)});offset+=bytes;if(size===1)break;size=Math.max(1,Math.floor(size/2));}manifest.payloadBytes=offset;
+ const p=part(),manifest={schema:'xnby.bc7.mip_chain.v1',format:'BC7_UNORM_BLOCK',sourceSHA256:'a'.repeat(64),sourceSize:[16,16],accepted:true,qualityThresholds:{rgbPSNRMin:40,rgbChannelP99Max:16,rgbMaxErrorMax:96},payloadSHA256:'b'.repeat(64),mips:[]};let size=16,offset=0;
+ for(let level=0;;level++){const bytes=Math.ceil(size/4)**2*16;manifest.mips.push({level,width:size,height:size,offset,bytes,sha256:'c'.repeat(64),accepted:true,quality:{rgbPSNR:50,rgbChannelP99:1,rgbMaxError:2}});offset+=bytes;if(size===1)break;size=Math.max(1,Math.floor(size/2));}manifest.payloadBytes=offset;
  return {p,manifest,marker:{parts:[p],gpu_payload_bytes:p.gpu_payload_bytes}};
 }
 
@@ -73,4 +73,10 @@ test('legacy and prepared texture bundles stay serial even when two CPU slots ar
 });
 test('invalid CPU window is rejected before group allocation or source reads',async()=>{
  let groups=0;await assert.rejects(stagePreparedSourceBundle({THREE:{Group:class{constructor(){groups++;}}},marker:plannedFixture().marker,loadConcurrency:3}),/concurrency/);assert.equal(groups,0);
+});
+
+test('a hash-correct descriptor with failed mip quality cannot reduce the planned budget',async()=>{
+ const f=plannedFixture();f.manifest.mips[2].quality.rgbPSNR=39;
+ const plan=await planPreparedSourceBundle({marker:f.marker,supported:true,loadManifest:async()=>f.manifest});
+ assert.equal(plan.marker.parts[0].runtime_texture.format,'rgba8');assert.equal(plan.marker.gpu_payload_bytes,1472);assert.equal(plan.fallbacks.length,1);
 });

@@ -17,8 +17,8 @@ class PreparedTextureHttpTests(unittest.TestCase):
         self.source='a'*64;self.raw=bytes(range(48));self.digest=hashlib.sha256(self.raw).hexdigest()
         rows=[]
         for level,size in enumerate([4,2,1]):
-            rows.append(dict(level=level,width=size,height=size,offset=level*16,bytes=16,sha256=hashlib.sha256(self.raw[level*16:(level+1)*16]).hexdigest()))
-        self.manifest=dict(schema='xnby.bc7.mip_chain.v1',format='BC7_UNORM_BLOCK',sourceSHA256=self.source,sourceSize=[4,4],payloadBytes=48,payloadSHA256=self.digest,mips=rows,source='PRIVATE_PRODUCER_PATH',encodeMs=10)
+            rows.append(dict(level=level,width=size,height=size,offset=level*16,bytes=16,sha256=hashlib.sha256(self.raw[level*16:(level+1)*16]).hexdigest(),accepted=True,quality=dict(rgbPSNR=50.0,rgbChannelP99=1,rgbMaxError=2)))
+        self.manifest=dict(schema='xnby.bc7.mip_chain.v1',format='BC7_UNORM_BLOCK',sourceSHA256=self.source,sourceSize=[4,4],payloadBytes=48,payloadSHA256=self.digest,mips=rows,accepted=True,qualityThresholds=dict(rgbPSNRMin=40.0,rgbChannelP99Max=16,rgbMaxErrorMax=96),source='PRIVATE_PRODUCER_PATH',encodeMs=10)
         self.config=self.root/'index.json';self.write_fixture()
         store=ReadOnlyTextureStore(self.config)
         class Handler(web.Handler):
@@ -81,3 +81,22 @@ class PreparedTextureHttpTests(unittest.TestCase):
         try:
             status,raw,_=self.request('/api/prepared-textures');self.assertEqual((status,json.loads(raw)['entries']),(200,[]));self.assertEqual(self.request(self.route+'texture.bc7')[0],404)
         finally:handler.prepared_textures=store
+
+    def test_failed_missing_relaxed_or_nonfinite_quality_never_enters_the_store(self):
+        original=json.loads(json.dumps(self.manifest))
+        mutations=[
+            lambda m:m.pop('accepted'),lambda m:m.update(accepted=False),lambda m:m.update(accepted=1),
+            lambda m:m['mips'][1].update(accepted=False),lambda m:m['mips'][1].pop('quality'),
+            lambda m:m.pop('qualityThresholds'),lambda m:m['qualityThresholds'].update(rgbPSNRMin=39),
+            lambda m:m['qualityThresholds'].update(rgbChannelP99Max=17),lambda m:m['qualityThresholds'].update(rgbMaxErrorMax=97),
+            lambda m:m['mips'][1]['quality'].update(rgbPSNR=39.999),lambda m:m['mips'][1]['quality'].update(rgbPSNR=float('nan')),
+            lambda m:m['mips'][1]['quality'].update(rgbPSNR=float('inf')),lambda m:m['mips'][1]['quality'].update(rgbChannelP99=True),
+            lambda m:m['mips'][1]['quality'].update(rgbMaxError=97),
+        ]
+        try:
+            for i,mutate in enumerate(mutations):
+                with self.subTest(case=i):
+                    self.manifest=json.loads(json.dumps(original));mutate(self.manifest);self.write_fixture();before=self.snapshot()
+                    with self.assertRaisesRegex(ValueError,'quality'):ReadOnlyTextureStore(self.config)
+                    self.assertEqual(before,self.snapshot())
+        finally:self.manifest=original;self.write_fixture()
