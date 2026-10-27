@@ -22,10 +22,11 @@ def main():
     parser.add_argument('--state',type=Path,required=True);parser.add_argument('--bundle',type=Path);parser.add_argument('--resources',type=Path);parser.add_argument('--layers',type=Path)
     parser.add_argument('--prepared-resource',type=Path,action='append',default=[],help='Explicit fallback resource root; read-only, same scene/catalog only')
     parser.add_argument('--source-budget-mib',type=int,choices=[512,1024,2048],default=512,help='Explicit tracked source-resource budget; not total VRAM')
+    parser.add_argument('--level-index',type=Path,help='Existing sealed exact LEVEL index; metadata only, no native reader')
     parser.add_argument('--hybrid-textures',type=Path,help='Pinned read-only hybrid texture publication')
     parser.add_argument('--prepared-lod',action='store_true',help='Read existing verified fine pages; never run converters or native readers')
     parser.add_argument('--stop',action='store_true');parser.add_argument('--no-browser',action='store_true');args=parser.parse_args()
-    if (args.prepared_resource or args.hybrid_textures) and not args.prepared_lod:parser.error('prepared-resource requires prepared-lod')
+    if (args.prepared_resource or args.hybrid_textures or args.level_index) and not args.prepared_lod:parser.error('prepared resources, textures and LEVEL index require prepared-lod')
     if len(args.prepared_resource)>3:parser.error('At most three fallback resource roots')
     hide_own_console();opener=build_opener(ProxyHandler({}))
     def current():
@@ -36,7 +37,10 @@ def main():
             with opener.open(f"http://127.0.0.1:{value['port']}/__preview__/health",timeout=2) as r:health=json.load(r)
         except OSError:return None
         return value if health.get('owner')==value.get('owner') and health.get('schema')==SCHEMA else None
-    def entry(value):return "" if value.get("preparedLOD") else "?preview=base"
+    def entry(value):return "?levelIndex=1" if value.get("levelIndexDirectory") else ("" if value.get("preparedLOD") else "?preview=base")
+    def reuse(value):
+        if args.level_index and value.get('levelIndexDirectory')!=str(args.level_index.resolve()):raise RuntimeError('Existing preview uses a different LEVEL index; stop it normally or use a new state path')
+        if not args.no_browser:webbrowser.open(f"http://127.0.0.1:{value['port']}/{entry(value)}")
     owned=current()
     if args.stop:
         if not owned:return
@@ -44,7 +48,7 @@ def main():
         with opener.open(request,timeout=3) as response:response.read(512)
         return
     if owned:
-        if not args.no_browser:webbrowser.open(f"http://127.0.0.1:{owned['port']}/{entry(owned)}")
+        reuse(owned)
         return
     args.state.parent.mkdir(parents=True,exist_ok=True)
     lock=args.state.with_suffix('.lock').open('a+b')
@@ -56,7 +60,7 @@ def main():
         except OSError:
             owned=current()
             if owned:
-                if not args.no_browser:webbrowser.open(f"http://127.0.0.1:{owned['port']}/{entry(owned)}")
+                reuse(owned)
                 return
             raise RuntimeError('Preview service is starting; try again shortly')
     if not all([args.bundle,args.resources,args.layers]):parser.error('bundle, resources and layers are required for a new service')
@@ -74,6 +78,10 @@ def main():
         sys.path.insert(0,str(Path(__file__).resolve().parent))
         from preview_prepared_lod import PreviewPreparedLOD
         lod=PreviewPreparedLOD(resource,args.prepared_resource)
+    level_index=None
+    if args.level_index:
+        from readonly_level_index import ReadOnlyLevelIndex
+        level_index=ReadOnlyLevelIndex(args.level_index,resource)
     hybrid=None
     if args.hybrid_textures:
         from readonly_hybrid_store import ReadOnlyHybridStore
@@ -101,6 +109,7 @@ def main():
         def do_HEAD(self):self.do_GET()
         def do_GET(self):
             if self.headers.get('Host')!=urlsplit(url).netloc:return self.reply(403,b'{"error":"INVALID_HOST"}')
+            if level_index and level_index.handle(self):return
             if hybrid and hybrid.handle(self):return
             if lod and lod.handle(self):return
             path=unquote(urlsplit(self.path).path)
@@ -108,7 +117,7 @@ def main():
                 self.send_response(303);self.send_header('Location','/');self.send_header('Content-Length','0');self.end_headers();return
             if path=='/__preview__/status':
                 page='<meta charset="utf-8"><title>驻马店网页体验服务</title><h1>网页体验服务正在运行</h1><p>与本机编辑器共用当前标注项目。保存后，在三维页面点击“读取编辑端保存”。</p><p><a href="/?preview=base">打开三维场景</a></p><p>结束体验时，请双击体验文件夹中的“停止网页查看”快捷方式。</p>'
-                if lod:page=page.replace('/?preview=base','/').replace('与本机编辑器共用当前标注项目。','只读加载已准备细层，与本机编辑器共用当前标注项目。')
+                if lod:page=page.replace('/?preview=base','/'+entry(state)).replace('与本机编辑器共用当前标注项目。','只读加载已准备细层，与本机编辑器共用当前标注项目。')
                 return self.reply(200,page.encode('utf-8'),'text/html; charset=utf-8')
             if path=='/__preview__/health':return self.reply(200,json.dumps({'schema':SCHEMA,'owner':owner,'mode':'prepared-read-only' if lod else 'static-base-only'}).encode())
             if path=='/application/config.json':return self.reply(200,b'{"schema":"xnby.portal.config.v1","mode":"local"}',headers={'X-XNBY-Source-Budget-MiB':str(args.source_budget_mib)})
@@ -131,9 +140,9 @@ def main():
                     try:shutil.copyfileobj(stream,self.wfile,65536)
                     except (BrokenPipeError,ConnectionResetError):pass
     server=ThreadingHTTPServer(('127.0.0.1',0),Handler);url=f'http://127.0.0.1:{server.server_port}'
-    state={'schema':SCHEMA,'owner':owner,'host':'127.0.0.1','port':server.server_port,'PID':os.getpid(),'controlKey':control,'stopped':False,'preparedLOD':bool(lod)}
+    state={'schema':SCHEMA,'owner':owner,'host':'127.0.0.1','port':server.server_port,'PID':os.getpid(),'controlKey':control,'stopped':False,'preparedLOD':bool(lod),'levelIndexDirectory':str(args.level_index.resolve()) if level_index else None,'levelIndexIdentity':level_index.identity if level_index else None}
     store(args.state,state)
-    if not args.no_browser:webbrowser.open(url+('/' if lod else '/?preview=base'))
+    if not args.no_browser:webbrowser.open(url+'/'+entry(state))
     try:server.serve_forever(poll_interval=.2)
     finally:
         if lod:lod.close()
