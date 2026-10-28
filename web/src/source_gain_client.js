@@ -1,10 +1,11 @@
+import {readSourceGeometryPair} from './source_geometry_pair.js';
 import {validateObservedDepthResult} from './source_pair_priority.js';
 import {sourceGainMemoKey,SourceGainMemo} from './source_gain_memo.js';
 import {geometryDigest,geometryPacketLimit,texelAwareSourceGain} from './source_geometry_gain.js';
 import {SourceLoadCancelled} from './lod_transaction.js';
 export class SourceGainUnavailable extends Error{}
 export class SourceGeometryGainWorker{
- constructor({createWorker=()=>new Worker(new URL('source-gain-worker.js',new URL('./',location.href)),{type:'module'}),timeout=30000,onStats=()=>{}}={}){this.createWorker=createWorker;this.timeout=timeout;this.onStats=onStats;this.next=0;this.worker=null;this.pending=null;this.memo=new SourceGainMemo();}
+ constructor({geometryConcurrency=1,createWorker=()=>new Worker(new URL('source-gain-worker.js',new URL('./',location.href)),{type:'module'}),timeout=30000,onStats=()=>{}}={}){if(![1,2].includes(geometryConcurrency))throw Error('Invalid geometry read concurrency');this.geometryConcurrency=geometryConcurrency;this.createWorker=createWorker;this.timeout=timeout;this.onStats=onStats;this.next=0;this.worker=null;this.pending=null;this.memo=new SourceGainMemo();}
  cancel(){this.generation=(this.generation??0)+1;this.pending?.fail(new SourceLoadCancelled());}
  dispose(){this.cancel();this.worker?.terminate();this.worker=null;this.memo.clear();}
  async measure({marker,snapshot,loadFile,isCurrent}){
@@ -28,7 +29,7 @@ export class SourceGeometryGainWorker{
   if(expected>geometryPacketLimit)throw new SourceGainUnavailable('Candidate geometry exceeds CPU staging limit');
   const packets=[];let loaded=0,reported=false;
   try{
-   for(const part of marker.parts){wanted();const json=await loadFile(part,'geometry.gltf');wanted();const binary=await loadFile(part,'geometry.bin');wanted();if(!(json instanceof ArrayBuffer)||!(binary instanceof ArrayBuffer))throw new SourceGainUnavailable('Invalid geometry response');loaded+=json.byteLength+binary.byteLength;if(loaded>expected||loaded>geometryPacketLimit)throw new SourceGainUnavailable('Geometry response exceeds declared bound');packets.push({directory:part.directory,json,binary});this.onStats({phase:'loading',bytes:loaded});}
+   for(const part of marker.parts){wanted();const {json,binary}=await readSourceGeometryPair({part,loadFile,wanted,concurrency:this.geometryConcurrency});if(!(json instanceof ArrayBuffer)||!(binary instanceof ArrayBuffer))throw new SourceGainUnavailable('Invalid geometry response');loaded+=json.byteLength+binary.byteLength;if(loaded>expected||loaded>geometryPacketLimit)throw new SourceGainUnavailable('Geometry response exceeds declared bound');packets.push({directory:part.directory,json,binary});this.onStats({phase:'loading',bytes:loaded});}
    wanted();if(loaded!==expected)throw new SourceGainUnavailable('Geometry response differs from manifest');
    const id=++this.next,identity=String(id)+'/'+await geometryDigest(new TextEncoder().encode(JSON.stringify(marker)))+'/'+snapshot.cameraKey;wanted();
    if(!this.worker)this.worker=this.createWorker();

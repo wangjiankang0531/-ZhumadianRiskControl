@@ -1,3 +1,5 @@
+import {mergeCompletionSamples} from './source_completion_samples.js';
+import {sourceRegionResiduals} from './source_region_residual.js';
 import {SOURCE_PRECISE_DEPTH_POLICY,preciseVisibleDepths} from './source_pair_priority.js';
 import {visibilityRegionWeights} from './visibility_region_weights.js';
 import {WebGLRenderTarget,MeshBasicMaterial,ShaderMaterial,Color,Vector3,Box3,Frustum,Matrix4,DoubleSide,NoBlending,LinearSRGBColorSpace} from 'three';
@@ -44,6 +46,11 @@ export function depthWeightedTexelPriority(node,bins,camera,height){return depth
 export class SourceVisibility {
  constructor(renderer,scene,context,{preciseDepth=false}={}){if(typeof preciseDepth!=='boolean')throw Error('Invalid precise depth policy');this.preciseDepth=preciseDepth;this.renderer=renderer;this.scene=scene;this.context=context;this.target=new WebGLRenderTarget(96,64);this.materials=new Map();this.black=new MeshBasicMaterial({color:0,side:DoubleSide,toneMapped:false,blending:NoBlending,fog:false});this.weights=new Map();this.depths=new Map();this.depthBins=new Map();}
  setPreciseDepth(enabled){if(typeof enabled!=='boolean')throw Error('Invalid precise depth policy');if(enabled===this.preciseDepth)return false;for(const material of this.materials.values())material.dispose();this.materials.clear();this.preciseDepth=enabled;this.visibleSnapshot=null;return true;}
+ addCompletion(completion){
+  const merged=mergeCompletionSamples(this.visibleSnapshot,completion),weights=new Map([...merged.snapshot.metrics.keys()].map(k=>[k,0])),depths=new Map(),bins=new Map();
+  for(const [key,rows] of merged.snapshot.samples){let sum=0,min=Infinity;const byDepth=new Map();for(let i=0;i<rows.length;i+=4){const bin=rows[i+2],weight=rows[i+3];sum+=weight;min=Math.min(min,surfaceDepths[bin]);byDepth.set(bin,(byDepth.get(bin)??0)+weight);}weights.set(key,sum);depths.set(key,min);bins.set(key,byDepth);}
+  this.weights=weights;this.depths=depths;this.depthBins=bins;this.visibleSnapshot=merged.snapshot;return {addedSamples:merged.addedSamples,addedSources:merged.addedSources};
+ }
  weight(root,name=''){return this.weights.get(visibilityKey(root,name))??0;}
  depth(root,name=''){return this.depths.get(visibilityKey(root,name))??null;}
  capture(root,names,camera,height){
@@ -58,10 +65,11 @@ export class SourceVisibility {
   let loss=0;for(const name of new Set(names)){const bins=this.depthBins.get(visibilityKey(root,name));if(!bins?.size)continue;const before=currentNodes.get(name)?.node;if(!before)return Infinity;loss+=Math.max(0,depthWeightedPriority(replacement,bins,camera,height)-depthWeightedPriority(before,bins,camera,height));}return loss;
  }
  textureRetirementLoss(root,replacement,names,currentNodes,camera,height){let loss=0;for(const name of new Set(names)){const bins=this.depthBins.get(visibilityKey(root,name));if(!bins?.size)continue;const before=currentNodes.get(name)?.node;if(!before)return Infinity;loss+=Math.max(0,depthWeightedTexelPriority(replacement,bins,camera,height)-depthWeightedTexelPriority(before,bins,camera,height));}return loss;}
- sample({camera,width,height,base,catalog,residents,obscured=[],baseQuality=null,balancedRegions=false}){
+ sample({camera,width,height,base,catalog,residents,obscured=[],baseQuality=null,balancedRegions=false,residualBalance=false,raster=null,viewport=null,readback=null}){
   this.visibleSnapshot=null;
-  const renderer=this.renderer,rw=96,rh=Math.max(16,Math.round(rw*height/width)),frustum=new Frustum().setFromProjectionMatrix(new Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
-  this.target.setSize(rw,rh);const registry=new Map(),metrics=new Map(),saved=[],used=new Set();let next=1;
+  if(raster&&(![raster.width,raster.height].every(n=>Number.isSafeInteger(n)&&n>=1)||raster.width>4096||raster.height>2160))throw Error('Invalid explicit visibility raster');if(viewport&&(![viewport.x,viewport.y,viewport.width,viewport.height].every(Number.isInteger)||viewport.width<1||viewport.height<1))throw Error('Invalid visibility viewport');
+  const renderer=this.renderer,rw=raster?.width??96,rh=raster?.height??Math.max(16,Math.round(rw*height/width)),frustum=new Frustum().setFromProjectionMatrix(new Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
+  this.target.setSize(rw,rh);const savedViewport=this.target.viewport.clone();if(viewport)this.target.viewport.set(viewport.x,viewport.y,viewport.width,viewport.height);const registry=new Map(),metrics=new Map(),saved=[],used=new Set();let next=1;
   const record=(key,node)=>{const id=next++;metrics.set(key,node);if(id>0xffffff)throw Error('Visibility id overflow');registry.set(id,key);this.weights.set(key,0);used.add(key);
    let material=this.materials.get(key);if(!material){material=new ShaderMaterial({side:DoubleSide,toneMapped:false,blending:NoBlending,fog:false,uniforms:{idColor:{value:new Color()},captureDepth:{value:0}},vertexShader:'varying float viewDepth; void main(){vec4 viewPosition=modelViewMatrix*vec4(position,1.0);viewDepth=-viewPosition.z;gl_Position=projectionMatrix*viewPosition;}',fragmentShader:this.preciseDepth?'uniform vec3 idColor; uniform int captureDepth; varying float viewDepth; void main(){float depth=clamp(log2(max(viewDepth,0.5)/0.5)/log2(120000.0),0.0,1.0);if(captureDepth==1){float code=floor(depth*16777215.0+0.5);gl_FragColor=vec4(mod(code,256.0),mod(floor(code/256.0),256.0),floor(code/65536.0),255.0)/255.0;}else gl_FragColor=vec4(idColor,depth);}':'uniform vec3 idColor; varying float viewDepth; void main(){float depth=clamp(log2(max(viewDepth,0.5)/0.5)/log2(120000.0),0.0,1.0);gl_FragColor=vec4(idColor,depth);}'});this.materials.set(key,material);}const c=encodeVisibilityId(id);material.uniforms.idColor.value.setRGB(c[0]/255,c[1]/255,c[2]/255,LinearSRGBColorSpace);return material;};
   const override=(mesh,entries)=>{saved.push({mesh,material:mesh.material,groups:mesh.geometry.groups,visible:mesh.visible});mesh.geometry.groups=[];const materials=[];
@@ -80,13 +88,16 @@ export class SourceVisibility {
   const target=renderer.getRenderTarget(),color=renderer.getClearColor(new Color()).clone(),alpha=renderer.getClearAlpha(),autoClear=renderer.autoClear,background=this.scene.background;
   try{this.scene.background=null;renderer.autoClear=true;renderer.setRenderTarget(this.target);renderer.setClearColor(0,1);renderer.clear();renderer.render(this.scene,camera);
    const pixels=new Uint8Array(rw*rh*4);renderer.readRenderTargetPixels(this.target,0,0,rw,rh,pixels);
-   const regional=visibilityRegionWeights({pixels,rasterWidth:rw,rasterHeight:rh,width,height,obscured,balanced:balancedRegions}),weights=regional.weights;
+   if(readback){if(typeof readback!=='function')throw Error('Invalid visibility readback');let depthPixels=null;
+    if(this.preciseDepth){for(const key of used){const material=this.materials.get(key);material.uniforms.captureDepth.value=1;material.uniformsNeedUpdate=true;}try{renderer.clear();renderer.render(this.scene,camera);depthPixels=new Uint8Array(rw*rh*4);renderer.readRenderTargetPixels(this.target,0,0,rw,rh,depthPixels);}finally{for(const key of used){const material=this.materials.get(key);material.uniforms.captureDepth.value=0;material.uniformsNeedUpdate=true;}}}
+    return readback({pixels,depthPixels,registry,metrics,width:rw,height:rh});}
+   const regional=visibilityRegionWeights({pixels,rasterWidth:rw,rasterHeight:rh,width,height,obscured,balanced:balancedRegions,residuals:residualBalance?sourceRegionResiduals(pixels,registry,metrics,Math.abs(camera.projectionMatrix.elements[5])*height/2):null}),weights=regional.weights;
    let surfaceDepths=null;if(this.preciseDepth){for(const key of used){const material=this.materials.get(key);material.uniforms.captureDepth.value=1;material.uniformsNeedUpdate=true;}try{renderer.clear();renderer.render(this.scene,camera);const depthPixels=new Uint8Array(rw*rh*4);renderer.readRenderTargetPixels(this.target,0,0,rw,rh,depthPixels);surfaceDepths=preciseVisibleDepths(pixels,depthPixels,rw,rh,weights,registry);}finally{for(const key of used){const material=this.materials.get(key);material.uniforms.captureDepth.value=0;material.uniformsNeedUpdate=true;}}}
    const sampled=countVisibilityPixels(pixels,rw,rh,weights);for(const [id,count] of sampled.counts){const key=registry.get(id);if(!key)throw Error('Invalid GPU visibility color');this.weights.set(key,count/sampled.total);this.depths.set(key,sampled.depths.get(id));this.depthBins.set(key,new Map([...sampled.depthBins.get(id)].map(([bin,weight])=>[bin,weight/sampled.total])));}
    const weightedQualityDeficit=[...metrics].reduce((sum,[key,node])=>sum+depthWeightedPriority(node,this.depthBins.get(key),camera,height),0);
    this.visibleSnapshot={cameraKey:visibilityCameraKey(camera,width,height),width,height,cameraWorld:[...camera.matrixWorld.elements],projectionInverse:[...camera.projectionMatrixInverse.elements],viewMatrix:[...camera.matrixWorldInverse.elements],metrics,samples:visiblePixelSamples(pixels,rw,rh,weights,registry),...(surfaceDepths?{surfaceDepths}:{})};
    return {width:rw,height:rh,visibleSources:sampled.counts.size,weightedQualityDeficit,weightingPolicy:regional.policy,regions:regional.cells};
-  }finally{renderer.setRenderTarget(target);renderer.setClearColor(color,alpha);renderer.autoClear=autoClear;this.scene.background=background;
+  }finally{this.target.viewport.copy(savedViewport);renderer.setRenderTarget(target);renderer.setClearColor(color,alpha);renderer.autoClear=autoClear;this.scene.background=background;
    for(const {mesh,material,groups,visible} of saved){mesh.material=material;mesh.geometry.groups=groups;mesh.visible=visible;}
    for(const [mesh,material] of contextMaterials)mesh.material=material;
    for(const [key,material] of this.materials)if(!used.has(key)){material.dispose();this.materials.delete(key);}

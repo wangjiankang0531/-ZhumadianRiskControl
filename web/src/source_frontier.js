@@ -1,3 +1,4 @@
+import {boundsViewDepth} from './lod_policy.js';
 import {validateSourceRasterMaterial,validateSourceSamplingProfile,validateSourceDrawOrder} from './source_centroid_sampling.js';
 import {isMemorySourcePart,memoryImageInfo,isMemoryFamily,isIndexedMemoryFamily,isMemoryFormat,MEMORY_ROOT_SCHEMA} from './source_page_format.js';
 import {validateRuntimeSourceTexture,sourcePageGeometryBytes} from './prepared_source_page.js';
@@ -44,7 +45,7 @@ export function validateSourceBundle(marker,meshes){
 // Initial cut was audited against the complete source forest by the converter.
 // Every later edit replaces exactly one visible parent with all direct children.
 export class SourceFrontier {
-  constructor(marker,meshes,{topology=null}={}){validateSourceBundle(marker,meshes);if(topology)validateSourceAgainstLevelTile(topology,marker);this.samplingProfile=marker.runtime_sampling_profile??null;this.topology=topology;this.topologyNodes=topology?new Map(topology.nodes.map(n=>[n.name,n])):null;this.bundles=new Map([['$root',{marker,meshes}]]);this.visible=new Set(marker.source_nodes.map(n=>n.name));this.pending=null;this.sequence=0;this.cutVersion=0;}
+  constructor(marker,meshes,{topology=null,allowOriginalFormatTransition=false}={}){if(typeof allowOriginalFormatTransition!=='boolean'||allowOriginalFormatTransition&&!topology)throw Error('Original format transition requires an explicit verified topology');this.allowOriginalFormatTransition=allowOriginalFormatTransition;validateSourceBundle(marker,meshes);if(topology)validateSourceAgainstLevelTile(topology,marker);this.samplingProfile=marker.runtime_sampling_profile??null;this.topology=topology;this.topologyNodes=topology?new Map(topology.nodes.map(n=>[n.name,n])):null;this.bundles=new Map([['$root',{marker,meshes}]]);this.visible=new Set(marker.source_nodes.map(n=>n.name));this.pending=null;this.sequence=0;this.cutVersion=0;}
   get bytes(){return this.bytesFor(this.visible);}
   get retainedPayloadBytes(){return [...this.bundles.values()].reduce((n,b)=>n+b.marker.parts.filter(p=>b.meshes.has(p.directory)).reduce((sum,p)=>sum+p.gpu_payload_bytes,0),0);}
   bytesFor(visible,bundles=this.bundles){let total=0;for(const bundle of bundles.values()){const active=new Set(bundle.marker.source_nodes.filter(n=>visible.has(n.name)).flatMap(n=>n.spans.map(s=>s.part)));for(const part of bundle.marker.parts)if(active.has(part.directory))total+=part.gpu_payload_bytes;}return total;}
@@ -59,17 +60,32 @@ export class SourceFrontier {
   }
   get nodes(){const out=new Map();for(const bundle of this.bundles.values())for(const node of bundle.marker.source_nodes){if(out.has(node.name))throw Error('重复源节点');out.set(node.name,{node,bundle});}return out;}
   get maxDepth(){const nodes=this.nodes;return Math.max(...[...this.visible].map(n=>nodes.get(n).node.depth));}
-  begin(marker,remainingBytes){
+  validateFamily(marker,remainingBytes){
     if((marker.runtime_sampling_profile??null)!==this.samplingProfile)throw Error('源页采样策略不一致');
-    const parent=this.nodes.get(marker.replacement_parent)?.node,children=marker.source_nodes?.map(n=>n.name)??[];
+    const entry=this.nodes.get(marker.replacement_parent),parent=entry?.node,children=marker.source_nodes?.map(n=>n.name)??[];
     const indexed=isIndexedMemoryFamily(marker);if(indexed)validateIndexedSourceReplacement(this.topology,marker,marker.replacement_parent);
-    if(this.pending||!parent||!this.visible.has(parent.name)||!(marker.schema==='xnby.osgb_native_family.v1'||isMemoryFamily(marker))||marker.source_format!==this.nodes.get(parent.name)?.bundle.marker.source_format||(!indexed&&!marker.complete_sibling_family)||marker.texture_policy!=='original_pixels_v1'||marker.parent_source_sha256!==parent.source_sha256||(!indexed&&(children.length!==parent.children.length||new Set(children).size!==children.length||children.some(n=>!parent.children.includes(n))))||!marker.parts?.length||marker.parts.length>64||!Number.isSafeInteger(marker.gpu_payload_bytes)||marker.gpu_payload_bytes<=0||marker.gpu_payload_bytes>remainingBytes)throw Error('完整源节点族或资源预算不满足');
-    const ticket=++this.sequence;this.pending={ticket,marker,ready:new Set()};return ticket;
+    let formatMatches=marker.source_format===entry?.bundle.marker.source_format;
+    if(!formatMatches&&this.allowOriginalFormatTransition&&parent){
+      const before=entry.bundle.marker.source_format,after=marker.source_format;
+      const boundary=before===undefined&&isMemoryFormat(after)||after===undefined&&isMemoryFormat(before);
+      if(boundary&&entry.bundle.marker.texture_policy==='original_pixels_v1'&&marker.texture_policy==='original_pixels_v1'&&/^[0-9a-f]{64}$/.test(marker.parent_source_sha256??'')){
+        // This object must have passed the sealed LEVEL validator. Every child
+        // hash/depth/triangle count is checked before allowing a format boundary.
+        validateSourceAgainstLevelTile(this.topology,marker);formatMatches=true;
+      }
+    }
+    if(!parent||!this.visible.has(parent.name)||!(marker.schema==='xnby.osgb_native_family.v1'||isMemoryFamily(marker))||!formatMatches||(!indexed&&!marker.complete_sibling_family)||marker.texture_policy!=='original_pixels_v1'||marker.parent_source_sha256!==parent.source_sha256||(!indexed&&(children.length!==parent.children.length||new Set(children).size!==children.length||children.some(n=>!parent.children.includes(n))))||!marker.parts?.length||marker.parts.length>64||!Number.isSafeInteger(marker.gpu_payload_bytes)||marker.gpu_payload_bytes<=0||marker.gpu_payload_bytes>remainingBytes)throw Error('完整源节点族或资源预算不满足');
+    return parent.name;
+  }
+  begin(marker,remainingBytes){
+    if(this.pending)throw Error('完整源节点族事务正在进行');
+    const parent=this.validateFamily(marker,remainingBytes),ticket=++this.sequence;
+    this.pending={ticket,marker,parent,remainingBytes,ready:new Set()};return ticket;
   }
   markReady(ticket,index){if(this.pending?.ticket!==ticket||index<0||index>=this.pending.marker.parts.length)return false;this.pending.ready.add(index);return true;}
   commit(ticket,meshes){
     const state=this.pending;if(state?.ticket!==ticket||state.ready.size!==state.marker.parts.length||!this.visible.has(state.marker.replacement_parent))return false;
-    if((state.marker.runtime_sampling_profile??null)!==this.samplingProfile)throw Error('源页采样策略不一致');validateSourceBundle(state.marker,meshes);if(this.topology)validateSourceAgainstLevelTile(this.topology,state.marker);
+    if(state.marker.replacement_parent!==state.parent)throw Error('源节点族事务父级已改变');this.validateFamily(state.marker,state.remainingBytes);validateSourceBundle(state.marker,meshes);if(this.topology)validateSourceAgainstLevelTile(this.topology,state.marker);
     const next=new Set(this.visible);next.delete(state.marker.replacement_parent);for(const node of state.marker.source_nodes)next.add(node.name);
     this.bundles.set(state.marker.replacement_parent,{marker:state.marker,meshes});this.visible=next;this.pending=null;this.cutVersion++;return true;
   }
@@ -124,12 +140,12 @@ export function sourceRefinementScore(quality,diameter,height,centerDistance,can
 export function sourceViewPriority(node,camera,height){
  if(!node?.bounds_min)return 0;camera.updateMatrixWorld();
  const box=new Box3(new Vector3(...node.bounds_min),new Vector3(...node.bounds_max)),frustum=new Frustum().setFromProjectionMatrix(new Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));if(!frustum.intersectsBox(box))return 0;
- const scale=height/(2*Math.tan(camera.fov*Math.PI/360)),distance=Math.max(1,box.distanceToPoint(camera.position)),projected=box.getCenter(new Vector3()).project(camera),centerDistance=Number.isFinite(projected.x)&&Number.isFinite(projected.y)?Math.hypot(projected.x,projected.y):2;
+ const scale=height/(2*Math.tan(camera.fov*Math.PI/360)),distance=boundsViewDepth(box,camera),projected=box.getCenter(new Vector3()).project(camera),centerDistance=Number.isFinite(projected.x)&&Number.isFinite(projected.y)?Math.hypot(projected.x,projected.y):2;
  return sourceRefinementScore(Math.max(node.longest_edge_p90_m,node.texel_world_p90_m*4)*scale/distance,box.getSize(new Vector3()).length()*scale/distance,height,centerDistance);
 }
 export function visibleSourceCandidates(frontier,camera,height,centerName=''){
  camera.updateMatrixWorld();const frustum=new Frustum().setFromProjectionMatrix(new Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse)),scale=height/(2*Math.tan(camera.fov*Math.PI/360)),output=[],registry=frontier.nodes;
- for(const name of frontier.visible){const node=registry.get(name).node;if(!node.children.length||!node.bounds_min)continue;const box=new Box3(new Vector3(...node.bounds_min),new Vector3(...node.bounds_max));if(!frustum.intersectsBox(box))continue;const distance=Math.max(1,box.distanceToPoint(camera.position)),quality=Math.max(node.longest_edge_p90_m,node.texel_world_p90_m*4)*scale/distance,diameter=box.getSize(new Vector3()).length()*scale/distance,projected=box.getCenter(new Vector3()).project(camera),centerDistance=Number.isFinite(projected.x)&&Number.isFinite(projected.y)?Math.hypot(projected.x,projected.y):2,score=sourceRefinementScore(quality,diameter,height,centerDistance);if(score>0)output.push({node,score,center:name===centerName});
+ for(const name of frontier.visible){const node=registry.get(name).node;if(!node.children.length||!node.bounds_min)continue;const box=new Box3(new Vector3(...node.bounds_min),new Vector3(...node.bounds_max));if(!frustum.intersectsBox(box))continue;const distance=boundsViewDepth(box,camera),quality=Math.max(node.longest_edge_p90_m,node.texel_world_p90_m*4)*scale/distance,diameter=box.getSize(new Vector3()).length()*scale/distance,projected=box.getCenter(new Vector3()).project(camera),centerDistance=Number.isFinite(projected.x)&&Number.isFinite(projected.y)?Math.hypot(projected.x,projected.y):2,score=sourceRefinementScore(quality,diameter,height,centerDistance);if(score>0)output.push({node,score,center:name===centerName});
  }return output;
 }
 

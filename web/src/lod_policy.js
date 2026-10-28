@@ -1,4 +1,12 @@
 import {Vector3,Box3} from 'three';
+// Perspective screen scale depends on forward view depth, not radial distance.
+// For an already frustum-tested world AABB, use its nearest view-space plane;
+// clipping at the camera near plane keeps crossing boxes finite and conservative.
+export function boundsViewDepth(box,camera){
+ const e=camera.matrixWorldInverse.elements;
+ const z=e[14]+e[2]*(e[2]>=0?box.max.x:box.min.x)+e[6]*(e[6]>=0?box.max.y:box.min.y)+e[10]*(e[10]>=0?box.max.z:box.min.z);
+ return Math.max(camera.near,-z);
+}
 // Tessellation in screen pixels, not a survey/geometric-deviation error bound.
 export function selectDepth(rootPixels, basePixels, readyPixels, readyDepth, maxDepth, parentPixels = 0, baseTexelPixels = 0, readyTexelPixels = 0, parentTexelPixels = 0) {
   basePixels=Math.max(basePixels,baseTexelPixels*4);readyPixels=Math.max(readyPixels,readyTexelPixels*4);parentPixels=Math.max(parentPixels,parentTexelPixels*4);
