@@ -1,3 +1,4 @@
+export const SOURCE_CENTROID_POLICY='source_map_centroid_v1';
 // Explicit opt-in for original source images; legacy atlas descriptors keep their own contract.
 export const MEMORY_SOURCE_FORMAT='osgb_memory_png_v1';
 export const CROP_SOURCE_FORMAT='osgb_memory_png_crop_v2';

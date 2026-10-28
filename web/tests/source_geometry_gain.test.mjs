@@ -1,7 +1,9 @@
+import {SOURCE_PRECISE_DEPTH_POLICY} from '../src/source_pair_priority.js';
+import {sourceGainMemoKey} from '../src/source_gain_memo.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {PerspectiveCamera,Ray,Vector3} from 'three';
-import {evaluateSourceGeometryGain,geometryDigest,buildGeometryBvh,intersectGeometryBvh} from '../src/source_geometry_gain.js';
+import {evaluateSourceGeometryGain,geometryDigest,buildGeometryBvh,intersectGeometryBvh,texelAwareSourceGain} from '../src/source_geometry_gain.js';
 import {SourceGeometryGainWorker,SourceGainUnavailable} from '../src/source_gain_client.js';
 import {SourceLoadCancelled} from '../src/lod_transaction.js';
 
@@ -76,3 +78,20 @@ test('planning memo probes never pretend to be geometry loads or create workers'
  const moved=await fixture();moved.snapshot.samples[0]=.9;assert.equal(await client.peek({marker:moved.marker,snapshot:moved.snapshot,isCurrent:()=>true}),null);
  await assert.rejects(client.peek({marker:next.marker,snapshot:next.snapshot,isCurrent:()=>false}),SourceLoadCancelled);assert.equal(client.probing,false);client.dispose();
 });
+
+test('unchanged edge length cannot mask a verified texture-only improvement in QA',async()=>{
+ const f=await fixture();f.snapshot.nodes[0]={longest_edge_p90_m:1,texel_world_p90_m:.1};f.marker.source_nodes[0].longest_edge_p90_m=1;f.marker.source_nodes[0].texel_world_p90_m=.01;
+ const r=await evaluateSourceGeometryGain(f);assert.equal(r.gain,0);assert.equal(r.signedGain,0);assert.ok(r.beforeTexelDeficit>0);assert.equal(r.afterTexelDeficit,0);assert.ok(texelAwareSourceGain(r)>0);assert.equal(r.gpuAllocations,0);
+});
+test('missing child geometry cannot create a texture improvement',async()=>{
+ const f=await fixture();f.snapshot.nodes[0].texel_world_p90_m=.1;f.snapshot.samples[0]=.9;const r=await evaluateSourceGeometryGain(f);assert.equal(r.hits,0);assert.equal(r.afterTexelDeficit,r.beforeTexelDeficit);assert.equal(r.texelGain,0);assert.equal(texelAwareSourceGain(r),0);
+});
+test('client refuses incomplete or nonfinite texture result fields',async()=>{
+ const f=await fixture(),foreign={postMessage(data){queueMicrotask(()=>this.onmessage({data:{id:data.id,ok:true,result:{identity:data.identity,cameraKey:f.snapshot.cameraKey,gain:1,texelGain:NaN}}}));},terminate(){this.stopped=true;}},client=new SourceGeometryGainWorker({createWorker:()=>foreign});await assert.rejects(client.measure({...f,isCurrent:()=>true,loadFile:async(part,name)=>f.packets[0][name==='geometry.gltf'?'json':'binary']}),/texel gain/);assert.equal(foreign.stopped,true);
+});
+
+test('precise visible depth adds ordering evidence without changing the legacy admission gain',async()=>{const f=await fixture(),base=await evaluateSourceGeometryGain(f);f.snapshot.surfaceDepthPolicy=SOURCE_PRECISE_DEPTH_POLICY;f.snapshot.surfaceDepths=new Float64Array([5]);const flat=await evaluateSourceGeometryGain(f);assert.equal(flat.gain,base.gain);assert.equal(flat.texelGain,base.texelGain);assert.equal(flat.depthNovelty,0);f.snapshot.surfaceDepths[0]=7;const changed=await evaluateSourceGeometryGain(f);assert.ok(changed.depthNovelty>0);assert.equal(changed.gain,base.gain);f.snapshot.surfaceDepths=new Float64Array([NaN]);await assert.rejects(evaluateSourceGeometryGain(f),/precise surface depths/);});
+test('precise parent depth bytes participate in gain memo identity',async()=>{const f=await fixture(),legacy=await sourceGainMemoKey(f.marker,f.snapshot);f.snapshot.surfaceDepthPolicy=SOURCE_PRECISE_DEPTH_POLICY;f.snapshot.surfaceDepths=new Float64Array([5]);const first=await sourceGainMemoKey(f.marker,f.snapshot);assert.notEqual(first,legacy);f.snapshot.surfaceDepths[0]=5.001;assert.notEqual(await sourceGainMemoKey(f.marker,f.snapshot),first);});
+
+test('cancelling a precise-depth worker releases transferred copies and leaves the retained parent depths intact',async()=>{const f=await fixture(),retained=new Float64Array([5]);f.snapshot.surfaceDepthPolicy=SOURCE_PRECISE_DEPTH_POLICY;f.snapshot.surfaceDepths=retained.slice();let began;const posted=new Promise(r=>began=r),worker={postMessage(data,transfer){this.copy=structuredClone(data,{transfer});began();},terminate(){this.stopped=true;}},client=new SourceGeometryGainWorker({createWorker:()=>worker});const task=client.measure({...f,isCurrent:()=>true,loadFile:async(part,name)=>f.packets[0][name==='geometry.gltf'?'json':'binary']});await posted;assert.equal(f.snapshot.surfaceDepths.byteLength,0);assert.equal(worker.copy.snapshot.surfaceDepths[0],5);client.cancel();await assert.rejects(task,SourceLoadCancelled);assert.equal(worker.stopped,true);assert.equal(client.pending,null);assert.equal(client.worker,null);assert.equal(client.busy,false);assert.equal(retained[0],5);});
+test('a precise-depth job cannot accept a worker response from the legacy evidence policy',async()=>{const f=await fixture();f.snapshot.surfaceDepthPolicy=SOURCE_PRECISE_DEPTH_POLICY;f.snapshot.surfaceDepths=new Float64Array([5]);const worker={postMessage(data){queueMicrotask(()=>this.onmessage({data:{id:data.id,ok:true,result:{identity:data.identity,cameraKey:data.snapshot.cameraKey,gain:1}}}));},terminate(){this.stopped=true;}},client=new SourceGeometryGainWorker({createWorker:()=>worker});await assert.rejects(client.measure({...f,isCurrent:()=>true,loadFile:async(part,name)=>f.packets[0][name==='geometry.gltf'?'json':'binary']}),/observed depth result/);assert.equal(worker.stopped,true);assert.equal(client.memo.bytes,0);});

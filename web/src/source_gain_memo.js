@@ -5,7 +5,7 @@ import {sourceBundleIdentity} from './source_residency.js';
 export async function sourceGainMemoKey(marker,snapshot){
  if(!(snapshot?.samples instanceof Float64Array))throw Error('Invalid memo snapshot');
  const samples=await geometryDigest(new Uint8Array(snapshot.samples.buffer,snapshot.samples.byteOffset,snapshot.samples.byteLength));
- return geometryDigest(new TextEncoder().encode(JSON.stringify({model:'gpu_visible_pixels_cpu_child_triangles_v1',source:sourceBundleIdentity(marker),snapshot:{...snapshot,samples}})));
+ return geometryDigest(new TextEncoder().encode(JSON.stringify({model:'gpu_visible_pixels_cpu_child_triangles_v1',source:sourceBundleIdentity(marker),snapshot:{...snapshot,samples,...(snapshot.surfaceDepths?{surfaceDepths:await geometryDigest(new Uint8Array(snapshot.surfaceDepths.buffer,snapshot.surfaceDepths.byteOffset,snapshot.surfaceDepths.byteLength))}:{})}})));
 }
 export class SourceGainMemo{
  constructor({maxBytes=4*1048576,maxEntries=256}={}){if(!Number.isSafeInteger(maxBytes)||maxBytes<=0||!Number.isSafeInteger(maxEntries)||maxEntries<=0)throw Error('Invalid memo bound');this.maxBytes=maxBytes;this.maxEntries=maxEntries;this.bytes=0;this.entries=new Map();}

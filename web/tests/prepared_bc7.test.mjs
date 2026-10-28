@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {sha256,rgbaMipBytes,validatePreparedBc7,supportsPreparedBc7,uploadPreparedBc7,loadPreparedPhotograph,PreparedTextureContextError,PreparedTextureCancelled} from '../src/prepared_bc7.js';
 async function fixture(){
  const payload=new Uint8Array(48).fill(31).buffer,source={sha256:'1'.repeat(64),width:4,height:4};
- const mips=[];for(const [level,size] of [4,2,1].entries())mips.push({level,width:size,height:size,offset:level*16,bytes:16,sha256:await sha256(new Uint8Array(payload,level*16,16))});
- return {source,payload,manifest:{schema:'xnby.bc7.mip_chain.v1',format:'BC7_UNORM_BLOCK',sourceSHA256:source.sha256,sourceSize:[4,4],payloadBytes:48,payloadSHA256:await sha256(payload),mips}};
+ const mips=[];for(const [level,size] of [4,2,1].entries())mips.push({level,width:size,height:size,offset:level*16,bytes:16,sha256:await sha256(new Uint8Array(payload,level*16,16)),accepted:true,quality:{rgbPSNR:50,rgbChannelP99:1,rgbMaxError:2}});
+ return {source,payload,manifest:{schema:'xnby.bc7.mip_chain.v1',format:'BC7_UNORM_BLOCK',sourceSHA256:source.sha256,sourceSize:[4,4],payloadBytes:48,payloadSHA256:await sha256(payload),mips,accepted:true,qualityThresholds:{rgbPSNRMin:40,rgbChannelP99Max:16,rgbMaxErrorMax:96}}};
 }
 function options(f){return {reserve:async()=>({release(){}}),supported:true,source:f.source,loadManifest:async()=>f.manifest,loadPayload:async()=>f.payload,upload:async()=>({compressed:true}),loadFallback:async()=>({original:true})};}
 test('complete prepared BC7 chain validates every mip and keeps payload views',async()=>{
@@ -71,4 +71,16 @@ test('a throwing texture disposal still releases budget and cannot run twice',as
  o.reserve=async({bytes})=>{held+=bytes;return {release(){held-=bytes;}};};
  o.upload=async()=>({dispose(){disposals++;throw Error('dispose failed');}});
  const r=await loadPreparedPhotograph(o);assert.equal(held,48);assert.throws(()=>r.dispose(),/dispose failed/);assert.equal(held,0);r.dispose();assert.equal(disposals,1);
+});
+
+test('missing failed relaxed and nonfinite quality is rejected for every mip',async()=>{
+ const f=await fixture();
+ for(const mutate of [m=>delete m.accepted,m=>m.accepted=false,m=>m.accepted=1,m=>m.mips[1].accepted=false,m=>delete m.mips[1].quality,m=>delete m.qualityThresholds,m=>m.qualityThresholds.rgbPSNRMin=39,m=>m.qualityThresholds.rgbChannelP99Max=17,m=>m.qualityThresholds.rgbMaxErrorMax=97,m=>m.mips[1].quality.rgbPSNR=39.999,m=>m.mips[1].quality.rgbPSNR=NaN,m=>m.mips[1].quality.rgbPSNR=Infinity,m=>m.mips[1].quality.rgbChannelP99=true,m=>m.mips[1].quality.rgbMaxError=97]){
+  const manifest=structuredClone(f.manifest);mutate(manifest);await assert.rejects(validatePreparedBc7(manifest,f.payload,f.source),/quality/);
+ }
+});
+test('failed quality falls back before compressed payload download or GPU reservation',async()=>{
+ const f=await fixture(),o=options(f),reservations=[];f.manifest.mips[1].quality.rgbPSNR=39;
+ o.loadPayload=()=>{throw Error('must not request rejected compressed bytes');};o.upload=()=>{throw Error('must not upload');};o.reserve=async request=>{reservations.push(request);return {release(){}};};
+ const result=await loadPreparedPhotograph(o);assert.equal(result.format,'rgba8');assert.equal(result.fallbackReason,'prepared_unavailable_or_invalid');assert.deepEqual(reservations,[{format:'rgba8',bytes:84}]);result.dispose();
 });

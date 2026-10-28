@@ -1,5 +1,6 @@
 import {knownPermissions} from './api_permissions.js';
 import {readJSON} from './http_json.js';
+import {normalizeQueryArea,validateQueryPage} from './spatial_query_protocol.js';
 // Only same-origin business APIs receive the in-memory access token.
 import {documentFingerprint,categories,topics} from './spatial_catalog.js';
 const error=code=>Object.assign(Error(code),{code});
@@ -46,7 +47,7 @@ export class BusinessConnection {
       const fetcher=this.fetcher;let response;try{response=await fetcher('/api/v1/'+path,{headers:{Authorization:'Bearer '+this.#token,Accept:'application/json'},credentials:'omit',cache:'no-store',redirect:'error',referrerPolicy:'no-referrer',signal:controller.signal});}catch{throw error('CONNECTION_FAILED');}
       if(generation!==this.#generation)throw error('CANCELLED');
       let payload;try{const parsed=await readJSON(response,16*1048576);payload=parsed.document;if(payload&&typeof payload==='object')responseBytes.set(payload,parsed.bytes);}catch{throw error('DATA_INVALID');}
-      if(!response.ok)throw error([401,403,404,409,503].includes(response.status)&&typeof payload.error==='string'&&/^[A-Z_]{1,64}$/.test(payload.error)?payload.error:'CONNECTION_FAILED');
+      if(!response.ok)throw error([400,401,403,404,409,422,503].includes(response.status)&&typeof payload.error==='string'&&/^[A-Z_]{1,64}$/.test(payload.error)?payload.error:'CONNECTION_FAILED');
       if(!payload||typeof payload!=='object'||Array.isArray(payload))throw error('DATA_INVALID');return payload;
     }finally{this.clearTimer(timer);this.#controllers.delete(controller);}
   }
@@ -89,6 +90,21 @@ export class BusinessConnection {
     if(generation!==this.#generation||this.session!==session)throw error('CANCELLED');
     if(result.authorizationVersion!==session.authorizationVersion||result.policyVersion!==session.policyVersion){this.disconnect('FORBIDDEN');throw error('FORBIDDEN');}
     if(result.datasetVersion!==datasetVersion)throw error('DATA_CHANGED');return result;
+  }
+  async spatialQuery(area,{document,datasetVersion,offset=0,limit=20,queryVersion=null,category=null}={}){
+    if(!this.session?.permissions.includes('spatial:read'))throw error('FORBIDDEN');
+    if(this.session.spatialQueries!==true)throw error('NOT_SUPPORTED');
+    try{profile(this.session,this.now());}catch(e){this.disconnect('AUTH_EXPIRED');throw e;}
+    const normalized=normalizeQueryArea(area);
+    if(!hash(datasetVersion)||!document||!Array.isArray(document.layers)||!Number.isInteger(offset)||offset<0||offset>10000||!Number.isInteger(limit)||limit<1||limit>200||offset>0&&!hash(queryVersion)||queryVersion!==null&&!hash(queryVersion)||category!==null&&category!=='unregistered'&&!Object.hasOwn(categories,category))throw error('INVALID_QUERY');
+    const parameters=new URLSearchParams({area:JSON.stringify(normalized),offset:String(offset),limit:String(limit),datasetVersion,...(queryVersion?{queryVersion}:{}),...(category?{category}:{})});
+    if(new TextEncoder().encode(JSON.stringify(normalized)).byteLength>2048||parameters.toString().length>4096)throw error('INVALID_QUERY');
+    const generation=this.#generation,session=this.session;
+    const result=await this.#get('spatial_queries?'+parameters,generation);
+    if(generation!==this.#generation||this.session!==session)throw error('CANCELLED');
+    try{profile(session,this.now());}catch(e){this.disconnect('AUTH_EXPIRED');throw e;}
+    if(result.authorizationVersion!==session.authorizationVersion||result.policyVersion!==session.policyVersion){this.disconnect('FORBIDDEN');throw error('FORBIDDEN');}
+    return validateQueryPage(result,{area:normalized,offset,limit,datasetVersion,queryVersion,category,document});
   }
   async check(){
     if(!this.#token)return;const generation=this.#generation;
