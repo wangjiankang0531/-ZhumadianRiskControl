@@ -5,7 +5,7 @@ import argparse, copy, datetime, hashlib, json
 BASE_RELEASE='3f1ee528b0e2107da4aead4359786fdaf2d87cc7b43214d0822eca9a46c344cd'
 UPDATER_SHA='0a5307d620876a17afcaf7418f1d10dfdf66062d24794db16e6f52a8a646754a'
 CLASS='payload/business/run-template/classes/com/iemp/endanger/server/work/service/impl/WorkReservationBaseServiceImpl.class'
-REVISION='original-end-time-sync-v1'
+REVISION='original-end-time-atomic-v2'
 OVERLAY='payload/callback-overlay/20261026-password-identity/manifest.json'
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -32,12 +32,22 @@ def adapt_updater(raw):
         "                'RESERVATION_END_TIME_CLASS_PAYLOAD_PIN_REQUIRED')\n")
     return text.replace(anchor,guard+anchor,1).replace('\n',newline).encode('utf-8')
 
-def build(application,evidence,output):
+def build(application,evidence,output,sql_evidence):
     app=Path(application).resolve(strict=True);ev=Path(evidence).resolve(strict=True);out=Path(output).absolute()
     need(app==Path('D:/Zqa20261025/Application') and not out.exists() and not out.is_relative_to(app),'EXACT_LOCAL_APP_AND_FRESH_SEPARATE_OUTPUT_REQUIRED')
     need(sha(app/'release-manifest.json')==BASE_RELEASE,'EXACT_INSTALLED_LOCAL_RELEASE_REQUIRED')
     report=read(ev/'result.json');plan=read(ev/'prepared.private.json')
-    need(report['originalCases']==8 and report['candidateCases']==16 and report['executedCandidateBytesVerified'] and report['exactSingleAssignmentSourceDifferenceVerified'] and not report['runtimeInstalledOrRestarted'],'PASSING_EXECUTED_METHOD_EVIDENCE_REQUIRED')
+    need(report['originalCases']==8 and report['candidateCases']==16 and report['executedCandidateBytesVerified'] and report['exactEndTimeAndEditTransactionDifferenceVerified'] and report['candidateEditRollbackForExceptionDeclared'] and not report['runtimeInstalledOrRestarted'],'PASSING_EXECUTED_METHOD_EVIDENCE_REQUIRED')
+    sql_root=Path(sql_evidence).resolve(strict=True)
+    sql=read(sql_root/'result.json')
+    need(sql['originalSQLCases']==10 and sql['candidateSQLCases']==11 and sql['candidateAnnotationDrivenSpringRollbackVerified'] and sql['permanentTenTableRowsAndSchemasUnchanged'] and sql['candidateClassSHA256']==report['candidateClassSHA256'] and not sql['candidateInstalled'],'PASSING_REAL_SQL_AND_ANNOTATION_ROLLBACK_EVIDENCE_REQUIRED')
+    for p,pin in read(sql_root/'prepared.private.json')['sourcePins'].items():
+        need(sha(p)==pin,'EXECUTED_SQL_VERIFIER_SOURCE_DRIFT')
+    for mode in ('original','candidate'):
+        process=read(sql_root/('execute-'+mode+'-process.json'))
+        need(process['exitCode']==0 and not process['timedOut'],'SUCCESSFUL_REAL_SQL_EXECUTION_REQUIRED')
+    actual=read(sql_root/'candidate/result.private.json')
+    need(actual['loadedServiceClassSHA256']==report['candidateClassSHA256'] and actual['serviceMethodHasTransactionAttribute'] and any(c['case']=='candidate-annotation-driven-third-write-fault' and c['temporaryRowsRolledBack'] for c in actual['cases']),'EXECUTED_ANNOTATION_ROLLBACK_REPORT_REQUIRED')
     for p,pin in plan['sourcePins'].items():need(sha(p)==pin,'EXECUTED_VERIFIER_SOURCE_DRIFT')
     cls=ev/'candidate-classes/com/iemp/endanger/server/work/service/impl/WorkReservationBaseServiceImpl.class'
     need(sha(cls)==report['candidateClassSHA256'] and cls.stat().st_size<65536,'EXACT_EXECUTED_CLASS_REQUIRED')
@@ -62,5 +72,5 @@ def build(application,evidence,output):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
-    for name in ('application','evidence','output'):p.add_argument('--'+name,type=Path,required=True)
-    a=p.parse_args();print(json.dumps(build(a.application,a.evidence,a.output)))
+    for name in ('application','evidence','output','sql-evidence'):p.add_argument('--'+name,type=Path,required=True)
+    a=p.parse_args();print(json.dumps(build(a.application,a.evidence,a.output,a.sql_evidence)))

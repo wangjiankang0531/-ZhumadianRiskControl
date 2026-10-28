@@ -61,7 +61,7 @@ def main():
     old_lines=raw.decode('utf-8').splitlines()
     new_lines=candidate_raw.decode('utf-8').splitlines()
     edits=[(tag,old_lines[i:j],new_lines[k:l]) for tag,i,j,k,l in difflib.SequenceMatcher(a=old_lines,b=new_lines,autojunk=False).get_opcodes() if tag!='equal']
-    assert edits==[('insert',[],['        work.setEndTime(vo.getBase().getEndTime());'])], 'EXACT_SINGLE_ASSIGNMENT_DIFFERENCE_REQUIRED'
+    assert edits==[('insert',[],['    @org.springframework.transaction.annotation.Transactional(rollbackFor = Exception.class)']),('insert',[],['        work.setEndTime(vo.getBase().getEndTime());'])], 'EXACT_END_TIME_AND_EDIT_TRANSACTION_DIFFERENCE_REQUIRED'
     # Save already assigns end time; only update gains one assignment.
     assert candidate_raw.count(b'work.setEndTime(vo.getBase().getEndTime());')==raw.count(b'work.setEndTime(vo.getBase().getEndTime());')+1
     fixture=HERE/'java/OriginalWorkReservationEndTimeFixture.java'
@@ -91,12 +91,14 @@ def main():
     assert len(reports['original']['cases'])==8 and len(reports['candidate']['cases'])==16
     assert reports['candidate']['loadedServiceClassSHA256']==sha(class_files[0]), 'EXECUTED_CANDIDATE_CLASS_MUST_MATCH_COMPILATION'
     assert reports['original']['loadedServiceClassSHA256']!=reports['candidate']['loadedServiceClassSHA256'], 'ORIGINAL_AND_CANDIDATE_CLASS_MUST_DIFFER'
+    assert reports['candidate']['explicitEditRollbackForException'] and not reports['original']['explicitEditRollbackForException']
     assert sha(REFERENCE)==SOURCE_SHA256
     result={'at':datetime.datetime.now().astimezone().isoformat(),'originalCases':8,'candidateCases':16,
         'actualServiceMethodsExecuted':True,'strictInMemoryMapperCaptures':True,'originalMissingEndTimeReproducedForEightTypes':True,
         'candidateEndTimeAndUnchangedFieldsPassed':True,'candidateNullValueSemanticsOnlyNotSqlClearance':True,
         'candidateClassSHA256':sha(class_files[0]),'referenceSHA256':SOURCE_SHA256,
-        'executedCandidateBytesVerified':True,'exactSingleAssignmentSourceDifferenceVerified':True,
+        'executedCandidateBytesVerified':True,'exactEndTimeAndEditTransactionDifferenceVerified':True,
+        'candidateEditRollbackForExceptionDeclared':True,
         'referenceChanged':False,'databaseOrAuthenticationOrHttpUsed':False,'runtimeInstalledOrRestarted':False,'fullCloneReady':False}
     dump(root/'result.json',result)
     print(json.dumps(result,ensure_ascii=False))

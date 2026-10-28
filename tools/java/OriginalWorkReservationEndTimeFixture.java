@@ -125,6 +125,10 @@ public final class OriginalWorkReservationEndTimeFixture {
         need(denials.equals(boundary.deniedCounts()),"NO_UNEXPECTED_IO_ALLOWED");
         Map<String,Object> result=new LinkedHashMap<>();
         result.put("mode",args[0]);result.put("cases",cases);result.put("realServiceMethodExecuted",true);
+        var edit=WorkReservationBaseServiceImpl.class.getMethod("updateById",WorkReservationBaseVo.class);
+        var tx=edit.getAnnotation(org.springframework.transaction.annotation.Transactional.class);
+        if(candidate)need(tx!=null&&Arrays.asList(tx.rollbackFor()).contains(Exception.class),"EXPLICIT_EDIT_EXCEPTION_ROLLBACK_REQUIRED");
+        result.put("explicitEditRollbackForException",tx!=null&&Arrays.asList(tx.rollbackFor()).contains(Exception.class));
         try (var stream=WorkReservationBaseServiceImpl.class.getResourceAsStream("WorkReservationBaseServiceImpl.class")) {
             need(stream!=null,"LOADED_SERVICE_BYTES_REQUIRED");
             result.put("loadedServiceClassSHA256",HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(stream.readAllBytes())));

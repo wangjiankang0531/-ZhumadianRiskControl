@@ -25,7 +25,8 @@ def adapt(raw: bytes) -> bytes:
     if section.count(old) != 1 or 'work.setEndTime(' in section:
         raise ValueError('EXACT_MISSING_END_TIME_ASSIGNMENT_REQUIRED')
     section = section.replace(old, old + '        work.setEndTime(vo.getBase().getEndTime());\n', 1)
-    result = text[:start] + section + text[end:]
+    annotation = '    @org.springframework.transaction.annotation.Transactional(rollbackFor = Exception.class)\n'
+    result = text[:start] + annotation + section + text[end:]
     return result.replace('\n', '\r\n').encode('utf-8') if crlf else result.encode('utf-8')
 
 
