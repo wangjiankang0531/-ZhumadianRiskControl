@@ -50,9 +50,17 @@ export class SourcePlanCache{
   if(!Number.isSafeInteger(maxBytes)||maxBytes<1||maxBytes>16*1048576||!Number.isSafeInteger(maxEntries)||maxEntries<1||maxEntries>256||typeof load!=='function')throw Error('Invalid source plan cache bound');
   this.maxBytes=maxBytes;this.maxEntries=maxEntries;this.load=load;this.entries=new Map();this.bytes=0;this.hits=0;this.misses=0;this.evictions=0;this.invalidations=0;this.generation=0;
  }
+ // A cache-only read proves this call did not start or await a descriptor fetch.
+ // It returns the original privately pinned plan, never a copied availability claim.
+ readCached(options){
+  const wanted=options.stillWanted??(()=>true),key=sourcePlanURL(options.request);ensureSourceWanted(wanted);
+  const prior=this.entries.get(key);if(!prior)return null;
+  if(!plans.has(prior.plan))throw Error('Unverified source plan cannot be cached');
+  this.hits++;this.entries.delete(key);this.entries.set(key,prior);return prior.plan;
+ }
  async read(options){
   const wanted=options.stillWanted??(()=>true),key=sourcePlanURL(options.request);ensureSourceWanted(wanted);
-  const prior=this.entries.get(key);if(prior){this.hits++;this.entries.delete(key);this.entries.set(key,prior);return prior.plan;}
+  const cached=this.readCached(options);if(cached)return cached;
   this.misses++;const generation=this.generation,plan=await this.load(options);ensureSourceWanted(wanted);if(!plans.has(plan))throw Error('Unverified source plan cannot be cached');
   const bytes=new TextEncoder().encode(JSON.stringify(plan)).byteLength+new TextEncoder().encode(key).byteLength;
   if(bytes>this.maxBytes||generation!==this.generation)return plan;

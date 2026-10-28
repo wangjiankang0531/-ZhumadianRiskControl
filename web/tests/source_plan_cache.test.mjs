@@ -25,3 +25,14 @@ test('clear during an in-flight read cannot repopulate a retired cache generatio
  let release;const gate=new Promise(resolve=>release=resolve),cache=new SourcePlanCache({load:async options=>{await gate;return readSourcePlan({...options,fetcher:async()=>Response.json(wrapper(1))});}});
  const pending=cache.read({request:{id:1,depth:3}});cache.clear();release();await pending;assert.equal(cache.entries.size,0);assert.equal(cache.bytes,0);
 });
+
+test('cache-only reads prove absence of descriptor IO while retaining exact pinned plans',async()=>{
+ let reads=0;const cache=new SourcePlanCache({load:async options=>{reads++;return readSourcePlan({...options,fetcher:async()=>Response.json(wrapper(options.request.id))});}}),options={request:{id:141,depth:3}};
+ assert.equal(cache.readCached(options),null);assert.equal(reads,0);assert.equal(cache.snapshot().misses,0);
+ const original=await cache.read(options);assert.equal(reads,1);assert.equal(cache.readCached(options),original);assert.equal(reads,1);assert.equal(cache.snapshot().hits,1);
+ assert.throws(()=>cache.readCached({...options,stillWanted:()=>false}),SourceLoadCancelled);assert.equal(cache.snapshot().hits,1);
+ cache.invalidate(original);assert.equal(cache.readCached(options),null);assert.equal(reads,1);
+});
+test('cache-only lookup refuses injected unpinned metadata and validates bounded routes',()=>{
+ const cache=new SourcePlanCache();cache.entries.set('api/lod-plan/1/3',{plan:{marker:marker(1)},bytes:1});assert.throws(()=>cache.readCached({request:{id:1,depth:3}}),/Unverified/);assert.throws(()=>cache.readCached({request:{id:0,depth:3}}));
+});
