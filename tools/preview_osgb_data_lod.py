@@ -54,7 +54,7 @@ class PreviewOSGBDataLOD:
         value.update(scope='verified_prepared_and_explicit_python_original_sources',
             pythonOriginalSources=dict(enabled=True,tiles=sorted(self.tiles),readerIdentity=self.memory.reader.identity,
                 pagePolicy='source_sampler_full_image_v2' if self.sampler_pages else 'original_full_mip_chain_v1',
-                **{k:audit[k] for k in ('builds','failures','encodedBytes','limit','buildReservation','bundles','activeLeases','queuedJobs','assetWritesEnabled','buildMilliseconds','planRequests','planWaitRequests','planWaitCompleted','planWaitTimeouts','planWaitMilliseconds')}))
+                **{k:audit[k] for k in ('builds','failures','encodedBytes','limit','buildReservation','bundles','activeLeases','queuedJobs','assetWritesEnabled','buildMilliseconds','planRequests','planWaitRequests','planWaitCompleted','planWaitTimeouts','planWaitMilliseconds','grantRequests','grantWaitRequests','grantWaitCompleted','grantWaitTimeouts','grantWaitMilliseconds','peakGrantWaiters')}))
         if self.indexed_missing:
             detail=value['pythonOriginalSources'];detail.pop('tiles')
             detail.update(tileSelection='sealed_index_missing_prepared_v1',tileCount=len(self.tiles),
@@ -107,7 +107,7 @@ class PreviewOSGBDataLOD:
             plan,_,value=(root or family).groups()
             if root and not 1<=int(value)<=12 or family and not value.startswith(f'Tile_{tile}_L'):
                 handler.reply(400,b'{"error":"INVALID_ORIGINAL_SOURCE"}');return True
-            if parsed.query and not (plan and parsed.query=='wait_ms=200'):
+            if parsed.query and parsed.query!='wait_ms=200':
                 handler.reply(400,b'{"error":"INVALID_ORIGINAL_SOURCE_QUERY"}');return True
             args={'depth':int(value)} if root else {'parent':value}
             if self.indexed_missing and self.prepared_marker_present(tile,**args):
@@ -115,11 +115,11 @@ class PreviewOSGBDataLOD:
             if plan:
                 result=self.memory.plan(tile,**args,wait_ms=200 if parsed.query else 0)
             else:
-                granted=self.memory.grant(tile,**args)
+                granted=self.memory.grant(tile,**args,wait_ms=200 if parsed.query else 0)
                 result=None if granted is None else granted[0]
                 if result is not None:
                     token=result['cache_lease'];handler.source_marker_sha256=granted[1]
-            wait_headers={'X-XNBY-Source-Plan-Wait-Ms':'200'} if plan and parsed.query=='wait_ms=200' else None
+            wait_headers={('X-XNBY-Source-Plan-Wait-Ms' if plan else 'X-XNBY-Source-Bundle-Wait-Ms'):'200'} if parsed.query=='wait_ms=200' else None
             handler.reply(202 if result is None else 200,json.dumps(result if result is not None else {'status':'preparing_original_data_memory'},allow_nan=False).encode(),headers=wait_headers)
         except (ValueError,RuntimeError,KeyError,TypeError,OSError) as error:
             if token:self.memory.release(token)

@@ -78,7 +78,7 @@ class DataPreviewTests(unittest.TestCase):
             h=self.request(path,'POST' if 'release' in path else 'GET');self.assertEqual(h.result[0],418)
         self.assertEqual(self.lod.memory.audit()['builds'],0)
     def test_malformed_queries_paths_and_writes_never_start_data_work(self):
-        for path in ('/api/lod-plan/1/1?wait_ms=201','/api/lod-plan/1/1?wait_ms=200&wait_ms=200','/api/lod/1/1?wait_ms=200','/api/lod-family/1/Tile_2_L16_0u.osgb','/native/tile_1_depth_1/part_000/atlas.jpg?lease='+'a'*32,'/api/lod/1/13'):
+        for path in ('/api/lod-plan/1/1?wait_ms=201','/api/lod-plan/1/1?wait_ms=200&wait_ms=200','/api/lod/1/1?wait_ms=201','/api/lod-family/1/Tile_2_L16_0u.osgb','/native/tile_1_depth_1/part_000/atlas.jpg?lease='+'a'*32,'/api/lod/1/13'):
             with self.subTest(path=path):self.assertEqual(self.request(path).result[0],400)
         self.assertEqual(self.request('/api/lod-plan/1/1','POST').result[0],405)
         self.assertEqual(self.lod.memory.audit()['builds'],0)
