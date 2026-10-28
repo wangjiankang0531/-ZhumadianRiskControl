@@ -6,7 +6,7 @@ from build_original_work_reservation_update import adapt_updater, CLASS, REVISIO
 class ReservationUpdateTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory(prefix='zmd-reservation-update-');self.root=Path(self.temp.name)
-        raw=Path('D:/Zqa20261025/Application/tools/original_public_test_update.py').read_bytes()
+        raw=Path(__file__).with_name('original_public_test_update.py').read_bytes()
         self.patched=adapt_updater(raw);module_path=self.root/'updater.py';module_path.write_bytes(self.patched)
         spec=importlib.util.spec_from_file_location('own_reservation_updater',module_path)
         self.u=importlib.util.module_from_spec(spec);spec.loader.exec_module(self.u)
