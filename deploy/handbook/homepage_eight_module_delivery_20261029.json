@@ -1,0 +1,72 @@
+{
+  "schema": "zhumadian.homepage-eight-module-delivery.v1",
+  "updatedAt": "2026-10-29T17:15:27.201527+08:00",
+  "userConfirmedEightEntryScope": true,
+  "priority": [
+    "M02",
+    "M07"
+  ],
+  "separate3DEntry": "敏捷应急指挥",
+  "releasePolicy": "按模块复刻、检查、测试；已通过检查的部分先发布公网阶段测试，不等其余模块全部完成。阶段公测不等于整模块复刻验收完成。",
+  "publicBaseline": "R15",
+  "candidate": "R16",
+  "candidateManifestSHA256": "ee6b6c7674f1f2fc0ae714c99d7dc808aa67d1894da0938db078029194ae4a98",
+  "modules": [
+    {
+      "id": "M01",
+      "name": "安全风险智能管控平台",
+      "scope": "综合入口，含安全基础与培训考核等；快捷入口与综合菜单有重叠",
+      "status": "R15已有原页面与部分修正，未完成整模块验收",
+      "wholeModuleAccepted": false
+    },
+    {
+      "id": "M02",
+      "name": "敏捷应急管理",
+      "scope": "预案/演练、队伍/物资/专家、值班等",
+      "status": "本轮优先；R16待执行公网预检和发布",
+      "wholeModuleAccepted": false
+    },
+    {
+      "id": "M03",
+      "name": "双重预防",
+      "scope": "风险/排查/隐患等",
+      "status": "公网保存500根因和完整闭环仍未关闭",
+      "wholeModuleAccepted": false
+    },
+    {
+      "id": "M04",
+      "name": "智能巡检",
+      "scope": "计划、点位、任务、问题台账",
+      "status": "本机部分维护操作通过，公网执行与权限全链待核",
+      "wholeModuleAccepted": false
+    },
+    {
+      "id": "M05",
+      "name": "特殊作业",
+      "scope": "八类作业、预约、审批、开完工、签字措施",
+      "status": "部分修正已在R15，逐类完整流程待核",
+      "wholeModuleAccepted": false
+    },
+    {
+      "id": "M06",
+      "name": "重大危险源",
+      "scope": "原台账/详情及地图/监测等原有能力",
+      "status": "真实数据/地图/外部接口与权限联动待核",
+      "wholeModuleAccepted": false
+    },
+    {
+      "id": "M07",
+      "name": "应急处置",
+      "scope": "事件/处置记录及对应状态流程",
+      "status": "本轮优先；R16待执行公网预检和发布",
+      "wholeModuleAccepted": false
+    },
+    {
+      "id": "M08",
+      "name": "我的待办",
+      "scope": "原待办事项跳转、办理、审批和回写",
+      "status": "真实角色任务/办理回写待核",
+      "wholeModuleAccepted": false
+    }
+  ]
+}
