@@ -9,7 +9,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 from original_iis_cutover import apply,rollback,regular,atomic
 
 HOST='www.joinlinksmart.com'
-IIS_ROOT=Path('C:/FTP_Root/Zhumadian/ZhumadianBusiness_0.8.7_public_1/iis')
+IIS_ROOT=Path('C:/inetpub/wwwroot/Zhumadian/Application/iis')
 def sha(p):
     with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
 def http(port,path):
@@ -31,7 +31,8 @@ def owned_controller(pid,app,pin):
     row=json.loads(r.stdout.decode('utf-8-sig'))
     return Path(row['ExecutablePath']).resolve()==(app/'runtime/python/python.exe').resolve() and pin in row['CommandLine'] and 'serve_original_server_release.py' in row['CommandLine']
 def preflight(app,iis,report):
-    assert iis==IIS_ROOT and iis.resolve(strict=True)==iis and app.name=='Application' and len(str(app/'UserData/TianjinOriginalPlatform/runs/j9999/tmp'))<=80,'EXACT_EXISTING_IIS_AND_SHORT_APPLICATION_ROOT_REQUIRED'
+    from original_server_release_parameters import runtime_temporary_path
+    assert iis==IIS_ROOT and iis.resolve(strict=True)==iis and app.name=='Application' and len(str(runtime_temporary_path(app,app/'UserData/TianjinOriginalPlatform/runs/j9999','platform')))<=80,'EXACT_EXISTING_IIS_AND_SHORT_APPLICATION_ROOT_REQUIRED'
     regular(iis);regular(app)
     assert __import__('shutil').disk_usage(app).free>=12*1024**3,'SERVER_TWELVE_GIB_FREE_REQUIRED'
     with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,r'SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full',0,winreg.KEY_READ|winreg.KEY_WOW64_64KEY) as key:net=winreg.QueryValueEx(key,'Release')[0]

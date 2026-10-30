@@ -1,0 +1,87 @@
+{
+  "schema": "xnby.server-directory-migration.plan.v1",
+  "oldApplication": "C:/Zdm/Application",
+  "newApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "oldReleaseSHA256": "0c588bf53e265e81f18048ec89b044edb9c1f727845b2481be300283b085acab",
+  "newReleaseSHA256": "44742d772ff74dfe8bb14f601eb9bec9954526a81b39b8626cb8be73917f7044",
+  "payloadManifestSHA256": "203aba75770eaeee1cde6483c57f032b630b0a7aec13c842251ace39d75dcbbb",
+  "callbackOverlaySHA256": "91f0edfac284df68e467e20714c96b08aa7f08b24a0c7618a42f0ba595fdf1eb",
+  "iisMapping": {
+    "VDIR.NAME": "www.joinlinksmart.com/zhumadian/",
+    "APP.NAME": "www.joinlinksmart.com/zhumadian",
+    "path": "/",
+    "physicalPath": "C:\\FTP_Root\\Zhumadian\\ZhumadianBusiness_0.8.7_public_1\\iis"
+  },
+  "iisFiles": {
+    "web.config": "5a74652710417225d57dd4c7ff91e06c3c3680e3786dd3a5678159c238e71964",
+    "App_Code/XnbyReferenceProxy.cs": "1371eb2fcc04706a42463501a2e1b1bec14a83ca7fa6abd47177c71eed4da49a"
+  },
+  "otherMappings": {
+    "count": 11,
+    "SHA256": "43f27ae662542f2abc67b89e47c97348954066a4b75bfbc928adbe2a49721591"
+  },
+  "replacements": {
+    "tools/original_server_release_parameters.py": {
+      "before": "d0a9314fcfb66a8f0b09769818e8a6a166a696a7f65238634a791a71d29d4f3a",
+      "after": "8e8a7ee659ae765a0bc8248b3da107e14a9bdc293840aeb745553f6a8f7ac1f9"
+    },
+    "tools/serve_original_server_release.py": {
+      "before": "d6044263d09c4e5d945df6d5d16e4c8ed5d03d7e707df0ecd7cae98d4d52176e",
+      "after": "8e86438c8651f9f3a3064be24196d40d0ab3b50cd91c93bf085bc7758cd0cc02"
+    },
+    "tools/install_original_server_ingress.py": {
+      "before": "90e129f750f49ff08fbc01e6df74dc3b945053b7cde920837d6b172d2a89ba59",
+      "after": "6561368b6e88f7f08a377fd4399570cafc07d9bd1005b7d30ba8a8fd5a87768f"
+    },
+    "tools/original_public_test_update.py": {
+      "before": "c73e0172da8f5d002dd9b46197293d0552509593628a047d2b9f82b413824806",
+      "after": "8ee301b1d7466f08f39c40d0ed42c9edbe652bfd3a9223f694d7379c7970dad5"
+    },
+    "release-manifest.json": {
+      "before": "0c588bf53e265e81f18048ec89b044edb9c1f727845b2481be300283b085acab",
+      "after": "44742d772ff74dfe8bb14f601eb9bec9954526a81b39b8626cb8be73917f7044"
+    }
+  },
+  "stageFiles": {
+    "web.config": {
+      "bytes": 214,
+      "SHA256": "fcc83fda7178f4b237121ebaf34992ec93092be3485aef71ccc86a3184d1b819"
+    },
+    "migrate_zdm_directory_20261029.py": {
+      "bytes": 24964,
+      "SHA256": "1ef683c95392ca12b8b29a9450892082ac6a8445bed80067114d02d6f93cc9f4"
+    },
+    "Migrate_Zhumadian_To_Wwwroot_20261029.ps1": {
+      "bytes": 4356,
+      "SHA256": "d232d94fa97dad370cbd883a288382dd223a04faa162dcc718a6c8b9efbca452"
+    },
+    "payload/tools/original_server_release_parameters.py": {
+      "bytes": 10443,
+      "SHA256": "8e8a7ee659ae765a0bc8248b3da107e14a9bdc293840aeb745553f6a8f7ac1f9"
+    },
+    "payload/tools/serve_original_server_release.py": {
+      "bytes": 24153,
+      "SHA256": "8e86438c8651f9f3a3064be24196d40d0ab3b50cd91c93bf085bc7758cd0cc02"
+    },
+    "payload/tools/install_original_server_ingress.py": {
+      "bytes": 14987,
+      "SHA256": "6561368b6e88f7f08a377fd4399570cafc07d9bd1005b7d30ba8a8fd5a87768f"
+    },
+    "payload/tools/original_public_test_update.py": {
+      "bytes": 66942,
+      "SHA256": "8ee301b1d7466f08f39c40d0ed42c9edbe652bfd3a9223f694d7379c7970dad5"
+    },
+    "payload/web.config": {
+      "bytes": 325,
+      "SHA256": "d3e3e7f58a5ba571d377c59a8f73a365730d8747b7e722226e540ff40ef0fed8"
+    },
+    "payload/release-manifest.json": {
+      "bytes": 5259,
+      "SHA256": "44742d772ff74dfe8bb14f601eb9bec9954526a81b39b8626cb8be73917f7044"
+    }
+  },
+  "allJavaBusinessAndObserverClassesUnchanged": true,
+  "payloadAndCallbackManifestUnchanged": true,
+  "objectStoreReadinessRevision": "live-ready-verified-buckets-bounded-503-v1",
+  "preDatabaseRecoveryRequiresExplicitNeverStartedFlagAndExactDatabaseMetadata": true
+}

@@ -3,7 +3,7 @@
 No I/O, database connection, process launch, authentication, or default secrets.
 """
 from pathlib import Path
-import re,urllib.parse,uuid
+import re,urllib.parse,uuid,json,hashlib
 
 def checked_uuid(value):
     if not isinstance(value,str) or str(uuid.UUID(value))!=value:raise ValueError('EXPLICIT_CANONICAL_OWNER_UUID_REQUIRED')
@@ -24,16 +24,35 @@ def properties_ascii(values):
     if not isinstance(values,dict) or any(not isinstance(k,str) or not isinstance(v,str) for k,v in values.items()):raise ValueError('STRING_PROPERTIES_REQUIRED')
     return ''.join(escape(k,True)+'='+escape(v)+'\n' for k,v in sorted(values.items())).encode('ascii')
 
-def materialize(spec,*,side,application,platform_run,business_run,platform_data_owner,run_owner,database_uuid,database_port,redis_port,object_port,database_password,redis_password,object_access,object_secret,platform_port=None):
+def runtime_temporary_path(application, runtime, side):
+    app, run = Path(application), Path(runtime)
+    if side not in ('platform', 'business'):
+        raise ValueError('EXPLICIT_COMPONENT_REQUIRED')
+    if app == Path('C:/inetpub/wwwroot/Zhumadian/Application'):
+        if side == 'platform':
+            if run.parent != app/'UserData/TianjinOriginalPlatform/runs' or not re.fullmatch(r'j[1-9][0-9]{0,3}', run.name):
+                raise ValueError('OWNED_SERVER_RUNTIME_LAYOUT_REQUIRED')
+            return app/'UserData/TianjinOriginalPlatform'/('t'+run.name[1:])
+        if run.name != 'b' or run.parent.parent != app/'UserData/OriginalServer/runs' or not re.fullmatch(r'j[1-9][0-9]{0,3}', run.parent.name):
+            raise ValueError('OWNED_SERVER_RUNTIME_LAYOUT_REQUIRED')
+        return run/'t'
+    return run/'tmp'
+
+def materialize(spec,*,side,application,platform_run,business_run,platform_data_owner,run_owner,database_uuid,database_port,redis_port,object_port,database_password,redis_password,object_access,object_secret,platform_port=None,business_port=None,callback_pins=None):
     if side not in ('platform','business'):raise ValueError('EXPLICIT_COMPONENT_REQUIRED')
     for value in (platform_data_owner,run_owner,database_uuid):checked_uuid(value)
+    if callback_pins is not None and business_port is None:raise ValueError('CALLBACK_BUSINESS_PORT_REQUIRED')
+    if business_port is not None and (type(business_port)!=int or not 1024<=business_port<=65535 or business_port in (database_port,redis_port,object_port,platform_port)):raise ValueError('DISTINCT_OWN_CALLBACK_BUSINESS_PORT_REQUIRED')
+    if side=='platform' and business_port is not None and callback_pins is None:raise ValueError('EXPLICIT_CALLBACK_ROUTE_PINS_REQUIRED')
     ports=[database_port,redis_port,object_port]+([] if side=='platform' else [platform_port])
+    if side=='platform' and business_port is not None:ports.append(business_port)
     if any(type(v)!=int or not 1024<=v<=65535 for v in ports) or len(set(ports))!=len(ports):raise ValueError('DISTINCT_OWNED_LOOPBACK_PORTS_REQUIRED')
     for secret in (database_password,redis_password,object_access,object_secret):
         if not isinstance(secret,str) or not secret or any(c in secret for c in '\r\n\0'):raise ValueError('EXPLICIT_PRIVATE_RUNTIME_SECRET_REQUIRED')
     app=Path(application);p=Path(platform_run);b=Path(business_run)
     if any('..' in q.parts for q in (app,p,b)) or not app.is_absolute() or app.name!='Application' or p.parent!=app/'UserData/TianjinOriginalPlatform/runs' or not b.is_relative_to(app/'UserData') or not re.fullmatch(r'j[1-9][0-9]{0,3}',p.name):raise ValueError('OWNED_SERVER_RUNTIME_LAYOUT_REQUIRED')
-    if len(str(p/'tmp'))>80 or len(str(b/'tmp'))>80:raise ValueError('SHORT_WINDOWS_RUNTIME_PATH_REQUIRED')
+    platform_tmp=runtime_temporary_path(app,p,'platform');business_tmp=runtime_temporary_path(app,b,'business')
+    if len(str(platform_tmp))>80 or len(str(business_tmp))>80:raise ValueError('SHORT_WINDOWS_RUNTIME_PATH_REQUIRED')
     tokens={'APP':app.as_posix(),'PLATFORM_RUN':p.as_posix(),'BUSINESS_RUN':b.as_posix(),'PLATFORM_DATA':(app/'UserData/TianjinOriginalPlatform').as_posix()}
     def render(value):
         for key,new in tokens.items():value=value.replace('${'+key+'}',new)
@@ -64,11 +83,26 @@ def materialize(spec,*,side,application,platform_run,business_run,platform_data_
         for name in ['master','tow']:
             base='spring.datasource.dynamic.datasource.'+name+'.'
             values[base+'url']=jdbc(values[base+'url']);values[base+'username']='root';values[base+'password']=database_password
-    values['server.address']='127.0.0.1';values['server.port']='0'
-    overrides={'own.candidate.root':root.as_posix(),'own.server.lifecycle':'persistent','own.server.owner':run_owner,'own.expected.database.uuid':database_uuid,'own.expected.database.port':str(database_port),'own.expected.redis.port':str(redis_port),'own.internal.object-store.base':f'http://127.0.0.1:{object_port}','own.allowed.loopback.ports':','.join(map(str,ports)),'spring.config.location':(root/'application.properties').as_uri()}
+    values['server.address']='127.0.0.1';values['server.port']=str(business_port) if side=='business' and business_port is not None else '0'
+    callback_bytes=None
+    overrides={'java.io.tmpdir':(platform_tmp if side=='platform' else business_tmp).as_posix(),'own.candidate.root':root.as_posix(),'own.server.lifecycle':'persistent','own.server.owner':run_owner,'own.expected.database.uuid':database_uuid,'own.expected.database.port':str(database_port),'own.expected.redis.port':str(redis_port),'own.internal.object-store.base':f'http://127.0.0.1:{object_port}','own.allowed.loopback.ports':','.join(map(str,ports)),'spring.config.location':(root/'application.properties').as_uri()}
     if side=='platform':overrides.update({'own.platform.data.owner':platform_data_owner,'own.platform.data.root':(app/'UserData/TianjinOriginalPlatform').as_posix()})
     else:overrides['own.internal.platform.base']=f'http://127.0.0.1:{platform_port}'
-    omit={'own.candidate.maximum-seconds','own.platform.file-probe.owner','own.platform.file-probe.recover','own.object-store.probe.owner','own.joint.root','own.startup.observation','own.startup.bean.definitions','own.startup.lifecycle.directory'}
+    if side=='platform' and business_port is not None:
+        if not isinstance(callback_pins,dict) or len(callback_pins)!=7:raise ValueError('EXACT_SEVEN_CALLBACK_ROUTE_PINS_REQUIRED')
+        selected={}
+        for ident,pin in callback_pins.items():
+            if not isinstance(ident,str) or not re.fullmatch('[0-9a-f]{64}',ident) or not isinstance(pin,dict):raise ValueError('CALLBACK_ROUTE_PIN_SHAPE')
+            value={key:pin.get(key) for key in ('hostSHA256','pathSHA256','configSHA256','port')}
+            if any(not isinstance(value[key],str) or not re.fullmatch('[0-9a-f]{64}',value[key]) for key in ('hostSHA256','pathSHA256','configSHA256')) or type(value['port'])!=int or not 1024<=value['port']<=65535:raise ValueError('CALLBACK_ROUTE_PIN_SHAPE')
+            selected[ident]=value
+        callback_bytes=(json.dumps(selected,sort_keys=True,separators=(',',':'))+'\n').encode('ascii')
+        overrides.update({'own.internal.business.base':f'http://127.0.0.1:{business_port}','own.callback.routes.path':(p/'callback-route-pins.json').as_posix(),'own.callback.routes.sha256':hashlib.sha256(callback_bytes).hexdigest()})
+        initializer='xnby.platform.OriginalCallbackRoutesInitializer'
+        current=values.get('context.initializer.classes','').split(',')
+        values['context.initializer.classes']=','.join([item for item in current if item and item!=initializer]+[initializer])
+    if side=='business' and business_port is not None:overrides.update({'server.port':str(business_port),'server.address':'127.0.0.1','own.expected.business.listen.port':str(business_port)})
+    omit={'own.expected.business.listen.port','own.internal.business.base','own.callback.routes.path','own.callback.routes.sha256','own.candidate.maximum-seconds','own.platform.file-probe.owner','own.platform.file-probe.recover','own.object-store.probe.owner','own.joint.root','own.startup.observation','own.startup.bean.definitions','own.startup.lifecycle.directory'}
     result=[]
     for arg in spec[side+'Arguments']:
         if arg.startswith('-D'):
@@ -76,4 +110,6 @@ def materialize(spec,*,side,application,platform_run,business_run,platform_data_
             if key in overrides or key in omit:continue
         result.append(render(arg))
     result[0:0]=['-D'+k+'='+v for k,v in overrides.items()]
-    return {'configuration':values,'properties':properties_ascii(values),'arguments':result,'side':side,'runtime':root.as_posix(),'containsPrivateValues':True}
+    rendered={'configuration':values,'properties':properties_ascii(values),'arguments':result,'side':side,'runtime':root.as_posix(),'containsPrivateValues':True}
+    if callback_bytes is not None:rendered['callbackRoutingPinsBytes']=callback_bytes
+    return rendered
