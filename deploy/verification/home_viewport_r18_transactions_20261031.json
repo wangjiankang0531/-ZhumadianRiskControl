@@ -1,0 +1,30 @@
+{
+  "scenarios": [
+    {
+      "fourthWriteFault": false,
+      "writes": 4,
+      "oldThreeFilesExactlyRestored": true,
+      "newCSSRemovedOnRestore": true
+    },
+    {
+      "fourthWriteFault": true,
+      "writes": 4,
+      "oldThreeFilesExactlyRestored": true,
+      "newCSSRemovedOnRestore": true
+    }
+  ],
+  "exactExistingUpdaterUsed": true,
+  "serverPreflightNotYetRun": true,
+  "exactGeneratedRecoveryOwnershipGates": 5,
+  "allJavaBackendControllerIISDatabaseAndAuthBytesPreservedInCandidate": true,
+  "changedInstallPaths": [
+    "frontend/security_pc/index.html",
+    "frontend/security_pc/xnby-home-viewport-97d8e3adeed9.css",
+    "payload-manifest.json",
+    "release-manifest.json"
+  ],
+  "publicDeployed": false,
+  "sheetUpdated": false,
+  "updaterSourceSHA256": "8ee301b1d7466f08f39c40d0ed42c9edbe652bfd3a9223f694d7379c7970dad5",
+  "generatedRecoveryOwnershipCases": 5
+}

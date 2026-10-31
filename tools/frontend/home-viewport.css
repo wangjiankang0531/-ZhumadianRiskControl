@@ -1,0 +1,64 @@
+/* Home navigation: respond to the browser viewport, including live resizes. */
+@media (min-width: 960px) and (max-width: 3840px) {
+  main.main-content:has(> .card-container) {
+    width: min(1480px, calc(100% - 64px));
+    min-height: calc(100vh - 60px);
+    min-height: calc(100dvh - 60px);
+    margin: 0 auto;
+    padding: 88px 0 24px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  main.main-content > .card-container {
+    width: 100%;
+    margin-top: 0;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: clamp(20px, 4vw, 80px);
+  }
+  main.main-content > .card-container > .card-item {
+    padding: clamp(14px, 2vh, 20px);
+  }
+  main.main-content > .card-container .card-header {
+    margin-bottom: clamp(12px, 2vh, 24px);
+  }
+  main.main-content > .card-container .card-header .card-icon {
+    top: -72px;
+    width: clamp(160px, 18vw, 260px);
+    height: auto;
+  }
+  main.main-content > .card-container .card-title {
+    margin-top: 48px;
+    font-size: clamp(22px, 2vw, 32px);
+  }
+  main.main-content > .card-container .card-title::after {
+    pointer-events: none;
+  }
+  main.main-content > .card-container .card-body {
+    margin-top: clamp(12px, 2vh, 32px);
+  }
+  main.main-content > .card-container .card-body .menu-item {
+    height: clamp(40px, 6.5vh, 70px);
+    margin-bottom: clamp(10px, 1.5vh, 20px);
+    padding: 0 clamp(10px, 1.2vw, 20px);
+  }
+  main.main-content > .card-container .card-body .menu-item .menu-item_label,
+  main.main-content > .card-container .card-body .menu-item:hover .menu-item_label {
+    font-size: clamp(13px, 1vw, 18px);
+  }
+  main.main-content > .card-container .card-body .menu-item .menu-item_icon_1 {
+    width: clamp(18px, 1.5vw, 27px);
+    height: auto;
+    flex-shrink: 0;
+  }
+  main.main-content > .card-container .card-body.is-center {
+    grid-column-gap: clamp(10px, 1.2vw, 20px);
+  }
+  main.main-content > .card-container .qr-code {
+    margin: 12px auto;
+    padding: 10px;
+  }
+  main.main-content > .card-container .qr-code img {
+    width: clamp(128px, 22vh, 200px);
+  }
+}

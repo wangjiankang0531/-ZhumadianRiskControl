@@ -1,0 +1,57 @@
+{
+  "at": "2026-10-31T18:50:47.629035+08:00",
+  "TLSVerificationEnabled": true,
+  "expectedCSSSHA256": "97d8e3adeed9136adfd9ee8977403448d5064c17c245934689820753896e5dc3",
+  "checks": [
+    {
+      "path": "/zhumadian",
+      "passed": false,
+      "error": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "path": "/zhumadian/",
+      "status": 200,
+      "finalUrl": "https://www.joinlinksmart.com/zhumadian/",
+      "contentType": "text/html",
+      "bytes": 2531,
+      "sha256": "25c9cf2fc4484b5b9664586b72cf640d178addda61bd3e9d4aa0878e38eb04b4",
+      "passed": true,
+      "newHomeStyleLinkedOnce": true,
+      "correctProjectTitle": true
+    },
+    {
+      "path": "/zhumadian/emergency/",
+      "status": 200,
+      "finalUrl": "https://www.joinlinksmart.com/zhumadian/emergency/",
+      "contentType": "text/html",
+      "bytes": 2436,
+      "sha256": "60ffe6054820c6bc3e4dd2dfc17248902c11da1321780330178fddd33f99cfaf",
+      "passed": true
+    },
+    {
+      "path": "/zhumadian/h5/",
+      "status": 200,
+      "finalUrl": "https://www.joinlinksmart.com/zhumadian/h5/",
+      "contentType": "text/html",
+      "bytes": 1140,
+      "sha256": "76738e8bdd3fd8cc3b13b92753db5e9cdded0a2bc21e7640a3591b022ec07936",
+      "passed": true
+    },
+    {
+      "path": "/zhumadian/xnby-home-viewport-97d8e3adeed9.css",
+      "status": 200,
+      "finalUrl": "https://www.joinlinksmart.com/zhumadian/xnby-home-viewport-97d8e3adeed9.css",
+      "contentType": "text/css",
+      "bytes": 2097,
+      "sha256": "97d8e3adeed9136adfd9ee8977403448d5064c17c245934689820753896e5dc3",
+      "exactVerifiedCSSBytes": true,
+      "passed": true
+    }
+  ],
+  "allPassed": false,
+  "loggedInHomeLayoutVerified": false,
+  "sheetUpdated": false,
+  "deploymentReadyObserved": true,
+  "scope": "R18首页静态发布核验；登录后布局待用户登录",
+  "runtimeUUIDsAccountsSessionsAndRawLogsIncluded": false
+}
