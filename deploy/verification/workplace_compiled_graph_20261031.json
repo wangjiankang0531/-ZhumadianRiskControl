@@ -1,0 +1,19 @@
+{
+  "allFilesExactSHA256Verified": 836,
+  "localESMReferencesResolved": 4625,
+  "entryScriptsAndStylesPresent": true,
+  "threeActualCompiledBusinessComponentsIdentified": true,
+  "compiledTaskHeaderWidthsVerified": true,
+  "compiledEventResponsiveMediaAndSharedResizeObserverLinked": true,
+  "compiledStatisticsGridAndContainerUnitsPresent": true,
+  "R18HomeStylesRetained": true,
+  "compiledChunks": [
+    "assets/js/Chart3-Dv0wXgJk.js",
+    "assets/js/index-DYS3zSNJ.js",
+    "assets/js/index-Dl8M2Jva.js",
+    "assets/js/index.vue_vue_type_script_setup_true_name_ECharts_lang-D0wsHmgR.js"
+  ],
+  "componentBrowserProof": "workplace-chart-r1/browser-proof-r3/result.json",
+  "fullAuthenticatedCompiledPortalBrowserExercised": false,
+  "publicInstalled": false
+}

@@ -1,0 +1,121 @@
+{
+  "at": "2026-10-31T20:10:19.495934+08:00",
+  "TLSVerificationEnabled": true,
+  "checks": [
+    {
+      "path": "/zhumadian",
+      "status": 200,
+      "mime": "text/html",
+      "bytes": 2531,
+      "sha256": "e9903b022b323c2d233594e41ab84e83930c943c648079bacf4d01e1a6e44094",
+      "passed": true,
+      "homeStyleRetained": true
+    },
+    {
+      "path": "/zhumadian/",
+      "status": 200,
+      "mime": "text/html",
+      "bytes": 2531,
+      "sha256": "e9903b022b323c2d233594e41ab84e83930c943c648079bacf4d01e1a6e44094",
+      "passed": true,
+      "homeStyleRetained": true
+    },
+    {
+      "path": "/zhumadian/emergency/",
+      "status": 200,
+      "mime": "text/html",
+      "bytes": 2436,
+      "sha256": "60ffe6054820c6bc3e4dd2dfc17248902c11da1321780330178fddd33f99cfaf",
+      "passed": true
+    },
+    {
+      "path": "/zhumadian/h5/",
+      "status": 200,
+      "mime": "text/html",
+      "bytes": 1140,
+      "sha256": "76738e8bdd3fd8cc3b13b92753db5e9cdded0a2bc21e7640a3591b022ec07936",
+      "passed": true
+    },
+    {
+      "path": "/zhumadian/xnby-home-viewport-97d8e3adeed9.css",
+      "status": 200,
+      "mime": "text/css",
+      "bytes": 2097,
+      "sha256": "97d8e3adeed9136adfd9ee8977403448d5064c17c245934689820753896e5dc3",
+      "exactCompiledBytesMatched": true,
+      "knownExistingBrandAssetPathRewrites": 0,
+      "exactExistingBrandingWireBytesMatched": true,
+      "passed": true
+    },
+    {
+      "path": "/zhumadian/assets/js/Chart3-Dv0wXgJk.js",
+      "status": 200,
+      "mime": "application/javascript",
+      "bytes": 3449,
+      "sha256": "e47fd6bcc517d5af5317d27b3920ec7eb6f0f351ba2837a4b3b2ec0cac9cedf4",
+      "exactCompiledBytesMatched": true,
+      "knownExistingBrandAssetPathRewrites": 0,
+      "exactExistingBrandingWireBytesMatched": true,
+      "passed": true
+    },
+    {
+      "path": "/zhumadian/assets/js/index-DYS3zSNJ.js",
+      "status": 200,
+      "mime": "application/javascript",
+      "bytes": 1730,
+      "sha256": "ef4cd0b968c3ac1cda15462462614a22019bd51deb2b85d215d9726e6728927e",
+      "exactCompiledBytesMatched": true,
+      "knownExistingBrandAssetPathRewrites": 0,
+      "exactExistingBrandingWireBytesMatched": true,
+      "passed": true
+    },
+    {
+      "path": "/zhumadian/assets/js/index-Dl8M2Jva.js",
+      "status": 200,
+      "mime": "application/javascript",
+      "bytes": 10674,
+      "sha256": "cebcc63912f885eb3228b032a6055d64d070c1de44e0046a9e0453c661282749",
+      "exactCompiledBytesMatched": false,
+      "knownExistingBrandAssetPathRewrites": 1,
+      "exactExistingBrandingWireBytesMatched": true,
+      "passed": true
+    },
+    {
+      "path": "/zhumadian/assets/js/index.vue_vue_type_script_setup_true_name_ECharts_lang-D0wsHmgR.js",
+      "status": 200,
+      "mime": "application/javascript",
+      "bytes": 115893,
+      "sha256": "dcc677dfecf1c3984e4e4bce257c605d003b32d6272aa9db7b72c01a5870ab74",
+      "exactCompiledBytesMatched": true,
+      "knownExistingBrandAssetPathRewrites": 0,
+      "exactExistingBrandingWireBytesMatched": true,
+      "passed": true
+    }
+  ],
+  "redirects": [
+    {
+      "path": "/zhumadian",
+      "method": "GET",
+      "status": 301,
+      "location": "/zhumadian/",
+      "passed": true
+    },
+    {
+      "path": "/zhumadian",
+      "method": "HEAD",
+      "status": 301,
+      "location": "/zhumadian/",
+      "passed": true
+    },
+    {
+      "path": "/zhumadian?viewport_probe=1",
+      "method": "GET",
+      "status": 301,
+      "location": "/zhumadian/?viewport_probe=1",
+      "passed": true
+    }
+  ],
+  "allPassed": true,
+  "loggedInWorkplaceLayoutVerified": false,
+  "sheetG3G4G5Updated": false
+}

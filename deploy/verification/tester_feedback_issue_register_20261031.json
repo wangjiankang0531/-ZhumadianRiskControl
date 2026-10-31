@@ -6,7 +6,7 @@
   "completionTextAfterPublicVerification": "AI已解决，请测试者复测",
   "authenticatedDocumentWindowAvailable": true,
   "userConfirmedWeChatAccountCanEdit": true,
-  "documentCellsChanged": false,
+  "documentCellsChanged": true,
   "publicUpdateRequired": true,
   "publicUrl": "https://www.joinlinksmart.com/zhumadian/",
   "issues": [
@@ -17,13 +17,14 @@
       "description": "登录页出现滚屏，建议调整在一屏显示",
       "descriptionSha256": "f627d114b8d5e40b400dd1619fde4a1777075a267ebf91dbd5a0761abe4932ba",
       "completionCell": "G2",
-      "status": "R18已部署，公网入口及CSS通过；等待用户登录后核首页布局",
+      "status": "R18公网登录态及窄窗口通过，G2已回填，等待测试者复测",
       "localLayoutVerified": true,
       "publicDeployed": true,
-      "publicVerified": false,
-      "completionWritten": false,
+      "publicVerified": true,
+      "completionWritten": true,
       "screenshotActuallyShowsHomeNavigation": true,
-      "publicStaticVerified": true
+      "publicStaticVerified": true,
+      "completionReadBackVerified": true
     },
     {
       "number": 2,
@@ -32,11 +33,12 @@
       "description": "巡检任务清单调整排班在一行",
       "descriptionSha256": "c247e8b0d0842c4d7f9eb0d1864c8824b6734d4f3a7fc921647f2b0e329a3784",
       "completionCell": "G3",
-      "status": "待复现",
-      "localLayoutVerified": false,
-      "publicDeployed": false,
+      "status": "R19计划名称单行已修，公网状态标题仍省略；G3不回填，待继续修正",
+      "localLayoutVerified": true,
+      "publicDeployed": true,
       "publicVerified": false,
-      "completionWritten": false
+      "completionWritten": false,
+      "newStatusHeaderEllipsisObservedOnPublic": true
     },
     {
       "number": 3,
@@ -45,11 +47,12 @@
       "description": "事件上报统计饼状图与图里重叠",
       "descriptionSha256": "410d198d40d7ffbad7257f29fee689a954bfa6016e28afd3150b393a48df38ba",
       "completionCell": "G4",
-      "status": "待复现",
-      "localLayoutVerified": false,
-      "publicDeployed": false,
-      "publicVerified": false,
-      "completionWritten": false
+      "status": "R19公网宽窄布局通过，完成情况已回填且共享正文回读；待测试者复测",
+      "localLayoutVerified": true,
+      "publicDeployed": true,
+      "publicVerified": true,
+      "completionWritten": true,
+      "completionReadBackVerified": true
     },
     {
       "number": 4,
@@ -58,11 +61,12 @@
       "description": "时间统计调整格式，字未显示全",
       "descriptionSha256": "e20f9e18e2d651cc08c1dfc8fd1cff2b08fc226776b48e55afb42cb0f6a497c7",
       "completionCell": "G5",
-      "status": "待复现",
-      "localLayoutVerified": false,
-      "publicDeployed": false,
-      "publicVerified": false,
-      "completionWritten": false
+      "status": "R19公网宽窄布局通过，完成情况已回填且共享正文回读；待测试者复测",
+      "localLayoutVerified": true,
+      "publicDeployed": true,
+      "publicVerified": true,
+      "completionWritten": true,
+      "completionReadBackVerified": true
     },
     {
       "number": 5,
@@ -222,12 +226,24 @@
     }
   ],
   "publicR18Deployed": true,
-  "loggedInHomeLayoutVerified": false,
+  "loggedInHomeLayoutVerified": true,
   "newFindings": [
     {
       "id": "URL-01",
-      "description": "无末尾斜杠/zhumadian返回404，/zhumadian/正常",
-      "status": "待修复"
+      "description": "裸/zhumadian原404",
+      "status": "R19同域HTTPS GET/HEAD/查询301通过"
+    },
+    {
+      "id": "UI-STATE-HEADER",
+      "description": "R19状态列80宽导致正式样式下标题省略",
+      "status": "待恢复原100宽并补正式样式文字宽度验收"
     }
-  ]
+  ],
+  "completedCellCount": 3,
+  "publicVerifiedIssueCount": 3,
+  "lastVerifiedAt": "2026-10-31T20:43:36+08:00",
+  "exactPublicGitSnapshotPublished": true,
+  "publicGitSnapshotPredatesLiveAcceptance": true,
+  "publicR19Deployed": true,
+  "R19PublicGitPushed": false
 }

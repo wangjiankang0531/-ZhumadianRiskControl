@@ -1,0 +1,16 @@
+{
+  "globalAsaxSHA256": "694ef766a4c998e750142d8687f36473fcb45557529d5865102de3d1dcac041b",
+  "bytes": 1345,
+  "actualExtractedGlobalMembersCompiled": true,
+  "actualSystemWeb301HostedContractPassed": false,
+  "unhostedResponseFixtureRejected": true,
+  "cases": 22,
+  "actualASPNetSitePrecompilationPassed": true,
+  "existingHTTPSHostMethodAndRawURLGuardsRetained": true,
+  "onlyExactBareProjectRootRedirected": true,
+  "queryPreserved": true,
+  "existingServerGlobalAsaxAbsenceNotYetChecked": true,
+  "publicInstalled": false,
+  "R18FixedPayloadModified": false,
+  "realIISHTTPIntegrationVerified": false
+}

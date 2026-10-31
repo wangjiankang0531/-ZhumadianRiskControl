@@ -1,0 +1,368 @@
+{
+  "passed": true,
+  "baseline": {
+    "innerWidth": 1920,
+    "containerWidth": 286,
+    "chartWidth": 286,
+    "legend": {
+      "left": 85,
+      "top": 52,
+      "right": 266,
+      "bottom": 208
+    },
+    "pie": {
+      "left": 21.840000000000018,
+      "top": 54.60000000000001,
+      "right": 172.64,
+      "bottom": 205.39999999999998
+    },
+    "overlap": true,
+    "total": "8",
+    "validLegendValues": true,
+    "canvasInsideContainer": true,
+    "errors": [],
+    "text": {
+      "statisticsWidth": 1200,
+      "statisticsNoHorizontalOverflow": false,
+      "statisticsItems": 4,
+      "allStatisticLabelsFit": true,
+      "taskHeadersSingleLine": false,
+      "exactEventTotalVisible": true,
+      "taskTimePreserved": true,
+      "taskColumnsPreserved": [
+        "巡检计划名称",
+        "巡检状态",
+        "巡检日期"
+      ],
+      "errors": []
+    },
+    "containerResize": {
+      "innerWidth": 1920,
+      "containerWidth": 566,
+      "chartWidth": 286,
+      "legend": {
+        "left": 85,
+        "top": 52,
+        "right": 266,
+        "bottom": 208
+      },
+      "pie": {
+        "left": 21.840000000000018,
+        "top": 54.60000000000001,
+        "right": 172.64,
+        "bottom": 205.39999999999998
+      },
+      "overlap": true,
+      "total": "8",
+      "validLegendValues": true,
+      "canvasInsideContainer": true,
+      "errors": []
+    }
+  },
+  "candidateCases": [
+    {
+      "innerWidth": 1920,
+      "containerWidth": 286,
+      "chartWidth": 286,
+      "legend": {
+        "left": 8,
+        "top": 234,
+        "right": 715.88671875,
+        "bottom": 256
+      },
+      "pie": {
+        "left": 78,
+        "top": 39,
+        "right": 208,
+        "bottom": 169
+      },
+      "overlap": false,
+      "total": "8",
+      "validLegendValues": true,
+      "canvasInsideContainer": true,
+      "errors": [],
+      "outerCardWidth": 320
+    },
+    {
+      "innerWidth": 1920,
+      "containerWidth": 566,
+      "chartWidth": 566,
+      "legend": {
+        "left": 328.28,
+        "top": 64,
+        "right": 475.094453125,
+        "bottom": 196
+      },
+      "pie": {
+        "left": 78.79999999999998,
+        "top": 39,
+        "right": 260.79999999999995,
+        "bottom": 221
+      },
+      "overlap": false,
+      "total": "8",
+      "validLegendValues": true,
+      "canvasInsideContainer": true,
+      "errors": [],
+      "outerCardWidth": 600
+    },
+    {
+      "innerWidth": 1920,
+      "containerWidth": 226,
+      "chartWidth": 226,
+      "legend": {
+        "left": 8,
+        "top": 234,
+        "right": 715.88671875,
+        "bottom": 256
+      },
+      "pie": {
+        "left": 56.5,
+        "top": 47.5,
+        "right": 169.5,
+        "bottom": 160.5
+      },
+      "overlap": false,
+      "total": "8",
+      "validLegendValues": true,
+      "canvasInsideContainer": true,
+      "errors": [],
+      "outerCardWidth": 260
+    },
+    {
+      "innerWidth": 1920,
+      "containerWidth": 387,
+      "chartWidth": 387,
+      "legend": {
+        "left": 8,
+        "top": 234,
+        "right": 715.88671875,
+        "bottom": 256
+      },
+      "pie": {
+        "left": 128.5,
+        "top": 39,
+        "right": 258.5,
+        "bottom": 169
+      },
+      "overlap": false,
+      "total": "8",
+      "validLegendValues": true,
+      "canvasInsideContainer": true,
+      "errors": [],
+      "outerCardWidth": 421
+    },
+    {
+      "innerWidth": 1920,
+      "containerWidth": 386,
+      "chartWidth": 386,
+      "legend": {
+        "left": 8,
+        "top": 234,
+        "right": 715.88671875,
+        "bottom": 256
+      },
+      "pie": {
+        "left": 128,
+        "top": 39,
+        "right": 258,
+        "bottom": 169
+      },
+      "overlap": false,
+      "total": "8",
+      "validLegendValues": true,
+      "canvasInsideContainer": true,
+      "errors": [],
+      "outerCardWidth": 420
+    },
+    {
+      "innerWidth": 1920,
+      "containerWidth": 766,
+      "chartWidth": 766,
+      "legend": {
+        "left": 444.28,
+        "top": 64,
+        "right": 591.094453125,
+        "bottom": 196
+      },
+      "pie": {
+        "left": 138.79999999999998,
+        "top": 39,
+        "right": 320.79999999999995,
+        "bottom": 221
+      },
+      "overlap": false,
+      "total": "8",
+      "validLegendValues": true,
+      "canvasInsideContainer": true,
+      "errors": [],
+      "outerCardWidth": 800
+    },
+    {
+      "innerWidth": 1920,
+      "containerWidth": 286,
+      "chartWidth": 286,
+      "legend": {
+        "left": 8,
+        "top": 234,
+        "right": 715.88671875,
+        "bottom": 256
+      },
+      "pie": {
+        "left": 78,
+        "top": 39,
+        "right": 208,
+        "bottom": 169
+      },
+      "overlap": false,
+      "total": "8",
+      "validLegendValues": true,
+      "canvasInsideContainer": true,
+      "errors": [],
+      "outerCardWidth": 320
+    },
+    {
+      "innerWidth": 1920,
+      "containerWidth": 286,
+      "chartWidth": 286,
+      "legend": {
+        "left": 8,
+        "top": 234,
+        "right": 326.33203125,
+        "bottom": 256
+      },
+      "pie": {
+        "left": 78,
+        "top": 39,
+        "right": 208,
+        "bottom": 169
+      },
+      "overlap": false,
+      "total": "0",
+      "validLegendValues": true,
+      "canvasInsideContainer": true,
+      "errors": [],
+      "scenario": "zero-and-invalid"
+    }
+  ],
+  "textCases": [
+    {
+      "statisticsWidth": 1536,
+      "statisticsNoHorizontalOverflow": true,
+      "statisticsItems": 4,
+      "allStatisticLabelsFit": true,
+      "taskHeadersSingleLine": true,
+      "exactEventTotalVisible": true,
+      "taskTimePreserved": true,
+      "taskColumnsPreserved": [
+        "巡检计划名称",
+        "巡检状态",
+        "巡检日期"
+      ],
+      "errors": [],
+      "requestedStatisticsWidth": 1536,
+      "requestedTaskWidth": 420
+    },
+    {
+      "statisticsWidth": 1200,
+      "statisticsNoHorizontalOverflow": true,
+      "statisticsItems": 4,
+      "allStatisticLabelsFit": true,
+      "taskHeadersSingleLine": true,
+      "exactEventTotalVisible": true,
+      "taskTimePreserved": true,
+      "taskColumnsPreserved": [
+        "巡检计划名称",
+        "巡检状态",
+        "巡检日期"
+      ],
+      "errors": [],
+      "requestedStatisticsWidth": 1200,
+      "requestedTaskWidth": 350
+    },
+    {
+      "statisticsWidth": 960,
+      "statisticsNoHorizontalOverflow": true,
+      "statisticsItems": 4,
+      "allStatisticLabelsFit": true,
+      "taskHeadersSingleLine": true,
+      "exactEventTotalVisible": true,
+      "taskTimePreserved": true,
+      "taskColumnsPreserved": [
+        "巡检计划名称",
+        "巡检状态",
+        "巡检日期"
+      ],
+      "errors": [],
+      "requestedStatisticsWidth": 960,
+      "requestedTaskWidth": 320
+    },
+    {
+      "statisticsWidth": 720,
+      "statisticsNoHorizontalOverflow": true,
+      "statisticsItems": 4,
+      "allStatisticLabelsFit": true,
+      "taskHeadersSingleLine": true,
+      "exactEventTotalVisible": true,
+      "taskTimePreserved": true,
+      "taskColumnsPreserved": [
+        "巡检计划名称",
+        "巡检状态",
+        "巡检日期"
+      ],
+      "errors": [],
+      "requestedStatisticsWidth": 720,
+      "requestedTaskWidth": 280
+    },
+    {
+      "statisticsWidth": 360,
+      "statisticsNoHorizontalOverflow": true,
+      "statisticsItems": 4,
+      "allStatisticLabelsFit": true,
+      "taskHeadersSingleLine": true,
+      "exactEventTotalVisible": true,
+      "taskTimePreserved": true,
+      "taskColumnsPreserved": [
+        "巡检计划名称",
+        "巡检状态",
+        "巡检日期"
+      ],
+      "errors": [],
+      "requestedStatisticsWidth": 360,
+      "requestedTaskWidth": 320
+    },
+    {
+      "statisticsWidth": 280,
+      "statisticsNoHorizontalOverflow": true,
+      "statisticsItems": 4,
+      "allStatisticLabelsFit": true,
+      "taskHeadersSingleLine": true,
+      "exactEventTotalVisible": true,
+      "taskTimePreserved": true,
+      "taskColumnsPreserved": [
+        "巡检计划名称",
+        "巡检状态",
+        "巡检日期"
+      ],
+      "errors": [],
+      "requestedStatisticsWidth": 280,
+      "requestedTaskWidth": 420
+    }
+  ],
+  "actualVueSFCAndInstalledECharts": true,
+  "syntheticAPIOnly": true,
+  "sameWindowWidthDuringContainerChanges": true,
+  "normalBrowserClosed": true,
+  "chromeExitCode": 0,
+  "originalSourceOrFormalOrPublicChanged": false,
+  "originalSheetChanged": false,
+  "verifiedCandidateFiles": {
+    "ECharts.vue": "2fa86567e43196bdfd8eeb4cbddae5e0c15f9474c2747390a236b8cb1195796d",
+    "Chart3.vue": "aceb065c86ea0eba47d3dc75b5609e92332e01b9ecead1b9f7e5addfc9d33da1",
+    "event-report-layout.ts": "c56ea0b2398f84f449912314542a033391db2bb7cf0a86b658ca44fb42b938d0",
+    "TaskList.vue": "1ee245b252bdd9bd141950a1f5d5d7ef8d95fcd99d667113bb5770742f3e403c",
+    "Statistics.vue": "7e5447f749f95d5eabe39bf1ccdf589c7424d14eb687de2ee05be8add2751dc1"
+  },
+  "publicDeployed": false,
+  "sourceScriptsTaskAndStatisticsPreserved": true
+}

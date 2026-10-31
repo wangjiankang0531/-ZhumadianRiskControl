@@ -1,0 +1,20 @@
+{
+  "actualRetainedUpdater": true,
+  "scenarios": [
+    {
+      "fourthWriteFault": false,
+      "allOldBytesRestored": true,
+      "allNewPathsRemoved": true,
+      "paths": 1045
+    },
+    {
+      "fourthWriteFault": true,
+      "allOldBytesRestored": true,
+      "allNewPathsRemoved": true,
+      "paths": 1045
+    }
+  ],
+  "generatedRecoveryOwnershipCases": 5,
+  "realRuntimeStartedOrStopped": false,
+  "allOldFixtureBytesMatchExactR18Metadata": 524
+}
