@@ -1,0 +1,75 @@
+{
+  "schema": "xnby.compiled-safety-workflow.r66.v1",
+  "actualCompiledFrontend836Files": true,
+  "phases": [
+    {
+      "phase": "pending",
+      "cases": [
+        "exact-compiled-client-guard-redirects-unauthenticated-task-route-to-login",
+        "compiled-login-form-crypto-and-normal-native-login-succeed",
+        "compiled-user-store-receives-original-native-role-menu",
+        "same-synthetic-user-real-ui-session-handoff-in-memory-with-owner-role-nonce-and-replay-guards",
+        "normal-original-safety-menu-and-real-workflow-list",
+        "actual-native-person-picker-selects-real-synthetic-ID-and-matching-original-flows",
+        "original-person-picker-cancel-preserves-committed-filter",
+        "actual-native-nonmatching-creator-returns-zero",
+        "actual-select-clear-removes-native-filter-and-restores-list",
+        "actual-reset-removes-person-ID-and-restores-original-list",
+        "real-original-directory-and-workflow-HTTP-with-no-business-update"
+      ],
+      "httpRequestCount": 16,
+      "compiledByteSetMatched": true,
+      "sha256": "12267c3eb17a8bb4426fa95e73a57baa39550aae4b02479af536d3affd098dc5"
+    },
+    {
+      "phase": "completed",
+      "cases": [
+        "exact-compiled-client-guard-redirects-unauthenticated-task-route-to-login",
+        "compiled-login-form-crypto-and-normal-native-login-succeed",
+        "compiled-user-store-receives-original-native-role-menu",
+        "same-synthetic-user-real-ui-session-handoff-in-memory-with-owner-role-nonce-and-replay-guards",
+        "normal-original-safety-menu-and-real-workflow-list",
+        "actual-native-person-picker-selects-real-synthetic-ID-and-matching-original-flows",
+        "original-person-picker-cancel-preserves-committed-filter",
+        "actual-native-nonmatching-creator-returns-zero",
+        "actual-select-clear-removes-native-filter-and-restores-list",
+        "actual-reset-removes-person-ID-and-restores-original-list",
+        "real-original-directory-and-workflow-HTTP-with-no-business-update"
+      ],
+      "httpRequestCount": 16,
+      "compiledByteSetMatched": true,
+      "sha256": "c4b2d8497a51f268b555c168c3c8fa4add7fc8d2afbba9cfab22f53c09b07f76"
+    },
+    {
+      "phase": "mine",
+      "cases": [
+        "exact-compiled-client-guard-redirects-unauthenticated-task-route-to-login",
+        "compiled-login-form-crypto-and-normal-native-login-succeed",
+        "compiled-user-store-receives-original-native-role-menu",
+        "same-synthetic-user-real-ui-session-handoff-in-memory-with-owner-role-nonce-and-replay-guards",
+        "normal-original-safety-menu-and-real-workflow-list",
+        "actual-native-person-picker-selects-real-synthetic-ID-and-matching-original-flows",
+        "original-person-picker-cancel-preserves-committed-filter",
+        "actual-MyLaunch-normal-user-scope-intersection-zero-without-unfiltered-query",
+        "actual-select-clear-removes-native-filter-and-restores-list",
+        "actual-reset-removes-person-ID-and-restores-original-list",
+        "real-original-directory-and-workflow-HTTP-with-no-business-update"
+      ],
+      "httpRequestCount": 15,
+      "compiledByteSetMatched": true,
+      "sha256": "79b802892d8f9bf88579a6fa5194c423f5a3197105d25ac17ed4385421ba9bbd"
+    }
+  ],
+  "actualChecks": 33,
+  "nativeNormalNonAdministratorLogins": 3,
+  "realPersonSelectorAndOriginalDirectoryAPIs": true,
+  "noComponentRouterAPITokenUserStoreStubs": true,
+  "onlyFreshSyntheticUsersRolesMenusAndTemplates": true,
+  "originalEmergency206ClientAndBothBusinessOrdersPreserved": true,
+  "normalSDKAndAllBrowsersAndGatewaysStopped": true,
+  "secondPageSampleNotCreated": true,
+  "componentPaginationChecksSeparatelyPassed": true,
+  "realNangangTemplateRoleOrCaptchaAccepted": false,
+  "formalOrPublicChanged": false,
+  "fullCloneReady": false
+}

@@ -8,12 +8,12 @@
     </div>
     <div class="table-box">
       <el-table :data="data">
-        <el-table-column label="巡检计划名称" prop="planName" min-width="112" show-overflow-tooltip>
+        <el-table-column label="巡检计划名称" prop="planName" min-width="132" show-overflow-tooltip>
           <template #default="scope">
             {{ scope.row.inspectionTasks.planName }}
           </template>
         </el-table-column>
-        <el-table-column label="巡检状态" prop="inspectionStatus" width="80">
+        <el-table-column label="巡检状态" prop="inspectionStatus" width="100">
           <template #default="scope">
             <span v-if="scope.row.inspectionTasks.inspectionStatus == '0'" class="status warning">未巡检</span>
             <span v-if="scope.row.inspectionTasks.inspectionStatus == '1'" class="status green">已巡检</span>

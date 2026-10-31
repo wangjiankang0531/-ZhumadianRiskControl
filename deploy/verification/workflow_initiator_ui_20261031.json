@@ -1,0 +1,38 @@
+{
+  "schema": "xnby.workflow-initiator-ui.verification.v1",
+  "componentAssertions": 38,
+  "allPassed": true,
+  "browserNormalExit": true,
+  "actualSFCs": [
+    "workflow/index",
+    "workflow/components/searchForm",
+    "SearchForm",
+    "SearchFormItem",
+    "Grid",
+    "GridItem"
+  ],
+  "realElementPlusUsed": true,
+  "explicitTestDoubles": [
+    "api",
+    "router",
+    "utils",
+    "picker",
+    "page",
+    "list"
+  ],
+  "originalSDKFilteringProofSeparate": true,
+  "originalSDKMyInitiatedIgnoresCreatorFilterNeedsFollowup": false,
+  "formalInstalled": false,
+  "publicDeployed": false,
+  "G7CompletionWritten": false,
+  "fullCloneReady": false,
+  "canonicalSources": {
+    "tools/frontend/workflow/index.vue": "9c35b88ab197308b443ba96c8308605eed965a879ea3216daba91573206a16aa",
+    "tools/frontend/workflow/components/searchForm.vue": "1727220c732f5e7ae4e8c1407abc54d378e45b5d811682a9d533ef4c68ef627e",
+    "tools/original_workflow_initiator_ui_compat.py": "ab9a9c979351706385a8a6d946f412c09b879fe8f3c1b924493511322e377d33"
+  },
+  "myInitiatedScopeIntersectionUsesNormalCurrentUserStore": true,
+  "missingIdentityRefreshUsesExistingUserStoreAction": true,
+  "nativeSDKOwnScopeAndThreeServerFiltersSeparatelyObserved": true,
+  "fullCompiledPortalAndPublicIntegrationPending": true
+}
