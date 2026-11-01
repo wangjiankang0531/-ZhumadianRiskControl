@@ -1,0 +1,165 @@
+{
+  "schema": "xnby.r24.retained-gateway-wire-verification.v1",
+  "at": "2026-11-01T13:18:54.076832+08:00",
+  "allPassed": true,
+  "totalStaticFilesVerified": 1174,
+  "unchangedWireFiles": 1161,
+  "exactRetainedGatewayDifferencesVerified": 13,
+  "retainedProjectBrandingSHA256": "e9e44d649dde71b89d1c2d5a9c93a11489d17811ecd46f83712f48be8b2f2af2",
+  "retainedHeaderBrandingSHA256": "0e68e1ce9bfb20b2ef77cb3c6fcc4035593438fdbea027166748755ac066c2f2",
+  "projectIconAliasUsesPinnedSVG": true,
+  "brandedEntryAndFourWorkflowFacadeAssetURLsVerified": 8,
+  "rawByteMismatchDiagnosticPreserved": true,
+  "arbitraryMismatchExceptionsOrProductChanges": false,
+  "actualAuthenticatedPublicBusinessFlowAccepted": false,
+  "checks": [
+    {
+      "path": "/zhumadian/assets/js/index-52e-SPuL.js",
+      "status": 200,
+      "bytes": 10674,
+      "expectedSHA256": "b1038252125eacf71d5e49b70540b52612d28d93c61c96739682152df916ef8c",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/assets/js/index-BxnxJOmN.js",
+      "status": 200,
+      "bytes": 3227,
+      "expectedSHA256": "f1a83748e6d642072d2574366e832a3b084437032805e726e0d720666c2b46c6",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/assets/js/index-CZcMMIve.js",
+      "status": 200,
+      "bytes": 7903,
+      "expectedSHA256": "d9c2ad53e8358804d5b86724ecf35f164fc2477c9d287ebd35b179ef22397fd2",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/assets/js/index-kAcgthiJ.js",
+      "status": 200,
+      "bytes": 2624423,
+      "expectedSHA256": "32d055b28923e76d98d9d1d26a1b748f14fb5d2265f934780df22e07c80ac670",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/assets/js/index-rqKWBb3G.js",
+      "status": 200,
+      "bytes": 16230,
+      "expectedSHA256": "7268e785ae1633d78ff600d30569e66c1e94d91e1593838d3d72128670295491",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/assets/js/index.vue_vue_type_script_setup_true_lang-BboC5deL.js",
+      "status": 200,
+      "bytes": 3503,
+      "expectedSHA256": "aff89cec69eff4ecf1fd3395659a4a6dc871956876b79de5c58835a13be57915",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/assets/js/jobTypeDialog-B3QKXIEZ.js",
+      "status": 200,
+      "bytes": 44319,
+      "expectedSHA256": "0593629030fbb0b1cc4b6982155ab395bc630f48ea70674be9e3d8913df0ccd8",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/assets/png/logo-CQaY_L7K.png",
+      "status": 200,
+      "bytes": 598,
+      "expectedSHA256": "509963a04f0b5187f6f8b5dbc53f650e44601bd563cc71656afcc606a24c7f9d",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/assets/js/wf-index-BMuktMEI.js",
+      "status": 200,
+      "bytes": 366,
+      "expectedSHA256": "9e023117b8fa7e1c2ba41648f18fd9d46fc2041791f042c650635b3c6995ab62",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/assets/js/wf-index-BcwQcqC2.js",
+      "status": 200,
+      "bytes": 2572655,
+      "expectedSHA256": "a9a27f698a3cc39f34ebc1055b7afd5dbc24c8199aaa288e13e039c8f9b1a461",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/assets/js/wf-index-D9HTLDxN.js",
+      "status": 200,
+      "bytes": 3233,
+      "expectedSHA256": "bb34f161188530530e7024c9721becd0a1974555b2cc3e3ed4be2bb23c693ad8",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/index.html",
+      "status": 200,
+      "bytes": 2439,
+      "expectedSHA256": "d2b7b0a867697d13564b42376fb9a765fa728b0be9be4ae7059e984aeaabe411",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/index.html",
+      "status": 200,
+      "bytes": 2531,
+      "expectedSHA256": "aa46a36c58c800edbe9f804c5c3086b1d89d554878bab3c94ddacea7d1567d62",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/branding-20261025/assets/css/index-qKIpcEFo.css",
+      "status": 200,
+      "bytes": 869689,
+      "expectedSHA256": "2cc3052a1c3ee62475d920f037ca9a6843f2fcd9c9afbaac73c767446b1d6bc2",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/branding-20261025/assets/js/index-kAcgthiJ.js",
+      "status": 200,
+      "bytes": 2624423,
+      "expectedSHA256": "32d055b28923e76d98d9d1d26a1b748f14fb5d2265f934780df22e07c80ac670",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/branding-20261025/assets/css/index-16_jhZwY.css",
+      "status": 200,
+      "bytes": 868546,
+      "expectedSHA256": "2eb264ce71fa61596b2c1dc8313c6e415929d7de4e1fa37062e94ca6b1076101",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-7t8Wq8wS.js",
+      "status": 200,
+      "bytes": 316,
+      "expectedSHA256": "0175cb7219c4ccf9448cde5f2263845784e7739c9c4ba56a18f088421f31a2a6",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-BO406lpg.js",
+      "status": 200,
+      "bytes": 599,
+      "expectedSHA256": "848ba384b02f6d9f25f00ef74f4702e46ae1af28e8d982f4108261d32bae166e",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-BcwQcqC2.js",
+      "status": 200,
+      "bytes": 2572655,
+      "expectedSHA256": "a9a27f698a3cc39f34ebc1055b7afd5dbc24c8199aaa288e13e039c8f9b1a461",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-CaVVOE2_.js",
+      "status": 200,
+      "bytes": 316,
+      "expectedSHA256": "de746c8bd1d066064b2b2769c80d419035909f084ce1364877939e24daf6538a",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-R-VPhruB.js",
+      "status": 200,
+      "bytes": 595,
+      "expectedSHA256": "873982f72af54176b0e18e0780f2950a2957b90849b403d70e3bf4450373dd96",
+      "exactExpectedGatewayBytes": true
+    }
+  ],
+  "tlsDefaultCertificateVerificationEnabled": true
+}

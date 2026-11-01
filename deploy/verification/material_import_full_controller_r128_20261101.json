@@ -1,0 +1,62 @@
+{
+  "schema": "xnby.r128.material.import.scoped-acceptance.v1",
+  "at": "2026-11-01T13:21:17.687965+08:00",
+  "originalDefectActuallyReproduced": true,
+  "originalFailed3001RowsPersisted": 3000,
+  "candidateFailed3001RowsPersisted": 0,
+  "old3000SyntheticRowsPreserved": true,
+  "normalOriginalRoleBrowserCases": [
+    {
+      "case": "original-native-normal-login-and-material-menu",
+      "passed": true
+    },
+    {
+      "case": "actual-chrome-template-has-all12-original-headers-no-data",
+      "passed": true
+    },
+    {
+      "case": "actual-upload-three-rows-list-detail-readback",
+      "passed": true,
+      "rows": 3,
+      "httpStatus": 200
+    },
+    {
+      "case": "previous-accepted-three-rows-survive-full-six-component-restart",
+      "passed": true,
+      "rows": 3
+    },
+    {
+      "case": "actual-file-transaction-rolls-back-first3000-and-keeps-original3000",
+      "passed": true,
+      "failedFilePersistedRows": 0,
+      "oldBaselineRowsPreserved": 3000
+    },
+    {
+      "case": "fake-xlsx-rejected-and-original-three-rows-preserved",
+      "passed": true
+    },
+    {
+      "case": "original-header-only-template-remains-successful-no-op",
+      "passed": true
+    },
+    {
+      "case": "actual-committed-success-late-response-keeps-new-dialog-open",
+      "passed": true,
+      "newRows": 3
+    },
+    {
+      "case": "same-file-second-import-retains-original-append-six-distinct-ids",
+      "passed": true,
+      "rows": 6
+    }
+  ],
+  "threeActualWholeSixComponentLifecycleRunsPassed": true,
+  "allTenReadinessReportsPassed": true,
+  "original398DefinitionsUnchanged": true,
+  "allStartedProcessesNormallyExitedZero": true,
+  "testedOnlyOwnSyntheticF": true,
+  "publicR24IncludesThisMaterialFix": false,
+  "realNangangRolesAndCompleteMaterialModuleAccepted": false,
+  "listAndDetailReadbackWasNormalAPI": true,
+  "noOriginalBusinessRowsOrCredentialsIncluded": true
+}
