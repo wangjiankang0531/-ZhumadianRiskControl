@@ -1,0 +1,298 @@
+{
+  "schema": "xnby.r25.material-updater-contract.v1",
+  "checks": 57,
+  "allPassed": true,
+  "cases": [
+    {
+      "case": "complete-exact-R24-three-class-extension",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "wrong-descriptor-1",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-descriptor-2",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-descriptor-3",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-descriptor-4",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-descriptor-with-new-classes",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "required-retained-extension-nativeTaskGuardAndTemporaryLayout",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "required-retained-extension-platformAsyncRequestMetadata",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-fresh-transport-payload/business/run-template/classes/com/iemp/endanger/server/materials/controller/MaterialsController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-SHA256-payload/business/run-template/classes/com/iemp/endanger/server/materials/controller/MaterialsController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-bytes-payload/business/run-template/classes/com/iemp/endanger/server/materials/controller/MaterialsController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-extra-payload/business/run-template/classes/com/iemp/endanger/server/materials/controller/MaterialsController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-sha256-payload/business/run-template/classes/com/iemp/endanger/server/materials/controller/MaterialsController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-bytes-payload/business/run-template/classes/com/iemp/endanger/server/materials/controller/MaterialsController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-declared-payload/business/run-template/classes/com/iemp/endanger/server/materials/controller/MaterialsController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "actual-transport-drift-payload/business/run-template/classes/com/iemp/endanger/server/materials/controller/MaterialsController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-fresh-transport-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport$1.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-SHA256-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport$1.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-bytes-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport$1.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-extra-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport$1.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-sha256-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport$1.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-bytes-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport$1.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-declared-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport$1.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "actual-transport-drift-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport$1.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-fresh-transport-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-SHA256-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-bytes-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-extra-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-sha256-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-bytes-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-declared-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "actual-transport-drift-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "undeclared-extra-helper",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "nonemergency-payload-drift-frontend/security_pc/",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "nonemergency-payload-drift-payload/platform/",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "nonemergency-payload-drift-payload/business/run-template/",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "outside-transport-scope-private/extra.json",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "outside-transport-scope-runtime/extra.exe",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "outside-transport-scope-tools/serve_original_server_release.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "outside-transport-scope-frontend/security_pc/favicon.ico",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "unexpected-removal-runtime/jdk17/release",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "unexpected-removal-frontend/emergency_pc/assets/css/activities-card-CZbuxhXw.css",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-obsolete-removal",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "retained-exact-three-classes-without-transport",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "foreign-retained-descriptor",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "exact-owned-three-runtime-and-source-classes",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "foreign-runtime-owner",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "foreign-runtime-location",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "j0-runtime",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "extra-owner-field",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "source-or-runtime-class-drift-50",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "source-or-runtime-class-drift-51",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "source-or-runtime-class-drift-52",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "source-or-runtime-class-drift-53",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "source-or-runtime-class-drift-54",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "source-or-runtime-class-drift-55",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "original-R24-requires-no-material-runtime",
+      "expectedRefusal": false,
+      "passed": true
+    }
+  ],
+  "sourceSHA256": "675ab42c48ec31c78fe8dad633c082caba255fdf666dc447c87273811516df9a",
+  "stopBackupReplaceRestoreASTUnchanged": true,
+  "servicesOrDatabasesStarted": false,
+  "protectedUserPreviewReadOrChanged": false,
+  "publicOrFormalChanged": false,
+  "wholeInstalledProgramPreflightNotExercisedByThisTest": true
+}

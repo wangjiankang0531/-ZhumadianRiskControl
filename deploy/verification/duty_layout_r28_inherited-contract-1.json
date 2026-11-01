@@ -1,0 +1,182 @@
+{
+  "schema": "xnby.r24.workflow-updater-contract.v1",
+  "checks": 34,
+  "allPassed": true,
+  "cases": [
+    {
+      "case": "complete-r21-to-r24-five-control-and-task-class-extension",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "foreign-descriptor-1",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "foreign-descriptor-2",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "foreign-descriptor-3",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "foreign-descriptor-4",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-descriptor-with-new-code-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "workflow-without-original-async-extension-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-fresh-transport-payload/business/run-template/classes/com/iemp/endanger/server/emergencyResponse/controller/EventTaskController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-SHA256-payload/business/run-template/classes/com/iemp/endanger/server/emergencyResponse/controller/EventTaskController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-bytes-payload/business/run-template/classes/com/iemp/endanger/server/emergencyResponse/controller/EventTaskController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-extra-payload/business/run-template/classes/com/iemp/endanger/server/emergencyResponse/controller/EventTaskController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "actual-code-drift-payload/business/run-template/classes/com/iemp/endanger/server/emergencyResponse/controller/EventTaskController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-fresh-transport-tools/original_server_release_parameters.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-SHA256-tools/original_server_release_parameters.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-bytes-tools/original_server_release_parameters.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-extra-tools/original_server_release_parameters.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "actual-code-drift-tools/original_server_release_parameters.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-class-declaration-sha256",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-class-declaration-bytes",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-adapter-declaration",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "unknown-original-adapter-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "unannounced-retained-control-drift-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "retained-complete-extension-with-no-transport",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "foreign-retained-extension-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "owned-runtime-task-class-source-and-parameter-pins",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "foreign-runtime-owner-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "foreign-runtime-location-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "j0-runtime-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "unexpected-owner-field-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "runtime-or-installed-byte-drift-29",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "runtime-or-installed-byte-drift-30",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "runtime-or-installed-byte-drift-31",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "payload-manifest-pin-drift-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "original-r21-needs-no-new-workflow-runtime",
+      "expectedRefusal": false,
+      "passed": true
+    }
+  ],
+  "sourceSHA256": "675ab42c48ec31c78fe8dad633c082caba255fdf666dc447c87273811516df9a",
+  "stopBackupReplaceRestoreUnchanged": true,
+  "servicesOrDatabasesStarted": false,
+  "protectedUserPreviewReadOrChanged": false,
+  "publicOrFormalChanged": false
+}

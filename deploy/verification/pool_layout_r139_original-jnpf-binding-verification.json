@@ -1,0 +1,13 @@
+{
+  "allPassed": true,
+  "originalLayoutCases": 6,
+  "actualLazyPools": 9,
+  "originalJNPFPrimaryPredicateUsed": true,
+  "originalGeneratedDataSourcePropertyUsed": true,
+  "originalSpringBinderAndHikariCreatorUsed": true,
+  "networkAttempts": 0,
+  "processAttempts": 0,
+  "noDatabaseConnections": true,
+  "pinnedOriginalPlatformJARSHA256": "294f809b830374656f8100b3fb6091387d619ff8d7ecf8685e7c61788843eda8",
+  "ownJavaSourceSHA256": "e97a23344d2161e75695d88681574fecf3006f81a6d290bb1167ed478d5ccb69"
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "xnby.r28.independent-fixed-delivery.v1",
+  "passed": true,
+  "transportFiles": 8,
+  "transportBytes": 1949147,
+  "manifestSHA256": "0ef4fae7e52b67f61cbe6be258602eb2103873d2a92050a0719398497ad97807",
+  "exactArchivedProgramPathsAndCRCVerified": 178,
+  "exactObsoleteEmergencyFiles": 172,
+  "exactWF14FrontendFiles": 339,
+  "other17ControlsOriginalJarsAndEveryNonEmergencyPayloadRetained": true,
+  "normalStopBackupReplaceRestoreRollbackRecoverASTUnchanged": true,
+  "exactActualControllerSourcesAndNativeDutyParallelProofMatched": true,
+  "publicUploadedDeployedOrGitPushed": false,
+  "fullCloneReady": false
+}

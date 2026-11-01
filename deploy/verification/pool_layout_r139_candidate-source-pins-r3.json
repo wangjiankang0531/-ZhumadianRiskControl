@@ -1,0 +1,24 @@
+{
+  "schema": "xnby.r139.pool-layout-source-candidate.v1",
+  "policySHA256": "ee3642ad75646ebaa0d71317506ae1321d68a7ca641040a5a750398b3c4c2f37",
+  "parameterSHA256": "8ca02e5e99c0b0c1aae282889ceca6c9f31c9ee0f2cd4750e506a25c6267c106",
+  "controllerSHA256": "6c16afcf99aba74e74ce6d05c55e9255871134594f91c96318f901ede61f4374",
+  "updaterSHA256": "675ab42c48ec31c78fe8dad633c082caba255fdf666dc447c87273811516df9a",
+  "normalLifecycleBackupAndRecoveryFunctionsASTUnchanged": [
+    "normal_stop",
+    "backup_code",
+    "replace_code",
+    "restore_code",
+    "rollback_latest",
+    "recover_pending",
+    "launch"
+  ],
+  "preflightBeforeOwnedReadyBackupOrStop": true,
+  "configurationDigestRecheckedBeforeNormalStop": true,
+  "runtimeInstalled": false,
+  "publicDeployed": false,
+  "updaterLogicalLFTextSHA256": "9e92a7167b571a62f9005ae325a30456a1220566a0141ff3bdc23c32164484a9",
+  "updaterBytes": 106619,
+  "actualRuntimeUpdaterBytesMatched": true,
+  "updaterNewlines": "explicit UTF-8 CRLF"
+}

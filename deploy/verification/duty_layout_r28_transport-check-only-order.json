@@ -1,0 +1,41 @@
+{
+  "schema": "xnby.r28.actual-fixed-wrapper-check-only-order.v1",
+  "allPassed": true,
+  "cases": [
+    {
+      "case": "invalid-original-primary-layout-refused-before-owner-health-and-services",
+      "passed": true,
+      "events": [
+        "load_bundle_fixture_identity_adapter"
+      ],
+      "refusal": "ORIGINAL_PLATFORM_PRIMARY_LAYOUT_REQUIRED",
+      "serviceActionCalls": 0,
+      "realFixedArchiveExtractedAndCandidateParametersExecuted": true
+    },
+    {
+      "case": "valid-generated-primary-check-only-does-not-deploy",
+      "passed": true,
+      "events": [
+        "load_bundle_fixture_identity_adapter",
+        "owned_ready_spy",
+        "health_spy"
+      ],
+      "refusal": null,
+      "serviceActionCalls": 0,
+      "realFixedArchiveExtractedAndCandidateParametersExecuted": true
+    }
+  ],
+  "actualWrapperSHA256": "041fbd2edf1b2fc2f00a4538ea44d60d1ba15afa4950b570ed7572e778bd3f3c",
+  "actualUpdaterSHA256": "675ab42c48ec31c78fe8dad633c082caba255fdf666dc447c87273811516df9a",
+  "manifestSHA256": "0ef4fae7e52b67f61cbe6be258602eb2103873d2a92050a0719398497ad97807",
+  "realArchiveMemberBoundsAndSHAUsed": true,
+  "realCandidateBudgetCodeAndPinnedParametersUsed": true,
+  "fixturePrivateBytesRestored": true,
+  "servicesStartedOrStopped": false,
+  "databaseAccessed": false,
+  "publicOrProtectedRootsOperated": false,
+  "fixtureIdentityLoadBundleAndReadinessAreExplicitSpies": true,
+  "actualFullLoadBundleSeparatelyPassed15554ProgramFiles": true,
+  "actualServerPreflightStillPending": true,
+  "fullCloneReady": false
+}

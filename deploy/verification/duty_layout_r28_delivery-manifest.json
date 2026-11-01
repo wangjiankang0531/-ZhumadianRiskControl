@@ -1,0 +1,85 @@
+{
+  "revision": "R28-native-duty-original-generated-primary-and-prestop-budget",
+  "targetFTP": "/Zhumadian/Zhumadian_Duty_Layout_20261101_R28/",
+  "targetApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "files": {
+    "Check_Only_Duty_Layout_R28.cmd": {
+      "bytes": 133,
+      "sha256": "c17211c39f79e3c757ef4576a20091bef302387f29abb28b5e13df0a1abec60c"
+    },
+    "Deploy_Duty_Layout_R28.cmd": {
+      "bytes": 121,
+      "sha256": "10f79325dff8efe022b89f6eb5ee9a778faffe92e05e1094bcccf28f9715639b"
+    },
+    "deploy_duty_layout_r28.py": {
+      "bytes": 5108,
+      "sha256": "041fbd2edf1b2fc2f00a4538ea44d60d1ba15afa4950b570ed7572e778bd3f3c"
+    },
+    "r28_update_runtime.py": {
+      "bytes": 106619,
+      "sha256": "675ab42c48ec31c78fe8dad633c082caba255fdf666dc447c87273811516df9a"
+    },
+    "Recover_This_Duty_Layout_R28.cmd": {
+      "bytes": 142,
+      "sha256": "965a8da8f8fccaecc57535dfdcf375d2e2ed386a2a17189e2b4e65e01eada8e3"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Duty_Layout_20261101_R28.zip": {
+      "bytes": 1833234,
+      "sha256": "b23a201208dd5b1e670c44e05eff8dc9451fe11440de261bcb5654b47eae337a"
+    }
+  },
+  "payloadTransportFiles": 7,
+  "payloadTransportBytes": 1945559,
+  "oldReleaseSHA256": "8350e8c4543788f560a6b51e1787722ba782bf76a21051ba39f4bc0eee180c35",
+  "oldUpdaterSHA256": "6307a61826e4d77b4b5381e10f97ecff0d6ec76f54d90fa01e2a9ff4915b2f5a",
+  "newReleaseSHA256": "a024b426c2399431746f7b9a8c4da698d84d31a869f34f9c5315d85c617697e9",
+  "newUpdaterSHA256": "675ab42c48ec31c78fe8dad633c082caba255fdf666dc447c87273811516df9a",
+  "updateManifestSHA256": "72d17ff131325d943202777063c98657e4e9996d077f325eaf3c920e066192c8",
+  "replacementPaths": 178,
+  "obsoleteFrontendPaths": 172,
+  "totalInstallPaths": 350,
+  "oldReadinessReports": 10,
+  "newReadinessReports": 10,
+  "additionalExactPoolSourcesAndNumericConnectionBudgetReadinessCheck": true,
+  "updaterContractChecks": 292,
+  "layoutAndPreStopPreflightChecks": 24,
+  "nativeOriginalLayoutCases": 6,
+  "nativeActualLazyPools": 9,
+  "checkOnlyAndApplyBothValidateActualCandidateBudgetBeforeShutdown": true,
+  "actualCodeRecoveryScenarios": 8,
+  "actualFullProgramDependencyFilesVerified": 15554,
+  "wholeSixComponentsOnSyntheticDataPassed": true,
+  "ownedNativeDutyBusinessCases": 17,
+  "normalSDKRoles": 2,
+  "readOnlyRequests": 64,
+  "readConcurrency": 16,
+  "connectionRefusals": 0,
+  "configuredUnrevokedExceptions": 0,
+  "allSixComponentsAndControllerNormallyExitedZero": true,
+  "original398DefinitionsUnchanged": true,
+  "workflowCompiledFrontendFiles": 339,
+  "workflowSourceInputs": 235,
+  "workflowSourceOverlays": 56,
+  "onlyTwoBusinessSourceChangesFromWF12": true,
+  "runtimePoolPolicy": {
+    "revision": "pool-family-budget-v2",
+    "mysqlMinimum": 24,
+    "mysqlMaximum": 256,
+    "reservedConnections": 12,
+    "maximumSinglePool": 128
+  },
+  "other17ControllersOriginalJarsTaskMaterialTeamAuthenticationConfigDatabaseIISAndNonEmergencyFrontendKept": true,
+  "syntheticEventDictionaryRowsNotTransported": true,
+  "publicAuthenticatedBusinessAndRealNangangWholeAcceptancePassed": false,
+  "actualPublicPrivateIdentityOrIISOrTLSVerified": false,
+  "containsCompiledFrontendRuntimeControlUpdaterCodeMetadataAndInternalPaths": true,
+  "containsActualPrivateConfigCredentialsDatabaseBusinessRowsAssetsReferenceScreenshotsOrRawLogs": false,
+  "publicUploadedOrInstalled": false,
+  "publicGitIncluded": false,
+  "wholeModuleAccepted": false,
+  "fullCloneReady": false
+}

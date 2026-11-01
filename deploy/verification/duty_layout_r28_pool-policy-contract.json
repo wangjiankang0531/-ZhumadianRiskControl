@@ -1,0 +1,170 @@
+{
+  "schema": "xnby.r28.pool-policy-contract.v1",
+  "allPassed": true,
+  "checks": 32,
+  "cases": [
+    {
+      "case": "complete-exact-old-to-new-control-policy-load",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "wrong-policy-revision",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-policy-reservedConnections",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-policy-mysqlMaximum",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "new-controls-without-policy-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "new-parameter-with-old-workflow-descriptor-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-new-source-transport-serve_original_server_release.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-source-serve_original_server_release.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "new-source-byte-drift-serve_original_server_release.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-new-source-transport-original_server_release_parameters.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-source-original_server_release_parameters.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "new-source-byte-drift-original_server_release_parameters.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "other-controller-declaration-drift-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "retained-backend-payload-drift-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "installed-source-drift-refused-before-update",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "old-version-without-pool-policy-needs-no-new-report",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "owned-runtime-exact-policy-and-budget",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "bad-runtime-total-maximumPoolConnections",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "bad-runtime-total-mysqlMaxConnections",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "bad-runtime-total-reservedConnections",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "bad-runtime-total-unknown",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "bad-runtime-row-hikariMaximum21",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "bad-runtime-row-hikariMinimumIdle22",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "bad-runtime-row-hikariConnectionTimeoutMillis23",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "bad-runtime-row-name24",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "bad-runtime-row-maximumBudget25",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "bad-runtime-row-side26",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "bad-runtime-row-hikariMaximum27",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "duplicate-runtime-datasource-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "foreign-runtime-owner-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "oversized-runtime-report-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-runtime-report-refused",
+      "expectedRefusal": true,
+      "passed": true
+    }
+  ],
+  "sourceSHA256": "675ab42c48ec31c78fe8dad633c082caba255fdf666dc447c87273811516df9a",
+  "actualServicesOrSQLOrProtectedUserRootsOperated": false,
+  "normalStopRecoveryFunctionsKept": true
+}

@@ -1,0 +1,241 @@
+{
+  "schema": "xnby.r26.team-contract.v1",
+  "allPassed": true,
+  "checks": 46,
+  "cases": [
+    {
+      "case": "complete-exact-R25-one-original-XML-extension",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "wrong-descriptor-1",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-descriptor-2",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-descriptor-3",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-descriptor-4",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-descriptor-with-new-XML",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-declared-XML",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-bytes",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-sha256",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-extra",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-fresh-XML-transport",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-XML-transport-bytes",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-XML-transport-SHA256",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-XML-transport-extra",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-retained-contract-materialExcelFileTransaction",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-retained-contract-nativeTaskGuardAndTemporaryLayout",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-retained-contract-platformAsyncRequestMetadata",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "fresh-Team-cannot-bypass-exact-installed-material-base",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "retained-source-pin-drift-payload/business/application.jar",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "actual-retained-source-drift-payload/business/application.jar",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "retained-source-pin-drift-payload/business/run-template/classes/com/iemp/endanger/server/firstAidTeams/service/impl/FirstAidTeamsServiceImpl.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "actual-retained-source-drift-payload/business/run-template/classes/com/iemp/endanger/server/firstAidTeams/service/impl/FirstAidTeamsServiceImpl.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "actual-XML-transport-drift",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "undeclared-extra-XML",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "outside-transport-private/extra.json",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "outside-transport-runtime/extra.exe",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "outside-transport-payload/business/run-template/classes/com/iemp/endanger/server/materials/controller/MaterialsController.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "outside-transport-payload/business/application.jar",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "outside-transport-frontend/security_pc/favicon.ico",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "nonemergency-payload-drift-frontend/security_pc/",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "nonemergency-payload-drift-payload/platform/",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-old-emergency-removal",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "backend-resource-removal-forbidden",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "retained-exact-Team-and-material-with-no-transport",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "foreign-retained-Team-descriptor",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "retained-Team-extension-cannot-be-dropped",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "exact-current-owned-runtime-original-XML-service-and-retained-material",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "foreign-owner",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "foreign-location",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "j0",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "extra-owner-field",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "source-or-runtime-drift-41",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "source-or-runtime-drift-42",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "source-or-runtime-drift-43",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "source-or-runtime-drift-44",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "R25-retained-without-Team-needs-no-Team-runtime",
+      "expectedRefusal": false,
+      "passed": true
+    }
+  ],
+  "sourceSHA256": "675ab42c48ec31c78fe8dad633c082caba255fdf666dc447c87273811516df9a",
+  "normalStopBackupReplaceRestoreASTUnchanged": true,
+  "actualServicesOrSQLOrUserRootsOperated": false,
+  "fullInstalledPreflightNotClaimed": true
+}

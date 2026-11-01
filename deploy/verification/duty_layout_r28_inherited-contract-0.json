@@ -1,0 +1,382 @@
+{
+  "schema": "xnby.r23.updater-contract-checks.v1",
+  "inheritedRiskChecks": 50,
+  "asyncChecks": 73,
+  "checks": 123,
+  "cases": [
+    {
+      "case": "complete-exact-extension-controller-upgrade",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "invalid-descriptor-1",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "invalid-descriptor-2",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "invalid-descriptor-3",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "invalid-descriptor-4",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-descriptor-with-code",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-fresh-transport-payload/platform/run-template/own-platform-async-request.jar",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-hash-payload/platform/run-template/own-platform-async-request.jar",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-actual-code-payload/platform/run-template/own-platform-async-request.jar",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-fresh-transport-payload/platform/run-template/persistent-launcher-classes/xnby/platform/OriginalAsyncPersistentPlatformLaunch.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-hash-payload/platform/run-template/persistent-launcher-classes/xnby/platform/OriginalAsyncPersistentPlatformLaunch.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-actual-code-payload/platform/run-template/persistent-launcher-classes/xnby/platform/OriginalAsyncPersistentPlatformLaunch.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-fresh-transport-tools/serve_original_server_release.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-hash-tools/serve_original_server_release.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-actual-code-tools/serve_original_server_release.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-fresh-transport-tools/original_platform_async_release_support.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-hash-tools/original_platform_async_release_support.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-actual-code-tools/original_platform_async_release_support.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-fresh-transport-tools/original_server_windows_job.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-hash-tools/original_server_windows_job.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-actual-code-tools/original_server_windows_job.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-fresh-transport-tools/original_public_test_update.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-transport-hash-tools/original_public_test_update.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-actual-code-tools/original_public_test_update.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-size-payload/platform/run-template/own-platform-async-request.jar",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-declared-code-payload/platform/run-template/own-platform-async-request.jar",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-declared-size-payload/platform/run-template/persistent-launcher-classes/xnby/platform/OriginalAsyncPersistentPlatformLaunch.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-declared-code-payload/platform/run-template/persistent-launcher-classes/xnby/platform/OriginalAsyncPersistentPlatformLaunch.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-new-controller-tools/serve_original_server_release.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-new-controller-tools/original_platform_async_release_support.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-new-controller-tools/original_server_windows_job.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-new-controller-tools/original_public_test_update.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "extra-controller-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "retained-original-controller-drift",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "unknown-original-controller",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "unknown-original-job",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "retained-exact-extension",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "retained-foreign-extension",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "actual-r114-state-and-pinned-runtime-code-crlf-owner",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "lf-owner-same-content",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "wrong-state-value-schema",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-state-value-originalDecoratorRetained",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-state-value-capturedJobs",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-state-value-startedJobs",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-state-value-finishedJobs",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-state-value-activeJobs",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "wrong-state-value-requestHeaderOrTokenValuesRecorded",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "state-refuses-duplicate-key",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "state-refuses-unknown-field",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "state-refuses-oversize",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "state-refuses-non-ascii",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "state-refuses-empty",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "state-refuses-negative-count",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "state-refuses-overflow-count",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "state-refuses-leading-zero",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "live-independent-counters-do-not-require-equality",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "foreign-current-owner",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "foreign-runtime-root",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "j0-runtime-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "duplicate-owner-key",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "installed-code-drift-payload/platform/run-template/own-platform-async-request.jar",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "installed-code-drift-payload/platform/run-template/persistent-launcher-classes/xnby/platform/OriginalAsyncPersistentPlatformLaunch.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "installed-code-drift-tools/serve_original_server_release.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "installed-code-drift-tools/original_platform_async_release_support.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "installed-code-drift-tools/original_server_windows_job.py",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "runtime-code-drift-own-platform-async-request.jar",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "runtime-code-drift-persistent-launcher-classes/xnby/platform/OriginalAsyncPersistentPlatformLaunch.class",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "runtime-code-drift-own-platform-observation.jar",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "runtime-payload-manifest-drift",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "persistently-partial-state-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "missing-state-refused",
+      "expectedRefusal": true,
+      "passed": true
+    },
+    {
+      "case": "transient-incomplete-state-retried-until-valid",
+      "expectedRefusal": false,
+      "passed": true
+    },
+    {
+      "case": "old-r21-has-no-async-runtime-requirement",
+      "expectedRefusal": false,
+      "passed": true
+    }
+  ],
+  "allPassed": true,
+  "actualR114MarkerUsed": true,
+  "sourceSHA256": "675ab42c48ec31c78fe8dad633c082caba255fdf666dc447c87273811516df9a",
+  "oldStopOwnershipAndRecoveryFunctionsUnchanged": true,
+  "transientPartialWriteReadRetryVerified": true,
+  "wholeInstalledLoadBundleNotExercised": true,
+  "servicesStarted": false,
+  "privateConfigurationOrBusinessTablesRead": false,
+  "publicOrFormalChanged": false
+}
