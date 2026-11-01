@@ -1,0 +1,22 @@
+{
+  "oldOwnedBaseline": {
+    "maxConnections": 24,
+    "Connection_errors_max_connections": 13,
+    "Max_used_connections": 25,
+    "Threads_connected": 24
+  },
+  "poolOnly": {
+    "maxConnections": 24,
+    "Connection_errors_max_connections": 0,
+    "Max_used_connections": 8,
+    "Threads_connected": 8
+  },
+  "poolAndConfiguredDictionaries": {
+    "maxConnections": 24,
+    "Connection_errors_max_connections": 0,
+    "Max_used_connections": 8,
+    "Threads_connected": 8
+  },
+  "allIncludeReservedReadOnlyMetadataObserver": true,
+  "notActualPublicMetrics": true
+}

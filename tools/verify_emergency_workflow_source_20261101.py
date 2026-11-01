@@ -1,7 +1,7 @@
 """Check emitted workflow routes/assets against actual build and original source pins."""
 from pathlib import Path
 import argparse,hashlib,json,re,subprocess
-parser=argparse.ArgumentParser();parser.add_argument('--revision',choices=['r1','r2','r3','r4','r5','r6','r7','r8','r9','r10','r11','r12'],default='r1');options=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--revision',choices=['r1','r2','r3','r4','r5','r6','r7','r8','r9','r10','r11','r12','r13','r14'],default='r1');options=parser.parse_args()
 R=Path('D:/Project/Zhumadian');W=R/('work/user_feedback_20261031/emergency-workflow-source-'+options.revision);F=W/'dist';T=R/'Application/tools'
 read=lambda p:json.loads(p.read_bytes());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 m=read(W/'build-result.json');c=read(W/'source-closure.json');assert m['buildPassed']and not m['normalLoginListDetailApprovalOrCallbackAccepted']
@@ -65,6 +65,21 @@ for rel,row in c['sourceFiles'].items():
   generated,receipt=getattr(helper,entry['entry'])(origin.read_bytes())
   assert receipt==entry['receipt']and hashlib.sha256(generated).hexdigest()==entry['afterSHA256']
   expected=entry['afterSHA256']
+ if rel==c.get('nativeDutyPickerGuard',{}).get('path'):
+  import importlib.util
+  entry=c['nativeDutyPickerGuard']
+  origin=R/'work/user_feedback_20261031/emergency-workflow-source-r12/source/src'/rel
+  spec=importlib.util.spec_from_file_location('independent_native_duty_picker',T/'original_duty_picker_selection_compat.py');helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+  generated,receipt=helper.transform(origin.read_bytes())
+  assert receipt==entry['receipt']and expected==hashlib.sha256(generated).hexdigest()
+ if rel==c.get('nativeDutyLogPersonnelGuard',{}).get('path'):
+  import importlib.util
+  entry=c['nativeDutyLogPersonnelGuard']
+  origin=R/'work/user_feedback_20261031/emergency-workflow-source-r13/source/src'/rel
+  spec=importlib.util.spec_from_file_location('independent_native_duty_log',T/'original_duty_log_personnel_context_compat.py');helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+  generated,receipt=helper.transform(origin.read_bytes())
+  assert receipt==entry['receipt']and expected in [receipt['beforeSHA256'],receipt['afterSHA256']]
+  expected=receipt['afterSHA256']
  assert sha(actual)==expected,'UNDECLARED_BUILD_SOURCE_DIFFERENCE:'+rel
 texts={p.relative_to(F).as_posix():p.read_text(encoding='utf-8')for p in(F/'assets/js').glob('*.js')}
 roots=['/src/views/workflow/flowTodo/index.vue','/src/views/workflow/flowTodo/info/index.vue','/src/views/workflow/startWithMeTwo/index.vue','/src/views/workflow/startWithMeTwo/info/index.vue']

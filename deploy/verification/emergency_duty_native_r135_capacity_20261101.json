@@ -1,0 +1,25 @@
+{
+  "schema": "xnby.r135.synthetic-connection-capacity-observation.v1",
+  "at": "2026-11-01T17:50:05.467591+08:00",
+  "mysqlRuntimeHardcodedMaxConnections": 24,
+  "beforeNativeUI": {
+    "maxConnections": 24,
+    "Connection_errors_max_connections": 0,
+    "Max_used_connections": 22,
+    "Threads_connected": 22
+  },
+  "afterNativeUI": {
+    "maxConnections": 24,
+    "Connection_errors_max_connections": 12,
+    "Max_used_connections": 25,
+    "Threads_connected": 24
+  },
+  "oneReadOnlySchemaConnectionReservedDuringThisObservation": true,
+  "originalPostBrowserFreshConnectionRejectedSQLState": "08004",
+  "originalPostBrowserFreshConnectionRejectedVendorCode": 1040,
+  "accountSessionDetailsOrBusinessRowsRead": false,
+  "databaseConnectionLimitOrAccountPrivilegesChanged": false,
+  "productionConnectionStateInferredOrQueried": false,
+  "runtimeCapacityAcceptancePassed": false,
+  "officialReference": "https://dev.mysql.com/doc/refman/8.0/en/too-many-connections.html"
+}

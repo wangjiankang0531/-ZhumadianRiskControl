@@ -1,0 +1,105 @@
+{
+  "schema": "xnby.r135.native-duty-case-register.v1",
+  "cases": [
+    {
+      "case": "original-normal-role-login-and-three-native-duty-menus",
+      "passed": true
+    },
+    {
+      "case": "native-person-required-fields-prevent-save",
+      "passed": true
+    },
+    {
+      "case": "native-department-original-SDK-user-choice-and-sex-dictionary",
+      "passed": true
+    },
+    {
+      "case": "native-duplicate-name-rejected-and-current-inputs-retained",
+      "passed": true
+    },
+    {
+      "case": "exact-owned-R3-native-created-personnel-reused-and-original-fields-verified",
+      "passed": true
+    },
+    {
+      "case": "native-person-detail-actual-saved-values",
+      "passed": true
+    },
+    {
+      "case": "native-person-edit-keeps-personnel-and-account-identity",
+      "passed": true
+    },
+    {
+      "case": "native-schedule-required-date-prevents-save",
+      "passed": true
+    },
+    {
+      "case": "native-empty-picker-shows-selection-notice-and-keeps-no-row",
+      "passed": true
+    },
+    {
+      "case": "native-schedule-original-person-picker-and-duplicate-member-prevention",
+      "passed": true
+    },
+    {
+      "case": "native-schedule-save-persists-date-time-and-personnel-record-link",
+      "passed": true
+    },
+    {
+      "case": "native-calendar-event-opens-existing-schedule-and-edit-preserves-link",
+      "passed": true
+    },
+    {
+      "case": "native-log-required-date-person-and-content-prevent-save",
+      "passed": true
+    },
+    {
+      "case": "native-log-date-person-selection-and-actual-account-link-persisted",
+      "passed": true
+    },
+    {
+      "case": "native-log-fast-submit-pending-options-shows-notice-and-keeps-inputs-without-write",
+      "passed": true
+    },
+    {
+      "case": "native-log-detail-and-edit-keep-date-person-link",
+      "passed": true
+    },
+    {
+      "case": "native-log-cancel-delete-no-request-and-confirm-actually-removes-own-row",
+      "passed": true
+    }
+  ],
+  "noResponseReplacementOrVueInternalInvocation": true,
+  "baselineEmptyPicker": {
+    "dialogStillOpen": true,
+    "nativeUnhandledErrors": 0,
+    "noMemberAdded": true,
+    "selectionNoticeVisible": false
+  },
+  "baselineLogPendingOptions": {
+    "actualOwnGetListRequestPausedNoResponseReplaced": true,
+    "heldRequests": 1,
+    "editFormLoaded": true,
+    "inputRetained": true,
+    "stillOnEditRoute": true,
+    "updateRequestsBeforeOptionsReady": 0,
+    "loadingOrReselectionNoticeVisible": false
+  },
+  "fixedEmptyPicker": {
+    "dialogStillOpen": true,
+    "nativeUnhandledErrors": 0,
+    "noMemberAdded": true,
+    "selectionNoticeVisible": true
+  },
+  "fixedLogPendingOptions": {
+    "actualOwnGetListRequestPausedNoResponseReplaced": true,
+    "heldRequests": 1,
+    "editFormLoaded": true,
+    "inputRetained": true,
+    "stillOnEditRoute": true,
+    "updateRequestsBeforeOptionsReady": 0,
+    "loadingOrReselectionNoticeVisible": true
+  },
+  "realNangangRolesOrWholeModuleAccepted": false
+}

@@ -1,0 +1,77 @@
+{
+  "cases": [
+    {
+      "case": "original-normal-role-login-and-three-native-duty-menus",
+      "passed": true
+    },
+    {
+      "case": "native-person-required-fields-prevent-save",
+      "passed": true
+    },
+    {
+      "case": "native-department-original-SDK-user-choice-and-sex-dictionary",
+      "passed": true
+    },
+    {
+      "case": "native-duplicate-name-rejected-and-current-inputs-retained",
+      "passed": true
+    },
+    {
+      "case": "exact-owned-R3-native-created-personnel-reused-and-original-fields-verified",
+      "passed": true
+    },
+    {
+      "case": "native-person-detail-actual-saved-values",
+      "passed": true
+    },
+    {
+      "case": "native-person-edit-keeps-personnel-and-account-identity",
+      "passed": true
+    },
+    {
+      "case": "native-schedule-required-date-prevents-save",
+      "passed": true
+    },
+    {
+      "case": "native-empty-picker-shows-selection-notice-and-keeps-no-row",
+      "passed": true
+    },
+    {
+      "case": "native-schedule-original-person-picker-and-duplicate-member-prevention",
+      "passed": true
+    },
+    {
+      "case": "native-schedule-save-persists-date-time-and-personnel-record-link",
+      "passed": true
+    },
+    {
+      "case": "native-calendar-event-opens-existing-schedule-and-edit-preserves-link",
+      "passed": true
+    },
+    {
+      "case": "native-log-required-date-person-and-content-prevent-save",
+      "passed": true
+    },
+    {
+      "case": "native-log-date-person-selection-and-actual-account-link-persisted",
+      "passed": true
+    },
+    {
+      "case": "native-log-fast-submit-pending-options-shows-notice-and-keeps-inputs-without-write",
+      "passed": true
+    },
+    {
+      "case": "native-log-detail-and-edit-keep-date-person-link",
+      "passed": true
+    },
+    {
+      "case": "native-log-cancel-delete-no-request-and-confirm-actually-removes-own-row",
+      "passed": true
+    },
+    {
+      "case": "two-original-normal-roles-64-readonly-requests-concurrency16-all-succeed",
+      "passed": true
+    }
+  ],
+  "realNangangWholeFlowAccepted": false
+}

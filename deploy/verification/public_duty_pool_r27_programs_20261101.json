@@ -1,0 +1,34 @@
+{
+  "schema": "xnby.r27.full-program-preflight.v1",
+  "allPassed": true,
+  "cases": [
+    {
+      "case": "complete-exact-R26-programs-and-20-controls-with-synthetic-private-only",
+      "passed": true
+    },
+    {
+      "case": "retained-source-drift-refused-with-source-unchanged:runtime/jdk17/release",
+      "passed": true
+    },
+    {
+      "case": "retained-source-drift-refused-with-source-unchanged:payload/business/run-template/classes/mapper/FirstAidTeamMembersMapper.xml",
+      "passed": true
+    },
+    {
+      "case": "preexisting-new-frontend-path-refused",
+      "passed": true
+    }
+  ],
+  "fullProgramFilesVerified": 15554,
+  "fullProgramLogicalBytes": 1403680022,
+  "oldAndNewControllerFiles": 20,
+  "updaterSHA256": "a27dd5e39b77eb32df289abe31b0fabe42a0d4585bd994eef7d7d72130ad1e78",
+  "candidateInstallPaths": 350,
+  "exactPublicProgramPinsAndRemovalsRetained": true,
+  "syntheticPrivateAndLocalTargetManifestAdaptationsOnly": true,
+  "realPublicPrivateIdentityOrIISPreflightPassed": false,
+  "servicesOrDatabasesStarted": false,
+  "protectedUserRootsReadOrChanged": false,
+  "readOnlyHardlinks": 15398,
+  "mutableIndependentCopies": 176
+}

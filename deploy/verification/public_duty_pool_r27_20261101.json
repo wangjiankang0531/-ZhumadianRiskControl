@@ -1,0 +1,15 @@
+{
+  "manifestSHA256": "6d5bf2b79d4c5028c2ffad404306075380e570929b125e3d1a39111bef902514",
+  "transportFilesIncludingManifest": 8,
+  "transportBytesIncludingManifest": 1943816,
+  "replacementPaths": 178,
+  "obsoleteFrontendPaths": 172,
+  "totalInstallPaths": 350,
+  "archiveCRCAndEveryMemberVerified": true,
+  "recoveryOwnershipChecks": 5,
+  "maxServerExtractionPathCharacters": 225,
+  "actualNewUpdaterFullControllerNativeDutyAndParallelReadPassed": true,
+  "publicServerPreflightPassed": false,
+  "publicDeployed": false,
+  "approvalGranted": false
+}
