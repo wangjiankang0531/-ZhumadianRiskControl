@@ -1,0 +1,19 @@
+{
+  "schema": "xnby.r25.fixed-delivery-independent-readback.v1",
+  "allPassed": true,
+  "transportFiles": 8,
+  "transportBytes": 1929811,
+  "manifestSHA256": "cca0ac03fbcfdee4889b333c5c5c07412539a5978b125adca131d6da67078607",
+  "archiveCRCClosedMembersAndAllSHAsVerified": true,
+  "exactR24BaseAndUpdaterGuardVerified": true,
+  "threeMaterialSourceClassesMatchActualRuntimeFixture": true,
+  "all338ComposedWF11AssetsMatchSourceBuildAndActuallyRunProgramBytes": true,
+  "all20ControllersMatchActuallyRunProgramBytes": true,
+  "allOtherPayloadRowsUnchanged": true,
+  "newPythonSourcesSyntaxChecked": 12,
+  "actualStoppedControllerTerminalChecked": true,
+  "protectedUserPreviewReadOrChanged": false,
+  "realPrivateConfigurationOrDBRead": false,
+  "publicUploadedOrInstalled": false,
+  "publicGitPushed": false
+}

@@ -1,0 +1,12 @@
+{
+  "allPassed": true,
+  "actualVueRendererAndUnmountUsed": true,
+  "syntheticDeferredAPIOnly": true,
+  "nativeBrowserAcceptanceSeparate": true,
+  "cases": [
+    "late-success-does-not-change-latest-rows-total-or-callback",
+    "old-error-does-not-clear-latest-loading-or-call-error-handler",
+    "unmount-ignores-success-and-callback",
+    "nonpaged-shape-and-original-zero-false-filters-preserved"
+  ]
+}

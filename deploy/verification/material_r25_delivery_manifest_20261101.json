@@ -1,0 +1,69 @@
+{
+  "revision": "R25-material-file-transaction-retained-emergency-guards",
+  "targetFTP": "/Zhumadian/Zhumadian_Material_Emergency_20261101_R25/",
+  "targetApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "files": {
+    "Check_Only_Material_R25.cmd": {
+      "bytes": 130,
+      "sha256": "c7efaf85c9e3f485d0b9d3aca242d784953c682e58c2fbb14a75746319e9ed4b"
+    },
+    "Deploy_Material_R25.cmd": {
+      "bytes": 118,
+      "sha256": "1bbac3639ca3f7ca9dab3b47e42b5e2e7e064e1e32b2401f987ee5b3d2ea95e6"
+    },
+    "deploy_material_r25.py": {
+      "bytes": 4878,
+      "sha256": "cbfc3b337f2ea712ab5634f8532366f703a8b255d6d984ede7a187d651509c89"
+    },
+    "r25_update_runtime.py": {
+      "bytes": 91852,
+      "sha256": "44c846481bc7eb58447374ea37653da6b806e4471ce6a2a83d64c9e901010cb3"
+    },
+    "Recover_This_Material_R25.cmd": {
+      "bytes": 139,
+      "sha256": "cdc5f9181034372a7fb004dead8c7d30d9f4c8dd0be3cfa98413c8cea96164d6"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Material_Emergency_20261101_R25.zip": {
+      "bytes": 1829368,
+      "sha256": "9a0ebcbaa42f0ce13e23877101681905f983865d0e0ef3c2ee93ef060991e31b"
+    }
+  },
+  "payloadTransportFiles": 7,
+  "payloadTransportBytes": 1926687,
+  "oldReleaseSHA256": "a2a2ebb961a8cfd906b4e5fd8e46588140233b83c238f4b0c06ce831f4fccb43",
+  "oldUpdaterSHA256": "4931c7fbb58880f228423f8324d3b40cb22e500bc299f053a8fe455a742c7878",
+  "newReleaseSHA256": "b849ad0d46c529b036d29baf4089e57867805c8cdc33661248583337b5f10678",
+  "newUpdaterSHA256": "44c846481bc7eb58447374ea37653da6b806e4471ce6a2a83d64c9e901010cb3",
+  "updateManifestSHA256": "348fcff59f0a8115f3c895e493eab443494c02d71043d81e1253f74daa15efd6",
+  "replacementPaths": 189,
+  "obsoleteFrontendPaths": 182,
+  "totalInstallPaths": 371,
+  "oldReadinessReports": 10,
+  "newReadinessReports": 10,
+  "updaterContractChecks": 214,
+  "actualCodeRecoveryScenarios": 8,
+  "actualFullProgramDependencyFilesVerified": 15549,
+  "wholeSixComponentControllerOnSyntheticDataPassed": true,
+  "actualMaterialThreeClassRuntimePinsPassed": true,
+  "allSixComponentsAndControllerNormallyExitedZero": true,
+  "original398DefinitionsUnchanged": true,
+  "workflowCompiledFrontendFiles": 338,
+  "workflowSourceInputs": 235,
+  "workflowSourceOverlays": 53,
+  "threeMaterialWholeFileImportClassesExactlyPreviouslyNativeBrowserVerified": true,
+  "nativeBrowserChecksArePriorScopedFixturesNotThisPublicServer": true,
+  "other19ControllersAndIISPreserved": true,
+  "originalBusinessAndPlatformJarsAuthenticationDatabaseAndNonEmergencyFrontendKept": true,
+  "fullLoggedInBrowserOnWholeControllerAndRealNangangAcceptancePassed": false,
+  "actualPublicPrivateIdentityOrIISOrTLSVerified": false,
+  "containsCompiledFrontendOwnMaterialJavaClassesUpdaterCodeMetadataAndInternalPaths": true,
+  "containsActualPrivateConfigurationCredentialsDatabaseBusinessRowsAssetsReferenceScreenshotsOrRawLogs": false,
+  "publicUploadedOrInstalled": false,
+  "publicGitIncluded": false,
+  "wholeModuleAccepted": false,
+  "fullCloneReady": false
+}

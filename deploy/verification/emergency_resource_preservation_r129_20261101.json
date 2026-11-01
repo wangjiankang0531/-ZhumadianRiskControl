@@ -1,0 +1,82 @@
+{
+  "schema": "xnby.r129.native-material-preserved-results.v1",
+  "at": "2026-11-01T13:49:02.812075+08:00",
+  "allScopedChecksPassed": true,
+  "actualOriginalFalseSaveNavigatedAsSuccess": true,
+  "actualGuardedFalseSaveKeepsEditorAndInputs": true,
+  "actualNormalRoleBrowserCases": [
+    {
+      "case": "original-native-normal-login-and-material-menu",
+      "passed": true
+    },
+    {
+      "case": "native-list-name-filter-matches-original-synthetic-API",
+      "passed": true,
+      "rows": 4
+    },
+    {
+      "case": "actual-chrome-filtered-export-valid-OOXML-and-exact-own-rows",
+      "passed": true,
+      "rows": 4
+    },
+    {
+      "case": "native-row-detail-renders-original-imported-fields",
+      "passed": true
+    },
+    {
+      "case": "native-list-reset-clears-name-filter",
+      "passed": true
+    },
+    {
+      "case": "native-edit-submit-and-original-API-confirmed-values",
+      "passed": true,
+      "actualRequests": 1
+    },
+    {
+      "case": "native-reopened-detail-shows-saved-edit",
+      "passed": true
+    },
+    {
+      "case": "native-cancel-delete-keeps-own-row-and-sends-zero-delete",
+      "passed": true
+    },
+    {
+      "case": "native-delete-confirm-removes-only-selected-own-synthetic-row",
+      "passed": true
+    },
+    {
+      "case": "actual-server-code-zero-false-keeps-editor-values-and-shows-failure",
+      "passed": true
+    }
+  ],
+  "nativeExportProof": {
+    "nativeExportOOXMLAndCRCPassed": true,
+    "rows": 4,
+    "allNamesMatchExactOwnFilter": true,
+    "sha256": "e55f68d2c4b6739ebef1c89392255f49f7d58ef3e1075de65d21c45812dd0f74"
+  },
+  "allSixComponentsAndTenReadinessReportsPassed": true,
+  "allStartedComponentsAndBrowsersNormallyExited": true,
+  "original398DefinitionsUnchanged": true,
+  "sourceOnlyThreeResourceFormsPlusFourteenOperationFilesChanged": true,
+  "twoAlreadyChangedCallersComposedAndInvertedExactly": true,
+  "restoredFourteenGuardsIndependentlyRegenerated": true,
+  "buildFiles": 338,
+  "selectedSourceFiles": 235,
+  "sourceOverlayFiles": 51,
+  "assetReferences": 1521,
+  "emittedJSSyntaxFiles": 173,
+  "undeclaredDifferences": 0,
+  "fixtureOnlyNoFormalOrPublicBusinessDataTouched": true,
+  "publicR24StillNotUpdatedWithThisCandidate": true,
+  "fullMaterialModuleOrRealNangangRoleAccepted": false,
+  "openGaps": [
+    "actual fast initial/query response ordering can overwrite latest UI results; not fixed",
+    "synthetic material type dictionary missing, original getInfo returns400; not a production dictionary claim",
+    "real Nangang roles and complete material CRUD/map/new-manual-add remain pending",
+    "full M02/M07 and other original modules remain pending"
+  ],
+  "priorFourDriverRunsWereNotWholePasses": true,
+  "pureSyntheticDataOnly": true,
+  "newManualPreviewHandedOver": false
+}

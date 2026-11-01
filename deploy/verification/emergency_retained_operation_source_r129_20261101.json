@@ -1,0 +1,90 @@
+{
+  "onlyDeclaredGuardRestorationFilesChanged": true,
+  "changedFiles": [
+    {
+      "path": "src/utils/request.ts",
+      "beforeSHA256": "7f4bb25205daba07f637c77ac17665da6d34f2c054e18ca3d0edacb94d02cce8",
+      "afterSHA256": "ee058989a9d41a5d08bed610c19affc69c8a87c4de58f955de50d52e52f1bcf6"
+    },
+    {
+      "path": "src/views/dutyManage/dutySchedule/info/addOrEdit.vue",
+      "beforeSHA256": "f0fe9478d11fb0b11dde67bc38e621f99110ce34ea1fe2843cfac8bead602cb8",
+      "afterSHA256": "695f353c091bfc1fbc7fc92f695772d940632f8c4d9f3317b6d581d91e3fba2f"
+    },
+    {
+      "path": "src/views/dutyManage/dutyPersonnel/info/addOrEdit.vue",
+      "beforeSHA256": "42ef8cf3ed23ec42ce584e07653316a72ff4a79c7e2471c84534adfbe6cbf8f3",
+      "afterSHA256": "a84ff550a3249689c8bb63412abffbf83cabfb4e3f5795842184ba869bd3135a"
+    },
+    {
+      "path": "src/views/dutyManage/dutyLog/info/addOrEdit.vue",
+      "beforeSHA256": "37a25780adb846cd70f67d3f81a7344c3157269233014ad63eca16a14281abc6",
+      "afterSHA256": "32b961fe51486c3f4320e843f0f8f74cb5421bf4ab81d9dacc84f47316a474b2"
+    },
+    {
+      "path": "src/hooks/useHandleData.ts",
+      "beforeSHA256": "e054023b17ae087eb1e4c1cb07f37567c147043f434b9904c9fa1be33579ae28",
+      "afterSHA256": "14b2d0e961d34aa402b737454af1722a53bab856ee0bfedc3e62f8ce0066f527"
+    },
+    {
+      "path": "src/views/dutyManage/dutyLog/index.vue",
+      "beforeSHA256": "40b7061c6ffa62e9015e3a9a1c7f98c76824c5c9f998f17e8124d3c2e8ccc589",
+      "afterSHA256": "332e1a2da4aab635ab797c8f8e9f90f2f8c7ac2c6de3f082e37cfbd7fe7fce82"
+    },
+    {
+      "path": "src/views/dutyManage/dutyPersonnel/index.vue",
+      "beforeSHA256": "fda0a15a556c42fa95fe25b5c7e896c7b4e4c84d5a45358518385105991f8e2b",
+      "afterSHA256": "8fa40ebe4832af3873a0b9b3df09da796d43b2f931c006e8129e1b3dfd56079e"
+    },
+    {
+      "path": "src/views/emergencyPlans/structured/index.vue",
+      "beforeSHA256": "b50a39ed887c4a562bd96f2cb02f1b355339cc174c1912ffaf9443d915dc9a65",
+      "afterSHA256": "240d67dcf2186d58f373f4143025e445008f2976d8d840e20def58f690a287b7"
+    },
+    {
+      "path": "src/views/emergencyResources/emergencyExperts/index.vue",
+      "beforeSHA256": "d25acae1c076f50ef46ee1f944ae55dae970a42ae8b095c2ecdc8d922b4a6778",
+      "afterSHA256": "d5141e154e135b458d71f469bbe03a53bb0437b7382c3ba5d2a36df3d94ca9a0"
+    },
+    {
+      "path": "src/views/emergencyResources/firstAidTeams/index.vue",
+      "beforeSHA256": "f0dd5ff6aa2152ace6a13b720b4709fd6fd35db70d03ce756a1366947c5d37d9",
+      "afterSHA256": "9c68950b36f3607055441d74c6159d824a1d338e0808ae9a130e51ac6cf93493"
+    },
+    {
+      "path": "src/views/emergencyResources/materials/index.vue",
+      "beforeSHA256": "aaa692efcd7f5eca076a3413c470625344d2c62ed670124f3319cb5f98c2eef5",
+      "afterSHA256": "e1d0610637f97bed66f753d84e17bb92e7f20ae9fc015c465bc13389b4b944c4"
+    },
+    {
+      "path": "src/views/emergencyResponse/disposal/index.vue",
+      "beforeSHA256": "381a9d9e5eca4c6ac101776b291665dbe2ca8b86187b1f145969e6b0083d7135",
+      "afterSHA256": "3cfc2da1c271c46b7de094a16eee31af3c6bcd26e9bd7ab1fcd0acf779c56d93"
+    },
+    {
+      "path": "src/views/emergencyResponse/response/index.vue",
+      "beforeSHA256": "dc861b1ded760281705155028289ffbef1995f16bbc6b684a2bd4440a7c471d4",
+      "afterSHA256": "b6666fdad3ed719d2f3857991fd80d6ebd3e3e174d5bd363eacd1d53e46f80b6"
+    },
+    {
+      "path": "src/views/emergencyResponse/taskSend/index.vue",
+      "beforeSHA256": "0bfd4ddb1b288f8a2062b4cefc0a9654177292ece7b298de42889b841089a6e9",
+      "afterSHA256": "3289821617107205ed9751c6a0dfd2a2d1f715e512d03f649b9b0daf0892b451"
+    }
+  ],
+  "twoCallerComposition": [
+    {
+      "path": "src/views/emergencyResources/materials/index.vue",
+      "retainedWF6OrWF7EditsPreservedByteExactByInverse": true,
+      "guardedCallCount": 1
+    },
+    {
+      "path": "src/views/emergencyResponse/taskSend/index.vue",
+      "retainedWF6OrWF7EditsPreservedByteExactByInverse": true,
+      "guardedCallCount": 1
+    }
+  ],
+  "oldThreeResourceGuardsRetained": true,
+  "catalogueActiveCalls": 9,
+  "actualNativeRuntimePending": true
+}

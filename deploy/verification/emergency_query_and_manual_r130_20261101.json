@@ -1,0 +1,70 @@
+{
+  "schema": "xnby.r130.query-order-native-manual-acceptance.v1",
+  "at": "2026-11-01T14:40:47.219438+08:00",
+  "actualOriginalResponseOrderBugReproduced": true,
+  "candidateActualOldResponseCannotOverwriteNewResultOrLoading": true,
+  "actualServerResponsesOnlyNoFulfillment": true,
+  "actualVueLifecycleCases": [
+    "late-success-does-not-change-latest-rows-total-or-callback",
+    "old-error-does-not-clear-latest-loading-or-call-error-handler",
+    "unmount-ignores-success-and-callback",
+    "nonpaged-shape-and-original-zero-false-filters-preserved"
+  ],
+  "nativeManualAddCases": [
+    {
+      "case": "original-native-normal-login-and-material-menu",
+      "passed": true
+    },
+    {
+      "case": "native-empty-required-form-sends-no-save",
+      "passed": true
+    },
+    {
+      "case": "original-dictionary-API-populates-real-material-select",
+      "passed": true
+    },
+    {
+      "case": "native-department-tree-selected-with-original-fullName-value",
+      "passed": true
+    },
+    {
+      "case": "actual-OpenLayers-mouse-click-populates-readonly-coordinate-field",
+      "passed": true,
+      "sameOriginMapRequests": 8,
+      "baseMapImageryAccepted": false
+    },
+    {
+      "case": "native-add-and-normal-role-list-detail-confirm-original-payload",
+      "passed": true
+    },
+    {
+      "case": "native-new-detail-shows-persisted-values-and-original-dictionary-label",
+      "passed": true
+    },
+    {
+      "case": "native-existing-coordinate-view-has-no-write-actions",
+      "passed": true
+    }
+  ],
+  "syntheticDictionaryExactOldRoot1000ReusedAndTwoOwnRowsAdded": true,
+  "dictionaryNormalAPIPassedAfterFullRestarts": true,
+  "realNativeMapMouseSelectionAndPersistedCoordinatesPassed": true,
+  "baseMapImageryOrRealZhumadianGISAccepted": false,
+  "exactOldPublishedSameOriginMapURLRestored": true,
+  "originalMapCenterUnchanged": true,
+  "threeCompleteControllerRunsPassed": true,
+  "allStartedComponentsNormalExitNoForce": true,
+  "original398DefinitionsUnchanged": true,
+  "compiledFiles": 338,
+  "sourceInputs": 235,
+  "sourceOverlays": 53,
+  "assetReferences": 1521,
+  "JSSyntaxFiles": 173,
+  "publicApproved68PublishedAndReadbackPassed": true,
+  "laterR129R130NotPublicPublished": true,
+  "publicDeploymentInThisTurn": false,
+  "newTencentCompletions": 0,
+  "completeMaterialModuleOrRealNangangRolesAccepted": false,
+  "fullCloneReady": false,
+  "strictCompleteModules": 0
+}

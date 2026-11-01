@@ -1,0 +1,43 @@
+{
+  "schema": "xnby.r25.full-program-preflight.v1",
+  "allPassed": true,
+  "cases": [
+    {
+      "case": "full-exact-R24-program-view-and-owned-private-config",
+      "passed": true
+    },
+    {
+      "case": "retained-dependency-drift-refused-source-unchanged",
+      "passed": true
+    },
+    {
+      "case": "unexpected-new-material-override-refused-payload/business/run-template/classes/com/iemp/endanger/server/materials/controller/MaterialsController.class",
+      "passed": true
+    },
+    {
+      "case": "unexpected-new-material-override-refused-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport$1.class",
+      "passed": true
+    },
+    {
+      "case": "unexpected-new-material-override-refused-payload/business/run-template/classes/xnby/replica/OriginalMaterialExcelImport.class",
+      "passed": true
+    }
+  ],
+  "updaterSHA256": "44c846481bc7eb58447374ea37653da6b806e4471ce6a2a83d64c9e901010cb3",
+  "fullProgramFilesVerified": 15549,
+  "fullProgramBytesVerified": 1403652528,
+  "oldControllerFilesVerified": 20,
+  "newControllerFilesVerified": 20,
+  "candidateInstallPaths": 371,
+  "exactPublicProgramPinsAndRemovalsRetained": true,
+  "privateConfigurationUsesOwnSyntheticBytes": true,
+  "manifestIdentityAdaptedForSyntheticConfigAndLocalTarget": true,
+  "actualPublicReleaseAndPrivateIdentityPreflightPassed": false,
+  "realPrivateConfigurationOrSeedOrBusinessRead": false,
+  "protectedUserPreviewReadOrChanged": false,
+  "readOnlyProgramHardlinks": 15385,
+  "mutableFilesIndependentlyCopied": 184,
+  "servicesStartedOrStopped": false,
+  "publicOrFormalChanged": false,
+  "publicControllerWholeLifecycleActuallyExecuted": false
+}

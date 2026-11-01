@@ -1,0 +1,28 @@
+{
+  "schema": "xnby.r25.whole-controller-check.v1",
+  "allPassed": true,
+  "exactCandidateControllerAndJobActuallyExecuted": true,
+  "wholeSixComponentControllerActuallyExecuted": true,
+  "allSixComponentsNormallyExitedZero": true,
+  "controllerNormallyExitedZero": true,
+  "allActualDescendantsExitedBeforeOuterJobClosed": true,
+  "forceTerminationUsed": false,
+  "actualTenReadinessChecksPassed": true,
+  "checks": {
+    "actualR24WorkflowGuardRuntimePinsPassed": true,
+    "actualR25MaterialRuntimePinsPassed": true,
+    "actualSixComponentsReady": true,
+    "anonymousAuthenticationAndOriginalEightReportsPassed": true,
+    "nativeSessionReportPassed": true,
+    "asyncMetadataReportPassed": true,
+    "original398DefinitionsUnchanged": true
+  },
+  "original398DefinitionsUnchanged": true,
+  "syntheticConfigAndDataIdentityUsed": true,
+  "actualPublicPrivateConfigIdentityOrIISOrTLSPassed": false,
+  "controllerSHA256": "8b6006fac79e096939bfb7b2cffc333c1bcd39dc01f9d43070c68dee4f402660",
+  "jobSHA256": "e32f8dfa05b822534a75314419bd83d093ed5bd58255690798736366d20c8a22",
+  "updaterSHA256": "44c846481bc7eb58447374ea37653da6b806e4471ce6a2a83d64c9e901010cb3",
+  "normalLoggedInBrowserAndCompleteNangangBusinessAcceptancePassed": false,
+  "publicOrFormalChanged": false
+}
