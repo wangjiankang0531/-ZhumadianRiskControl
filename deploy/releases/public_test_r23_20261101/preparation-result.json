@@ -1,0 +1,15 @@
+{
+  "manifestSHA256": "27c8a6514d887d94c6c2489b263c2d2e59b29fb395602cdd2621db1ce8fb6b41",
+  "transportFilesIncludingManifest": 8,
+  "transportBytesIncludingManifest": 4355704,
+  "replacementPaths": 599,
+  "obsoleteFrontendPaths": 584,
+  "totalInstallPaths": 1183,
+  "archiveCRCAndAllMembersVerified": true,
+  "recoveryOwnershipCases": 5,
+  "maxServerExtractionPathCharacters": 236,
+  "localFullControllerPassed": true,
+  "publicServerPreflightPassed": false,
+  "publicDeployed": false,
+  "approvalGranted": false
+}

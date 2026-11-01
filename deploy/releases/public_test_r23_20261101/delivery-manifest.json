@@ -1,0 +1,63 @@
+{
+  "revision": "R23-unified-risk-emergency-graceful-controller",
+  "targetFTP": "/Zhumadian/Zhumadian_Unified_Emergency_20261101_R23/",
+  "targetApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "files": {
+    "Check_Only_Unified_R23.cmd": {
+      "bytes": 129,
+      "sha256": "fa7556a6242470d40a458e2369ab30c8eb7434f777799a4e6e9cea27c41bc95e"
+    },
+    "Deploy_Unified_R23.cmd": {
+      "bytes": 117,
+      "sha256": "6505d60ad4a44feccb2ba23b052fb6f05e1b22e8770e21d34ecb798094158d70"
+    },
+    "deploy_unified_r23.py": {
+      "bytes": 4875,
+      "sha256": "53f163d25d37c121923137f1df2fbe400e5c718c0c48f1f4ab02c12326b2e43c"
+    },
+    "r23_update_runtime.py": {
+      "bytes": 81166,
+      "sha256": "d500b5b591971532a74dd632d2cff7139474bd61986c01bc75b184017c143d41"
+    },
+    "Recover_This_Unified_R23.cmd": {
+      "bytes": 138,
+      "sha256": "e1e95beef0b6709c90208ab9c0d8035d2eae859bc46064737e479ab89819b357"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Unified_Emergency_20261101_R23.zip": {
+      "bytes": 4266179,
+      "sha256": "3f9cee2f02515ee1eb420eb83d0c09177cfa8929a97596bf7455fb1c5a29d85b"
+    }
+  },
+  "payloadTransportFiles": 7,
+  "payloadTransportBytes": 4352806,
+  "oldReleaseSHA256": "9f5c34ab7fe0fe698acb0c75e7d40f2bf9256dd42924828c7b8d31072a216b47",
+  "newReleaseSHA256": "5723bf93ecba4a7795d69db951c2ab125ea0f802d19e47aeeab309617f8dc0f1",
+  "updateManifestSHA256": "1810f5fe6857a60a87ea168e3b1f26682716ed807ce9f5e863d29e0e85a57201",
+  "replacementPaths": 599,
+  "obsoleteFrontendPaths": 584,
+  "totalInstallPaths": 1183,
+  "newUpdaterSHA256": "d500b5b591971532a74dd632d2cff7139474bd61986c01bc75b184017c143d41",
+  "newControllerSHA256": "8b6006fac79e096939bfb7b2cffc333c1bcd39dc01f9d43070c68dee4f402660",
+  "newJobSHA256": "e32f8dfa05b822534a75314419bd83d093ed5bd58255690798736366d20c8a22",
+  "oldReadinessReports": 8,
+  "newReadinessReports": 10,
+  "updaterContractChecks": 123,
+  "actualCodeRecoveryScenarios": 10,
+  "actualFullProgramDependencyFilesVerified": 15408,
+  "wholeSixComponentControllerOnSyntheticDataPassed": true,
+  "actualNativeAndBusinessContextClosedNormally": true,
+  "original398DefinitionsUnchanged": true,
+  "candidateDisposalAndReopenBrowserCasesInSeparateComponentFixture": 20,
+  "fullLoggedInBrowserOnWholeControllerAndRealNangangAcceptancePassed": false,
+  "privateConfigAndActualPublicIdentityOrIISOrTLSVerified": false,
+  "other16OriginalControllersAndIISPreserved": true,
+  "originalBusinessAndPlatformJarAuthenticationAndDatabaseKept": true,
+  "containsCompiledFrontendOwnJavaClassesUpdaterControllerSourceMetadataAndInternalPaths": true,
+  "containsActualPrivateConfigurationCredentialsDatabaseBusinessRowsAssetsReferenceScreenshotsOrRawLogs": false,
+  "publicUploadedOrInstalled": false,
+  "publicGitIncluded": false
+}

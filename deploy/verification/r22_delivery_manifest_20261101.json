@@ -1,0 +1,87 @@
+{
+  "revision": "R22-risk-unit-native-session",
+  "targetFTP": "/Zhumadian/Zhumadian_Risk_Unit_20261101_R22/",
+  "files": {
+    "Check_Only_Risk_R22.cmd": {
+      "bytes": 126,
+      "sha256": "a45eb0c9ae6cbba18fad3f0469f8e5299827f3b166a2e48ca33f05b715a884a3"
+    },
+    "Deploy_Risk_R22.cmd": {
+      "bytes": 114,
+      "sha256": "a3b6f7c3d9c29d655ea8c98d65346b9ff2c55cda0d293e6e5d61470b4d804d5e"
+    },
+    "deploy_risk_r22.py": {
+      "bytes": 4857,
+      "sha256": "ce35910d06699739841f048fdbdf0740ae889ef28b711610c100b81b8030dd77"
+    },
+    "r22_update_runtime.py": {
+      "bytes": 73928,
+      "sha256": "6ea2f08f0091b90baa301b4b15d3c7848f9b254700083f4465c6c4b6ff68ba15"
+    },
+    "Recover_This_Risk_R22.cmd": {
+      "bytes": 135,
+      "sha256": "602685a2dcf87112718cd80a8d4ffc1cba447a8e7fe23a4ee8e3c9bc97574e5a"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Risk_Unit_20261101_R22.zip": {
+      "bytes": 2895756,
+      "sha256": "9fd1d686ba60c81a5378091253d09ca4a21601aa7bb9996a835f850c8b8ac7ec"
+    }
+  },
+  "payloadTransportFiles": 7,
+  "payloadTransportBytes": 2975118,
+  "oldReleaseSHA256": "9f5c34ab7fe0fe698acb0c75e7d40f2bf9256dd42924828c7b8d31072a216b47",
+  "newReleaseSHA256": "6564110ef9c37ead5d2e5b1ea02384ecfe7aca521ac97f435f5a5c18f64afa35",
+  "updateManifestSHA256": "b63a77d1a710438a1a753750269f3531ece9b3b5f09adfadc1022e3d0b212ffc",
+  "replacementPaths": 526,
+  "obsoleteFrontendPaths": 517,
+  "totalInstallPaths": 1043,
+  "businessOperations": [
+    {
+      "relative": "payload/business/run-template/classes/com/iemp/endanger/server/hidden/service/impl/RiskLevelServiceImpl.class",
+      "oldSHA256": null,
+      "newSHA256": "636822c3930a036ddb294dac990c1b9f0f3f62e09baa40afdd46feddcc30070c",
+      "bytes": 9885,
+      "operation": "add"
+    },
+    {
+      "relative": "payload/business/run-template/classes/com/iemp/endanger/server/hidden/controller/RiskLevelController.class",
+      "oldSHA256": null,
+      "newSHA256": "7d866e4ca810f7de5de637964b38f1eecae1a0b3208ef03ebbe17d34f06fa33e",
+      "bytes": 6102,
+      "operation": "add"
+    },
+    {
+      "relative": "payload/business/run-template/classes/xnby/replica/OriginalNativeSessionInitializer.class",
+      "oldSHA256": null,
+      "newSHA256": "2acbb21cea5e8b9564852817f958224671a0097a83b7579bb17aadeaddf02d43",
+      "bytes": 8132,
+      "operation": "add"
+    },
+    {
+      "relative": "payload/business/run-template/classes/xnby/replica/OriginalNativeSessionInterceptor.class",
+      "oldSHA256": null,
+      "newSHA256": "c3d248e58dc54512434d706a2ddab2c83c67f742888ec4f51c811d40ee8fd47b",
+      "bytes": 8509,
+      "operation": "add"
+    },
+    {
+      "relative": "payload/business/run-template/classes/META-INF/spring.factories",
+      "oldSHA256": "80b7c7c4efb78d1ece0de35619505ba727157e0f6ba407f2b5b0cb7f8757155d",
+      "newSHA256": "720599a74bc620942f85a97343c1fe11720bfd7988bf2f042be7d84e38228918",
+      "bytes": 476,
+      "operation": "replace"
+    }
+  ],
+  "newUpdaterSHA256": "6ea2f08f0091b90baa301b4b15d3c7848f9b254700083f4465c6c4b6ff68ba15",
+  "oldReadinessReports": 8,
+  "newReadinessReports": 9,
+  "originalJavaArchivesSigningPasswordAndPermissionsUnchanged": true,
+  "newNativeSessionValidityCheckDeclared": true,
+  "other18ControllerFilesAndIISUnchanged": true,
+  "containsCompiledFrontendBusinessClassesUpdaterSourceReleaseMetadataAndInternalPaths": true,
+  "containsCredentialsBusinessRowsAssetsReferenceOrRawLogs": false
+}

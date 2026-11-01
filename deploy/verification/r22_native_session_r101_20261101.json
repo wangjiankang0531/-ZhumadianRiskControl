@@ -1,0 +1,97 @@
+{
+  "schema": "xnby.r22.native-session-and-public-template.verified-subset.v1",
+  "at": "2026-11-01T04:31:43.907324+08:00",
+  "case": "R101",
+  "allListedLocalChecksPassed": true,
+  "actualPublishedLaunchAndOriginalPlatformRetained": true,
+  "productionFrontendFiles": 836,
+  "compiledPortalCases": 18,
+  "nativeRiskHTTPCases": 9,
+  "nativeNonAdminRoles": 2,
+  "negativeLoginKinds": 3,
+  "nativeAndBusinessBothRejectRevokedTokens": true,
+  "newSessionGuardRealHTTPBoundaryCases": 27,
+  "nativeSessionGuardNoPositiveCache": true,
+  "valid3001RowsCommitAndLastRowFailureZeroRemnants": true,
+  "original398DefinitionsUnchanged": true,
+  "mysqlMaximumConnectionsUnchanged": 24,
+  "observationDatabasePrivilegesChanged": false,
+  "candidatePayloadFiles": 841,
+  "candidatePayloadBytes": 17830521,
+  "candidateBusinessOperations": [
+    {
+      "relative": "payload/business/run-template/classes/com/iemp/endanger/server/hidden/service/impl/RiskLevelServiceImpl.class",
+      "oldSHA256": null,
+      "newSHA256": "636822c3930a036ddb294dac990c1b9f0f3f62e09baa40afdd46feddcc30070c",
+      "bytes": 9885,
+      "operation": "add"
+    },
+    {
+      "relative": "payload/business/run-template/classes/com/iemp/endanger/server/hidden/controller/RiskLevelController.class",
+      "oldSHA256": null,
+      "newSHA256": "7d866e4ca810f7de5de637964b38f1eecae1a0b3208ef03ebbe17d34f06fa33e",
+      "bytes": 6102,
+      "operation": "add"
+    },
+    {
+      "relative": "payload/business/run-template/classes/xnby/replica/OriginalNativeSessionInitializer.class",
+      "oldSHA256": null,
+      "newSHA256": "2acbb21cea5e8b9564852817f958224671a0097a83b7579bb17aadeaddf02d43",
+      "bytes": 8132,
+      "operation": "add"
+    },
+    {
+      "relative": "payload/business/run-template/classes/xnby/replica/OriginalNativeSessionInterceptor.class",
+      "oldSHA256": null,
+      "newSHA256": "c3d248e58dc54512434d706a2ddab2c83c67f742888ec4f51c811d40ee8fd47b",
+      "bytes": 8509,
+      "operation": "add"
+    },
+    {
+      "relative": "payload/business/run-template/classes/META-INF/spring.factories",
+      "oldSHA256": "80b7c7c4efb78d1ece0de35619505ba727157e0f6ba407f2b5b0cb7f8757155d",
+      "newSHA256": "720599a74bc620942f85a97343c1fe11720bfd7988bf2f042be7d84e38228918",
+      "bytes": 476,
+      "operation": "replace"
+    }
+  ],
+  "currentPublicRevision": "R21",
+  "newCandidatePublicInstalled": false,
+  "fixedPublicTransportPrepared": false,
+  "publicGitPushed": false,
+  "G12EmptyTemplateDownload": {
+    "publicDisplayedHostAndProjectPrefixVerified": true,
+    "browserHidesScheme": true,
+    "bytes": 3729,
+    "sha256": "8702267d39628c3f923719faf6a2dfee8c96bd1ec24a2dc5552ed00099f78d8b",
+    "headers": [
+      "部门名称",
+      "负责人",
+      "分析对象",
+      "分析单元",
+      "风险等级",
+      "坐标"
+    ],
+    "dataRows": 0,
+    "originalPOIAndExcelUtilReadPassed": true,
+    "inputUnmodified": true,
+    "publicImportPerformed": false,
+    "desktopReturned": true,
+    "sourceCompletionWritten": false,
+    "testerOriginalFailureStepStillToClarify": true
+  },
+  "sourceCompletedCellsStill": [
+    "G2",
+    "G3",
+    "G4",
+    "G5",
+    "G7"
+  ],
+  "allOwnedProcessesNormallyClosed": true,
+  "shortRuntimeAndOwnedProfilesRemoved": true,
+  "formal18891OldR4StoppedAnd8767Untouched": true,
+  "fullTaskWorkflowAndRealOrganizationRolesStillPending": true,
+  "strictCompleteModules": 0,
+  "fullCloneReady": false,
+  "goalStatus": "active"
+}

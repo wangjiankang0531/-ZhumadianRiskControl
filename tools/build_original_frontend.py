@@ -16,6 +16,10 @@ import subprocess
 import time
 import shutil
 from contextlib import ExitStack
+from original_workflow_user_request import workflow_user_request_override
+from original_workflow_request_compat import workflow_request_override
+from original_request_error_compat import request_error_override
+from original_approval_retry_compat import approval_retry_override
 from original_frontend_deployment_assets import home_deployment_override, map_tile_path, map_tile_override, mobile_entry_url, replace_output_mobile_qr
 
 KINDS = {'security_pc': '/tianjinrisk/', 'emergency_pc': '/tianjinrisk/emergency/',
@@ -100,19 +104,21 @@ def restore_mobile_generated_manifest(project, expected, source_project, public_
     return True
 
 def build(kind, project, manifest_path, node, output, api_prefix, public_base, source_project=None,
-          use_local_command=False,mobile_qr_url=None,adapt_home_navigation=False,map_tile_base=None,admin_home_base=None):
+          use_local_command=False,mobile_qr_url=None,adapt_home_navigation=False,map_tile_base=None,admin_home_base=None,workflow_user_request_compat=False,workflow_request_compat=False,request_error_compat=False,approval_retry_compat=False):
     project, manifest_path, node, output = (Path(x).resolve() for x in (project,manifest_path,node,output))
     if kind not in KINDS or not project.is_dir() or not node.is_file():
         raise ValueError('Missing original project or explicit Node executable')
     route(api_prefix,False);route(public_base,True)
+    if request_error_compat and kind not in ('security_pc','emergency_pc'):raise ValueError('Request error compatibility applies only to original PC frontends')
+    if workflow_user_request_compat and workflow_request_compat:raise ValueError('Choose one workflow compatibility scope')
     if admin_home_base is not None and not adapt_home_navigation:
         raise ValueError('Admin entry requires explicit home navigation deployment adaptation')
-    if (use_local_command or mobile_qr_url or adapt_home_navigation or admin_home_base) and kind!='security_pc':
+    if (use_local_command or mobile_qr_url or adapt_home_navigation or admin_home_base or workflow_user_request_compat or workflow_request_compat or approval_retry_compat) and kind!='security_pc':
         raise ValueError('Portal deployment adapters apply only to original security PC')
     if map_tile_base:
         if kind not in ('security_pc','emergency_pc'):raise ValueError('Map URL adapter applies only to original PC frontends')
         map_tile_path(map_tile_base)
-    if use_local_command or adapt_home_navigation or map_tile_base:
+    if use_local_command or adapt_home_navigation or map_tile_base or workflow_user_request_compat or workflow_request_compat or request_error_compat or approval_retry_compat:
         if source_project is None:
             raise ValueError('Command deployment adapter requires a pristine original source root')
         verify_inputs(Path(source_project).resolve(),baseline_files(json.loads(manifest_path.read_text(encoding='utf-8-sig')),kind))
@@ -140,13 +146,17 @@ def build(kind, project, manifest_path, node, output, api_prefix, public_base, s
     if kind!='mobile':command+=['--base',public_base]
     start=time.monotonic()
     restored=False
-    command_adapter=None;qr_adapter=None;map_adapter=None
+    command_adapter=None;qr_adapter=None;map_adapter=None;workflow_user_adapter=None;workflow_adapter=None;request_error_adapter=None;approval_retry_adapter=None
     try:
         with ExitStack() as adapters:
             if use_local_command or adapt_home_navigation:
                 command_adapter=adapters.enter_context(home_deployment_override(project,source_project,use_local_command,
                           public_base.rstrip('/') if adapt_home_navigation else None,admin_home_base))
             if map_tile_base:map_adapter=adapters.enter_context(map_tile_override(project,source_project,map_tile_base))
+            if workflow_user_request_compat:workflow_user_adapter=adapters.enter_context(workflow_user_request_override(project,source_project))
+            if workflow_request_compat:workflow_adapter=adapters.enter_context(workflow_request_override(project,source_project))
+            if request_error_compat:request_error_adapter=adapters.enter_context(request_error_override(kind,project,source_project))
+            if approval_retry_compat:approval_retry_adapter=adapters.enter_context(approval_retry_override(project,source_project))
             with (output/'build.log').open('wb') as log:
                 process=subprocess.run(command,cwd=project,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=300,
                                        creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
@@ -177,7 +187,7 @@ def build(kind, project, manifest_path, node, output, api_prefix, public_base, s
              'seconds':round(time.monotonic()-start,3),'exitCode':process.returncode,'output':str(dist),
              'fileCount':len(files),'bytes':sum(r['bytes'] for r in files),'files':files,'compiledPathOccurrences':counts,
              'originalSourceRoutesAndPagesPreserved':True,'backendConnected':False,'publicDeployed':False,
-             'businessParityVerified':False}
+             'businessParityVerified':False,'workflowUserRequestCompatibility':workflow_user_adapter,'workflowRequestCompatibility':workflow_adapter,'requestErrorCompatibility':request_error_adapter,'approvalRetryCompatibility':approval_retry_adapter}
     (output/'receipt.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     return receipt
 
@@ -193,8 +203,12 @@ def main():
     ap.add_argument('--adapt-home-navigation',action='store_true')
     ap.add_argument('--map-tile-base')
     ap.add_argument('--admin-home-base')
+    ap.add_argument('--workflow-user-request-compat',action='store_true')
+    ap.add_argument('--workflow-request-compat',action='store_true')
+    ap.add_argument('--request-error-compat',action='store_true')
+    ap.add_argument('--approval-retry-compat',action='store_true')
     a=ap.parse_args()
-    r=build(a.kind,a.project,a.source_manifest,a.node,a.output,a.api_prefix,a.public_base or KINDS[a.kind],a.source_project,a.use_local_command,a.mobile_qr_url,a.adapt_home_navigation,a.map_tile_base,a.admin_home_base)
+    r=build(a.kind,a.project,a.source_manifest,a.node,a.output,a.api_prefix,a.public_base or KINDS[a.kind],a.source_project,a.use_local_command,a.mobile_qr_url,a.adapt_home_navigation,a.map_tile_base,a.admin_home_base,a.workflow_user_request_compat,a.workflow_request_compat,a.request_error_compat,a.approval_retry_compat)
     print(json.dumps({k:r[k] for k in ('kind','fileCount','bytes','seconds','sourceInputFilesVerified','sourceFilesUnchanged','compiledPathOccurrences','backendConnected','publicDeployed')}))
 
 if __name__=='__main__':main()

@@ -1,0 +1,38 @@
+{
+  "scope": {
+    "manifestSHA256": "9482746b9a8a7d7ccbe7a6279ca813bb3fda05ed83bf188f8da042f4dba7f5f5",
+    "transportFilesIncludingManifest": 8,
+    "transportBytesIncludingManifest": 2978667,
+    "replacementPaths": 526,
+    "obsoleteFrontendPaths": 517,
+    "totalInstallPaths": 1043,
+    "localR101NativeRuntimeAndActualProductionPortalPassed": true,
+    "newGuardContractCases": 50,
+    "codeRecoveryScenarios": 6,
+    "publicServerPreflightPassed": false,
+    "publicDeployed": false,
+    "approvalGranted": false
+  },
+  "independentAudit": {
+    "sealedManifestSHA256": "9482746b9a8a7d7ccbe7a6279ca813bb3fda05ed83bf188f8da042f4dba7f5f5",
+    "transportFiles": 8,
+    "transportBytes": 2978667,
+    "archiveCRCAndEveryMemberPinMatched": true,
+    "everyMaterializedR101CandidateFileIncludedInComposedManifest": 841,
+    "exactNewBackendPaths": 5,
+    "original18OtherControllersAndIISPreserved": true,
+    "privateDataAssetsOriginalSDKAndQAObserversNotShipped": true,
+    "newUpdaterAndRecoveryWrapperBothPinned": true,
+    "newGuardContractChecks": 50,
+    "normalAndSensitiveWriteRecoveryScenarios": 6,
+    "thisUpdateRecoveryIdentityCases": 5,
+    "replacementPaths": 526,
+    "obsoleteFrontendPaths": 517,
+    "installPaths": 1043,
+    "scopeIsLocalPackageVerificationNotLiveServerPreflight": true,
+    "publicChanged": false
+  },
+  "publicServerPreflightPassed": false,
+  "publicInstalled": false,
+  "sourceCompletionWritten": false
+}

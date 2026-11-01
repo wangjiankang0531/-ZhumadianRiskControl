@@ -1,0 +1,30 @@
+"""Serve the exact production R22 safety build through the normal gateway; other readonly roots are not accepted by this test."""
+from pathlib import Path
+import contextlib,json,os,socket,subprocess,time,urllib.request
+import verify_emergency_business_http_20261030 as c
+from prepare_original_frontend_gateway import prepare
+from original_task_identity_authority import listener_owner
+@contextlib.contextmanager
+def host(root,business_port,platform_port,phase):
+ assert phase in ('risk-unit',)
+ frontend=c.Q/'frontend/emergency_pc';assert frontend.is_dir()
+ stage=c.R/'work/user_feedback_20261031/security-build-risk-r22-from-r21-r2';safety=stage/'build/dist';files=c.read(stage/'candidate-result.json')['fullFrontendFiles'];assert len(files)==836
+ for name,row in files.items():
+  p=safety/name;assert p.resolve().is_relative_to(safety.resolve())and not p.lstat().st_file_attributes&0x400 and p.stat().st_size==row['bytes']and c.sha(p)==row['sha256']
+ runtime=c.Q/'runtime/nginx';manifest=c.read(c.R/'work/user_feedback_20261031/r22-risk-candidate-r1/r21-base-payload-manifest.json')['files'];assert c.sha(runtime/'nginx.exe')==manifest['runtime/nginx/nginx.exe']['sha256'];folder=root/('compiled-security-gateway-'+phase);lease=socket.socket();lease.bind(('127.0.0.1',0));port=lease.getsockname()[1];roots={n:c.Q/'frontend'/n for n in ['security_pc','mobile','bigscreen','tiles']};roots['emergency_pc']=frontend;roots['security_pc']=safety;receipt=prepare(folder,runtime,roots,port,business_port,platform_port,base_path='/zhumadian');p=folder/'nginx.conf';s=p.read_text(encoding='utf-8');old='proxy_pass http://127.0.0.1:'+str(business_port)+'/;';assert s.count(old)==1;s=s.replace(old,'proxy_pass http://127.0.0.1:'+str(business_port)+'/serv/;');s=s.replace('proxy_pass http://127.0.0.1:'+str(business_port)+'/websocket/;','proxy_pass http://127.0.0.1:'+str(business_port)+'/serv/websocket/;');p.write_text(s,encoding='utf-8');receipt.update(fixtureBusinessServletContext='/serv',allSafetyFrontend836BytesMatchedNewCandidate=True,originalGeneratorUsed=True,nginxConfigurationSHA256=c.sha(p),businessResponsesSynthesized=False);c.dump(root/('compiled-security-gateway-input-'+phase+'.json'),receipt)
+ lease.close();command=[str(runtime/'nginx.exe'),'-p',str(folder)+os.sep,'-c',str(p)];check=subprocess.run(command+['-t'],capture_output=True,timeout=10,creationflags=subprocess.CREATE_NO_WINDOW);c.dump(root/('compiled-security-nginx-check-'+phase+'.json'),{'exitCode':check.returncode,'portReservationReleasedBeforeCheck':True,'diagnostic':check.stderr.decode('utf-8',errors='replace')[-1800:]});assert check.returncode==0,'OWN_COMPILED_PORTAL_NGINX_CONFIG';out=open(folder/'stdout.log','wb');err=open(folder/'stderr.log','wb');process=subprocess.Popen(command,cwd=folder,stdin=subprocess.DEVNULL,stdout=out,stderr=err,creationflags=subprocess.CREATE_NO_WINDOW);job=c.OwnedWindowsJob(process);c.dump(root/('compiled-security-gateway-started-'+phase+'.json'),{'pid':process.pid,'port':port});forced=False
+ try:
+  deadline=time.monotonic()+10;opener=urllib.request.build_opener(urllib.request.ProxyHandler({}))
+  while True:
+   assert process.poll() is None and time.monotonic()<deadline,'OWN_COMPILED_PORTAL_GATEWAY_READY'
+   try:
+    with opener.open('http://127.0.0.1:'+str(port)+'/zhumadian/login',timeout=1) as response:
+     if response.status==200:break
+   except OSError:time.sleep(.05)
+  assert listener_owner(port);yield 'http://127.0.0.1:'+str(port)
+ finally:
+  try:
+   if process.poll() is None:
+    quit_result=subprocess.run(command+['-s','quit'],capture_output=True,timeout=10,creationflags=subprocess.CREATE_NO_WINDOW);assert quit_result.returncode==0;process.wait(timeout=12)
+  finally:
+   forced=process.poll() is None;job.close();process.wait(timeout=10);out.close();err.close();c.dump(root/('compiled-security-gateway-stopped-'+phase+'.json'),{'pid':process.pid,'exitCode':process.returncode,'forcedJobClosure':forced,'listenerGone':not listener_owner(port),'normalQuit':not forced and process.returncode==0})

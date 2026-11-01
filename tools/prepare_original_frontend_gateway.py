@@ -169,6 +169,9 @@ def prepare(output, runtime, roots, port, business_port=None, platform_port=None
     if project_name is not None:
         from original_project_branding import brand_static_config
         config_text,branding=brand_static_config(config_text,project_name)
+        from original_header_branding import apply_header_branding
+        config_text,header_branding=apply_header_branding(config_text,project_name,Path(__file__).resolve().parents[1]/"deploy/branding/zhumadian-emergency.svg")
+        branding["headerLogo"]=header_branding
     config.write_text(config_text,encoding='utf-8')
     receipt={'bind':'127.0.0.1','port':port,'appBasePath':base_path,'backendMode':'unavailable' if business_port is None else 'isolated-loopback',
              'businessPort':business_port,'platformPort':platform_port,'adminFrontendPort':admin_frontend_port,

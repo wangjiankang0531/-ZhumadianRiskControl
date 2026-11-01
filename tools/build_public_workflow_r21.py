@@ -11,6 +11,27 @@ def sha(path):return digest(Path(path).read_bytes())
 def read(path):return json.loads(Path(path).read_bytes())
 def enc(value):return(json.dumps(value,ensure_ascii=False,indent=2)+'\n').encode()
 def put(path,raw):path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+def transport_constants(source):
+    required={'ARCHIVE_SHA','MANIFEST_SHA','OLD','NEW','UPDATE','UPDATER_SHA'}
+    values={}
+    for node in ast.parse(source).body:
+        if not isinstance(node,ast.Assign):continue
+        names=[target.id for target in node.targets if isinstance(target,ast.Name)and target.id in required]
+        for name in names:
+            if name in values:raise ValueError('DUPLICATE_TRANSPORT_IDENTITY_CONSTANT')
+            try:value=ast.literal_eval(node.value)
+            except(ValueError,TypeError):raise ValueError('LITERAL_TRANSPORT_IDENTITY_REQUIRED')from None
+            if not isinstance(value,str):raise ValueError('STRING_TRANSPORT_IDENTITY_REQUIRED')
+            values[name]=value
+    if set(values)!=required:raise ValueError('CLOSED_TRANSPORT_IDENTITY_REQUIRED')
+    return values
+
+def validate_transport_identity(source,plan,old,archive_sha,manifest_sha,updater_sha):
+    expected={'ARCHIVE_SHA':archive_sha,'MANIFEST_SHA':manifest_sha,'OLD':old,'NEW':plan['newReleaseSHA256'],'UPDATE':plan['updateId'],'UPDATER_SHA':updater_sha}
+    actual=transport_constants(source)
+    if actual!=expected:raise ValueError('TRANSPORT_PLAN_IDENTITY_MISMATCH')
+    return actual
+
 def main():
     sys.stdout.reconfigure(encoding='utf-8');sys.dont_write_bytecode=True
     assert not D.exists()
@@ -65,7 +86,8 @@ def main():
         z.writestr('update-manifest.json',enc(plan));z.writestr('web.config',deny)
         for n,b in bodies.items():z.writestr('payload/'+n,b)
     wrapper=(V/'workflow_r21_transport.py.in').read_text(encoding='utf-8')
-    for token,value in [('__ARCHIVE_SHA__',sha(archive)),('__MANIFEST_SHA__',pin),('__OLD__',OLD),('__NEW__',plan['newReleaseSHA256'])]:wrapper=wrapper.replace(token,value)
+    for token,value in [('__ARCHIVE_SHA__',sha(archive)),('__MANIFEST_SHA__',pin),('__OLD__',OLD),('__NEW__',plan['newReleaseSHA256']),('__UPDATE_ID__',plan['updateId'])]:wrapper=wrapper.replace(token,value)
+    actual_constants=validate_transport_identity(wrapper,plan,OLD,sha(archive),pin,sha(M))
     ast.parse(wrapper);put(delivery/'deploy_workflow_r21.py',wrapper.encode())
     for label,arg in [('Check_Only','--check-only'),('Deploy',''),('Recover_This','--recover-this-update')]:
         put(delivery/(label+'_Workflow_R21.cmd'),('@echo off\r\n"C:\\inetpub\\wwwroot\\Zhumadian\\Application\\runtime\\python\\python.exe" -I -B "%~dp0deploy_workflow_r21.py" '+arg+'\r\n').encode())
@@ -97,7 +119,7 @@ def main():
         assert all(not(app/n).exists()for n in changes if n not in baseline)
         tests.append({'fourthWriteFault':fault,'allOldBytesRestored':True,'allNewPathsRemoved':True,'paths':len(changes)})
     guard=next(n for n in ast.parse(wrapper).body if isinstance(n,ast.FunctionDef)and n.name=='recovery_guard')
-    g={'need':lambda v,t:None if v else(_ for _ in()).throw(ValueError(t)),'Path':Path,'APP':Path('C:/inetpub/wwwroot/Zhumadian/Application'),'OLD':OLD,'NEW':plan['newReleaseSHA256'],'UPDATE':plan['updateId']}
+    g={'need':lambda v,t:None if v else(_ for _ in()).throw(ValueError(t)),'Path':Path,'APP':Path('C:/inetpub/wwwroot/Zhumadian/Application'),'OLD':actual_constants['OLD'],'NEW':actual_constants['NEW'],'UPDATE':actual_constants['UPDATE']}
     exec(compile(ast.Module(body=[guard],type_ignores=[]),'generated-guard','exec'),g)
     good={'updateId':plan['updateId'],'oldReleaseSHA256':OLD,'newReleaseSHA256':plan['newReleaseSHA256'],'attempt':'C:/inetpub/wwwroot/Zhumadian/Application/UserData/OriginalPublicUpdates/own'}
     g['recovery_guard'](good)
