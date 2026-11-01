@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
-const revision=process.argv[2]||'r1';if(!['r1','r2','r3','r4','r5','r6','r7','r8','r9','r10','r11'].includes(revision))throw Error('SOURCE_REVISION_REQUIRED');
+const revision=process.argv[2]||'r1';if(!['r1','r2','r3','r4','r5','r6','r7','r8','r9','r10','r11','r12'].includes(revision))throw Error('SOURCE_REVISION_REQUIRED');
 const R='D:/Project/Zhumadian',P=R+'/Application/work/tianjin_native_20261023/emergency_pc',W=R+'/work/user_feedback_20261031/emergency-workflow-source-'+revision,source=W+'/source';
 const metadata=JSON.parse(await fs.readFile(W+'/source-closure.json','utf8'));
 if(!metadata.workflowUIFromSuppliedSafetySource||metadata.stubViewsReplaced!==2)throw Error('OWN_SOURCE_SCOPE');

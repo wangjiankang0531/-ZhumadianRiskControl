@@ -1,0 +1,156 @@
+{
+  "schema": "xnby.r133.native-team-scoped-acceptance.v1",
+  "at": "2026-11-01T16:17:32.068110+08:00",
+  "scopedFlowPassed": true,
+  "nativeCases": [
+    {
+      "case": "original-normal-role-login-and-team-native-menu",
+      "passed": true
+    },
+    {
+      "case": "native-team-parent-required-validation-no-save",
+      "passed": true
+    },
+    {
+      "case": "native-team-original-department-tree-choice",
+      "passed": true
+    },
+    {
+      "case": "native-team-actual-map-mouse-point-required-coordinate",
+      "passed": true,
+      "baseMapImageryAccepted": false
+    },
+    {
+      "case": "native-member-required-fields-do-not-add-local-row",
+      "passed": true
+    },
+    {
+      "case": "native-member-original-sex-dictionary-and-local-add",
+      "passed": true
+    },
+    {
+      "case": "native-team-save-persists-parent-and-original-member-with-identity",
+      "passed": true
+    },
+    {
+      "case": "native-team-detail-renders-actual-members-readonly",
+      "passed": true
+    },
+    {
+      "case": "native-team-edit-child-content-original-rebuilt-identities-and-parent-links",
+      "passed": true
+    },
+    {
+      "case": "native-child-delete-parent-save-keeps-correct-remaining-member-and-team",
+      "passed": true
+    },
+    {
+      "case": "native-reopened-team-detail-displays-current-child-not-removed-member",
+      "passed": true
+    },
+    {
+      "case": "native-team-cancel-delete-sends-no-request-and-keeps-child",
+      "passed": true
+    },
+    {
+      "case": "native-team-confirm-delete-removes-only-selected-own-parent",
+      "passed": true
+    }
+  ],
+  "caseCount": 13,
+  "actualOriginalSDKNormalRoleAndUnmodifiedNativeRoutes": true,
+  "originalMemberMapperResourceByteExactSHA256": "2da1a794cc65c6fc7c024c2a647cf9e2e2d967f1b14bdf53e90c35776e45e8fd",
+  "twoRealDefectsReproducedAndLocallyRepaired": [
+    "native save missing insertBatch XML at default mapper scan path",
+    "original detail comments out member binding"
+  ],
+  "allPriorWF11SourcesPreservedExceptThreeDeclaredTeamGuards": true,
+  "compiledFiles": 339,
+  "sourceInputs": 235,
+  "sourceOverlays": 55,
+  "assetReferences": 1523,
+  "emittedJSChecked": 173,
+  "original398ModelsUnchanged": true,
+  "allTenReportsAndR24TaskR25MaterialRuntimePinsPassed": true,
+  "normalSixComponentLifecycles": 7,
+  "noControllerStartedR4SelfObservationRefusal": true,
+  "allActualDescendantsExitedZeroForceTermination": true,
+  "originalMemberIDsRebuiltOnEdit": true,
+  "stableChildIDNotClaimedOrRequiredByOriginalClone": true,
+  "attempts": [
+    {
+      "attempt": "r1",
+      "actualSixComponentsReady": true,
+      "normalControllerAndSixChildrenExitZero": true,
+      "wholeFlowPassed": false,
+      "failurePhase": "seed-only-own-sex-dictionary",
+      "failure": "OWN_TEAM_DICTIONARY_SEED_FAILED",
+      "passedNativeCasesBeforeStop": 0
+    },
+    {
+      "attempt": "r2",
+      "actualSixComponentsReady": true,
+      "normalControllerAndSixChildrenExitZero": true,
+      "wholeFlowPassed": false,
+      "failurePhase": "actual-native-team-browser",
+      "failure": "TEAM_PARENT_CHILD_SAVE_NOT_CONFIRMED",
+      "passedNativeCasesBeforeStop": 6
+    },
+    {
+      "attempt": "r3",
+      "actualSixComponentsReady": true,
+      "normalControllerAndSixChildrenExitZero": true,
+      "wholeFlowPassed": false,
+      "failurePhase": "actual-native-team-browser",
+      "failure": "OWN_CDP_TIMEOUT_Page.enable",
+      "passedNativeCasesBeforeStop": 0
+    },
+    {
+      "attempt": "r5",
+      "actualSixComponentsReady": true,
+      "normalControllerAndSixChildrenExitZero": true,
+      "wholeFlowPassed": false,
+      "failurePhase": "actual-native-team-browser",
+      "failure": "TEAM_DETAIL_MEMBERS_NOT_RENDERED",
+      "passedNativeCasesBeforeStop": 7
+    },
+    {
+      "attempt": "r6",
+      "actualSixComponentsReady": true,
+      "normalControllerAndSixChildrenExitZero": true,
+      "wholeFlowPassed": false,
+      "failurePhase": "actual-native-team-browser",
+      "failure": "OWN_TEAM_EDIT_BUTTON",
+      "passedNativeCasesBeforeStop": 8
+    },
+    {
+      "attempt": "r7",
+      "actualSixComponentsReady": true,
+      "normalControllerAndSixChildrenExitZero": true,
+      "wholeFlowPassed": false,
+      "failurePhase": "actual-native-team-browser",
+      "failure": "TEAM_MEMBER_EDIT_OR_IDENTITIES_NOT_PRESERVED",
+      "passedNativeCasesBeforeStop": 8
+    },
+    {
+      "attempt": "r8",
+      "actualSixComponentsReady": true,
+      "normalControllerAndSixChildrenExitZero": true,
+      "wholeFlowPassed": true,
+      "failurePhase": null,
+      "failure": null,
+      "passedNativeCasesBeforeStop": 13
+    }
+  ],
+  "publicVersion": "R25",
+  "newCandidatePublicInstalled": false,
+  "newCandidatePublicGitPushed": false,
+  "realNangangRolesOrWholeBusinessChainAccepted": false,
+  "realZhumadianBasemapAccepted": false,
+  "strictCompleteModules": 0,
+  "fullCloneReady": false,
+  "protected_c_d_e_fReadOrChangedOrCloned": false,
+  "desktopOrFormal18891Or8767Operated": false,
+  "newTencentCompletionCells": 0,
+  "publicR26NotYetSealedOrApproved": true
+}

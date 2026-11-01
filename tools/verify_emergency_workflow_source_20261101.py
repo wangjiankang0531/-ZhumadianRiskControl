@@ -1,7 +1,7 @@
 """Check emitted workflow routes/assets against actual build and original source pins."""
 from pathlib import Path
 import argparse,hashlib,json,re,subprocess
-parser=argparse.ArgumentParser();parser.add_argument('--revision',choices=['r1','r2','r3','r4','r5','r6','r7','r8','r9','r10','r11'],default='r1');options=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--revision',choices=['r1','r2','r3','r4','r5','r6','r7','r8','r9','r10','r11','r12'],default='r1');options=parser.parse_args()
 R=Path('D:/Project/Zhumadian');W=R/('work/user_feedback_20261031/emergency-workflow-source-'+options.revision);F=W/'dist';T=R/'Application/tools'
 read=lambda p:json.loads(p.read_bytes());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 m=read(W/'build-result.json');c=read(W/'source-closure.json');assert m['buildPassed']and not m['normalLoginListDetailApprovalOrCallbackAccepted']
@@ -54,6 +54,17 @@ for rel,row in c['sourceFiles'].items():
   origin=R/'work/user_feedback_20261031/emergency-workflow-source-r10/source/src'/rel
   before=origin.read_bytes();assert hashlib.sha256(before).hexdigest()==c['sameOriginMapRestoration']['beforeSHA256']and before.count(b'"/tianjinrisk/map/"')==1
   assert hashlib.sha256(before.replace(b'"/tianjinrisk/map/"',b'"/zhumadian/map/"')).hexdigest()==expected
+ if rel in c.get('nativeTeamContextAdaptations',{}):
+  import importlib.util
+  entry=c['nativeTeamContextAdaptations'][rel]
+  origin=R/'work/user_feedback_20261031/emergency-workflow-source-r11/source/src'/rel
+  assert sha(origin)==entry['beforeSHA256']and expected in [entry['beforeSHA256'],entry['afterSHA256']]
+  assert entry['helper'] in ['original_team_detail_members_compat','original_team_editor_context_compat']
+  assert entry['entry'] in ['transform','transform_editor','transform_parent']
+  spec=importlib.util.spec_from_file_location('independent_native_team',T/(entry['helper']+'.py'));helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+  generated,receipt=getattr(helper,entry['entry'])(origin.read_bytes())
+  assert receipt==entry['receipt']and hashlib.sha256(generated).hexdigest()==entry['afterSHA256']
+  expected=entry['afterSHA256']
  assert sha(actual)==expected,'UNDECLARED_BUILD_SOURCE_DIFFERENCE:'+rel
 texts={p.relative_to(F).as_posix():p.read_text(encoding='utf-8')for p in(F/'assets/js').glob('*.js')}
 roots=['/src/views/workflow/flowTodo/index.vue','/src/views/workflow/flowTodo/info/index.vue','/src/views/workflow/startWithMeTwo/index.vue','/src/views/workflow/startWithMeTwo/info/index.vue']
