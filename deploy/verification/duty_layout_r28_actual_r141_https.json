@@ -1,0 +1,121 @@
+{
+  "schema": "xnby.r28.public-retained-gateway-https.v1",
+  "at": "2026-11-01T21:16:45.074089+08:00",
+  "allPassed": true,
+  "staticFiles": 1175,
+  "unchangedWireFiles": 1162,
+  "exactRetainedGatewayDifferences": 13,
+  "staticFileFailures": [],
+  "allWireDifferencesDerivedFromExactRetainedBrandingOrIconAlias": true,
+  "retainedProjectBrandingSHA256": "e9e44d649dde71b89d1c2d5a9c93a11489d17811ecd46f83712f48be8b2f2af2",
+  "retainedHeaderBrandingSHA256": "0e68e1ce9bfb20b2ef77cb3c6fcc4035593438fdbea027166748755ac066c2f2",
+  "specialChecks": [
+    {
+      "path": "/zhumadian",
+      "status": 301,
+      "expectedStatus": 301,
+      "location": "/zhumadian/"
+    },
+    {
+      "path": "/zhumadian/",
+      "status": 200,
+      "expectedStatus": 200
+    },
+    {
+      "path": "/zhumadian/home",
+      "status": 200,
+      "expectedStatus": 200
+    },
+    {
+      "path": "/zhumadian/emergency/",
+      "status": 200,
+      "expectedStatus": 200
+    },
+    {
+      "path": "/zhumadian/emergency/emergencyResources/materials",
+      "status": 200,
+      "expectedStatus": 200
+    },
+    {
+      "path": "/zhumadian/emergency/emergencyResources/firstAidTeams",
+      "status": 200,
+      "expectedStatus": 200
+    },
+    {
+      "path": "/zhumadian/emergency/dutyManage/dutyPersonnel",
+      "status": 200,
+      "expectedStatus": 200
+    },
+    {
+      "path": "/zhumadian/emergency/dutyManage/dutySchedule",
+      "status": 200,
+      "expectedStatus": 200
+    },
+    {
+      "path": "/zhumadian/emergency/dutyManage/dutyLog",
+      "status": 200,
+      "expectedStatus": 200
+    },
+    {
+      "path": "/zhumadian/api/jnpf/oauth/getLoginConfig",
+      "status": 200,
+      "expectedStatus": 200,
+      "businessCode": 200
+    }
+  ],
+  "brandedEntryAndWorkflowFacadeChecks": [
+    {
+      "path": "/zhumadian/branding-20261025/assets/css/index-qKIpcEFo.css",
+      "status": 200,
+      "expectedSHA256": "2cc3052a1c3ee62475d920f037ca9a6843f2fcd9c9afbaac73c767446b1d6bc2",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/branding-20261025/assets/js/index-kAcgthiJ.js",
+      "status": 200,
+      "expectedSHA256": "32d055b28923e76d98d9d1d26a1b748f14fb5d2265f934780df22e07c80ac670",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/branding-20261025/assets/css/index-16_jhZwY.css",
+      "status": 200,
+      "expectedSHA256": "2eb264ce71fa61596b2c1dc8313c6e415929d7de4e1fa37062e94ca6b1076101",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-BOvjhjA3.js",
+      "status": 200,
+      "expectedSHA256": "fcbf4b30a17bdfa6b03a0ba0934e5d448c21d038b3108f97b7691fdf44c22daf",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-CN0gcUCP.js",
+      "status": 200,
+      "expectedSHA256": "fabfaef9e09a5b9961f02835d873b6dff3f42bf4c24ea79776db6544ecb4f2a5",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-Cl5fQH4j.js",
+      "status": 200,
+      "expectedSHA256": "8e94aefd79c88fb759ac5183a1c4433c47adb6c6e7b398d04e73fd2f57ff2124",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-CofdoWl4.js",
+      "status": 200,
+      "expectedSHA256": "1d86b571d7d7e9c87ffc41a2fc82f2865aa62af90f7454a40003f44bdad467d5",
+      "exactExpectedGatewayBytes": true
+    },
+    {
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-DqQ3RoTg.js",
+      "status": 200,
+      "expectedSHA256": "ed77d4c284798a9475d04ac4473fad2a3248890a98bb373505d5655c141dbd87",
+      "exactExpectedGatewayBytes": true
+    }
+  ],
+  "tlsDefaultCertificateVerificationEnabled": true,
+  "elapsedSeconds": 47.92,
+  "actualAuthenticatedPublicBusinessFlowAccepted": false,
+  "credentialsCookiesTokensAccountsSessionsBusinessRowsOrRawLogsRead": false,
+  "publicApplicationCodeChangedByVerifier": false
+}

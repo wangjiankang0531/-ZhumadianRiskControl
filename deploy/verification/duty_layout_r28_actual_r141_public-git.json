@@ -1,0 +1,33 @@
+{
+  "schema": "xnby.r140.fixed-public-git-execution.v1",
+  "approvedManifestSHA256": "79c17b57ab72f905eaa617b6ffb0e3ee952786ce66105994468ee49b714b85a3",
+  "totalFiles": 48,
+  "totalBytes": 516087,
+  "all48BlobsExactlyReadBack": true,
+  "branches": [
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "branch": "review/workplace-r19-verified-partial-20261031",
+      "parent": "694dadb44a1ccd59dbe9f4ee7d2ecc5c019606f7",
+      "commit": "806eb3355bf6335dd74e49bc5dd122fce68fab32",
+      "tree": "fe25441a99c02b1a479d6967ed80dee48385c1b7",
+      "files": 47,
+      "uniquePublicParentVerified": true,
+      "branchReadBackVerified": true
+    },
+    {
+      "repository": "wangjiankang0531/-XNBYEngine",
+      "branch": "review/workplace-r19-verified-progress-20261031",
+      "parent": "f3d950c72f847a81e7804f4404360e80a6df2d38",
+      "commit": "fce277247a6961f14c09abf04a10f3f98401d6c6",
+      "tree": "0bc7731c46d2996ae3d73c5a9586de42576cd62f",
+      "files": 1,
+      "uniquePublicParentVerified": true,
+      "branchReadBackVerified": true
+    }
+  ],
+  "newBranchesCreated": false,
+  "privateAncestorsSent": false,
+  "mainOrOtherBranchesChanged": false,
+  "fullCloneReady": false
+}

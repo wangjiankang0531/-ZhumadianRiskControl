@@ -1,0 +1,15 @@
+{
+  "schema": "xnby.r30.independent-fixed-delivery.v1",
+  "passed": true,
+  "transportFiles": 8,
+  "transportBytes": 1949306,
+  "manifestSHA256": "21b7719e87db33ddb92dc35c1910b7acb543aa5705e816cecf315aa8ae4597d6",
+  "archivedProgramPaths": 178,
+  "oldEmergencyRemovals": 172,
+  "frontendFiles": 339,
+  "all20ControllerBytesAndOriginalJarsConfigDataIISAndNonEmergencyKept": true,
+  "realCandidateBudgetBeforeOwnerHealthAndShutdown": true,
+  "sourceMatchedWholeControllerAndNativeSixteenCases": true,
+  "newPublicUploadedOrDeployed": false,
+  "fullCloneReady": false
+}

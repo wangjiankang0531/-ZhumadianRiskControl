@@ -1,0 +1,14 @@
+{
+  "corrected": true,
+  "actualNativeCases": 14,
+  "actualResultsAndUserReportAlready14": true,
+  "onlyHistoricalContinuitySentenceCorrected": true,
+  "paths": [
+    "Document\\Engine\\project\\htengine_goal_state.md",
+    "Document\\Engine\\project\\当前工作断点.md",
+    "Document\\Engine\\project\\测试反馈与首页适配进展_20261031.md",
+    "Document\\Engine\\showcase_demo_completion.md",
+    "Document\\Engine\\project\\emergency_task_edit_r146_20261101.md",
+    "Document\\Design\\驻马店实施基线.md"
+  ]
+}

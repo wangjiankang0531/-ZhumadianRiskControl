@@ -1,0 +1,46 @@
+{
+  "schema": "xnby.r141.actual-r28-deployment-retention-git.v1",
+  "at": "2026-11-01T21:24:17.215017+08:00",
+  "publicRelease": "R28",
+  "fixedManifestSHA256": "0ef4fae7e52b67f61cbe6be258602eb2103873d2a92050a0719398497ad97807",
+  "transportFiles": 8,
+  "transportBytes": 1949147,
+  "actualServerCandidateBudgetPassedBeforeDowntime": true,
+  "preflightAndNormalSixComponentDeploymentPassed": true,
+  "originalTenReadinessAndAdditionalPoolReadinessPassed": true,
+  "actualServerDatasources": 3,
+  "actualServerMySQLMaxConnections": 38,
+  "externalHTTPS1175FilesPassed": true,
+  "postCleanupAnonymousHTTPS": [
+    {
+      "path": "/zhumadian",
+      "status": 301
+    },
+    {
+      "path": "/zhumadian/home",
+      "status": 200
+    },
+    {
+      "path": "/zhumadian/emergency/",
+      "status": 200
+    }
+  ],
+  "oldDirectoriesRemoved": 7,
+  "oldFilesRemoved": 673,
+  "logicalBytesRemoved": 22429077,
+  "observedServerFreeDelta": 23814144,
+  "onlyActiveBusinessAndPlatformRunsRetained": true,
+  "onlyLatestR28FTPTransportKept": true,
+  "databaseUploadsConfigurationIISRetained": true,
+  "noForceTermination": true,
+  "publicFilesSynced": 48,
+  "publicApplicationCommit": "806eb3355bf6335dd74e49bc5dd122fce68fab32",
+  "publicEngineCommit": "fce277247a6961f14c09abf04a10f3f98401d6c6",
+  "publicSnapshotIsFixedPredeploymentR140NotMutatedToClaimLaterResults": true,
+  "desktopReturned": true,
+  "newTencentCompletedCells": 0,
+  "actualAuthenticatedRealNangangWholeFlowAccepted": false,
+  "strictWholeModulesAccepted": 0,
+  "fullCloneReady": false,
+  "goalStatus": "active"
+}

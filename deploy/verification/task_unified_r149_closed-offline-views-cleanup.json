@@ -1,0 +1,209 @@
+{
+  "schema": "xnby.r149.closed-offline-views-cleanup.v1",
+  "passed": true,
+  "deletedOwnDirectories": 39,
+  "deletedFileCount": 22559,
+  "logicalBytesNotClaimedAsPhysicalRecovery": 1686018688,
+  "observedFreeDelta": 303509504,
+  "activeProcessReferences": 0,
+  "noServicesOrDatabasesWereStartedFromTheseViews": true,
+  "allSourceDistCodeArchivesFixedScopesFaultResultsAndDependencyResolutionKept": true,
+  "noPublicOrUserDataTouched": true,
+  "targets": [
+    {
+      "ownRelativePath": "work\\r30gv-r1\\Application",
+      "files": 15937,
+      "logicalBytes": 1420748887
+    },
+    {
+      "ownRelativePath": "work\\r30gv-r1\\bundle",
+      "files": 179,
+      "logicalBytes": 7088540
+    },
+    {
+      "ownRelativePath": "work\\user_feedback_20261031\\r30-task-unified-candidate-r1\\contract-Application",
+      "files": 35,
+      "logicalBytes": 4339023
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\controller-write\\Application",
+      "files": 177,
+      "logicalBytes": 7020506
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\controller-write\\backup",
+      "files": 178,
+      "logicalBytes": 7081802
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\first-write\\Application",
+      "files": 177,
+      "logicalBytes": 7020506
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\first-write\\backup",
+      "files": 178,
+      "logicalBytes": 7081802
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\foreign-drift\\Application",
+      "files": 177,
+      "logicalBytes": 7019598
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\foreign-drift\\backup",
+      "files": 178,
+      "logicalBytes": 7081802
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\fourth-write\\Application",
+      "files": 177,
+      "logicalBytes": 7020506
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\fourth-write\\backup",
+      "files": 178,
+      "logicalBytes": 7081802
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\normal\\Application",
+      "files": 177,
+      "logicalBytes": 7020506
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\normal\\backup",
+      "files": 178,
+      "logicalBytes": 7081802
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\parameter-write\\Application",
+      "files": 177,
+      "logicalBytes": 7020506
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\parameter-write\\backup",
+      "files": 178,
+      "logicalBytes": 7081802
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\payload-manifest-write\\Application",
+      "files": 177,
+      "logicalBytes": 7020506
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\payload-manifest-write\\backup",
+      "files": 178,
+      "logicalBytes": 7081802
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\release-pointer-write\\Application",
+      "files": 177,
+      "logicalBytes": 7020506
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\release-pointer-write\\backup",
+      "files": 178,
+      "logicalBytes": 7081802
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\updater-write\\Application",
+      "files": 177,
+      "logicalBytes": 7020506
+    },
+    {
+      "ownRelativePath": "work\\r29gx-r1\\updater-write\\backup",
+      "files": 178,
+      "logicalBytes": 7081802
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\controller-write\\Application",
+      "files": 178,
+      "logicalBytes": 7020648
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\controller-write\\backup",
+      "files": 179,
+      "logicalBytes": 7082270
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\first-write\\Application",
+      "files": 178,
+      "logicalBytes": 7020648
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\first-write\\backup",
+      "files": 179,
+      "logicalBytes": 7082270
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\foreign-drift\\Application",
+      "files": 178,
+      "logicalBytes": 7016760
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\foreign-drift\\backup",
+      "files": 179,
+      "logicalBytes": 7082270
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\fourth-write\\Application",
+      "files": 178,
+      "logicalBytes": 7020648
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\fourth-write\\backup",
+      "files": 179,
+      "logicalBytes": 7082270
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\normal\\Application",
+      "files": 178,
+      "logicalBytes": 7020648
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\normal\\backup",
+      "files": 179,
+      "logicalBytes": 7082270
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\parameter-write\\Application",
+      "files": 178,
+      "logicalBytes": 7020648
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\parameter-write\\backup",
+      "files": 179,
+      "logicalBytes": 7082270
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\payload-manifest-write\\Application",
+      "files": 178,
+      "logicalBytes": 7020648
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\payload-manifest-write\\backup",
+      "files": 179,
+      "logicalBytes": 7082270
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\release-pointer-write\\Application",
+      "files": 178,
+      "logicalBytes": 7020648
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\release-pointer-write\\backup",
+      "files": 179,
+      "logicalBytes": 7082270
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\updater-write\\Application",
+      "files": 178,
+      "logicalBytes": 7020648
+    },
+    {
+      "ownRelativePath": "work\\r30gx-r1\\updater-write\\backup",
+      "files": 179,
+      "logicalBytes": 7082270
+    }
+  ]
+}

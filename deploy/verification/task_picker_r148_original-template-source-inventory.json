@@ -1,0 +1,24 @@
+{
+  "schema": "xnby.r148.original-task-template-source-inventory.v1",
+  "passed": true,
+  "searchPatterns": [
+    "*.sql",
+    "*.bpmn",
+    "*.bpmn20.xml",
+    "*flow*.json",
+    "*流程*.json"
+  ],
+  "searchIncludesIgnoredAndHidden": true,
+  "caseInsensitiveGlob": true,
+  "matchedCommonExportFiles": [],
+  "commonExportCount": 0,
+  "backendArchiveDirectoryEntries": 1354,
+  "backendArchiveCommonExportEntries": [],
+  "backendArchiveCommonExportCount": 0,
+  "archiveDirectoryOnlyInspected": true,
+  "flowBindingSourceSHA256": "2b1cba3ba01efcea4dbd8e532291286bce8a038bf623697e602d17c0935542f2",
+  "dynamicFormCodeToFlowAndTemplateVersionBindingsVerified": true,
+  "accountsBusinessRowsCredentialsOrOriginalDatabaseRead": false,
+  "realNangangRuntimeTemplateRecoveredOrAccepted": false,
+  "scopeLimit": "This only inventories the specified export formats and backend archive; it does not prove no original definition exists in opaque files or on server 252."
+}

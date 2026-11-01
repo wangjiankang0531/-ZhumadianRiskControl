@@ -1,0 +1,49 @@
+{
+  "schema": "xnby.r148.closed-own-copies-cleanup.v1",
+  "passed": true,
+  "activeOwnedProcessReferences": 0,
+  "allHandlesTerminalAndNoReparseAndExactBeforeHashesVerified": true,
+  "oneKnownChromeCrashTerminalIncludedNotCalledNormalExit": true,
+  "closedChromeProfiles": 6,
+  "duplicateFrontendBeforeCopies": 1,
+  "targets": [
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r147\\r1\\task-picker-browser\\chrome-profile",
+      "files": 229,
+      "logicalBytes": 11394082
+    },
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r147\\r2\\task-picker-browser\\chrome-profile",
+      "files": 229,
+      "logicalBytes": 11399143
+    },
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r148\\r1\\task-picker-browser\\chrome-profile",
+      "files": 152,
+      "logicalBytes": 7022448
+    },
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r148\\r2\\task-picker-browser\\chrome-profile",
+      "files": 248,
+      "logicalBytes": 53464260
+    },
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r148\\r3\\task-picker-browser\\chrome-profile",
+      "files": 234,
+      "logicalBytes": 11503232
+    },
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r148\\browser-startup-probe-r1\\chrome-profile",
+      "files": 171,
+      "logicalBytes": 5688848
+    },
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r148\\candidate-install-r1\\before",
+      "files": 173,
+      "logicalBytes": 4256917
+    }
+  ],
+  "observedFreeDelta": 105107456,
+  "realDataOriginalManifestsSourceDistFixedScopesFailuresAndProofsKept": true,
+  "publicOrDesktopTouched": false
+}

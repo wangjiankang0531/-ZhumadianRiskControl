@@ -1,0 +1,63 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "original-sdk-normal-login-and-compiled-task-route",
+      "passed": true
+    },
+    {
+      "case": "original-task-list-edit-action-loads-existing-task",
+      "passed": true
+    },
+    {
+      "case": "native-task-edit-required-fields-do-not-update",
+      "passed": true
+    },
+    {
+      "case": "single-native-edit-retains-event-instance-status-and-existing-attachment-reference",
+      "passed": true
+    },
+    {
+      "case": "native-add-action-selects-confirmed-event-through-original-event-picker",
+      "passed": true
+    },
+    {
+      "case": "single-original-native-create-persists-selected-event-and-new-task-instance",
+      "passed": true
+    },
+    {
+      "case": "original-task-list-edit-action-loads-existing-task",
+      "passed": true
+    },
+    {
+      "case": "native-code-zero-data-false-edit-keeps-input-and-does-not-report-success",
+      "passed": true
+    },
+    {
+      "case": "original-task-list-disposal-action-opens-real-feedback-form",
+      "passed": true
+    },
+    {
+      "case": "native-disposal-required-fields-do-not-call-update",
+      "passed": true
+    },
+    {
+      "case": "one-native-feedback-update-persists-time-feedback-evaluation-and-original-instance",
+      "passed": true
+    },
+    {
+      "case": "real-compiled-readonly-task-detail-renders-persisted-feedback-without-submit",
+      "passed": true
+    },
+    {
+      "case": "original-task-list-disposal-action-opens-real-feedback-form",
+      "passed": true
+    },
+    {
+      "case": "native-code-zero-data-false-keeps-input-and-does-not-report-success",
+      "passed": true
+    }
+  ],
+  "unhandledExceptions": [],
+  "realNangangWholeFlowAccepted": false
+}

@@ -1,0 +1,100 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {spawn} from 'node:child_process';
+const root=process.argv[2];if(!/^D:\/Project\/Zhumadian\/work\/event_delivery_consistency_20261030\/full-controller-r142\/r[1-9][0-9]*$/.test(root??''))throw Error('OWN_RESOURCE_ROOT');
+let raw='';for await(const b of process.stdin){raw+=b;if(raw.length>16384)throw Error('BOUNDED_OWN_INPUT');}const wire=JSON.parse(raw);raw='';
+const started=JSON.parse(await fs.readFile(root+'/controller-started.json','utf8'));if(!wire.syntheticNormalUser||wire.account!=='own_operator_a'||wire.base!=='http://127.0.0.1:'+started.gatewayPort)throw Error('OWN_RESOURCE_SCOPE');
+const O=root+'/task-feedback-browser',sleep=ms=>new Promise(r=>setTimeout(r,ms));await fs.mkdir(O);await fs.mkdir(O+'/downloads');
+let chrome,ws,session,seq=0,token='',stage='start',failed=null;let reviewSession,reviewToken='',secondRolePassword=wire.password;let holdDutyOptions=false;const heldDutyOptions=[],outgoing=[];const pending=new Map(),tracked=new Map(),reads=new Set(),http=[],cases=[],blocked=[],exceptions=[],downloads=[];
+async function mark(name){stage=name;await fs.writeFile(O+'/current-stage.json',JSON.stringify({stage,passedNativeCases:cases.length,observerOnlyNoRawData:true}));}
+async function until(fn,ms=40000){const end=Date.now()+ms;for(;;){if(await fn())return;if(Date.now()>end)throw Error('OWN_DUTY_UI_TIMEOUT_'+stage);await sleep(50);}}
+function send(method,params={},sid){return new Promise((resolve,reject)=>{if(ws?.readyState!==WebSocket.OPEN)return reject(Error('OWN_CDP_CLOSED'));const id=++seq;const timer=setTimeout(()=>{pending.delete(id);reject(Error('OWN_CDP_TIMEOUT_'+method));},45000);pending.set(id,{resolve:v=>{clearTimeout(timer);resolve(v)},reject:e=>{clearTimeout(timer);reject(e)}});ws.send(JSON.stringify({id,method,params,...(sid?{sessionId:sid}:{})}));});}
+async function evaluate(expression){const v=await send('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true},session);if(v.exceptionDetails)throw Error('OWN_TEAM_EVALUATE');return v.result.value;}
+async function click(selector,text){return evaluate(`(()=>{const e=Array.from(document.querySelectorAll(${JSON.stringify(selector)})).find(e=>e.getClientRects().length&&e.textContent.split('').filter(c=>c.trim()).join('')===${JSON.stringify(String(text).split('').filter(c=>c.trim()).join(''))}&&!e.disabled);if(!e)return false;e.click();return true})()`);}
+const value=label=>evaluate(`(()=>{const a=Array.from(document.querySelectorAll('.el-form-item')).find(e=>e.getClientRects().length&&e.querySelector('.el-form-item__label')?.textContent.trim()===${JSON.stringify(label)});return a?.querySelector('input,textarea')?.value??null})()`);
+async function fill(label,text){if(!await evaluate(`(()=>{const a=Array.from(document.querySelectorAll('.el-form-item')).find(e=>e.getClientRects().length&&e.querySelector('.el-form-item__label')?.textContent.trim()===${JSON.stringify(label)}&&Array.from(e.querySelectorAll('input,textarea')).some(n=>!n.disabled&&!n.readOnly));const e=a?Array.from(a.querySelectorAll('input,textarea')).find(n=>!n.disabled&&!n.readOnly):null;if(!e||e.disabled||e.readOnly)return false;e.value=${JSON.stringify(text)};e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));return true})()`))throw Error('OWN_TEAM_FIELD_'+label);}
+async function ownAPI(kind,relative){if(!['eventInfo','eventTask'].includes(kind)||!/^\/(?:getPage|getById|getList)(?:\?|$)/.test(relative))throw Error('OWN_DUTY_READONLY_API');const ua=await evaluate('navigator.userAgent');const response=await fetch(wire.base+'/zhumadian/api/serv/'+kind+relative,{headers:{Authorization:token,'User-Agent':ua}});const v=await response.json();if(response.status!==200||v.code!==0)throw Error('OWN_DUTY_API_READBACK_'+kind);return v.data;}
+const count=(kind,suffix)=>http.filter(x=>x.path.endsWith('/'+kind+'/'+suffix)).length;
+async function event(v){
+ if(v.id){const p=pending.get(v.id);if(!p)return;pending.delete(v.id);v.error?p.reject(Error('OWN_CDP_'+v.error.code)):p.resolve(v.result);return;}
+ if(v.method==='Network.requestWillBeSent'){let u;try{u=new URL(v.params.request.url)}catch{}if(u?.origin===wire.base&&u.pathname.includes('/api/serv/'))outgoing.push({path:u.pathname,method:v.params.request.method,stage});}
+ if(v.method==='Browser.downloadWillBegin'){downloads.push({state:'begin',name:v.params.suggestedFilename});return;}
+ if(v.method==='Browser.downloadProgress'){downloads.push({state:v.params.state,bytes:v.params.receivedBytes});return;}
+ if(v.method==='Fetch.requestPaused'){
+  const request=v.params.request;let u;try{u=new URL(request.url)}catch{}
+  if(holdDutyOptions&&u?.origin===wire.base&&request.method==='GET'&&u.pathname.endsWith('/serv/dutyPersonnel/getList')){if(heldDutyOptions.length>=4)throw Error('OWN_TOO_MANY_OPTION_REQUESTS');heldDutyOptions.push({id:v.params.requestId,sid:v.sessionId});return;}
+  const disallowed=!u||u.origin!==wire.base||request.method==='POST'&&u.pathname.startsWith('/zhumadian/api/serv/')&&!['eventInfo','eventTask'].some(kind=>['save','updateById','export'].some(action=>u.pathname.endsWith('/'+kind+'/'+action)));
+  if(disallowed){blocked.push({origin:u?.origin||'invalid',path:u?.pathname||'',method:request.method});await send('Fetch.failRequest',{requestId:v.params.requestId,errorReason:'BlockedByClient'},v.sessionId);}else await send('Fetch.continueRequest',{requestId:v.params.requestId},v.sessionId);
+ }else if(v.method==='Network.responseReceived'){
+  let u;try{u=new URL(v.params.response.url)}catch{};if(u?.origin===wire.base&&u.pathname.includes('/api/'))tracked.set(v.params.requestId,{path:u.pathname,httpStatus:v.params.response.status,session:v.sessionId});
+ }else if(v.method==='Network.loadingFinished'&&tracked.has(v.params.requestId)){
+  const row=tracked.get(v.params.requestId);const p=send('Network.getResponseBody',{requestId:v.params.requestId},row.session).then(r=>{
+   const bytes=r.base64Encoded?Buffer.from(r.body,'base64'):Buffer.from(r.body);let b;try{b=JSON.parse(bytes.toString('utf8'))}catch{row.nonJSON=true;row.bytes=bytes.length;delete row.session;http.push(row);return;}
+   row.businessCode=b.code;if(row.path.endsWith('/oauth/Login')){const t=b.data?.token||'';if(row.session===reviewSession)reviewToken=t;else token=t;row.normalTokenReturned=!!t;}
+   if(row.path.endsWith('/oauth/CurrentUser')){row.ownUserMatched=b.data?.userInfo?.userId===wire.expectedUserId;if(row.session===reviewSession)row.ownReviewerMatched=b.data?.userInfo?.userId===wire.expectedReviewerId;row.dutyMenusReturned=['dutyPersonnel','dutySchedule','dutyLog'].every(kind=>JSON.stringify(b.data?.menuList||[]).includes('/dutyManage/'+kind));}
+   if(/\/duty(?:Personnel|Schedule|Log)\/getPage$/.test(row.path)){row.total=b.data?.total;row.records=Array.isArray(b.data?.records)?b.data.records.length:null;}
+   if(['eventInfo','eventTask'].some(kind=>['save','updateById','removeById'].some(action=>row.path.endsWith('/'+kind+'/'+action))))row.saved=typeof b.data==='boolean'?b.data:null;
+   if(row.path.endsWith('/getDepartmentIdByUserList'))row.usersCount=Array.isArray(b.data)?b.data.length:null;
+   delete row.session;http.push(row);
+  }).catch(()=>{row.observationFailed=true;delete row.session;http.push(row)}).finally(()=>reads.delete(p));reads.add(p);
+ }else if(v.method==='Runtime.exceptionThrown'){
+  const d=v.params.exceptionDetails||{},e=d.exception||{};const row={exceptionId:d.exceptionId,stage,text:d.text||'OWN_UI_EXCEPTION',reasonType:e.type,reasonSubtype:e.subtype||null,revoked:false};exceptions.push(row);
+  row.frames=(d.stackTrace?.callFrames||[]).slice(0,6).map(f=>{let u;try{u=new URL(f.url)}catch{};return{function:/^[A-Za-z0-9_$<> .-]{0,100}$/.test(f.functionName||'')?f.functionName:'unrecorded',asset:u?.origin===wire.base?u.pathname.split('/').at(-1):'unrecorded',line:f.lineNumber}});
+  if(e.objectId){const request=send('Runtime.getProperties',{objectId:e.objectId,ownProperties:true,generatePreview:false},v.sessionId).then(r=>{const props=(r.result||[]).filter(p=>p.enumerable&&p.value);const allowed=new Set(['personId','personDeptId','gender','dutyDate','dutyPersonnelId','logContent','age','phoneNumber','code','message','msg','data']);row.knownPropertyShapes=props.filter(p=>allowed.has(p.name)).map(p=>({name:p.name,type:p.value.type,subtype:p.value.subtype||null}));row.unrecordedPropertyCount=props.filter(p=>!allowed.has(p.name)).length;row.validationFieldMap=props.length>0&&props.every(p=>allowed.has(p.name)&&p.value.subtype==='array');}).catch(()=>{row.propertiesUnavailable=true}).finally(()=>reads.delete(request));reads.add(request);}
+ }else if(v.method==='Runtime.exceptionRevoked'){const r=exceptions.find(x=>x.exceptionId===v.params.exceptionId);if(r)r.revoked=true;}
+
+}
+try{
+ chrome=spawn('C:/Program Files/Google/Chrome/Application/chrome.exe',['--headless=new','--disable-gpu','--window-size=1360,1000','--no-first-run','--disable-default-apps','--disable-sync','--disable-background-networking','--remote-debugging-port=0','--user-data-dir='+O+'/chrome-profile','about:blank'],{windowsHide:true,stdio:'ignore'});
+ await until(async()=>{try{await fs.access(O+'/chrome-profile/DevToolsActivePort');return true}catch{return false}});
+ const lines=(await fs.readFile(O+'/chrome-profile/DevToolsActivePort','utf8')).trim().split(/\r?\n/);ws=new WebSocket('ws://127.0.0.1:'+lines[0]+lines[1]);await new Promise((r,j)=>{ws.addEventListener('open',r,{once:true});ws.addEventListener('error',j,{once:true})});ws.addEventListener('message',e=>{event(JSON.parse(e.data)).catch(()=>{})});
+ const target=await send('Target.createTarget',{url:'about:blank'});session=(await send('Target.attachToTarget',{targetId:target.targetId,flatten:true})).sessionId;
+ for(const method of ['Page.enable','Runtime.enable','Network.enable','DOM.enable'])await send(method,{},session);
+ await send('Fetch.enable',{patterns:[{urlPattern:'*',requestStage:'Request'}]},session);await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:path.win32.resolve(O+'/downloads'),eventsEnabled:true});
+ await mark('normal-login');await send('Page.navigate',{url:wire.base+'/zhumadian/emergency/emergencyResponse/taskSend'},session);await until(()=>evaluate('document.querySelectorAll(".login-body input").length===3'));
+ await evaluate(`(()=>{const values=${JSON.stringify([wire.account,wire.password,'0000'])};document.querySelectorAll('.login-body input').forEach((e,i)=>{e.value=values[i];e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));})})()`);
+ if(!await click('.login-body button','登录'))throw Error('OWN_LOGIN_BUTTON');await until(()=>http.some(x=>x.path.endsWith('/oauth/CurrentUser')&&x.ownUserMatched&&x.dutyMenusReturned));wire.password='';
+
+ await mark('task-native-list');await until(()=>evaluate('!document.querySelector(".login-body")&&!!document.querySelector(".table-box")'));
+ cases.push({case:'original-sdk-normal-login-and-compiled-task-route',passed:true});
+ async function business(kind,action,body=null){
+  if(!['eventInfo','eventTask'].includes(kind)||!['save','updateById','removeById'].includes(action.split('?')[0]))throw Error('OWN_TASK_WRITE_SCOPE');
+  const ua=await evaluate('navigator.userAgent'),response=await fetch(wire.base+'/zhumadian/api/serv/'+kind+'/'+action,{method:body?'POST':'GET',headers:{Authorization:token,'User-Agent':ua,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
+  const v=await response.json();if(response.status!==200||v.code!==0||v.data!==true)throw Error('OWN_ORIGINAL_TASK_PREPARATION_FAILED_'+kind+'_'+action.split('?')[0]);return v.data;
+ }
+ async function makeTask(suffix){
+  const taskName='OWN_R142_'+root.split('/').at(-1)+'_'+suffix;
+  await business('eventInfo','save',{eventName:taskName,eventContent:'Own isolated feedback test',eventType:'1',eventLevel:'1',eventLocation:'Own test site',reportTime:'2026-11-01 09:00:00'});
+  const events=await ownAPI('eventInfo','/getPage?current=1&size=10&eventName='+encodeURIComponent(taskName)),event=events.records.find(x=>x.eventName===taskName);if(!event)throw Error('OWN_EVENT_NOT_FOUND');
+  await business('eventInfo','updateById',{id:event.id,researchStatus:'1',eventLevel:'1',researchResult:'Own confirmed'});
+  await business('eventTask','save',{infoId:event.id,eventNumber:event.eventNumber,eventName:taskName,taskName,taskContent:'Own feedback and evaluation',dispatchTime:'2026-11-01 09:10:00'});
+  const tasks=await ownAPI('eventTask','/getPage?current=1&size=10&taskName='+encodeURIComponent(taskName)),task=tasks.records.find(x=>x.taskName===taskName);if(!task?.id||!task.flowId||task.taskStatus!=='2')throw Error('OWN_ORIGINAL_PENDING_TASK_AND_INSTANCE_REQUIRED');return task;
+ }
+ async function openDisposal(task){
+  await send('Page.navigate',{url:wire.base+'/zhumadian/emergency/emergencyResponse/taskSend'},session);await until(()=>evaluate('!!document.querySelector(".table-box")'));
+  await fill('任务名称',task.taskName);if(!await click('.table-search button','搜索'))throw Error('NATIVE_TASK_SEARCH_BUTTON');
+  await until(()=>evaluate(`Array.from(document.querySelectorAll('.el-table__body-wrapper tbody tr')).some(e=>e.textContent.includes(${JSON.stringify(task.taskName)}))`));
+  if(!await evaluate(`(()=>{const row=Array.from(document.querySelectorAll('.el-table__body-wrapper tbody tr')).find(e=>e.textContent.includes(${JSON.stringify(task.taskName)}));const b=row?Array.from(row.querySelectorAll('button')).find(e=>e.textContent.trim()==='处置'):null;if(!b)return false;b.click();return true})()`))throw Error('ORIGINAL_TASK_DISPOSAL_ACTION_MISSING');
+  await until(()=>evaluate("location.pathname.endsWith('/taskSend/detail')&&new URL(location.href).searchParams.get('judge')==='1'&&document.querySelectorAll('textarea:not(:disabled)').length===2"));
+  cases.push({case:'original-task-list-disposal-action-opens-real-feedback-form',passed:true});
+ }
+ async function fillFeedback(feedback,evaluation){
+  await until(()=>evaluate("['处置时间','反馈信息','评估总结'].every(label=>Array.from(document.querySelectorAll('.el-form-item')).filter(e=>e.getClientRects().length&&e.querySelector('.el-form-item__label')?.textContent.trim()===label).some(e=>Array.from(e.querySelectorAll('input,textarea')).some(n=>n.getClientRects().length&&!n.disabled&&!n.readOnly)))"));
+  await fill('处置时间','2026-11-01 09:30:00');await evaluate(`(()=>{const input=Array.from(document.querySelectorAll('.el-form-item')).filter(e=>e.querySelector('.el-form-item__label')?.textContent.trim()==='处置时间').flatMap(e=>Array.from(e.querySelectorAll('input'))).find(e=>!e.disabled&&!e.readOnly);input.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',code:'Enter',bubbles:true}));input.blur()})()`);
+  await fill('反馈信息',feedback);await fill('评估总结',evaluation);
+ }
+ const task=await makeTask('normal');await openDisposal(task);await mark('feedback-required');let before=count('eventTask','updateById');await click('button','提交');await until(()=>evaluate('document.querySelectorAll(".el-form-item__error").length>0'));if(count('eventTask','updateById')!==before)throw Error('INVALID_FEEDBACK_SAVED');cases.push({case:'native-disposal-required-fields-do-not-call-update',passed:true});
+ await mark('feedback-save');await fillFeedback('OWN_R142_FEEDBACK','OWN_R142_EVALUATION');await evaluate(`(()=>{const b=Array.from(document.querySelectorAll('button')).find(e=>e.getClientRects().length&&e.textContent.trim()==='提交');b.click();b.click()})()`);
+ await until(()=>count('eventTask','updateById')>before);await until(()=>evaluate("location.pathname.endsWith('/emergencyResponse/taskSend')"));if(count('eventTask','updateById')!==before+1)throw Error('FEEDBACK_DOUBLE_SUBMIT_REACHED_BACKEND');
+ const saved=await ownAPI('eventTask','/getById?id='+encodeURIComponent(task.id));if(saved.id!==task.id||saved.flowId!==task.flowId||saved.taskStatus!=='1'||saved.feedbackInfo!=='OWN_R142_FEEDBACK'||saved.evaluationSum!=='OWN_R142_EVALUATION'||saved.disposeTime!=='2026-11-01 09:30:00')throw Error('NATIVE_FEEDBACK_FIELDS_NOT_PERSISTED');cases.push({case:'one-native-feedback-update-persists-time-feedback-evaluation-and-original-instance',passed:true});
+ await mark('feedback-readonly');await send('Page.navigate',{url:wire.base+'/zhumadian/emergency/emergencyResponse/taskSend/detail?id='+encodeURIComponent(task.id)},session);await until(()=>evaluate("['OWN_R142_FEEDBACK','OWN_R142_EVALUATION'].every(value=>document.body.innerText.includes(value)||Array.from(document.querySelectorAll('input,textarea')).some(e=>e.getClientRects().length&&e.value===value))"));if(await evaluate("Array.from(document.querySelectorAll('button')).some(e=>e.getClientRects().length&&e.textContent.trim()==='提交')"))throw Error('READONLY_TASK_DETAIL_HAS_SUBMIT');cases.push({case:'real-compiled-readonly-task-detail-renders-persisted-feedback-without-submit',passed:true});
+ const stale=await makeTask('stale');await openDisposal(stale);await fillFeedback('OWN_R142_STALE_FEEDBACK','OWN_R142_STALE_EVALUATION');await business('eventTask','removeById?id='+encodeURIComponent(stale.id));before=count('eventTask','updateById');await mark('stale-row-save');await click('button','提交');await until(()=>count('eventTask','updateById')>before);await sleep(300);
+ const falseSave=http.filter(x=>x.path.endsWith('/eventTask/updateById')).at(-1);if(falseSave?.businessCode!==0||falseSave.saved!==false)throw Error('ACTUAL_FALSE_SAVE_RESPONSE_REQUIRED');
+ const outcome=await evaluate("({stayed:location.pathname.endsWith('/taskSend/detail'),feedback:Array.from(document.querySelectorAll('textarea')).some(e=>e.value==='OWN_R142_STALE_FEEDBACK'),successMessage:Array.from(document.querySelectorAll('.el-message')).some(e=>e.textContent.includes('操作成功'))})");await fs.writeFile(O+'/false-save-response-proof.json',JSON.stringify({actualCodeZeroDataFalse:true,...outcome},null,2));
+ if(!outcome.stayed||!outcome.feedback||outcome.successMessage)throw Error('FALSE_DISPOSAL_SAVE_LOST_INPUT_OR_REPORTED_SUCCESS');cases.push({case:'native-code-zero-data-false-keeps-input-and-does-not-report-success',passed:true});
+ await Promise.allSettled([...reads]);await fs.writeFile(O+'/result.json',JSON.stringify({passed:true,cases,originalSDKAndCompiledNativePages:true,actualOriginalFeedbackBusinessAPIsUsed:true,realNangangDesignerTemplateOrWholeFlowAccepted:false,http,blocked,exceptions},null,2));
+
+}catch(e){failed=String(e.message);const diagnostic={stage,message:failed,cases,http,blocked,exceptions,downloads};try{if(stage!=='normal-login')diagnostic.visible=await evaluate('({path:location.pathname,text:document.body.innerText.slice(-1800)})')}catch{}await fs.writeFile(O+'/failure.json',JSON.stringify(diagnostic,null,2));}
+finally{wire.password='';secondRolePassword='';reviewToken='';token='';if(ws?.readyState===WebSocket.OPEN){try{await send('Browser.close')}catch{}ws.close();}if(chrome)await new Promise(r=>chrome.exitCode!==null?r():chrome.once('exit',r));await fs.writeFile(O+'/browser-terminal.json',JSON.stringify({chromeExitCode:chrome?.exitCode,normalBrowserCloseAttempted:true,forceTerminationUsed:false}));}
+if(failed)throw Error(failed);
+

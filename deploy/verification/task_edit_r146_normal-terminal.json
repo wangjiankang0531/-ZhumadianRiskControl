@@ -1,0 +1,32 @@
+{
+  "controller": {
+    "pid": 38564,
+    "exitCode": 0,
+    "actualDescendantJobCountZeroBeforeClose": true,
+    "forceTerminationUsed": false
+  },
+  "chrome": {
+    "chromeExitCode": 0,
+    "normalBrowserCloseAttempted": true,
+    "forceTerminationUsed": false
+  },
+  "sixComponents": {
+    "ready": true,
+    "failureType": null,
+    "failureStageMessage": null,
+    "normalOwnedShutdown": true,
+    "allOwnedChildrenExited": true,
+    "exitCodesBeforeJobClose": {
+      "store": 0,
+      "mysql": 0,
+      "redis": 0,
+      "platform": 0,
+      "business": 0,
+      "gateway": 0
+    },
+    "forcedJobClosureComponents": [],
+    "jobAssignmentFailureComponents": [],
+    "platformContextClosed": true,
+    "businessContextClosed": true
+  }
+}

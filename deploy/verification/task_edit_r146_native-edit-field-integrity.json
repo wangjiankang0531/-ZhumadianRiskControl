@@ -1,0 +1,10 @@
+{
+  "sameTask": true,
+  "sameFlow": true,
+  "sameEvent": true,
+  "sameStatus": true,
+  "editedName": true,
+  "editedContent": true,
+  "editedExecutor": true,
+  "sameAttachment": true
+}

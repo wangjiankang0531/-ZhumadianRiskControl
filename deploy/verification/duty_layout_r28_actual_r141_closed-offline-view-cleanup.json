@@ -1,0 +1,31 @@
+{
+  "schema": "xnby.r140.closed-offline-view-cleanup.v1",
+  "passed": true,
+  "onlyOwnNeverStartedOfflineProgramsAndFakeConfig": true,
+  "activeProcessReferences": 0,
+  "sourceAndAssetsReferenceRealDataAndProofsKept": true,
+  "targets": [
+    {
+      "relativeOwnRoot": "work\\r28gv-r1\\Application",
+      "files": 15937,
+      "logicalBytes": 1420730771
+    },
+    {
+      "relativeOwnRoot": "work\\r28gv-r1\\bundle",
+      "files": 179,
+      "logicalBytes": 7088343
+    },
+    {
+      "relativeOwnRoot": "work\\event_delivery_consistency_20261030\\full-controller-r139\\pool-contract-r1\\Application",
+      "files": 15579,
+      "logicalBytes": 1406579814
+    },
+    {
+      "relativeOwnRoot": "work\\event_delivery_consistency_20261030\\full-controller-r139\\pool-contract-r1\\bundle",
+      "files": 6,
+      "logicalBytes": 2767842
+    }
+  ],
+  "observedFreeDelta": 35942400,
+  "hardlinkLogicalBytesNotClaimedAsPhysicalRecovery": true
+}

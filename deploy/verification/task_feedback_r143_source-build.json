@@ -1,0 +1,30 @@
+{
+  "schema": "xnby.emergency-workflow-source-build-verification.v1",
+  "buildPassed": true,
+  "compiledFiles": 339,
+  "allBuildBytesAndSourcePinsVerified": true,
+  "selectedSourceFiles": 235,
+  "sourceOverlayFiles": 56,
+  "actualFourWorkflowRouteFacadesVerified": {
+    "/src/views/workflow/flowTodo/index.vue": "assets/js/wf-index-BeYpFY-z.js",
+    "/src/views/workflow/flowTodo/info/index.vue": "assets/js/wf-index-DBGD_UwO.js",
+    "/src/views/workflow/startWithMeTwo/index.vue": "assets/js/wf-index-BXyl_lC2.js",
+    "/src/views/workflow/startWithMeTwo/info/index.vue": "assets/js/wf-index-CvpOVKs2.js"
+  },
+  "twoStubRenderModulesReplaced": true,
+  "originalNativeListLaunchAuditAPIsEmitted": true,
+  "localAssetReferencesVerified": 1523,
+  "missingAssets": 0,
+  "emittedJSFilesSyntaxChecked": 173,
+  "existingLoginAndTaskQ3ReviewSourcesKept": false,
+  "existingQ3SubmitSemanticsKept": true,
+  "workflowTaskContextDeclaredChangedFiles": 3,
+  "auditSubmitDeclaredChangedFiles": 1,
+  "taskStateDisplayDeclaredChangedFiles": 2,
+  "uncertainOutcomeDeclaredChangedFiles": 2,
+  "undeclaredSourceDifferences": 0,
+  "referenceOrManualPreviewOrFixedScopesModified": false,
+  "actualNormalUserWorkflowUIOrFullTypeCheckAccepted": false,
+  "publicInstalled": false,
+  "fullCloneReady": false
+}

@@ -1,0 +1,78 @@
+{
+  "schema": "xnby.r30.task-feedback-sparse-update.v1",
+  "allCompositionContractsPassed": true,
+  "basePublicReleaseSHA256": "a024b426c2399431746f7b9a8c4da698d84d31a869f34f9c5315d85c617697e9",
+  "programWrites": 178,
+  "oldEmergencyRemovals": 172,
+  "totalInstallPaths": 350,
+  "programWriteBytes": 7020853,
+  "newUpdaterSHA256": "675ab42c48ec31c78fe8dad633c082caba255fdf666dc447c87273811516df9a",
+  "newReleaseSHA256": "063588bff28028bd2645338073f3fe277f4558ccd8c046b93fc4b56e8f4de19f",
+  "updateManifestSHA256": "620c5c20c2d093505a73c0011be0372ba69a059c7dabd60cf71a283b23eb0512",
+  "recoveryScenarios": [
+    {
+      "scenario": "normal",
+      "writesBeforeRecovery": 350,
+      "allOriginalBytesRestored": true,
+      "allNewPathsRemoved": true,
+      "paths": 350
+    },
+    {
+      "scenario": "first-write",
+      "writesBeforeRecovery": 1,
+      "allOriginalBytesRestored": true,
+      "allNewPathsRemoved": true,
+      "paths": 350
+    },
+    {
+      "scenario": "fourth-write",
+      "writesBeforeRecovery": 4,
+      "allOriginalBytesRestored": true,
+      "allNewPathsRemoved": true,
+      "paths": 350
+    },
+    {
+      "scenario": "controller-write",
+      "writesBeforeRecovery": 349,
+      "allOriginalBytesRestored": true,
+      "allNewPathsRemoved": true,
+      "paths": 350
+    },
+    {
+      "scenario": "parameter-write",
+      "writesBeforeRecovery": 348,
+      "allOriginalBytesRestored": true,
+      "allNewPathsRemoved": true,
+      "paths": 350
+    },
+    {
+      "scenario": "updater-write",
+      "writesBeforeRecovery": 347,
+      "allOriginalBytesRestored": true,
+      "allNewPathsRemoved": true,
+      "paths": 350
+    },
+    {
+      "scenario": "payload-manifest-write",
+      "writesBeforeRecovery": 346,
+      "allOriginalBytesRestored": true,
+      "allNewPathsRemoved": true,
+      "paths": 350
+    },
+    {
+      "scenario": "release-pointer-write",
+      "writesBeforeRecovery": 350,
+      "allOriginalBytesRestored": true,
+      "allNewPathsRemoved": true,
+      "paths": 350
+    }
+  ],
+  "foreignDriftRefusedBeforeAnyRestore": true,
+  "all20ControllerBytesOriginalJarsTaskMaterialTeamAuthenticationDatabaseAndIISRetained": true,
+  "fullProgramPreflightPassed": false,
+  "newUpdaterActualLifecyclePassed": true,
+  "businessSourcesChangedFromWF14": 3,
+  "nativeTaskCreateEditDisposalChecks": 16,
+  "transportSealed": false,
+  "publicOrProtectedUserApplicationsOperated": false
+}

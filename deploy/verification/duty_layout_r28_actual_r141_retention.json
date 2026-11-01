@@ -1,0 +1,25 @@
+{
+  "schema": "xnby.public.r28.version-retention-result.v1",
+  "activeRelease": "R28",
+  "passed": true,
+  "retainedOnlyActiveBusinessAndPlatformRuntime": true,
+  "oldCodeBackupsRemoved": true,
+  "ftpContainsNoExpiredOrFailedPackages": true,
+  "filesRemoved": 673,
+  "logicalBytesRemoved": 22429077,
+  "directoriesRemoved": 7,
+  "categories": {
+    "oldUpdateAttemptDirectories": 2,
+    "oldCodeBackupDirectories": 1,
+    "extractedStagingDirectories": 2,
+    "stoppedRuntimeDirectories": 2,
+    "failedFTPTransportDirectories": 0
+  },
+  "allAbsoluteTargetsInsideExplicitRootsAndNoReparse": true,
+  "activeDatabaseUploadsConfigurationAndIISChanged": false,
+  "noForceTermination": true,
+  "historicalVersionRollbackBackupsRemovedPerUserInstruction": true,
+  "originalTenReadinessAndControllerUnchanged": true,
+  "databaseIdentityMatched": true,
+  "observedFreeDelta": 23814144
+}

@@ -1,0 +1,47 @@
+from pathlib import Path
+import ast,hashlib,importlib.util,json,sys,zipfile
+sys.dont_write_bytecode=True
+R=Path('D:/Project/Zhumadian');T=R/'Application/tools';W=R/'work/user_feedback_20261031';S=W/'r30-task-unified-candidate-r1';D=R/'Document/Deployment/public_test_task_unified_r30_20261101';C=R/'work/event_delivery_consistency_20261030/full-controller-r148';assert not D.exists();sys.path.insert(0,str(T))
+from build_public_workflow_r21 import validate_transport_identity
+J=lambda p:json.loads(p.read_bytes());digest=lambda b:hashlib.sha256(b).hexdigest();sha=lambda p:digest(p.read_bytes());enc=lambda o:(json.dumps(o,ensure_ascii=False,indent=2)+'\n').encode()
+def put(p,raw):p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(raw)
+bundle=S/'bundle';plan=J(bundle/'update-manifest.json');tx=J(S/'result.json');updater=T/'original_public_test_update_r28_20261101.py';pin=sha(updater)
+spec=importlib.util.spec_from_file_location('fixed_r27_composition',updater);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+full=J(R/'work/r30gv-r1/full-preflight-result.json');whole=J(C/'r3/result.json');browser=J(C/'r3/task-picker-browser/result.json')
+assert full['allPassed']and full['updaterSHA256']==pin and whole['allPassed']and whole['updaterSHA256']==pin and browser['passed']and len(browser['cases'])==16 and not browser['exceptions']
+assert whole['checks']['actualRuntimePoolPolicyReady']and whole['allSixComponentsNormallyExitedZero']and whole['allActualDescendantsExitedBeforeOuterJobClosed']and whole['original398DefinitionsUnchanged']and not whole['forceTerminationUsed']
+assert len(tx['recoveryScenarios'])==8 and all(q['allOriginalBytesRestored']and q['allNewPathsRemoved']for q in tx['recoveryScenarios'])and tx['foreignDriftRefusedBeforeAnyRestore']
+OLD='a024b426c2399431746f7b9a8c4da698d84d31a869f34f9c5315d85c617697e9';old=J(W/'r28-duty-layout-candidate-r1/bundle/payload/release-manifest.json');oldq=J(W/'r28-duty-layout-candidate-r1/bundle/payload/payload-manifest.json');release=J(bundle/'payload/release-manifest.json');q=J(bundle/'payload/payload-manifest.json');control='tools/original_public_test_update.py'
+assert set(plan['acceptedOldReleases'])=={OLD}and len(plan['files'])==178 and len(plan['removedFrontendFiles'])==172 and len(release['controllerFiles'])==20
+changed={control,*m.R27_POOL_PINS};assert {n:h for n,h in old['controllerFiles'].items()if n not in changed}=={n:h for n,h in release['controllerFiles'].items()if n not in changed}
+assert {n:p for n,p in oldq['files'].items()if not n.startswith('frontend/emergency_pc/')}=={n:p for n,p in q['files'].items()if not n.startswith('frontend/emergency_pc/')}
+assert release[m.R27_POOL_FIELD]==m.R27_POOL_POLICY and release[m.R24_WORKFLOW_FIELD]==m.R27_POOL_WORKFLOW_CONTRACT
+for n in m.R27_POOL_PINS:assert sha(bundle/'payload'/n)==sha(R/'_g/Application'/n)==release['controllerFiles'][n]
+assert plan['targetApplication']=='C:/inetpub/wwwroot/Zhumadian/Application'and plan['gatewayPort']==18892
+delivery=D/'delivery';delivery.mkdir(parents=True);deny=b'<?xml version="1.0" encoding="utf-8"?><configuration><system.webServer><security><authorization><clear/><add accessType="Deny" users="*"/></authorization></security></system.webServer></configuration>\r\n';archive=delivery/'Zhumadian_Task_Unified_20261101_R30.zip'
+with zipfile.ZipFile(archive,'x',zipfile.ZIP_DEFLATED)as z:
+ z.writestr('update-manifest.json',(bundle/'update-manifest.json').read_bytes());z.writestr('web.config',deny)
+ for n,p in plan['files'].items():raw=(bundle/'payload'/n).read_bytes();assert len(raw)==p['bytes']and digest(raw)==p['SHA256'];z.writestr('payload/'+n,raw)
+wrapper=(T/'risk_r22_transport.py.in').read_text(encoding='utf-8').replace('r22','r30').replace('R22','R30').replace('EXACT_R21','EXACT_R28').replace('Zhumadian_Risk_Unit_20261101_R30.zip',archive.name)
+needle="OLD_UPDATER_SHA='8ee301b1d7466f08f39c40d0ed42c9edbe652bfd3a9223f694d7379c7970dad5'";assert wrapper.count(needle)==1;wrapper=wrapper.replace(needle,"OLD_UPDATER_SHA='"+old['controllerFiles'][control]+"'")
+for token,value in [('__ARCHIVE_SHA__',sha(archive)),('__MANIFEST_SHA__',sha(bundle/'update-manifest.json')),('__OLD__',OLD),('__NEW__',plan['newReleaseSHA256']),('__UPDATE_ID__',plan['updateId']),('__UPDATER_SHA__',pin)]:wrapper=wrapper.replace(token,value)
+needle='    row=m.owned_ready(APP,old);m.health(APP,row)'
+assert wrapper.count(needle)==1
+wrapper=wrapper.replace(needle,"    candidate_pool=m.candidate_runtime_pool_preflight(APP,stage,checked)\n    need(candidate_pool is not None,'EXACT_CANDIDATE_POOL_PREFLIGHT_REQUIRED')\n    print('R30_CANDIDATE_POOL_LAYOUT_PREFLIGHT_PASSED_BEFORE_ANY_SHUTDOWN',flush=True)\n"+needle)
+ast.parse(wrapper);validate_transport_identity(wrapper,plan,OLD,sha(archive),sha(bundle/'update-manifest.json'),pin)
+put(delivery/'deploy_task_unified_r30.py',wrapper.encode());put(delivery/'r30_update_runtime.py',updater.read_bytes());put(delivery/'web.config',deny)
+for label,flag in [('Check_Only','--check-only'),('Deploy',''),('Recover_This','--recover-this-update')]:put(delivery/(label+'_Task_Unified_R30.cmd'),('@echo off\r\n"C:\\inetpub\\wwwroot\\Zhumadian\\Application\\runtime\\python\\python.exe" -I -B "%~dp0deploy_task_unified_r30.py" '+flag+'\r\n').encode('ascii'))
+files={p.name:{'bytes':p.stat().st_size,'sha256':sha(p)}for p in sorted(delivery.iterdir())if p.is_file()}
+manifest={'revision':'R30-native-task-feedback-edit-event-picker-guards','targetFTP':'/Zhumadian/Zhumadian_Task_Unified_20261101_R30/','targetApplication':plan['targetApplication'],'files':files,'payloadTransportFiles':len(files),'payloadTransportBytes':sum(v['bytes']for v in files.values()),'oldReleaseSHA256':OLD,'oldUpdaterSHA256':old['controllerFiles'][control],'newReleaseSHA256':plan['newReleaseSHA256'],'newUpdaterSHA256':pin,'updateManifestSHA256':sha(bundle/'update-manifest.json'),'replacementPaths':178,'obsoleteFrontendPaths':172,'totalInstallPaths':350,'oldReadinessReports':10,'newReadinessReports':10,'additionalExactPoolSourcesAndNumericConnectionBudgetReadinessCheck':True,'samePreviouslyVerifiedUpdaterSHA256Retained':True,'threeFrontendBusinessSourcesChangedFromWF14':True,'all20ControllerBytesRetained':old['controllerFiles']==release['controllerFiles'],'checkOnlyAndApplyBothValidateActualCandidateBudgetBeforeShutdown':True,'actualCodeRecoveryScenarios':8,'actualFullProgramDependencyFilesVerified':full['fullProgramFilesVerified'],'wholeSixComponentsOnSyntheticDataPassed':True,'nativeTaskCreateEditDisposalBrowserChecks':16,'normalSDKRoles':1,'connectionRefusals':0,'configuredUnrevokedExceptions':0,'allSixComponentsAndControllerNormallyExitedZero':True,'original398DefinitionsUnchanged':True,'workflowCompiledFrontendFiles':339,'workflowSourceInputs':235,'workflowSourceOverlays':56,'onlyThreeBusinessSourceChangesFromWF14':True,'runtimePoolPolicy':m.R27_POOL_POLICY,'all20ControllersOriginalJarsTaskMaterialTeamAuthenticationConfigDatabaseIISAndNonEmergencyFrontendKept':True,'syntheticEventDictionaryRowsNotTransported':True,'publicAuthenticatedBusinessAndRealNangangWholeAcceptancePassed':False,'actualPublicPrivateIdentityOrIISOrTLSVerified':False,'containsCompiledFrontendRuntimeControlUpdaterCodeMetadataAndInternalPaths':True,'containsActualPrivateConfigCredentialsDatabaseBusinessRowsAssetsReferenceScreenshotsOrRawLogs':False,'publicUploadedOrInstalled':False,'publicGitIncluded':False,'wholeModuleAccepted':False,'fullCloneReady':False}
+put(D/'delivery-manifest.json',enc(manifest));put(delivery/'delivery-manifest.json',enc(manifest))
+node=next(n for n in ast.parse(wrapper).body if isinstance(n,ast.FunctionDef)and n.name=='recovery_guard');ns={'Path':Path,'APP':Path(plan['targetApplication']),'OLD':OLD,'NEW':plan['newReleaseSHA256'],'UPDATE':plan['updateId'],'need':lambda v,msg:None if v else(_ for _ in()).throw(ValueError(msg))};exec(compile(ast.Module(body=[node],type_ignores=[]),'fixed-r28-recovery','exec'),ns)
+good={'updateId':plan['updateId'],'oldReleaseSHA256':OLD,'newReleaseSHA256':plan['newReleaseSHA256'],'attempt':plan['targetApplication']+'/UserData/OriginalPublicUpdates/own'};ns['recovery_guard'](good)
+for key,value in [('updateId','other'),('oldReleaseSHA256','0'*64),('newReleaseSHA256','1'*64),('attempt','C:/other/own')]:
+ bad=dict(good);bad[key]=value
+ try:ns['recovery_guard'](bad)
+ except ValueError:pass
+ else:raise AssertionError('FOREIGN_RECOVERY_ACCEPTED')
+with zipfile.ZipFile(archive)as z:
+ assert z.testzip()is None and len(z.namelist())==len(set(z.namelist()))and set(z.namelist())=={'update-manifest.json','web.config'}|{'payload/'+n for n in plan['files']}
+ for n,p in plan['files'].items():raw=z.read('payload/'+n);assert len(raw)==p['bytes']and digest(raw)==p['SHA256']
+proof={'manifestSHA256':sha(D/'delivery-manifest.json'),'transportFilesIncludingManifest':len(files)+1,'transportBytesIncludingManifest':sum(p['bytes']for p in files.values())+(D/'delivery-manifest.json').stat().st_size,'replacementPaths':178,'obsoleteFrontendPaths':172,'totalInstallPaths':350,'archiveCRCAndEveryMemberVerified':True,'recoveryOwnershipChecks':5,'maxServerExtractionPathCharacters':max(len(plan['targetApplication']+'/UserData/OriginalPublicUpdates/staging/'+'f'*32+'/payload/'+n)for n in plan['files']),'retainedUpdaterFullControllerAndNativeUnifiedTaskChecksPassed':True,'publicServerPreflightPassed':False,'publicDeployed':False,'approvalGranted':False};assert proof['maxServerExtractionPathCharacters']<260;put(D/'preparation-result.json',enc(proof));print(json.dumps(proof))

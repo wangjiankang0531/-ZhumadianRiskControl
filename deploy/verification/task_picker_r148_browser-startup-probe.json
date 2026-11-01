@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "failure": null,
+  "checks": [
+    "Page.enable",
+    "Runtime.enable",
+    "Network.enable",
+    "DOM.enable",
+    "about-blank-renderer-evaluation"
+  ],
+  "chromeExitCode": 0,
+  "normalBrowserCloseAttempted": true,
+  "forceTerminationUsed": false,
+  "applicationOrNetworkPageLoaded": false,
+  "outerExitCode": 0,
+  "actualDescendantsZeroBeforeClose": true
+}

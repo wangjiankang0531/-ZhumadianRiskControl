@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-01T21:24:17.215017+08:00",
+  "passed": true,
+  "tlsDefaultCertificateVerification": true,
+  "checks": [
+    {
+      "path": "/zhumadian",
+      "status": 301
+    },
+    {
+      "path": "/zhumadian/home",
+      "status": 200
+    },
+    {
+      "path": "/zhumadian/emergency/",
+      "status": 200
+    }
+  ]
+}

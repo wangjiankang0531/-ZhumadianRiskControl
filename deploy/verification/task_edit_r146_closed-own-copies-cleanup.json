@@ -1,0 +1,43 @@
+{
+  "schema": "xnby.r146.closed-own-copies-cleanup.v1",
+  "passed": true,
+  "activeOwnedProcessReferences": 0,
+  "normalExitAndNoReparseAndExactOldHashesVerified": true,
+  "closedChromeProfiles": 4,
+  "duplicateFrontendBeforeCopies": 2,
+  "targets": [
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r145\\r1\\task-edit-browser\\chrome-profile",
+      "files": 229,
+      "logicalBytes": 11387752
+    },
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r145\\r2\\task-edit-browser\\chrome-profile",
+      "files": 229,
+      "logicalBytes": 11403256
+    },
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r146\\r1\\task-edit-browser\\chrome-profile",
+      "files": 249,
+      "logicalBytes": 53464606
+    },
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r146\\r2\\task-edit-browser\\chrome-profile",
+      "files": 232,
+      "logicalBytes": 11426710
+    },
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r143\\candidate-install-r1\\before",
+      "files": 172,
+      "logicalBytes": 4256632
+    },
+    {
+      "ownRelativePath": "work\\event_delivery_consistency_20261030\\full-controller-r146\\candidate-install-r1\\before",
+      "files": 172,
+      "logicalBytes": 4256703
+    }
+  ],
+  "observedFreeDelta": 96747520,
+  "realDataOriginalManifestsSourceDistFixedScopesFailuresAndProofsKept": true,
+  "publicOrDesktopTouched": false
+}
