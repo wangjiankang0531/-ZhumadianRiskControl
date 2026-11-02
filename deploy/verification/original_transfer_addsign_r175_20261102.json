@@ -1,0 +1,213 @@
+{
+  "schema": "xnby.original-transfer-addsign-r175.verified-partial.v1",
+  "at": "2026-11-02T18:07:20.064958+08:00",
+  "nativeBrowserPhasesExecuted": 24,
+  "recordedChecksAcrossPassingAndFailedPhases": 247,
+  "trials": {
+    "r71": {
+      "normalSixComponentsAndAllActualDescendantsZero": true,
+      "allOriginal398ModelsUnchanged": true,
+      "syntheticConfigurationRestoredExactBytes": true,
+      "phaseResults": [
+        {
+          "phase": "operator",
+          "passed": true,
+          "checks": 20
+        },
+        {
+          "phase": "operator-completed-readback",
+          "passed": true,
+          "checks": 8
+        },
+        {
+          "phase": "operator-disposal",
+          "passed": true,
+          "checks": 9
+        },
+        {
+          "phase": "operator-transferred",
+          "passed": true,
+          "checks": 8
+        },
+        {
+          "phase": "reviewer-final",
+          "passed": true,
+          "checks": 8
+        },
+        {
+          "phase": "reviewer-no-longer-assigned",
+          "passed": true,
+          "checks": 3
+        },
+        {
+          "phase": "reviewer-transfer",
+          "passed": true,
+          "checks": 9
+        }
+      ],
+      "actualExecutedHostSHA256": "52ccbd6a664a1b7bf9d8183cfe828169809eff95cd2fa35fac6678cf9eebd6f9",
+      "actualExecutedBrowserSHA256": "2eeaafc89b2584335befdcfce2900bf75f45488ef0897d6a39507da7578a2779"
+    },
+    "r72": {
+      "normalSixComponentsAndAllActualDescendantsZero": true,
+      "allOriginal398ModelsUnchanged": true,
+      "syntheticConfigurationRestoredExactBytes": true,
+      "phaseResults": [
+        {
+          "phase": "operator",
+          "passed": true,
+          "checks": 20
+        },
+        {
+          "phase": "operator-added",
+          "passed": true,
+          "checks": 8
+        },
+        {
+          "phase": "operator-completed-readback",
+          "passed": false,
+          "checks": 7,
+          "failure": "ORIGINAL_TRANSFER_RECORD_ACTOR_TIME_AND_OPINION_REQUIRED"
+        },
+        {
+          "phase": "operator-disposal",
+          "passed": true,
+          "checks": 9
+        },
+        {
+          "phase": "reviewer-addsign",
+          "passed": true,
+          "checks": 10
+        },
+        {
+          "phase": "reviewer-after-added",
+          "passed": true,
+          "checks": 8
+        },
+        {
+          "phase": "reviewer-final",
+          "passed": true,
+          "checks": 8
+        }
+      ],
+      "actualExecutedHostSHA256": "95ae3ae5157f3cf7e21f91fc8cdfa3075a3a14f7be47c22fe397f06df99f7c6d",
+      "actualExecutedBrowserSHA256": "92a194b49c4f357cdf9e0d2f05a21096d7ac7e5440e89437ec4caf847c56457a"
+    },
+    "r73": {
+      "normalSixComponentsAndAllActualDescendantsZero": true,
+      "allOriginal398ModelsUnchanged": true,
+      "syntheticConfigurationRestoredExactBytes": true,
+      "phaseResults": [
+        {
+          "phase": "operator",
+          "passed": true,
+          "checks": 20
+        },
+        {
+          "phase": "operator-disposal",
+          "passed": true,
+          "checks": 9
+        },
+        {
+          "phase": "reviewer-addsign",
+          "passed": false,
+          "checks": 9,
+          "failure": "ORIGINAL_TRANSFER_POST_MUST_SUCCEED_ONCE"
+        }
+      ],
+      "actualExecutedHostSHA256": "17a5105d89c2234b676c0ce471b3e37f69dbe0b8a561ea3b1bcc7826c6d0badc",
+      "actualExecutedBrowserSHA256": "4e35e35719788921c85902b4c8ef1eab2127f17a9ede3a2ec107a29c8adcbbee"
+    },
+    "r74": {
+      "normalSixComponentsAndAllActualDescendantsZero": true,
+      "allOriginal398ModelsUnchanged": true,
+      "syntheticConfigurationRestoredExactBytes": true,
+      "phaseResults": [
+        {
+          "phase": "operator-completed-readback",
+          "passed": true,
+          "checks": 9
+        }
+      ],
+      "actualExecutedHostSHA256": "17a5105d89c2234b676c0ce471b3e37f69dbe0b8a561ea3b1bcc7826c6d0badc",
+      "actualExecutedBrowserSHA256": "29db012e208e0667e31940b087a8ba2460dfeef9a4fc9cdabd23733cb47e44c6"
+    },
+    "r75": {
+      "normalSixComponentsAndAllActualDescendantsZero": true,
+      "allOriginal398ModelsUnchanged": true,
+      "syntheticConfigurationRestoredExactBytes": true,
+      "phaseResults": [
+        {
+          "phase": "operator",
+          "passed": true,
+          "checks": 20
+        },
+        {
+          "phase": "operator-added",
+          "passed": true,
+          "checks": 8
+        },
+        {
+          "phase": "operator-completed-readback",
+          "passed": true,
+          "checks": 9
+        },
+        {
+          "phase": "operator-disposal",
+          "passed": true,
+          "checks": 9
+        },
+        {
+          "phase": "reviewer-addsign",
+          "passed": true,
+          "checks": 11
+        },
+        {
+          "phase": "reviewer-final",
+          "passed": true,
+          "checks": 8
+        }
+      ],
+      "actualExecutedHostSHA256": "c3d2e91739f578e5b47a0d771a16b3cf18312b9dfbf9cfd8f7a3679c400f09c5",
+      "actualExecutedBrowserSHA256": "29db012e208e0667e31940b087a8ba2460dfeef9a4fc9cdabd23733cb47e44c6"
+    }
+  },
+  "transferFlowPassed": true,
+  "beforeAddsignCoreSequencePassed": true,
+  "beforeAddsignSameCompletedInstanceReadbackAfterRestartPassed": true,
+  "afterAddsignCountersignCoreSequencePassed": true,
+  "orSignAfterAddsignOriginalRejectionPreserved": true,
+  "beforeOpinionObservation": {
+    "addsignType": "1",
+    "actualAddedAndFinalReviewRecordsAndOrderMatched": true,
+    "originalReviewerAfterAddedVerified": true,
+    "independentAddsignOpinionRetained": false,
+    "opinionRetentionGapRemains": true,
+    "completeAddsignAcceptance": false
+  },
+  "afterOpinionObservation": {
+    "addsignType": "2",
+    "actualAddedAndFinalReviewRecordsAndOrderMatched": true,
+    "originalReviewerAfterAddedVerified": false,
+    "independentAddsignOpinionRetained": true,
+    "opinionRetentionGapRemains": false,
+    "completeAddsignAcceptance": true
+  },
+  "original398DefinitionsUnchangedAllTrials": true,
+  "normalSixComponentsAllTrials": true,
+  "credentialsOrRawBusinessRowsExported": false,
+  "desktopInputSent": false,
+  "productCodeChanged": false,
+  "publicVersion": "R33",
+  "publicDeploymentOrTencentWritePerformed": false,
+  "fullAddsignFeatureAccepted": false,
+  "fullCloneReady": false,
+  "remainingGaps": [
+    "审批前加签意见未作为独立历史记录保留；本轮只定位到原SDK写入原操作者记录，后续同人审批后该意见不可见，尚未修复。",
+    "未验证审批前加签期间原审批人提前操作是否被系统严格阻止；已按预期先后顺序实际执行。",
+    "自建两级模板/两普通角色/68字节PNG的隔离验证，真实南港全部模板、角色、并行/通知及其它附件仍待。",
+    "未在公网提交转审或加签测试业务；公网仍R33，本轮没有产品代码或发布包变更。",
+    "R33旧版本清理仍未执行，需桌面协调或实际可用受限后台发布通道。"
+  ],
+  "legacyR74HostCreateFlagNotUsedAsEvidence": "R74 only executed one readback phase; inherited generic host flags do not prove fresh creation or fresh approval."
+}
