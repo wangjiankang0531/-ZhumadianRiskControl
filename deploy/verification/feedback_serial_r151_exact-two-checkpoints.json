@@ -1,0 +1,38 @@
+{
+  "operator": {
+    "passed": true,
+    "actualReleasedSerialTemplateMatched": true,
+    "releasedVersionDefinitionAndDeploymentMatched": true,
+    "serialFinalNodeInPublishedModel": true,
+    "expectedFeedbackPresenceAndContent": true,
+    "originalEngineHistoryHasEndTime": false,
+    "pendingEngineTasks": 1,
+    "originalEngineHistoryRows": 1,
+    "expectedBusinessStatusMatched": true,
+    "phase": "operator",
+    "expectedBusinessStatus": "2",
+    "expectedEngineEnded": false,
+    "ownSyntheticOnly": true,
+    "readOnlyTransactionRolledBack": true,
+    "rawRowsOrCredentialsExported": false,
+    "normalReaderExitCode": 0
+  },
+  "operator-disposal": {
+    "passed": true,
+    "actualReleasedSerialTemplateMatched": true,
+    "releasedVersionDefinitionAndDeploymentMatched": true,
+    "serialFinalNodeInPublishedModel": true,
+    "expectedFeedbackPresenceAndContent": true,
+    "originalEngineHistoryHasEndTime": false,
+    "pendingEngineTasks": 1,
+    "originalEngineHistoryRows": 1,
+    "expectedBusinessStatusMatched": true,
+    "phase": "operator-disposal",
+    "expectedBusinessStatus": "1",
+    "expectedEngineEnded": false,
+    "ownSyntheticOnly": true,
+    "readOnlyTransactionRolledBack": true,
+    "rawRowsOrCredentialsExported": false,
+    "normalReaderExitCode": 0
+  }
+}

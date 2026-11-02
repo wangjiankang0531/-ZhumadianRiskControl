@@ -1,0 +1,17 @@
+{
+  "ready": true,
+  "normalOwnedShutdown": true,
+  "allOwnedChildrenExited": true,
+  "exitCodesBeforeJobClose": {
+    "store": 0,
+    "mysql": 0,
+    "redis": 0,
+    "platform": 0,
+    "business": 0,
+    "gateway": 0
+  },
+  "forcedJobClosureComponents": [],
+  "jobAssignmentFailureComponents": [],
+  "platformContextClosed": true,
+  "businessContextClosed": true
+}

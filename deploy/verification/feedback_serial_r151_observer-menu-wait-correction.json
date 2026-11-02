@@ -1,0 +1,7 @@
+{
+  "actualExecutedSourceSHA256": "9f261542f600cb5ed254d7f30fc3daffa19942e920de674f166a8bf64a9478cd",
+  "correctedSourceSHA256": "7d8e169f130ada07b9d7e450543d4480e9fe836010e5e6125cb612a7a332765b",
+  "onlyWaitForLoginNavigationAndExpectedNativeMenuAdded": true,
+  "correctedSourceActuallyRetested": false,
+  "reason": "CurrentUser network reply preceded leaving login page; original helper immediately searched menu."
+}

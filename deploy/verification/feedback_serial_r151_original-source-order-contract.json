@@ -1,0 +1,17 @@
+{
+  "schema": "xnby.r151.original-task-feedback-order-source.v1",
+  "passed": true,
+  "sourcePins": {
+    "original-list": "6d936d9e050a421133e9dc006832460ad3b29a53062dc4510a39ab1e471bd52c",
+    "original-feedback": "c7de769afb8176a737a4b861df5082e6ccf8f2c506a540cb45a57537cd4b12bd",
+    "original-controller": "6a046ce741bdd9beaddb3504f064e78604365437207f74884762c4d3baeedfe6",
+    "original-callback": "b93e2162c3975d5cbe3de25353f67e39c93276c33a6c0d9d59c1100728e612c3"
+  },
+  "manualFeedbackSetsTaskStatusOne": true,
+  "nativeCallbackUpdatesOnlyTaskStatusByFlowId": true,
+  "originalDisposalButtonHiddenWhenTaskStatusOne": true,
+  "taskBusinessStatusAloneDoesNotProveWorkflowEnded": true,
+  "realNangangTemplateNotRecovered": true,
+  "productRulesChanged": false,
+  "publicOrProtectedRootsTouched": false
+}

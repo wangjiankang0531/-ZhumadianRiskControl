@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-02T00:07:48.969686+08:00",
+  "wholeFivePhaseFlowPassed": false,
+  "nativeTaskCreateThroughActualAddAndEventPickerPassed": true,
+  "nativeRequiredFeedbackAndSingleSavePassed": true,
+  "feedbackTimeContentEvaluationAndInstanceReadbackPassed": true,
+  "businessStatesAfterCreateAndFeedback": [
+    "2",
+    "1"
+  ],
+  "engineStillPendingAfterBoth": true,
+  "exactOwnPublishedVersionAndDeploymentMatched": true,
+  "firstReviewerObserverFailedBeforeMenuClickWhilePageStillLogin": true,
+  "noProductFailureClaimedFromObserverRace": true,
+  "twoRemainingApprovalPhasesAndFinalReopenNotRun": true,
+  "allSixComponentsThreeBrowsersControllerObserverNormallyZero": true,
+  "allActualDescendantsZero": true,
+  "exactTemporaryFakeConfigurationRestored": true,
+  "publicOrProtectedApplicationsTouched": false,
+  "fullCloneReady": false
+}
