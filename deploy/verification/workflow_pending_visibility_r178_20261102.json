@@ -1,0 +1,239 @@
+{
+  "schema": "xnby.r178.exact-pending-operator-candidate-verified.v1",
+  "at": "2026-11-02T18:37:21.101385+08:00",
+  "passed": true,
+  "status": "local-candidate-only",
+  "normalNativeBrowserPhases": 27,
+  "checks": 243,
+  "trials": {
+    "r76": {
+      "phases": [
+        {
+          "phase": "operator",
+          "checks": 20,
+          "passed": true
+        },
+        {
+          "phase": "operator-added",
+          "checks": 8,
+          "passed": true
+        },
+        {
+          "phase": "operator-completed-readback",
+          "checks": 9,
+          "passed": true
+        },
+        {
+          "phase": "operator-disposal",
+          "checks": 9,
+          "passed": true
+        },
+        {
+          "phase": "reviewer-addsign",
+          "checks": 11,
+          "passed": true
+        },
+        {
+          "phase": "reviewer-after-added",
+          "checks": 8,
+          "passed": true
+        },
+        {
+          "phase": "reviewer-early-probe",
+          "checks": 2,
+          "passed": true
+        },
+        {
+          "phase": "reviewer-final",
+          "checks": 8,
+          "passed": true
+        }
+      ],
+      "allSixComponentsAndActualDescendantsZero": true,
+      "original398ModelsUnchanged": true,
+      "configurationAndFrontendRestored": true,
+      "actualHostSHA256": "81aa9589f4c42a38f70ef472f593026a7789c20617459ba21842577866edb4bf",
+      "actualBrowserSHA256": "92ecde50474bc8699f3ca475023d93db5f67069084771ceb04d58d084b76dfdf"
+    },
+    "r77": {
+      "phases": [
+        {
+          "phase": "operator",
+          "checks": 20,
+          "passed": true
+        },
+        {
+          "phase": "operator-added",
+          "checks": 8,
+          "passed": true
+        },
+        {
+          "phase": "operator-completed-readback",
+          "checks": 9,
+          "passed": true
+        },
+        {
+          "phase": "operator-disposal",
+          "checks": 9,
+          "passed": true
+        },
+        {
+          "phase": "operator-membership-unavailable",
+          "checks": 8,
+          "passed": true
+        },
+        {
+          "phase": "reviewer-addsign",
+          "checks": 11,
+          "passed": true
+        },
+        {
+          "phase": "reviewer-after-added",
+          "checks": 8,
+          "passed": true
+        },
+        {
+          "phase": "reviewer-early-probe",
+          "checks": 2,
+          "passed": true
+        },
+        {
+          "phase": "reviewer-final",
+          "checks": 8,
+          "passed": true
+        }
+      ],
+      "allSixComponentsAndActualDescendantsZero": true,
+      "original398ModelsUnchanged": true,
+      "configurationAndFrontendRestored": true,
+      "actualHostSHA256": "88c9c4af5ce776a332f2797568bff02d866065e41dd91d90095f8366ee3b7489",
+      "actualBrowserSHA256": "8efb83a989056097279135fae960aa60ad9a10b010ea92ad9793e40287070713"
+    },
+    "r78": {
+      "phases": [
+        {
+          "phase": "operator",
+          "checks": 20,
+          "passed": true
+        },
+        {
+          "phase": "operator-added",
+          "checks": 8,
+          "passed": true
+        },
+        {
+          "phase": "operator-completed-readback",
+          "checks": 9,
+          "passed": true
+        },
+        {
+          "phase": "operator-disposal",
+          "checks": 9,
+          "passed": true
+        },
+        {
+          "phase": "operator-membership-unavailable",
+          "checks": 8,
+          "passed": true
+        },
+        {
+          "phase": "operator-other-node-link",
+          "checks": 2,
+          "passed": true
+        },
+        {
+          "phase": "reviewer-addsign",
+          "checks": 11,
+          "passed": true
+        },
+        {
+          "phase": "reviewer-after-added",
+          "checks": 8,
+          "passed": true
+        },
+        {
+          "phase": "reviewer-early-probe",
+          "checks": 2,
+          "passed": true
+        },
+        {
+          "phase": "reviewer-final",
+          "checks": 8,
+          "passed": true
+        }
+      ],
+      "allSixComponentsAndActualDescendantsZero": true,
+      "original398ModelsUnchanged": true,
+      "configurationAndFrontendRestored": true,
+      "actualHostSHA256": "3c76fa203b8a7c0b08a874cd6d45634bb57a637f11471026373538f093f43a86",
+      "actualBrowserSHA256": "b9c821e53b0a1a6a0ed928dc9c1ab94970244b3b62f1484ba98ddced6bbad79d"
+    }
+  },
+  "originalBackendAlreadyRejectedEarlyApproval": true,
+  "originalUIStillExposedStaleApproval": true,
+  "candidateStaleOriginalReviewerDetail": {
+    "sameProcessDifferentOperatorLinkChecked": false,
+    "earlyApprovalIncorrectlyAccepted": false,
+    "pendingListContainedInstance": false,
+    "allPendingPagesScanned": true,
+    "originalSavedDetailApprovalVisible": false,
+    "oneEarlyApprovalProbeSubmitted": false,
+    "HTTPStatus": null,
+    "businessCode": null,
+    "backendApprovalRejected": false,
+    "UIBlocksEarlyApproval": true,
+    "businessTaskAndAuditRecordSignatureUnchanged": true,
+    "addedReviewerNotYetProcessed": true
+  },
+  "candidateSameProcessOtherOperatorDetail": {
+    "sameProcessDifferentOperatorLinkChecked": true,
+    "earlyApprovalIncorrectlyAccepted": false,
+    "pendingListContainedInstance": true,
+    "allPendingPagesScanned": true,
+    "originalSavedDetailApprovalVisible": false,
+    "oneEarlyApprovalProbeSubmitted": false,
+    "HTTPStatus": null,
+    "businessCode": null,
+    "backendApprovalRejected": false,
+    "UIBlocksEarlyApproval": true,
+    "businessTaskAndAuditRecordSignatureUnchanged": true,
+    "addedReviewerNotYetProcessed": true
+  },
+  "candidateActiveReviewerLookupFailure": {
+    "passed": true,
+    "onlyOnePendingLookupFailureInjected": true,
+    "normalOwnActiveRole": true,
+    "approvalFormHidden": true,
+    "retryMessageVisible": true,
+    "auditRequests": 0,
+    "taskEventFileAndFeedbackPreserved": true
+  },
+  "candidateActualFullAddsignChainCompleted": true,
+  "candidateNormalInitiatorAndCompletedReadbackPassed": true,
+  "sourceAndGraph": {
+    "at": "2026-11-02T18:34:32.388408+08:00",
+    "passed": true,
+    "compiledFileCount": 338,
+    "localAssetReferencesChecked": 1522,
+    "missingAssets": 0,
+    "exactR33CompilerSourceDelta": [
+      "src/components/workflow/info.vue"
+    ],
+    "sourceRestored": true,
+    "candidateVueIndependentlyRegenerated": true,
+    "candidateSHA256": "273cf0fb1f9e691cd2e3f585bd67a29d95b82f9dd1f95b3d1ef9a593f6a9c510",
+    "membershipMatchesProcessAndExactOperator": true,
+    "publicInstalled": false,
+    "wholeAcceptance": false
+  },
+  "beforeAddsignIndependentOpinionStillMissing": true,
+  "publicVersion": "R33",
+  "publicInstalled": false,
+  "transportAndNewUpdaterFullPreflightPending": true,
+  "publicGitFixed27PendingUnchanged": true,
+  "newCandidateIncludedInPrior27": false,
+  "desktopInputSent": false,
+  "fullCloneReady": false,
+  "ownNormallyClosedTestProfilesRemoved": 27,
+  "onlyOwnedCacheRemovedNoSourceDataDeleted": true
+}

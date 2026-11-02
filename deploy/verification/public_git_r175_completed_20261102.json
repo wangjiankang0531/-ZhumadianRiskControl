@@ -1,0 +1,30 @@
+{
+  "schema": "xnby.r175.fixed-approved-public-source-completed.v1",
+  "at": "2026-11-02T18:47:25.165370+08:00",
+  "approvalQuestionId": "call_b2d1d1f8c75e48d2833fd3feeea16402",
+  "approvalAnswer": "批准上述27文件公开同步，复用现有分支",
+  "files": 27,
+  "bytes": 248180,
+  "manifestSHA256": "106acb829d5d5c7310dd0fd2ac3020125091d76817e40cf3e515d2121a537e21",
+  "application": {
+    "repository": "wangjiankang0531/-ZhumadianRiskControl",
+    "branch": "review/workplace-r19-verified-partial-20261031",
+    "soleParent": "cba03d842a895003f4d47eee6f1ad919326bbc18",
+    "tree": "365ffb0085046fa4e282ca0478781d90cc6974ac",
+    "commit": "c67c17fc0397e0c2e94cea3a71ccf2d866f4d0f6"
+  },
+  "engine": {
+    "repository": "wangjiankang0531/-XNBYEngine",
+    "branch": "review/workplace-r19-verified-progress-20261031",
+    "soleParent": "4309ab94494786ef2757985eb12fcb43fc37d3a5",
+    "tree": "a937295c1d57c100fdcb85540f62057bc35cb03e",
+    "commit": "5a4e3bcebe80e8a1d2de081d82b14ef4dcec7ed7"
+  },
+  "all27UTF8BlobBytesCompleteRecursiveTreeClosureVerified": true,
+  "soleParentsTreesAndFinalRefsReadBack": true,
+  "sameExistingBranchesOnly": true,
+  "mainOtherBranchesOrPrivateAncestryChanged": false,
+  "subsequentR176ThroughR179Included": false,
+  "earlierAutoReviewRejectionResolvedByExplicitApproval": true,
+  "publicDeploymentPerformedByThisSync": false
+}

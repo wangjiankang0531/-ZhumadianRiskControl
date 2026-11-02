@@ -1,0 +1,224 @@
+{
+  "schema": "xnby.r190.actual-r34-deployment-and-retention.v1",
+  "at": "2026-11-02T20:37:16.396836+08:00",
+  "fixedTransportFiles": 8,
+  "fixedTransportBytes": 1964748,
+  "fixedManifestSHA256": "d6b68f0f16a292b9ec4470581a456522660c451cc5ad9130bb4d04849be4c9af",
+  "publicVersion": "R34",
+  "actualPreflightAndNormalSixComponentDeploymentPassed": true,
+  "writes": 176,
+  "obsoleteRemovals": 172,
+  "publicHTTPS": {
+    "schema": "xnby.r34.public-retained-gateway-https.v1",
+    "at": "2026-11-02T20:04:09.140440+08:00",
+    "allPassed": true,
+    "staticFiles": 1174,
+    "unchangedWireFiles": 1162,
+    "exactRetainedGatewayDifferences": 12,
+    "staticFileFailures": [],
+    "allWireDifferencesDerivedFromExactRetainedBrandingOrIconAlias": true,
+    "retainedProjectBrandingSHA256": "e9e44d649dde71b89d1c2d5a9c93a11489d17811ecd46f83712f48be8b2f2af2",
+    "retainedHeaderBrandingSHA256": "0e68e1ce9bfb20b2ef77cb3c6fcc4035593438fdbea027166748755ac066c2f2",
+    "specialChecks": [
+      {
+        "path": "/zhumadian",
+        "status": 301,
+        "expectedStatus": 301,
+        "location": "/zhumadian/"
+      },
+      {
+        "path": "/zhumadian/",
+        "status": 200,
+        "expectedStatus": 200
+      },
+      {
+        "path": "/zhumadian/home",
+        "status": 200,
+        "expectedStatus": 200
+      },
+      {
+        "path": "/zhumadian/emergency/",
+        "status": 200,
+        "expectedStatus": 200
+      },
+      {
+        "path": "/zhumadian/emergency/home",
+        "status": 200,
+        "expectedStatus": 200
+      },
+      {
+        "path": "/zhumadian/emergency/home/index",
+        "status": 200,
+        "expectedStatus": 200
+      },
+      {
+        "path": "/zhumadian/emergency/emergencyResources/materials",
+        "status": 200,
+        "expectedStatus": 200
+      },
+      {
+        "path": "/zhumadian/emergency/emergencyResources/firstAidTeams",
+        "status": 200,
+        "expectedStatus": 200
+      },
+      {
+        "path": "/zhumadian/emergency/dutyManage/dutyPersonnel",
+        "status": 200,
+        "expectedStatus": 200
+      },
+      {
+        "path": "/zhumadian/emergency/dutyManage/dutySchedule",
+        "status": 200,
+        "expectedStatus": 200
+      },
+      {
+        "path": "/zhumadian/emergency/dutyManage/dutyLog",
+        "status": 200,
+        "expectedStatus": 200
+      },
+      {
+        "path": "/zhumadian/api/jnpf/oauth/getLoginConfig",
+        "status": 200,
+        "expectedStatus": 200,
+        "businessCode": 200
+      }
+    ],
+    "brandedEntryAndWorkflowFacadeChecks": [
+      {
+        "path": "/zhumadian/branding-20261025/assets/css/index-ClWHaJx5.css",
+        "status": 200,
+        "expectedSHA256": "4672b6a197d7ab95683739a1dd1677b19dd0c117815f4bcfdec4244de5cd1b66",
+        "exactExpectedGatewayBytes": true
+      },
+      {
+        "path": "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js",
+        "status": 200,
+        "expectedSHA256": "3fda69730a678c07a2c83117eae03796f9fd3ef5d34a5928cc578a8c957806df",
+        "exactExpectedGatewayBytes": true
+      },
+      {
+        "path": "/zhumadian/emergency/branding-20261025/assets/css/index-D0NHlCez.css",
+        "status": 200,
+        "expectedSHA256": "675d19500149b12bd203e210c359040c5b48f48b8b3f8818f521f1228692992a",
+        "exactExpectedGatewayBytes": true
+      },
+      {
+        "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-Cjs8pfHZ.js",
+        "status": 200,
+        "expectedSHA256": "aa15dc0df33ea74f57f23869e1b36ef916c462d1db3b67250d2d589b67dc0b45",
+        "exactExpectedGatewayBytes": true
+      }
+    ],
+    "tlsDefaultCertificateVerificationEnabled": true,
+    "elapsedSeconds": 57.22,
+    "actualAuthenticatedPublicBusinessFlowAccepted": false,
+    "credentialsCookiesTokensAccountsSessionsBusinessRowsOrRawLogsRead": false,
+    "publicApplicationCodeChangedByVerifier": false
+  },
+  "actualNormalLoginHomeOnly": {
+    "schema": "xnby.r34.public-authenticated-home-partial.v1",
+    "at": "2026-11-02T20:28:52.663551+08:00",
+    "passed": true,
+    "scope": "normal authorized login, initial emergency home, project SVG and no visible auth error only",
+    "checks": [
+      {
+        "case": "normal-original-public-login-or-same-owned-profile-session-opens-emergency-home",
+        "passed": true
+      },
+      {
+        "case": "actual-public-logo-matches-project-shield-svg-not-original-company",
+        "passed": true
+      },
+      {
+        "case": "no-visible-public-authentication-unavailable-error",
+        "passed": true
+      }
+    ],
+    "normalBrowserExitZeroAndActualDescendantsZero": true,
+    "businessOperationsSubmitted": false,
+    "publicWorkflowDetailsAccepted": false,
+    "publicPendingAndInitiatedDetailReadbackStillPending": true,
+    "allPublicWorkflowUIAccepted": false,
+    "allPriorFailedProbeRecordsPreserved": true,
+    "retentionBasis": "exact current release and readiness, full HTTPS bytes, passing normal-login home checks, explicit user only-latest instruction; no claim that pending details or whole modules passed"
+  },
+  "retention": {
+    "schema": "xnby.public.r34.version-retention-result.v1",
+    "activeRelease": "R34",
+    "passed": true,
+    "retainedOnlyActiveBusinessAndPlatformRuntime": true,
+    "oldCodeBackupsRemoved": true,
+    "ftpContainsNoExpiredOrFailedPackages": true,
+    "filesRemoved": 1340,
+    "logicalBytesRemoved": 51968187,
+    "directoriesRemoved": 13,
+    "categories": {
+      "oldUpdateAttemptDirectories": 2,
+      "oldCodeBackupDirectories": 2,
+      "extractedStagingDirectories": 4,
+      "stoppedRuntimeDirectories": 4,
+      "failedFTPTransportDirectories": 0,
+      "retiredFTPTransportDirectories": 2
+    },
+    "allAbsoluteTargetsInsideExplicitRootsAndNoReparse": true,
+    "activeDatabaseUploadsConfigurationAndIISChanged": false,
+    "noForceTermination": true,
+    "historicalVersionRollbackBackupsRemovedPerUserInstruction": true,
+    "originalTenReadinessAndControllerUnchanged": true,
+    "databaseIdentityMatched": true,
+    "observedFreeDelta": 53555200
+  },
+  "postRetentionHTTPS": {
+    "at": "2026-11-02T20:33:27.759757+08:00",
+    "passed": true,
+    "defaultTLSCertificateVerification": true,
+    "afterActualOldVersionDeletion": true,
+    "checks": [
+      {
+        "path": "/zhumadian",
+        "status": 301,
+        "passed": true
+      },
+      {
+        "path": "/zhumadian/",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "path": "/zhumadian/home",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "path": "/zhumadian/emergency/",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "path": "/zhumadian/emergency/home/index",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "path": "/zhumadian/emergency/workflow/flowTodo",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "path": "/zhumadian/api/jnpf/oauth/getLoginConfig",
+        "status": 200,
+        "passed": true,
+        "originalLoginConfigBusinessCode": 200
+      }
+    ],
+    "publicAuthenticatedWorkflowDetailAccepted": false,
+    "businessRowsOrCredentialsRead": false
+  },
+  "publicPendingOrHandledDetailAccepted": false,
+  "fullNangangModuleAcceptance": false,
+  "noPublicBusinessOperationsSubmitted": true,
+  "desktopHandedBack": true,
+  "publicGit27AlreadyCompleted": true,
+  "subsequentR178ThroughR190PublicGitPushed": false,
+  "fullCloneReady": false
+}
