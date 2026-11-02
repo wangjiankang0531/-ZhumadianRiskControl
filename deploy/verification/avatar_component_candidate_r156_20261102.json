@@ -1,0 +1,252 @@
+{
+  "at": "2026-11-02T10:40:09.526562+08:00",
+  "schema": "xnby.r156.avatar-component-local-candidate.v1",
+  "actualComponent": {
+    "schema": "xnby.r156.actual-header-avatar-component.v1",
+    "passed": true,
+    "failure": null,
+    "checks": 20,
+    "results": [
+      {
+        "case": "unchanged-original-truthy-broken-image-leaves-blank-avatar",
+        "passed": true,
+        "hasImage": false,
+        "imageLoaded": false,
+        "hasDefaultIcon": false,
+        "textVisible": true,
+        "width": 28,
+        "height": 28,
+        "errors": []
+      },
+      {
+        "case": "empty-image-keeps-original-native-default-user-icon",
+        "passed": true,
+        "hasImage": false,
+        "imageLoaded": false,
+        "hasDefaultIcon": true,
+        "textVisible": true,
+        "width": 28,
+        "height": 28,
+        "errors": []
+      },
+      {
+        "case": "empty-native-image-response-keeps-default-icon",
+        "passed": true,
+        "hasImage": false,
+        "imageLoaded": false,
+        "hasDefaultIcon": true,
+        "textVisible": true,
+        "width": 28,
+        "height": 28,
+        "errors": []
+      },
+      {
+        "case": "native-image404-keeps-default-icon",
+        "passed": true,
+        "hasImage": false,
+        "imageLoaded": false,
+        "hasDefaultIcon": true,
+        "textVisible": true,
+        "width": 28,
+        "height": 28,
+        "errors": []
+      },
+      {
+        "case": "legacy-relative-native-image-is-project-scoped-and-rendered",
+        "passed": true,
+        "hasImage": true,
+        "imageLoaded": true,
+        "hasDefaultIcon": false,
+        "textVisible": true,
+        "width": 28,
+        "height": 28,
+        "errors": []
+      },
+      {
+        "case": "same-origin-absolute-native-image-is-project-scoped-and-rendered",
+        "passed": true,
+        "hasImage": true,
+        "imageLoaded": true,
+        "hasDefaultIcon": false,
+        "textVisible": true,
+        "width": 28,
+        "height": 28,
+        "errors": []
+      },
+      {
+        "case": "other-already-working-image-path-is-kept",
+        "passed": true,
+        "hasImage": true,
+        "imageLoaded": true,
+        "hasDefaultIcon": false,
+        "textVisible": true,
+        "width": 28,
+        "height": 28,
+        "errors": []
+      },
+      {
+        "case": "later-image-failure-keeps-real-user-label-and-default-icon",
+        "passed": true,
+        "hasImage": false,
+        "imageLoaded": false,
+        "hasDefaultIcon": true,
+        "textVisible": true,
+        "width": 28,
+        "height": 28,
+        "errors": []
+      },
+      {
+        "case": "good-image-after-failure-replaces-fallback-again",
+        "passed": true,
+        "hasImage": true,
+        "imageLoaded": true,
+        "hasDefaultIcon": false,
+        "textVisible": true,
+        "width": 28,
+        "height": 28,
+        "errors": []
+      },
+      {
+        "case": "normalizer-boundary-0",
+        "passed": true
+      },
+      {
+        "case": "normalizer-boundary-1",
+        "passed": true
+      },
+      {
+        "case": "normalizer-boundary-2",
+        "passed": true
+      },
+      {
+        "case": "normalizer-boundary-3",
+        "passed": true
+      },
+      {
+        "case": "normalizer-boundary-4",
+        "passed": true
+      },
+      {
+        "case": "normalizer-boundary-5",
+        "passed": true
+      },
+      {
+        "case": "normalizer-boundary-6",
+        "passed": true
+      },
+      {
+        "case": "normalizer-boundary-7",
+        "passed": true
+      },
+      {
+        "case": "normalizer-boundary-8",
+        "passed": true
+      },
+      {
+        "case": "normalizer-boundary-9",
+        "passed": true
+      },
+      {
+        "case": "candidate-never-repeats-wrong-site-root-native-image-request",
+        "passed": true
+      }
+    ],
+    "imageRequests": [
+      {
+        "path": "/api/file/Image/userAvatar/001.png",
+        "status": 404
+      },
+      {
+        "path": "/zhumadian/api/jnpf/file/Image/userAvatar/001.png",
+        "status": 200,
+        "bytes": 0
+      },
+      {
+        "path": "/zhumadian/api/jnpf/file/Image/userAvatar/missing.svg",
+        "status": 404
+      },
+      {
+        "path": "/zhumadian/api/jnpf/file/Image/userAvatar/ok.svg",
+        "status": 200,
+        "bytes": 110
+      },
+      {
+        "path": "/already-scoped/good.svg",
+        "status": 200,
+        "bytes": 110
+      },
+      {
+        "path": "/zhumadian/api/jnpf/file/Image/userAvatar/missing2.svg",
+        "status": 404
+      },
+      {
+        "path": "/zhumadian/api/jnpf/file/Image/userAvatar/001.png",
+        "status": 200,
+        "bytes": 0
+      }
+    ],
+    "actualOriginalHeaderVueAndElementPlusAndOriginalIconComponentsUsed": true,
+    "twoRolesIdenticalOriginalAndAdaptedComponentPins": true,
+    "unrelatedTestDoubles": [
+      "user",
+      "router",
+      "i18n",
+      "common",
+      "password",
+      "dropdown-menu-wrapper"
+    ],
+    "normalOriginalPhotoRestorationNotClaimed": true,
+    "fullOriginalApplicationBuildNotYetPassed": true,
+    "originalReferenceBytesUnchanged": true,
+    "normalBrowserExitCode": 0,
+    "forceTerminationUsed": false,
+    "desktopOrInstalledApplicationChanged": false
+  },
+  "outerTerminal": {
+    "exitCode": 0,
+    "actualDescendantsZeroBeforeClose": true,
+    "forceTerminationUsed": false
+  },
+  "isolatedSourceRestoreChecks": [
+    "normal-context-exact-restore",
+    "synthetic-build-failure-exact-restore",
+    "reference-root-refused-before-write"
+  ],
+  "sourcePins": {
+    "roles": {
+      "security_pc": {
+        "original": "D:\\Project\\Zhumadian\\Reference\\02安全风险管控平台\\代码及开发环境搭建移交资料\\源码包\\安全风险管控平台前台代码\\security-risk-web\\src\\layout\\components\\header-user.vue",
+        "candidate": "D:\\Project\\Zhumadian\\work\\user_feedback_20261031\\avatar-source-r156\\security_pc-candidate.vue",
+        "beforeSHA256": "1176f65a5db7361ebbea1c542c30c117b4f77b291cd385eb7214e32b94fa37bc",
+        "candidateSHA256": "5ec7dd353ecdd6e67880d8940e2c42f80dc12e7a851174b1390f9eb80a726bb3"
+      },
+      "emergency_pc": {
+        "original": "D:\\Project\\Zhumadian\\Reference\\02安全风险管控平台\\代码及开发环境搭建移交资料\\源码包\\敏捷应急管理前台代码\\agile-emergency-response-dev\\src\\layout\\components\\header-user.vue",
+        "candidate": "D:\\Project\\Zhumadian\\work\\user_feedback_20261031\\avatar-source-r156\\emergency_pc-candidate.vue",
+        "beforeSHA256": "1176f65a5db7361ebbea1c542c30c117b4f77b291cd385eb7214e32b94fa37bc",
+        "candidateSHA256": "5ec7dd353ecdd6e67880d8940e2c42f80dc12e7a851174b1390f9eb80a726bb3"
+      }
+    },
+    "helper": "D:\\Project\\Zhumadian\\Application\\tools\\frontend\\OriginalHeaderAvatarSource.ts",
+    "helperSHA256": "1ee6ad59c92aea246ffe339ebf63ee14ad522405a178f7996e840387a270193d",
+    "adapterSHA256": "645a60407207498409d739b5c92b2f38072faabe98903f0ca55fa963f940e1a6",
+    "originalReferencesKept": true
+  },
+  "actualExecutedBrowserSourceSHA256": "39b850ca992e6fe7415b179e2f56a4ea2310b0c8734a6b1684142cf77457bcd0",
+  "fullApplicationBuildPassed": false,
+  "installedOrPublicChanged": false,
+  "originalPhotoRestored": false,
+  "newTencentCompletionCells": 0,
+  "priorRunsNotClaimedPassed": [
+    "browser-r1",
+    "browser-r2",
+    "browser-r3",
+    "browser-r4",
+    "browser-r5",
+    "browser-r6"
+  ],
+  "r4TestHTTPServerUnhandledExceptionAndActualDescendantsZero": true,
+  "desktopInputSent": false,
+  "publicGitRemainsApproved37Only": true,
+  "fullCloneReady": false
+}

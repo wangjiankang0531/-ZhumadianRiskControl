@@ -1,0 +1,184 @@
+{
+  "at": "2026-11-02T11:09:17.562931+08:00",
+  "schema": "xnby.r158.fixed-R32-avatar-ready-local.v1",
+  "passedLocalPreparation": true,
+  "transport": {
+    "passedPreparation": true,
+    "manifestSHA256": "2638bff9346d03bcb55d4f7b0bc866d7628c5d41bf387869fec5aa5edeecce6f",
+    "transportFiles": 8,
+    "transportBytes": 4718225,
+    "writes": 695,
+    "removedOldFrontendFiles": 690,
+    "totalInstallPaths": 1385,
+    "serverPreflightPassed": false,
+    "publicUploadedOrInstalled": false
+  },
+  "compositionNegativeCases": 26,
+  "actualRecoveryScenarios": 8,
+  "foreignDriftRefusedBeforeAnyRestore": true,
+  "fullProgramFilesVerified": 15554,
+  "fullPreflight": {
+    "schema": "xnby.r158.avatar-full-program-preflight.v1",
+    "allPassed": true,
+    "cases": [
+      {
+        "case": "full-R31-program-view-and-20-controls-exact-composition",
+        "passed": true
+      },
+      {
+        "case": "exact-retained-candidate-parameters-and-primary-budget-before-services",
+        "passed": true
+      },
+      {
+        "case": "invalid-primary-layout-refused-with-no-service-action",
+        "passed": true
+      },
+      {
+        "case": "retained-program-drift-refused:runtime/jdk17/release",
+        "passed": true
+      },
+      {
+        "case": "retained-program-drift-refused:payload/business/run-template/classes/mapper/FirstAidTeamMembersMapper.xml",
+        "passed": true
+      },
+      {
+        "case": "preexisting-new-main-frontend-refused",
+        "passed": true
+      }
+    ],
+    "fullProgramFilesVerified": 15554,
+    "fullProgramLogicalBytes": 1403680415,
+    "oldAndNewControlFiles": 20,
+    "updaterSHA256": "97139494d048254cfa559d58eb5125a00ff370c3422acebe59a216e7a37fe6f3",
+    "candidateInstallPaths": 1385,
+    "actualR31ProgramAndR32CandidatePinsRetained": true,
+    "onlySyntheticPrivateAndLocalTargetMetadataAdapted": true,
+    "realPublicPrivateIdentityOrIISPreflightPassed": false,
+    "servicesOrDatabasesStarted": false,
+    "protectedUserRootsReadOrChanged": false,
+    "readOnlyHardlinks": 14881,
+    "mutableIndependentCopies": 693,
+    "sourceProgramsUnchanged": true
+  },
+  "actualNativeSDKBrowserSessions": [
+    {
+      "role": "emergency_pc",
+      "checks": 6,
+      "normalChromeExitCode": 0,
+      "wrongRootAvatarRequests": 0
+    },
+    {
+      "role": "emergency_pc",
+      "checks": 6,
+      "normalChromeExitCode": 0,
+      "wrongRootAvatarRequests": 0
+    },
+    {
+      "role": "security_pc",
+      "checks": 6,
+      "normalChromeExitCode": 0,
+      "wrongRootAvatarRequests": 0
+    },
+    {
+      "role": "security_pc",
+      "checks": 6,
+      "normalChromeExitCode": 0,
+      "wrongRootAvatarRequests": 0
+    }
+  ],
+  "actualNewUpdaterNormalStopPassed": true,
+  "allSixComponentsAndBrowsersNormalZeroAndActualDescendantsZero": true,
+  "original398ModelsUnchanged": true,
+  "connectionBudgetAndCapacity": {
+    "maxConnections": 24,
+    "Connection_errors_max_connections": 0,
+    "Max_used_connections": 4,
+    "Threads_connected": 4
+  },
+  "actualOwnR32Candidate1385PathPreflightReplacementAndExactRestorePassed": true,
+  "fixedTransportIndependentVerification": {
+    "schema": "xnby.r158.independent-fixed-avatar-delivery.v1",
+    "passed": true,
+    "transportFiles": 8,
+    "transportBytes": 4718225,
+    "manifestSHA256": "2638bff9346d03bcb55d4f7b0bc866d7628c5d41bf387869fec5aa5edeecce6f",
+    "allArchiveMembersAndDeltaPinsExact": true,
+    "writes": 695,
+    "obsoleteFrontendRemovals": 690,
+    "allOther19ControlsAndAllNonFrontendPayloadBytesKept": true,
+    "priorLifecycleBackupRecoveryFunctionsASTUnchanged": true,
+    "candidateBudgetBeforeOwnerHealthAndApply": true,
+    "exactRecoveryIdentityCases": 5,
+    "publicServerPreflightAndTLSStillPending": true,
+    "fullCloneReady": false
+  },
+  "fixedWrapperOrderVerification": {
+    "schema": "xnby.r158.actual-fixed-wrapper-order.v1",
+    "allPassed": true,
+    "cases": [
+      {
+        "case": "invalid-original-primary-layout-before-owner-health-and-services",
+        "passed": true,
+        "events": [
+          "load_bundle_explicit_fixture_identity_spy"
+        ],
+        "refusal": "ORIGINAL_PLATFORM_PRIMARY_LAYOUT_REQUIRED",
+        "serviceActionCalls": 0,
+        "realFixedArchiveExtractedAndExactRetainedParameterCodeExecuted": true
+      },
+      {
+        "case": "valid-retained-primary-check-only-never-deploys",
+        "passed": true,
+        "events": [
+          "load_bundle_explicit_fixture_identity_spy",
+          "owned_ready_explicit_spy",
+          "health_explicit_spy"
+        ],
+        "refusal": null,
+        "serviceActionCalls": 0,
+        "realFixedArchiveExtractedAndExactRetainedParameterCodeExecuted": true
+      }
+    ],
+    "wrapperSHA256": "1012882f70df3b2359b45b4f03c2b8e1e431b315a2f64d10691a5204b264ef39",
+    "updaterSHA256": "97139494d048254cfa559d58eb5125a00ff370c3422acebe59a216e7a37fe6f3",
+    "manifestSHA256": "2638bff9346d03bcb55d4f7b0bc866d7628c5d41bf387869fec5aa5edeecce6f",
+    "realFixedArchiveAndCandidateBudgetUsed": true,
+    "identityAndReadinessExplicitSpies": true,
+    "actualFullLoadBundleSeparatelyPassed15554ProgramFiles": true,
+    "fixtureConfigurationBytesRestored": true,
+    "servicesOrDatabasesStarted": false,
+    "publicOrProtectedRootsOperated": false,
+    "actualPublicServerPreflightStillPending": true
+  },
+  "ownConfigAndBusinessRowsNotChangedByCandidateInstallation": true,
+  "currentPublicReleaseStillR31": true,
+  "newPublicUploadDeploymentOrAuthenticatedIISAcceptance": false,
+  "newPublicGitPushed": false,
+  "newTencentCellsWritten": 0,
+  "originalMissingPhotoFileRestored": false,
+  "actualFullNangangTemplatesRolesAndWholeBusinessAccepted": false,
+  "wholeModulesAccepted": 0,
+  "fullCloneReady": false,
+  "sourceFiles": {
+    "tools/prepare_avatar_updater_r158_20261102.py": "ab63e9395cb5f214ab1c4b38d4b618877fdcaa0c70fd83cb10ff99121c51d1b4",
+    "tools/r32_avatar_contract.py.in": "36097bb3b42a4190f3a258ccaff677db1a62cf78a9b2fcbbe6d49143aeaa6cb4",
+    "tools/prepare_avatar_sparse_r158_20261102.py": "80701b7d5b58775822f1678e91c8667fa4eb85a50b34c5dee66019f7bba5c5bc",
+    "tools/verify_avatar_full_program_r158_20261102.py": "2e2a7e6ed30a118f4a2ddba7d2fda3c6e7180176fb988b4c7cfeb1562ed41b88",
+    "tools/prepare_avatar_runtime_r158_20261102.py": "82721d2a658648b86e0a84d707f19e0e625ef35bb7f8dc79fcad2e7f1b15e628",
+    "tools/generate_avatar_runtime_r158_20261102.py": "cf8bd227268934358a05fae2a84d10712f44cf484b584081a55792845942c69b",
+    "tools/verify_avatar_controller_r158_20261102.py": "46acb304889092d1ca951024ec1fd0e5d749c1732d117247f72bb5020576f835",
+    "tools/verify_avatar_runtime_r158_20261102.mjs": "94d5221ecf3f6218c412830d64022ce7cdf88c4b16582b046e5b26f2f660496e",
+    "tools/run_avatar_controller_r158_20261102.py": "1f0741e12ac95ab74c857f922f62dd70f36d722f52989f3fd4de70bc0b421525",
+    "tools/restore_avatar_runtime_r158_20261102.py": "85d05a26926a3dd954d9929a31272c1b52f761f0a7020b4ba09a2279b49346c0",
+    "tools/build_avatar_delivery_r158_20261102.py": "7025bc0b0cf125395af23c98fff49841b41011b67a7c7298ff257c477e427b6f",
+    "tools/verify_avatar_delivery_r158_20261102.py": "1751000ad5a7a60453eb6f76c58bc46725312be1fcc8c0d1fe9c0a00d8062a87",
+    "tools/verify_avatar_transport_order_r158_20261102.py": "714cd6b012cef849f16a84668b6faa7649ded799839f477f1f66ea0fbe29ef3f",
+    "tools/original_public_test_update_r32_20261102.py": "97139494d048254cfa559d58eb5125a00ff370c3422acebe59a216e7a37fe6f3",
+    "deploy/public_test_avatar_r32_20261102/deploy_avatar_r32.py": "1012882f70df3b2359b45b4f03c2b8e1e431b315a2f64d10691a5204b264ef39",
+    "deploy/public_test_avatar_r32_20261102/Check_Only_Avatar_R32.cmd": "e84a9e5ce5b420225d041fa26b62f2404b173decd1064b54d41c0dd0f8527a65",
+    "deploy/public_test_avatar_r32_20261102/Deploy_Avatar_R32.cmd": "e954ae5113659f197ea0394e49391906c827853847693866f22560aecd610bfc",
+    "deploy/public_test_avatar_r32_20261102/Recover_This_Avatar_R32.cmd": "067a4608da86e31a9876152679968541f6e80d02dbf310891dbcf9816d9516f5",
+    "deploy/public_test_avatar_r32_20261102/web.config": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20",
+    "deploy/public_test_avatar_r32_20261102/delivery-manifest.json": "2638bff9346d03bcb55d4f7b0bc866d7628c5d41bf387869fec5aa5edeecce6f"
+  }
+}

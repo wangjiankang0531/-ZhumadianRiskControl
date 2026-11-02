@@ -1,0 +1,202 @@
+{
+  "at": "2026-11-02T10:26:05.159303+08:00",
+  "schema": "xnby.r155.actual-attachment-native-workflow.v1",
+  "passed": true,
+  "r154r1ActualFiveBrowserPhasesPassed": true,
+  "r154r5PreviouslyClosedSameInstanceAfterNormalServiceRestartReadbackPassed": true,
+  "actualOriginalUploadComponentFileControllerObjectStoreAndTaskSaveUsed": true,
+  "syntheticFileBytes": 68,
+  "attachmentURLPersistedAcrossFeedbackAndTwoNativeApprovals": true,
+  "actualOriginalNativeAnchorMouseClickAndDiskSHA256IdentityPassed": true,
+  "noAuthorizationHeaderInjectedIntoNativeFileNavigation": true,
+  "allActualRecordTimeNodeActorCellsComparedToNativeDTO": {
+    "operator": {
+      "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+      "passed": true,
+      "rows": 2,
+      "actualTimedRows": 1,
+      "actualUntimedRows": 1,
+      "publicG6Reproduced": false
+    },
+    "operator-disposal": {
+      "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+      "passed": true,
+      "rows": 2,
+      "actualTimedRows": 1,
+      "actualUntimedRows": 1,
+      "publicG6Reproduced": false
+    },
+    "reviewer-first": {
+      "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+      "passed": true,
+      "rows": 2,
+      "actualTimedRows": 1,
+      "actualUntimedRows": 1,
+      "publicG6Reproduced": false
+    },
+    "reviewer-final": {
+      "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+      "passed": true,
+      "rows": 3,
+      "actualTimedRows": 2,
+      "actualUntimedRows": 1,
+      "publicG6Reproduced": false
+    },
+    "operator-readback": {
+      "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+      "passed": true,
+      "rows": 4,
+      "actualTimedRows": 4,
+      "actualUntimedRows": 0,
+      "publicG6Reproduced": false
+    }
+  },
+  "businessAndExactPublishedEngineStates": {
+    "operator": {
+      "passed": true,
+      "actualReleasedSerialTemplateMatched": true,
+      "releasedVersionDefinitionAndDeploymentMatched": true,
+      "serialFinalNodeInPublishedModel": true,
+      "expectedFeedbackPresenceAndContent": true,
+      "originalEngineHistoryHasEndTime": false,
+      "pendingEngineTasks": 1,
+      "originalEngineHistoryRows": 1,
+      "expectedBusinessStatusMatched": true,
+      "phase": "operator",
+      "expectedBusinessStatus": "2",
+      "expectedEngineEnded": false,
+      "ownSyntheticOnly": true,
+      "readOnlyTransactionRolledBack": true,
+      "rawRowsOrCredentialsExported": false,
+      "normalReaderExitCode": 0
+    },
+    "operator-disposal": {
+      "passed": true,
+      "actualReleasedSerialTemplateMatched": true,
+      "releasedVersionDefinitionAndDeploymentMatched": true,
+      "serialFinalNodeInPublishedModel": true,
+      "expectedFeedbackPresenceAndContent": true,
+      "originalEngineHistoryHasEndTime": false,
+      "pendingEngineTasks": 1,
+      "originalEngineHistoryRows": 1,
+      "expectedBusinessStatusMatched": true,
+      "phase": "operator-disposal",
+      "expectedBusinessStatus": "1",
+      "expectedEngineEnded": false,
+      "ownSyntheticOnly": true,
+      "readOnlyTransactionRolledBack": true,
+      "rawRowsOrCredentialsExported": false,
+      "normalReaderExitCode": 0
+    },
+    "reviewer-first": {
+      "passed": true,
+      "actualReleasedSerialTemplateMatched": true,
+      "releasedVersionDefinitionAndDeploymentMatched": true,
+      "serialFinalNodeInPublishedModel": true,
+      "expectedFeedbackPresenceAndContent": true,
+      "originalEngineHistoryHasEndTime": false,
+      "pendingEngineTasks": 1,
+      "originalEngineHistoryRows": 1,
+      "expectedBusinessStatusMatched": true,
+      "phase": "reviewer-first",
+      "expectedBusinessStatus": "1",
+      "expectedEngineEnded": false,
+      "ownSyntheticOnly": true,
+      "readOnlyTransactionRolledBack": true,
+      "rawRowsOrCredentialsExported": false,
+      "normalReaderExitCode": 0
+    },
+    "reviewer-final": {
+      "passed": true,
+      "actualReleasedSerialTemplateMatched": true,
+      "releasedVersionDefinitionAndDeploymentMatched": true,
+      "serialFinalNodeInPublishedModel": true,
+      "expectedFeedbackPresenceAndContent": true,
+      "originalEngineHistoryHasEndTime": true,
+      "pendingEngineTasks": 0,
+      "originalEngineHistoryRows": 1,
+      "expectedBusinessStatusMatched": true,
+      "phase": "reviewer-final",
+      "expectedBusinessStatus": "1",
+      "expectedEngineEnded": true,
+      "ownSyntheticOnly": true,
+      "readOnlyTransactionRolledBack": true,
+      "rawRowsOrCredentialsExported": false,
+      "normalReaderExitCode": 0
+    },
+    "operator-readback": {
+      "passed": true,
+      "actualReleasedSerialTemplateMatched": true,
+      "releasedVersionDefinitionAndDeploymentMatched": true,
+      "serialFinalNodeInPublishedModel": true,
+      "expectedFeedbackPresenceAndContent": true,
+      "originalEngineHistoryHasEndTime": true,
+      "pendingEngineTasks": 0,
+      "originalEngineHistoryRows": 1,
+      "expectedBusinessStatusMatched": true,
+      "phase": "operator-readback",
+      "expectedBusinessStatus": "1",
+      "expectedEngineEnded": true,
+      "ownSyntheticOnly": true,
+      "readOnlyTransactionRolledBack": true,
+      "rawRowsOrCredentialsExported": false,
+      "normalReaderExitCode": 0
+    }
+  },
+  "nativeFinalPendingZeroAndHistoryEnded": true,
+  "original398DefinitionsUnchanged": true,
+  "r1Capacity": {
+    "maxConnections": 24,
+    "Connection_errors_max_connections": 0,
+    "Max_used_connections": 7,
+    "Threads_connected": 6
+  },
+  "r5Capacity": {
+    "maxConnections": 24,
+    "Connection_errors_max_connections": 0,
+    "Max_used_connections": 6,
+    "Threads_connected": 5
+  },
+  "normalClosureForAllFiveRunsIncludingFailedObservers": {
+    "r1": {
+      "sixComponentsNormalZero": true,
+      "actualDescendantsZero": true,
+      "outerCheckPassed": true
+    },
+    "r2": {
+      "sixComponentsNormalZero": true,
+      "actualDescendantsZero": true,
+      "outerCheckPassed": false
+    },
+    "r3": {
+      "sixComponentsNormalZero": true,
+      "actualDescendantsZero": true,
+      "outerCheckPassed": false
+    },
+    "r4": {
+      "sixComponentsNormalZero": true,
+      "actualDescendantsZero": true,
+      "outerCheckPassed": false
+    },
+    "r5": {
+      "sixComponentsNormalZero": true,
+      "actualDescendantsZero": true,
+      "outerCheckPassed": true
+    }
+  },
+  "r2r3r4FailedNativeDownloadChecksNotClaimedPass": true,
+  "causeConfirmedBySameDirectorySameBytesNativeForwardNativePair": true,
+  "onlyTestObserverDownloadDestinationChangedToWindowsPath": true,
+  "productPayloadOriginalSDKAuthConfigurationDatabaseSchemaIISAndPublicChanged": false,
+  "temporaryOwnFakeConfigurationRestoredExactly": true,
+  "userDesktopUsed": false,
+  "publicG6ReproducedOrResolved": false,
+  "originalNangangTemplatesAndFullBusinessAccepted": false,
+  "onlySingle68BytePNGTestedNotAllAttachmentTypesSizesOrFailures": true,
+  "actualNongangRoleTemplateBranchReturnTransferCountersignNotifyAndWholeModuleStillPending": true,
+  "fullCloneReady": false,
+  "executedFivePhaseHostSHA256": "722ee45e40943e48518a5299b80e8621561c091be4a0c3ff5d89f5d64ebb3bf3",
+  "executedFivePhaseBrowserSHA256": "eb5d1f21591d31615736f59efb8868c11ceaa31db60add2addbd5e670e2ef193",
+  "executedRestartReadbackHostSHA256": "0d40be83fe880f9b2f2ba82aedff9afe4a724a87c612172a3c4492b64dda26ab",
+  "executedRestartReadbackBrowserSHA256": "058da162e562f3b42792c74c11f74b5ca1d500404a78af043401fe1cc1a05418"
+}

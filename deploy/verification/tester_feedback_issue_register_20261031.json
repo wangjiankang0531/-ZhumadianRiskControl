@@ -33,12 +33,17 @@
       "description": "巡检任务清单调整排班在一行",
       "descriptionSha256": "c247e8b0d0842c4d7f9eb0d1864c8824b6734d4f3a7fc921647f2b0e329a3784",
       "completionCell": "G3",
-      "status": "R19计划名称单行已修，公网状态标题仍省略；G3不回填，待继续修正",
+      "status": "R21公网正常登录态实际UI通过，原文回填并独立源表回读；待测试者复测",
       "localLayoutVerified": true,
       "publicDeployed": true,
-      "publicVerified": false,
-      "completionWritten": false,
-      "newStatusHeaderEllipsisObservedOnPublic": true
+      "publicVerified": true,
+      "completionWritten": true,
+      "newStatusHeaderEllipsisObservedOnPublic": false,
+      "localTaskHeaderCandidateDeployed": true,
+      "localTaskHeaderCandidateCases": 24,
+      "completionReadBackVerified": true,
+      "publicRevision": "R21",
+      "allThreeHeadersSingleLineOnPublic": true
     },
     {
       "number": 3,
@@ -75,11 +80,16 @@
       "description": "工作流未获取到时间、节点名称及操作者",
       "descriptionSha256": "f7e02361cb203e410fcb4bc877df01b9031596075c2427822b092b2dd30479ba",
       "completionCell": "G6",
-      "status": "待复现",
+      "status": "R154/r1同实例五阶段及r5重启重开原记录三字段逐DTO一致，原反馈场景仍待复现，不回填。",
       "localLayoutVerified": false,
       "publicDeployed": false,
       "publicVerified": false,
-      "completionWritten": false
+      "completionWritten": false,
+      "relatedEmergencyWorkflowFrontendInstalledRevision": "R31",
+      "actualOriginalPublicFeedbackReproduced": false,
+      "actualOriginalPublicFeedbackVerified": false,
+      "localActualNativeRecordFieldsVerified": true,
+      "localSameInstanceAttachmentFlowVerified": true
     },
     {
       "number": 6,
@@ -88,11 +98,13 @@
       "description": "审批管理按发起人员搜索功能不可用",
       "descriptionSha256": "6b9e6b1326e16c1235cafcb14ea9533ef903a2d9a9a1bed99222de65942e8cbe",
       "completionCell": "G7",
-      "status": "待复现",
+      "status": "R21公网正常登录态实际UI通过，原文回填并独立源表回读；待测试者复测",
       "localLayoutVerified": false,
-      "publicDeployed": false,
-      "publicVerified": false,
-      "completionWritten": false
+      "publicDeployed": true,
+      "publicVerified": true,
+      "completionWritten": true,
+      "completionReadBackVerified": true,
+      "publicRevision": "R21"
     },
     {
       "number": 7,
@@ -101,11 +113,26 @@
       "description": "双重预防-安全防线单元增加信息不置顶",
       "descriptionSha256": "2bb659c1eb10fef7b0c45672bce3c3ed10455d7fd058e196cbc764ee3f4fb1f8",
       "completionCell": "G8",
-      "status": "待复现",
+      "status": "相关风险源码已随版本保留至R31，原R75/R82/R91本地验证保持；R31真实账户列表读取已恢复。实际公网页新增置顶/导出/导入/模板下载的对应反馈复测仍待，不回填。",
       "localLayoutVerified": false,
-      "publicDeployed": false,
+      "publicDeployed": true,
       "publicVerified": false,
-      "completionWritten": false
+      "completionWritten": false,
+      "localRiskExcelBatchCandidateVerified": true,
+      "localRiskExcelBatchCase": "R82",
+      "localActualPortalCases": 18,
+      "riskBatchPublicInstalled": true,
+      "publicRevision": "R31",
+      "publicInstalledRiskClassPins": {
+        "payload/business/run-template/classes/com/iemp/endanger/server/hidden/controller/RiskLevelController.class": {
+          "bytes": 6102,
+          "sha256": "7d866e4ca810f7de5de637964b38f1eecae1a0b3208ef03ebbe17d34f06fa33e"
+        },
+        "payload/business/run-template/classes/com/iemp/endanger/server/hidden/service/impl/RiskLevelServiceImpl.class": {
+          "bytes": 9885,
+          "sha256": "636822c3930a036ddb294dac990c1b9f0f3f62e09baa40afdd46feddcc30070c"
+        }
+      }
     },
     {
       "number": 8,
@@ -127,11 +154,26 @@
       "description": "双重预防-安全防线单元-导出列表无数据且表格不可用",
       "descriptionSha256": "212ed2a4f308a084588f2195b68c02f12da5f5be51bb869f36218d61d4b66ca0",
       "completionCell": "G10",
-      "status": "待复现",
+      "status": "相关风险源码已随版本保留至R31，原R75/R82/R91本地验证保持；R31真实账户列表读取已恢复。实际公网页新增置顶/导出/导入/模板下载的对应反馈复测仍待，不回填。",
       "localLayoutVerified": false,
-      "publicDeployed": false,
+      "publicDeployed": true,
       "publicVerified": false,
-      "completionWritten": false
+      "completionWritten": false,
+      "localRiskExcelBatchCandidateVerified": true,
+      "localRiskExcelBatchCase": "R82",
+      "localActualPortalCases": 18,
+      "riskBatchPublicInstalled": true,
+      "publicRevision": "R31",
+      "publicInstalledRiskClassPins": {
+        "payload/business/run-template/classes/com/iemp/endanger/server/hidden/controller/RiskLevelController.class": {
+          "bytes": 6102,
+          "sha256": "7d866e4ca810f7de5de637964b38f1eecae1a0b3208ef03ebbe17d34f06fa33e"
+        },
+        "payload/business/run-template/classes/com/iemp/endanger/server/hidden/service/impl/RiskLevelServiceImpl.class": {
+          "bytes": 9885,
+          "sha256": "636822c3930a036ddb294dac990c1b9f0f3f62e09baa40afdd46feddcc30070c"
+        }
+      }
     },
     {
       "number": 10,
@@ -140,11 +182,30 @@
       "description": "双重预防-安全防线单元-导入功能不可用",
       "descriptionSha256": "89cf513d96751e44fcd0fe264e92724345bd8410d5c1b37492076304e4db9cc4",
       "completionCell": "G11",
-      "status": "待复现",
+      "status": "相关风险源码已随版本保留至R31，原R75/R82/R91本地验证保持；R31真实账户列表读取已恢复。实际公网页新增置顶/导出/导入/模板下载的对应反馈复测仍待，不回填。",
       "localLayoutVerified": false,
-      "publicDeployed": false,
+      "publicDeployed": true,
       "publicVerified": false,
-      "completionWritten": false
+      "completionWritten": false,
+      "localRiskExcelBatchCandidateVerified": true,
+      "localRiskExcelBatchCase": "R82",
+      "localActualPortalCases": 18,
+      "riskBatchPublicInstalled": true,
+      "localWholeFileRollbackVerified": true,
+      "localMaskedAndEmptyFileRejectionVerified": true,
+      "localActualMultipartHTTPNegativeCases": 4,
+      "localWholeImportCase": "R91",
+      "publicRevision": "R31",
+      "publicInstalledRiskClassPins": {
+        "payload/business/run-template/classes/com/iemp/endanger/server/hidden/controller/RiskLevelController.class": {
+          "bytes": 6102,
+          "sha256": "7d866e4ca810f7de5de637964b38f1eecae1a0b3208ef03ebbe17d34f06fa33e"
+        },
+        "payload/business/run-template/classes/com/iemp/endanger/server/hidden/service/impl/RiskLevelServiceImpl.class": {
+          "bytes": 9885,
+          "sha256": "636822c3930a036ddb294dac990c1b9f0f3f62e09baa40afdd46feddcc30070c"
+        }
+      }
     },
     {
       "number": 11,
@@ -153,11 +214,26 @@
       "description": "双重预防-安全防线单元-下载完的模版不可用",
       "descriptionSha256": "06e1327c0a5bbbed33dc27b8c168f5dffa925fac17d4c4460eae1e2b70316afc",
       "completionCell": "G12",
-      "status": "待复现",
+      "status": "相关风险源码已随版本保留至R31，原R75/R82/R91本地验证保持；R31真实账户列表读取已恢复。实际公网页新增置顶/导出/导入/模板下载的对应反馈复测仍待，不回填。",
       "localLayoutVerified": false,
-      "publicDeployed": false,
+      "publicDeployed": true,
       "publicVerified": false,
-      "completionWritten": false
+      "completionWritten": false,
+      "localRiskExcelBatchCandidateVerified": true,
+      "localRiskExcelBatchCase": "R82",
+      "localActualPortalCases": 18,
+      "riskBatchPublicInstalled": true,
+      "publicRevision": "R31",
+      "publicInstalledRiskClassPins": {
+        "payload/business/run-template/classes/com/iemp/endanger/server/hidden/controller/RiskLevelController.class": {
+          "bytes": 6102,
+          "sha256": "7d866e4ca810f7de5de637964b38f1eecae1a0b3208ef03ebbe17d34f06fa33e"
+        },
+        "payload/business/run-template/classes/com/iemp/endanger/server/hidden/service/impl/RiskLevelServiceImpl.class": {
+          "bytes": 9885,
+          "sha256": "636822c3930a036ddb294dac990c1b9f0f3f62e09baa40afdd46feddcc30070c"
+        }
+      }
     },
     {
       "number": 12,
@@ -241,9 +317,26 @@
   ],
   "completedCellCount": 3,
   "publicVerifiedIssueCount": 3,
-  "lastVerifiedAt": "2026-10-31T20:43:36+08:00",
+  "lastVerifiedAt": "2026-10-31T21:17:17+08:00",
   "exactPublicGitSnapshotPublished": true,
   "publicGitSnapshotPredatesLiveAcceptance": true,
   "publicR19Deployed": true,
-  "R19PublicGitPushed": false
+  "R19PublicGitPushed": true,
+  "updatedAt": "2026-11-01T01:57:28+08:00",
+  "completedFeedbackCount": 5,
+  "completedFeedbackCells": [
+    "G2",
+    "G3",
+    "G4",
+    "G5",
+    "G7"
+  ],
+  "localLedgerUpdatedAt": "2026-11-02T10:03:53.652868+08:00",
+  "latestKnownPublicRevision": "R31",
+  "latestPublicAuthenticatedReadsVerified": true,
+  "latestSourceSheetReadIsHistorical": true,
+  "sourceSheetNotReReadDuringDesktopPause": true,
+  "sourceSheetCellsWrittenThisRound": 0,
+  "wholeModuleAcceptanceCompleted": false,
+  "fullCloneReady": false
 }

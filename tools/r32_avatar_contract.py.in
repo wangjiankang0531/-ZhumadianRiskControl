@@ -1,0 +1,78 @@
+def r32_frontend_manifest(rows, role):
+    prefix = 'frontend/' + role + '/'
+    selected = {n: p for n, p in rows.items() if n.startswith(prefix)}
+    raw = json.dumps(selected, sort_keys=True, separators=(',', ':')).encode('utf-8')
+    return {'files': len(selected), 'manifestSHA256': hashlib.sha256(raw).hexdigest()}
+
+
+def r32_avatar_declared(release, payload):
+    if R32_AVATAR_FIELD not in release:
+        return False
+    require(release[R32_AVATAR_FIELD] == R32_AVATAR_CONTRACT,
+            'EXACT_R32_AVATAR_DESCRIPTOR_REQUIRED')
+    for role, expected in R32_AVATAR_CONTRACT['frontends'].items():
+        require(r32_frontend_manifest(payload['files'], role) == expected,
+                'EXACT_R32_COMPILED_FRONTEND_REQUIRED:' + role)
+    return True
+
+
+def r32_frontend_scope(name, release, payload):
+    # load_bundle validates the entire fixed avatar contract before these legacy guards.
+    return name.startswith('frontend/emergency_pc/') or (
+        release.get(R32_AVATAR_FIELD) == R32_AVATAR_CONTRACT
+        and name.startswith('frontend/security_pc/'))
+
+
+def r32_avatar_bundle_contract(app, bundle, plan, old, release, payload):
+    if not r32_avatar_declared(release, payload):
+        require(R32_AVATAR_FIELD not in old, 'RETAINED_R32_AVATAR_CANNOT_BE_DROPPED')
+        return False
+    previous = read(check_file(app, 'payload-manifest.json', old['payloadManifestSHA256']))
+    require(native_default_declared(old, previous), 'R32_REQUIRES_RETAINED_R31_NATIVE_DEFAULT')
+    require(R32_AVATAR_FIELD not in old, 'R32_REQUIRES_FIXED_PRE_AVATAR_BASE')
+    for role, expected in R32_OLD_FRONTENDS.items():
+        require(r32_frontend_manifest(previous['files'], role) == expected,
+                'EXACT_R31_FRONTEND_BASE_REQUIRED:' + role)
+    updater = 'tools/original_public_test_update.py'
+    require(old['controllerFiles'].get(updater) == R32_OLD_UPDATER_SHA,
+            'EXACT_R31_UPDATER_BASE_REQUIRED')
+    require(set(plan['acceptedOldReleases']) == {sha(regular(app, 'release-manifest.json'))},
+            'R32_ONLY_ONE_EXACT_INSTALLED_RELEASE_REQUIRED')
+    require(plan.get('legacyEntrySHA256') == {}, 'R32_NO_LEGACY_SCRIPT_ADAPTATION')
+    retained = lambda rows: {n: p for n, p in rows.items()
+        if not n.startswith(('frontend/security_pc/', 'frontend/emergency_pc/'))}
+    require(retained(previous['files']) == retained(payload['files']),
+            'R32_ALL_NON_AVATAR_PAYLOAD_BYTES_MUST_BE_RETAINED')
+    require({n: p for n, p in old['controllerFiles'].items() if n != updater}
+            == {n: p for n, p in release['controllerFiles'].items() if n != updater},
+            'R32_OTHER_19_CONTROLLERS_MUST_BE_RETAINED')
+    require(set(old['controllerFiles']) == set(release['controllerFiles'])
+            and release['controllerFiles'][updater] == sha(Path(__file__)),
+            'R32_EXACT_UPDATER_AND_CONTROL_SET_REQUIRED')
+    mutable_metadata = {'payloadManifestSHA256', 'controllerFiles', 'publicTestRevision',
+                        'publicAccepted', R32_AVATAR_FIELD}
+    require({n: p for n, p in old.items() if n not in mutable_metadata}
+            == {n: p for n, p in release.items() if n not in mutable_metadata},
+            'R32_OTHER_RELEASE_CONTRACTS_MUST_BE_RETAINED')
+    require(release.get('publicAccepted') is False, 'R32_NOT_FULL_PUBLIC_ACCEPTANCE')
+    prefix = ('frontend/security_pc/', 'frontend/emergency_pc/')
+    changed = {n: p for n, p in payload['files'].items()
+               if n.startswith(prefix) and previous['files'].get(n) != p}
+    require(set(plan['files']) == set(changed) | {
+            updater, 'payload-manifest.json', 'release-manifest.json'},
+            'R32_EXACT_FRONTEND_DELTA_AND_UPDATER_TRANSPORT_REQUIRED')
+    require(plan['oldPayloadFiles'] == {n: previous['files'][n] for n in changed
+                                      if n in previous['files']},
+            'R32_EXACT_OLD_CHANGED_FRONTEND_PINS_REQUIRED')
+    obsolete = {n: {'bytes': p['bytes'], 'SHA256': p['sha256']}
+                for n, p in previous['files'].items()
+                if n.startswith(prefix) and n not in payload['files']}
+    require(plan.get('removedFrontendFiles') == obsolete,
+            'R32_EXACT_TWO_PORTAL_OBSOLETE_ASSETS_REQUIRED')
+    for name, pin in changed.items():
+        require(plan['files'][name] == {'bytes': pin['bytes'], 'SHA256': pin['sha256']},
+                'R32_EXACT_FRONTEND_TRANSPORT_PIN_REQUIRED:' + name)
+        check_file(bundle / 'payload', name, pin['sha256'], pin['bytes'])
+    return True
+
+

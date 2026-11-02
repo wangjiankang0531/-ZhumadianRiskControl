@@ -1,0 +1,158 @@
+{
+  "at": "2026-11-02T10:54:18.834600+08:00",
+  "schema": "xnby.r157.full-original-frontends-avatar-verified-local.v1",
+  "passed": true,
+  "fullBuildAndStaticGraph": {
+    "schema": "xnby.r157.full-avatar-build-graph.v1",
+    "passed": true,
+    "roles": {
+      "security_pc": {
+        "buildExitCode": 0,
+        "compiledFilesSHA256Verified": 836,
+        "localAssetReferencesVerified": 6018,
+        "declaredRuntimeMapTilesOutsideStaticFrontend": [
+          {
+            "consumer": "assets/js/index-lI7tTQuA.js",
+            "exactRuntimeTileTemplate": "/zhumadian/map/{z}/{x}/{y}.png"
+          }
+        ],
+        "missingAssets": 0,
+        "compiledAvatarNormalizerEmitted": true,
+        "allPriorRecipeSourcesRetained": true,
+        "actualFullCompiledBrowserPassed": false,
+        "publicInstalled": false
+      },
+      "emergency_pc": {
+        "buildExitCode": 0,
+        "compiledFilesSHA256Verified": 339,
+        "localAssetReferencesVerified": 1523,
+        "declaredRuntimeMapTilesOutsideStaticFrontend": [
+          {
+            "consumer": "assets/js/wf-index.vue_vue_type_script_setup_true_lang-X2u-owzd.js",
+            "exactRuntimeTileTemplate": "/zhumadian/map/{z}/{x}/{y}.png"
+          }
+        ],
+        "missingAssets": 0,
+        "compiledAvatarNormalizerEmitted": true,
+        "allPriorRecipeSourcesRetained": true,
+        "actualFullCompiledBrowserPassed": false,
+        "publicInstalled": false
+      }
+    },
+    "independentSafetyCompilerBoundarySourceComparisonOnlyTwoDeclaredAvatarPaths": true,
+    "safetyCompilerExitZeroButFirstOuterVerifierFailedAgainstUnadaptedSource": true,
+    "originalFailedTerminalKept": true,
+    "followupChecksUseActualPriorFullAdapterStackNotRelaxedGenericAllowance": true,
+    "actualDescendantsZeroAfterBothBuilds": true,
+    "wholeBusinessOrPublicAcceptanceClaimed": false,
+    "fullCloneReady": false
+  },
+  "actualFullCompiledSessions": {
+    "avatar-browser-emergency_pc-own_operator_a": {
+      "role": "emergency_pc",
+      "passed": true,
+      "viewports": [
+        1920,
+        1366
+      ],
+      "normalOriginalEncryptedLoginPassed": true,
+      "originalCurrentUserMatchedSyntheticOrdinaryRole": true,
+      "originalDefaultUserIconVisible": true,
+      "wrongSiteRootImageRequests": 0,
+      "runtimeExceptions": 0,
+      "nativeWorkflowListReads200": 1,
+      "directServBusinessReads": 0,
+      "normalChromeExitCode": 0,
+      "actualExecutedBrowserSHA256": "886dd036b959d564e61c45606e423b63c43e78e1104c49927a2e61d4a4b0e650"
+    },
+    "avatar-browser-emergency_pc-own_reviewer_b": {
+      "role": "emergency_pc",
+      "passed": true,
+      "viewports": [
+        1920,
+        1366
+      ],
+      "normalOriginalEncryptedLoginPassed": true,
+      "originalCurrentUserMatchedSyntheticOrdinaryRole": true,
+      "originalDefaultUserIconVisible": true,
+      "wrongSiteRootImageRequests": 0,
+      "runtimeExceptions": 0,
+      "nativeWorkflowListReads200": 1,
+      "directServBusinessReads": 0,
+      "normalChromeExitCode": 0,
+      "actualExecutedBrowserSHA256": "886dd036b959d564e61c45606e423b63c43e78e1104c49927a2e61d4a4b0e650"
+    },
+    "avatar-browser-security_pc-own_operator_a": {
+      "role": "security_pc",
+      "passed": true,
+      "viewports": [
+        1920,
+        1366
+      ],
+      "normalOriginalEncryptedLoginPassed": true,
+      "originalCurrentUserMatchedSyntheticOrdinaryRole": true,
+      "originalDefaultUserIconVisible": true,
+      "wrongSiteRootImageRequests": 0,
+      "runtimeExceptions": 0,
+      "nativeWorkflowListReads200": 2,
+      "directServBusinessReads": 0,
+      "normalChromeExitCode": 0,
+      "actualExecutedBrowserSHA256": "886dd036b959d564e61c45606e423b63c43e78e1104c49927a2e61d4a4b0e650"
+    },
+    "avatar-browser-security_pc-own_reviewer_b": {
+      "role": "security_pc",
+      "passed": true,
+      "viewports": [
+        1920,
+        1366
+      ],
+      "normalOriginalEncryptedLoginPassed": true,
+      "originalCurrentUserMatchedSyntheticOrdinaryRole": true,
+      "originalDefaultUserIconVisible": true,
+      "wrongSiteRootImageRequests": 0,
+      "runtimeExceptions": 0,
+      "nativeWorkflowListReads200": 2,
+      "directServBusinessReads": 0,
+      "normalChromeExitCode": 0,
+      "actualExecutedBrowserSHA256": "886dd036b959d564e61c45606e423b63c43e78e1104c49927a2e61d4a4b0e650"
+    }
+  },
+  "twoPortalsTwoOrdinaryRolesAndTwoViewportsPassed": true,
+  "originalEncryptedLoginAndSDKPermissionsPreserved": true,
+  "original398ModelsUnchanged": true,
+  "normalSixComponentsAndAllHiddenBrowsersExitZero": true,
+  "actualAllDescendantsZeroBeforeJobClose": true,
+  "mysqlCapacity": {
+    "maxConnections": 24,
+    "Connection_errors_max_connections": 0,
+    "Max_used_connections": 4,
+    "Threads_connected": 4
+  },
+  "all20ControllersOriginalJarsConfigDatabaseAndIISKept": true,
+  "temporaryOwnFrontendAndManifestBytesRestored": true,
+  "firstSafetyOuterVerifierFailurePreservedAndIndependentPriorAdapterBoundaryComparisonPassed": true,
+  "firstRuntimeUngrantedWorkplace404NotClaimedProductFailureOrPass": true,
+  "rerunUsedExistingAuthorizedWorkflowPagesWithoutGrantChanges": true,
+  "firstRuntimeLoginActuallySucceeded": true,
+  "noDirectServBusinessRegressionCoverageClaimedFromZeroReads": true,
+  "originalPhotoFileMissingOrEmptyNotRestored": true,
+  "publicStillR31": true,
+  "newProductInstalledOrPublicPublished": false,
+  "newTencentCellsWritten": 0,
+  "newPublicGitPushed": false,
+  "fullNangangWholeBusinessAcceptance": false,
+  "wholeModulesAccepted": 0,
+  "fullCloneReady": false,
+  "sourceFiles": {
+    "build_avatar_full_r157_20261102.py": "0dadb981c156d4495ddbe6871997a179ef0c908d4d810ece558533e27e5a52c5",
+    "build_avatar_full_r157_20261102.mjs": "2d4089dd635d1e53050849054df353a3f9886d626893a2fda5b7cada5d09b982",
+    "run_avatar_full_r157_20261102.py": "055fff2d624594bb2a94924b5d2f56e1025979d1d0b8e0d8039b9a1bf2dc1cd0",
+    "capture_avatar_baseline_r157_20261102.py": "1d2b7423e5eacc0ac9ca2e5469ca04e501a907a6036c6e06c5ef13afdb6f1095",
+    "verify_avatar_full_r157_20261102.py": "cc2e7fcfe10495ad2914b738a7cf21d4edd5d7ff22cbbad89466d6f912197211",
+    "prepare_avatar_runtime_r157_20261102.py": "4d1b6ac8d50c44bc865110d01ea219698cb0cf38127953d35fa8ca8a7492510a",
+    "verify_avatar_runtime_r157_20261102.mjs": "886dd036b959d564e61c45606e423b63c43e78e1104c49927a2e61d4a4b0e650",
+    "verify_avatar_controller_r157_20261102.py": "0bc977409fae98e0811bb1840d7d081fbeabefdc3079c3083c4b522bdbae71bc",
+    "run_avatar_controller_r157_20261102.py": "ca8b98893ea91e2f01d0cf5be637c26d739784ab63be0809c5a7b2bc4ddf6ac4",
+    "restore_avatar_runtime_r157_20261102.py": "22d2a74fd039338e225e2790b69a809a39af0502d0eee689e8421fb89a1a4f0e"
+  }
+}

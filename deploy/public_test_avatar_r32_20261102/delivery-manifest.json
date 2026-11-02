@@ -1,0 +1,58 @@
+{
+  "revision": "R32-two-original-portals-avatar-route-and-original-default-icon",
+  "targetFTP": "/Zhumadian/Zhumadian_Avatar_Two_Portals_20261102_R32/",
+  "targetApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "files": {
+    "Check_Only_Avatar_R32.cmd": {
+      "bytes": 128,
+      "sha256": "e84a9e5ce5b420225d041fa26b62f2404b173decd1064b54d41c0dd0f8527a65"
+    },
+    "Deploy_Avatar_R32.cmd": {
+      "bytes": 116,
+      "sha256": "e954ae5113659f197ea0394e49391906c827853847693866f22560aecd610bfc"
+    },
+    "deploy_avatar_r32.py": {
+      "bytes": 5104,
+      "sha256": "1012882f70df3b2359b45b4f03c2b8e1e431b315a2f64d10691a5204b264ef39"
+    },
+    "r32_update_runtime.py": {
+      "bytes": 119103,
+      "sha256": "97139494d048254cfa559d58eb5125a00ff370c3422acebe59a216e7a37fe6f3"
+    },
+    "Recover_This_Avatar_R32.cmd": {
+      "bytes": 137,
+      "sha256": "067a4608da86e31a9876152679968541f6e80d02dbf310891dbcf9816d9516f5"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Avatar_Two_Portals_20261102_R32.zip": {
+      "bytes": 4590887,
+      "sha256": "1e2f701c32ff0a1645daee21ef3ecc1b15df7cdf257dd7c3169ebdb0434f8b6c"
+    }
+  },
+  "oldReleaseSHA256": "19ff463fce665b146975e238451725f063c772260485df72c6bbfd2da6c384d1",
+  "oldUpdaterSHA256": "477cd84dbce633623db7d31d6bf1504455cbcfa114f44c53f4c5d751a00d64ac",
+  "newReleaseSHA256": "bd3da492c0f226c62bf00e2e416521bd860d8d4c748fe8b34b1537d69854f1ea",
+  "newUpdaterSHA256": "97139494d048254cfa559d58eb5125a00ff370c3422acebe59a216e7a37fe6f3",
+  "updateManifestSHA256": "b3e9bdb2dddd48322a7fbe250771f29501e051dfffaafabd55274ed2ffb88236",
+  "writes": 695,
+  "obsoleteAssetRemovals": 690,
+  "totalInstallPaths": 1385,
+  "maximumExtractionPathCharacters": 226,
+  "fixedCompositionNegativeCases": 26,
+  "recoveryScenarios": 8,
+  "fullProgramFilesVerified": 15554,
+  "actualFullOriginalSDKPortalBrowserSessions": 4,
+  "actualNewUpdaterNormalStopPassed": true,
+  "normalAllSixComponentsAndDescendantsZero": true,
+  "allOther19ControlsAndOriginalJarsConfigurationDataAuthenticationAndIISKept": true,
+  "originalPhotoFileRestored": false,
+  "actualServerPreflightOrTLSOrPublicAuthenticatedLayoutPassed": false,
+  "containsCompiledFrontendUpdaterCodeMetadataAndInternalPaths": true,
+  "containsActualPrivateConfigCredentialsAccountsBusinessRowsAssetsReferenceScreenshotsOrRawLogs": false,
+  "publicUploadedOrInstalled": false,
+  "publicGitIncluded": false,
+  "fullCloneReady": false
+}
