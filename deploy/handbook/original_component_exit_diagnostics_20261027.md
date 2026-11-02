@@ -1,0 +1,9 @@
+# Original server component exit diagnostics (2026-10-27)
+
+The persistent server previously detected an ended component with a generic assertion. Normal cleanup then stopped every remaining component, so final exit codes could not identify which component was already down. A zero exit before an intended stop must also be treated as an unexpected server outage.
+
+The existing ready-loop now calls require_children_running. It polls each owned child once, records all children already ended in unexpectedChildExits (component, PID, exitCode), and records unexpectedChildExitObservedAt before raising the unchanged OWN_COMPONENT_EXITED_AFTER_READY assertion. The first observation is retained if later cleanup ends more children. It never stores commands, environment, credentials or log tails. The existing normal cleanup, historical ready flag, and exitCodesBeforeJobClose retain their original meanings. There is no automatic restart, retry or security change.
+
+Twenty supervisor/parameter regressions passed. These include real independent Python children exiting with code 0 and 7, preserving the initial observation after another owned test child is closed, and unchanged live state with one poll per child. Only these synthetic children were controlled; no database or network was used by the regression suite. This proves the new diagnostic behavior, not the cause of the earlier production-like outage, and not a full B/S acceptance.
+
+The currently running local installation was not updated. Its controller source SHA256 remains d6044263d09c4e5d945df6d5d16e4c8ed5d03d7e707df0ecd7cae98d4d52176e. Public R5 was not changed. Integration requires a later normal verified deployment; no hot edit of a running installation is intended. Evidence: Document/Deployment/original_component_exit_diagnostics_20261027.

@@ -132,7 +132,9 @@ class MemorySourceStore:
         self.stats = {"builds": 0, "failures": 0, "evictions": 0, "payloads": 0,
                       "peakEncodedAndReservation": 0, "planRequests": 0,
                       "planWaitRequests": 0, "planWaitCompleted": 0, "planWaitTimeouts": 0,
-                      "planWaitMilliseconds": 0.0, "peakPlanWaiters": 0, "buildMilliseconds": 0.0}
+                      "planWaitMilliseconds": 0.0, "peakPlanWaiters": 0, "buildMilliseconds": 0.0, "grantRequests": 0, "grantWaitRequests": 0,
+                      "grantWaitCompleted": 0, "grantWaitTimeouts": 0,
+                      "grantWaitMilliseconds": 0.0, "peakGrantWaiters": 0}
 
     @staticmethod
     def key(tile, depth, parent):
@@ -248,10 +250,36 @@ class MemorySourceStore:
             return {"schema": PLAN_SCHEMA, "verification": "metadata_only", "availabilityVerified": False,
                     "markerSHA256": bundle.marker_sha256, "marker": bundle.marker()}
 
-    def grant(self, tile, *, depth=None, parent=None):
+    def grant(self, tile, *, depth=None, parent=None, wait_ms=0):
+        if type(wait_ms) is not int or not 0 <= wait_ms <= MAX_PLAN_WAIT_MS:
+            raise ValueError("invalid bounded bundle wait")
         key = self.key(tile, depth, parent)
-        with self.lock:
+        # Completion, bounded wait and final lease grant use the same condition
+        # lock. No lease exists while waiting and no eviction can race the grant.
+        with self.plan_ready:
+            self.stats["grantRequests"] += 1
+            self.stats["grantWaitRequests"] += bool(wait_ms)
             bundle = self.request(tile, depth=depth, parent=parent)
+            if bundle is None and wait_ms:
+                if self.plan_waiters >= self.max_jobs:
+                    raise MemoryStoreBusy("shared source wait slots full; keep previous layer")
+                self.plan_waiters += 1
+                self.stats["peakGrantWaiters"] = max(self.stats["peakGrantWaiters"], self.plan_waiters)
+                started = time.monotonic()
+                deadline = started + wait_ms / 1000
+                try:
+                    while bundle is None:
+                        remaining = deadline - time.monotonic()
+                        if remaining <= 0:
+                            self.stats["grantWaitTimeouts"] += 1
+                            break
+                        self.plan_ready.wait(remaining)
+                        bundle = self.request(tile, depth=depth, parent=parent)
+                    if bundle is not None:
+                        self.stats["grantWaitCompleted"] += 1
+                finally:
+                    self.plan_waiters -= 1
+                    self.stats["grantWaitMilliseconds"] += (time.monotonic() - started) * 1000
             if bundle is None:
                 return None
             if len(self.leases) >= self.max_leases:

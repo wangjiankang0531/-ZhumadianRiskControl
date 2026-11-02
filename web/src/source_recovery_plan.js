@@ -3,6 +3,8 @@
 // must fit and the estimated loss of each full intermediate cut must stay within
 // the final target's combined estimate for detail requests. Fixed viewport
 // overhead uses the explicit resourceKind policy, never a fabricated detail gain.
+// Explicit visible-base coverage may coarsen complete families with minimum
+// estimated loss to recover missing roots; it cannot evict any existing root.
 import {sourceRestorationFootprint} from './source_page_budget.js';
 import {SourceLoadCancelled} from './lod_transaction.js';
 
@@ -21,12 +23,13 @@ function simulate(states,action){
 
 export function planSourceRecoverySequence(residents,request,cost,limit,priority,rootPriority=null,{maxResidents=Infinity,resourceKind='detail'}={}){
  if(!(maxResidents===Infinity||Number.isInteger(maxResidents)&&maxResidents>=1))throw Error('Invalid source resident capacity');
- const viewport=resourceKind==='viewport';if(!['detail','viewport'].includes(resourceKind)||viewport&&(request.id!==0||request.parent!==null||request.score!==0||maxResidents!==Infinity))throw Error('Invalid fixed viewport budget request');
+ const viewport=resourceKind==='viewport',coverage=resourceKind==='coverage';if(!['detail','viewport','coverage'].includes(resourceKind)||viewport&&(request.id!==0||request.parent!==null||request.score!==0||maxResidents!==Infinity))throw Error('Invalid fixed viewport budget request');
+ if(coverage&&(!(residents instanceof Map)||!Number.isInteger(request.id)||request.id<1||request.id>2346||residents.has(request.id)||request.parent!==null||!Number.isFinite(request.score)||request.score<=0||!Number.isFinite(request.coverageWeight)||request.coverageWeight<=0||request.coverageWeight>1||rootPriority!==null||!Number.isSafeInteger(cost)||cost<=0||!Number.isSafeInteger(limit)||limit<=0))throw Error('Invalid visible-base coverage recovery request');
  const states=clones(residents),steps=[],qualityActions=[];let used=[...states.values()].reduce((sum,r)=>sum+r.frontier.bytes,0),peak=used,loss=0,remaining=1+[...states.values()].reduce((sum,r)=>sum+r.frontier.bundles.size+1,0);
  while(used+cost>limit||states.size+(states.has(request.id)?0:1)>maxResidents){
   if(--remaining<0)return null;const choices=[];
   for(const [root,ready] of states){const f=ready.frontier,original=residents.get(root).frontier;
-   const admit=(action,freed,nextQuality)=>{const nextLoss=nextQuality.reduce((sum,a)=>sum+a.loss,0);if(freed<=0||!Number.isFinite(nextLoss)||nextLoss<0||!viewport&&(nextLoss<loss||!(nextLoss*2<request.score)))return;const uploadPeak=sourceRestorationFootprint(states,[action]);if(uploadPeak<=limit)choices.push({action,freed,quality:nextQuality,loss:nextLoss,peak:uploadPeak,ratio:(nextLoss-loss)/freed});};
+   const admit=(action,freed,nextQuality)=>{const nextLoss=nextQuality.reduce((sum,a)=>sum+a.loss,0);if(freed<=0||!Number.isFinite(nextLoss)||nextLoss<0||!viewport&&!coverage&&(nextLoss<loss||!(nextLoss*2<request.score)))return;const uploadPeak=sourceRestorationFootprint(states,[action]);if(uploadPeak<=limit)choices.push({action,freed,quality:nextQuality,loss:nextLoss,peak:uploadPeak,ratio:(nextLoss-loss)/freed});};
    for(const parent of f.bundles.keys())if(parent!=='$root'){
     const plan=f.rollbackPlan(parent);if(root===request.id&&plan.subtree.has(request.parent))continue;
     const originalPlan=original.rollbackPlan(parent),action={root,parent},score=priority(root,original.nodes.get(parent).node,originalPlan.subtree);

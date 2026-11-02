@@ -1,0 +1,9 @@
+# Bounded root-plan lookahead and geometry pair reads
+
+The existing lookahead was gated to indexed cuts and did no work on the verified complete original-index path. Permit that negotiated path while retaining actual lease-before-speculation, epoch/view/root/depth checks, one job including cancelled work, and unchanged foreground validation/admission/coverage/atomic commit. The browser prefetches only a plan: no page lease/download/GPU admission. A missing prepared source may still cause bounded server-side RAM bundle preparation.
+
+Read GLTF and BIN concurrently for one physical page, at most2. Drain both settled promises before error/cancellation can unwind the lease owner. Page packets remain sequential; manifest SHA/layout, worker-packet128MiB, per-lease geometry32MiB and GPU budgets are unchanged. Five new failure/order/drain/cancellation cases and four capability/QA-policy cases; final local/independent suites each pass817.
+
+Same QA-only package, sequential fresh-server-RAM350m: serial13/85/164; lookahead15/99/164; pair19/107/164; two-page18/107/164 at5/20/40s. Therefore single-page preparation remains default. Final rebuilt negotiated default observes20/109/164 without overrides. Legacy/generic paths retain old defaults; explicit QA controls preserve reproducible comparison. OS caches are not cleared and this is not a universal speed guarantee.
+
+Common actual GPU-page metadata19/157/341 matches source SHA, sizes, formats and ledgers; not pixel readback or full-frame acceptance. Record recovery and near/far separately. Public R5,252, native holds, GIS/business data and database schema stay unchanged. This is local-only, outside the previously authorized87-file review payload. Twenty-second full-frame quality, remaining roof artifacts and the full project goals remain open.

@@ -58,6 +58,18 @@ class Child:
     def close_job(self):
         if self.job:self.job.close();self.job=None
 
+def require_children_running(children,state):
+    # Capture the first observed exit before normal cleanup changes other children.
+    exited=[]
+    for child in children:
+        code=child.process.poll()
+        if code is not None:
+            exited.append({'component':child.name,'PID':child.process.pid,'exitCode':code})
+    if exited:
+        state.setdefault('unexpectedChildExits',exited)
+        state.setdefault('unexpectedChildExitObservedAt',datetime.datetime.now().astimezone().isoformat())
+        raise AssertionError('OWN_COMPONENT_EXITED_AFTER_READY')
+
 def wait_for(predicate,children,timeout,label):
     until=time.monotonic()+timeout
     while time.monotonic()<until:
@@ -181,7 +193,7 @@ def main():
         print(json.dumps({'ready':True,'releaseId':release['releaseId'],'gatewayPort':a.gateway_port,'persistent':a.qa_seconds is None,'run':str(run),'publicAccepted':False}),flush=True)
         until=None if a.qa_seconds is None else time.monotonic()+a.qa_seconds
         while not (run/'stop-requested.txt').exists() and (until is None or time.monotonic()<until):
-            assert all(c.process.poll() is None for c in children),'OWN_COMPONENT_EXITED_AFTER_READY';time.sleep(.5)
+            require_children_running(children,state);time.sleep(.5)
     except BaseException as error:
         state['failureType']=type(error).__name__;state['failureStageMessage']=str(error) if isinstance(error,AssertionError) or str(error).startswith('OWN_') else type(error).__name__
         raise

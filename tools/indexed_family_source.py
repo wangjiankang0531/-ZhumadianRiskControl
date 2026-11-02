@@ -224,7 +224,6 @@ class IndexedFamilyHTTP(MemorySourceHTTP):
                 self._memory_error(error)
             return
         if bundle:
-            if parsed.query:
-                return self.send_error(400)
+            # Common RAM bundle handler validates the optional bounded wait.
             return self._readonly_bundle(int(bundle[1]), parent='indexed-'+bundle[2])
         return super().do_GET()

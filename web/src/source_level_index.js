@@ -43,12 +43,14 @@ export async function loadSourceLevelIndex({fetcher=fetch,stillWanted=()=>true,h
  if(root.schema!=='zhumadian.level_bounds.roots.v1'||root.sourceManifestSHA256!==manifest.sourceManifestSHA256||root.coordinateSystem!=='source_local_metres'||root.boundsSource!=='union_of_original_subtree_geometry'||root.roots?.length!==2346)throw Error('Invalid LEVEL root index');
  for(const r of root.roots){if(r.id!==r.tile||!entries.has(r.tile)||!shaPattern.test(r.catalogSHA256))throw Error('LEVEL root identity differs');}
  const index=new LevelBoundsIndex(root.roots),byRoot=new Map(index.records.map(r=>[r.tile,r])),cache=new Map(),inflight=new Map();
- const tile=async id=>{
-  if(!entries.has(id))throw Error('Invalid LEVEL tile');ensureSourceWanted(stillWanted);if(cache.has(id)){const v=cache.get(id);cache.delete(id);cache.set(id,v);return v;}if(inflight.has(id))return inflight.get(id);
+ // Weak membership reuses only immutable tiles verified by this exact index instance.
+ const retainedTiles=new WeakSet();let retainedTileHits=0,tileFetches=0;
+ const tile=async (id,retained=null)=>{
+  if(!entries.has(id))throw Error('Invalid LEVEL tile');ensureSourceWanted(stillWanted);if(retained!==null){if(!retainedTiles.has(retained)||retained.tile!==id)throw Error('Unverified retained LEVEL tile');retainedTileHits++;return retained;}if(cache.has(id)){const v=cache.get(id);cache.delete(id);cache.set(id,v);return v;}if(inflight.has(id))return inflight.get(id);
   if(inflight.size>=cacheSize)throw Error('LEVEL tile request bound reached');
-  const job=(async()=>{const e=entries.get(id),bytes=await readBounded(prefix+e.path,e.bytes,options);if(bytes.byteLength!==e.bytes||await hash(bytes)!==e.sha256)throw Error('LEVEL tile SHA differs');const value=parse(bytes);validateLevelTile(value,{tile:id,sourceManifestSHA256:manifest.sourceManifestSHA256,catalogSHA256:byRoot.get(id).catalogSHA256,sourceNodes:e.sourceNodes,rootBounds:byRoot.get(id)});ensureSourceWanted(stillWanted);freeze(value);cache.set(id,value);while(cache.size>cacheSize)cache.delete(cache.keys().next().value);return value;})();inflight.set(id,job);try{return await job;}finally{inflight.delete(id);}
+  const job=(async()=>{tileFetches++;const e=entries.get(id),bytes=await readBounded(prefix+e.path,e.bytes,options);if(bytes.byteLength!==e.bytes||await hash(bytes)!==e.sha256)throw Error('LEVEL tile SHA differs');const value=parse(bytes);validateLevelTile(value,{tile:id,sourceManifestSHA256:manifest.sourceManifestSHA256,catalogSHA256:byRoot.get(id).catalogSHA256,sourceNodes:e.sourceNodes,rootBounds:byRoot.get(id)});ensureSourceWanted(stillWanted);freeze(value);retainedTiles.add(value);cache.set(id,value);while(cache.size>cacheSize)cache.delete(cache.keys().next().value);return value;})();inflight.set(id,job);try{return await job;}finally{inflight.delete(id);}
  };
- return Object.freeze({identity:status.identity,sourceManifestSHA256:manifest.sourceManifestSHA256,index,tile,get cachedTiles(){return cache.size;},get pendingTiles(){return inflight.size;}});
+ return Object.freeze({identity:status.identity,sourceManifestSHA256:manifest.sourceManifestSHA256,index,tile,get cachedTiles(){return cache.size;},get pendingTiles(){return inflight.size;},get retainedTileHits(){return retainedTileHits;},get tileFetches(){return tileFetches;}});
 }
 
 export function validateLevelTile(data,{tile,sourceManifestSHA256,catalogSHA256,sourceNodes,rootBounds}){

@@ -1,0 +1,225 @@
+{
+  "schema": "xnby.native.page-rhi-probe.source.v1",
+  "engineCommit": "8966e32b370a10b1e8f5d4fba512f42f439c2451",
+  "engineFiles": [
+    {
+      "path": "XNBYEngine/core/CMakeLists.txt",
+      "gitBlob": "b7b5b69c6e33f587ff4d17db0785ea5a593702f2",
+      "baseSHA256": "af75ccd33dc41eb49a2ffcf757d67920de34cafa3ec90731df6763873bbf0536"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/aligned_allocator.hpp",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/common.hpp",
+      "gitBlob": "472c65b24be77b12bcba841a1061cf69cb91ac02",
+      "baseSHA256": "22c2ae72e2d85bacca20e6bdc2611caa8711d43d13edde66f581348733d60002"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/logging/log_level.hpp",
+      "gitBlob": "213f244de6c0d6310300656151ddbbe36cfff6a9",
+      "baseSHA256": "febc6f641d6e55dd2c5d6bfafb5aa081956b12b6c7a4d914a3ab13629379bcfe"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/logging/logger.hpp",
+      "gitBlob": "04394673b5f19aece49f706779e8a92ca0f97925",
+      "baseSHA256": "994ab4bd658725045e9356ca5518e7902c4aefcfc403c06b29bf71427e89ea31"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/math.hpp",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/math/math.hpp",
+      "gitBlob": "a5c7bdda50ac88ff6dfe10a82e315fddb3d3a12d",
+      "baseSHA256": "ee291b943d91c733692d9b266ef6e9e94c46aea6e43450d0abd45a6703ebcbb1"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/matrix.hpp",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/memory/allocator.hpp",
+      "gitBlob": "46e043ad845d8b4fc988e19440ee7717e2d6915f",
+      "baseSHA256": "f4c489eca7b8aac0de8ff6c01a044791c86015f79a0b4a6b0346a8542a7d4cb7"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/memory/memory_pool.hpp",
+      "gitBlob": "d6a34f657dc8cac8d382e2c8afd9ea87ef38077c",
+      "baseSHA256": "65ccb9ce1b600b4695a6dd8ce0fb6a9f965b6057821d074b677f1c31b3ad1993"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/net/download_queue.hpp",
+      "gitBlob": "bea28d112066fbde755d94d57796409afe3c5d59",
+      "baseSHA256": "8bd1e2ba33f0ed64429b24d8d2be4a9fe2c4fed253950161b3e43ceb049c7296"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/net/http_client.hpp",
+      "gitBlob": "cd11f1d04b13c0499107628e5b6c15d1f7b93fa1",
+      "baseSHA256": "cc31cfe50cc6a3e693f785bfeb30f11f2f6ca62e1b6e417c18cc75302e2c4688"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/profiler/profiler.hpp",
+      "gitBlob": "88d533fad9de8c08ede237ade148f04d47eec1eb",
+      "baseSHA256": "67b273c0fedefdc6a4ca59cb45f45e305a8ad6c6f8173f550aa8941cda6da303"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/profiler_scope.hpp",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/result.hpp",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/types.hpp",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/types/result.hpp",
+      "gitBlob": "be299a61d29e85cb3e687d3ebc95a288e2b157fd",
+      "baseSHA256": "ea66246b9d7c6f3177d8c1ed0302847214a89c4dcf290833b8a45f8cf1c6e2f6"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/types/types.hpp",
+      "gitBlob": "8d631f846134c7d8f7c24e9011d959544066c5f5",
+      "baseSHA256": "eb94e5d90341d0d0eb38a759ed0c000349f763923f493e7888dfca299fa55cfa"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/types/uuid.hpp",
+      "gitBlob": "8be7fd4aa970b44f376f87cba082525861e5c1f1",
+      "baseSHA256": "ea61901e0e72af980021bacad3d5706b38ed417ade6926dbdb91c57fed8a7ed0"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/uuid.hpp",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/vector.hpp",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/src/logging/logger.cpp",
+      "gitBlob": "004385a942851385c251867dcdd6093fb03da875",
+      "baseSHA256": "0c4345100fd7f7908a65d79731a2253e8d6a572552ad229fad9918b5a449af91"
+    },
+    {
+      "path": "XNBYEngine/core/src/math/math.cpp",
+      "gitBlob": "c34821916c5cf704f0b0751050c3820be44cd4a2",
+      "baseSHA256": "6dbb81661dfd50763081f2a3c4e855c23bcd61297cd13ebed47f675de82acbfc"
+    },
+    {
+      "path": "XNBYEngine/core/src/memory/allocator.cpp",
+      "gitBlob": "2e731f62ef4f950bbd3f9b7e6be884dff46ec575",
+      "baseSHA256": "9676d8fa01d25ea6dcfd3238c7f9454447b9dd07ae731f1da68ba6847ce8e31a"
+    },
+    {
+      "path": "XNBYEngine/core/src/memory/memory_pool.cpp",
+      "gitBlob": "6c6501eb8f3ed9552a61378193ab2aab4571d955",
+      "baseSHA256": "f7c945206330ba064707529375333bfa9998700d22d0009da2e307904693d043"
+    },
+    {
+      "path": "XNBYEngine/core/src/net/download_queue.cpp",
+      "gitBlob": "a1b1448c1c91723f25ea4eebb38d04e35163ed5b",
+      "baseSHA256": "65c9a86cb55784e2c9449bc97ba5e4980929d09aa6d1fd9656897bea9b4c38de"
+    },
+    {
+      "path": "XNBYEngine/core/src/net/http_client.cpp",
+      "gitBlob": "3c291320194b9efb31feda7c1105748f2a64c12a",
+      "baseSHA256": "ec6eac23551793903385ee9fc48ed82c1174e48418cf8b3c1ce6196d5ed07a56"
+    },
+    {
+      "path": "XNBYEngine/core/src/profiler/profiler.cpp",
+      "gitBlob": "26954360685364e2f92f0209020747af0f233929",
+      "baseSHA256": "70d53da63ed88221c1a6f9225fee9e19ee83f8d4b97b01fa0f24ea34942a0bef"
+    },
+    {
+      "path": "XNBYEngine/core/src/types/uuid.cpp",
+      "gitBlob": "0f49ee0fef0116529fc3d9a2654126b035483f89",
+      "baseSHA256": "a6efbdc0bb1dcfb452c465437c98424d65fda09feaebce834098daccf87b209a"
+    },
+    {
+      "path": "XNBYEngine/rhi/CMakeLists.txt",
+      "gitBlob": "60adf4e8deb8e9ee8f50949eb57a7cac45c83d32",
+      "baseSHA256": "24bc36159646f38eaae0dcab6f1046920f20ec3de6c324140600d3c6be90b926"
+    },
+    {
+      "path": "XNBYEngine/rhi/include/hongtu/rhi/RHIDevice.h",
+      "gitBlob": "34fdfdfcacb118acab817f6bfc27f8a690d58f45",
+      "baseSHA256": "fd5a3c2abce42af1083f825d778758b6b71f6f060cc5f0676fbd1b7fac8f5b30"
+    },
+    {
+      "path": "XNBYEngine/rhi/include/hongtu/rhi/RHIResources.h",
+      "gitBlob": "16caccbe8a547a3df73f86fc2a158ceebdd55a34",
+      "baseSHA256": "b3e52509784775986f8b57476cca081a73c3bba9dc6dc198bf6589366e8528ad"
+    },
+    {
+      "path": "XNBYEngine/rhi/include/hongtu/rhi/RHITypes.h",
+      "gitBlob": "e627413d350b185bef11b06dd3529bcb1885c009",
+      "baseSHA256": "de9f83cf02a6354d3a292a3fdb8c9c14b5d7be8d6f8f581f1a73a3322f27576d"
+    },
+    {
+      "path": "XNBYEngine/rhi/include/hongtu/rhi/TextureUploadLayout.h",
+      "gitBlob": "e8f684f923be84268dd5872bcf44e92f78c47a21",
+      "baseSHA256": "96fc4abf50a21df784e37a34444d774667d4c00db08cf0472d7e18c671edfcae"
+    },
+    {
+      "path": "XNBYEngine/rhi/src/vulkan/VulkanCommandBuffer.cpp",
+      "gitBlob": "5c08dbf5788083e6338da5ffc11ada96b18bf6cd",
+      "baseSHA256": "1305b4dc9a1830bb29aa1e7593c8ed948df10d31b1ee48616564549766cf2457"
+    },
+    {
+      "path": "XNBYEngine/rhi/src/vulkan/VulkanCommandBuffer.h",
+      "gitBlob": "cc20a81658722249c3d33eb1b6c09baa7f8f171b",
+      "baseSHA256": "f5ae6347fe5c7cae727ee42d042aff456b46e4a53a480c001af08ee36d6f0cb0"
+    },
+    {
+      "path": "XNBYEngine/rhi/src/vulkan/VulkanDevice.cpp",
+      "gitBlob": "004efc5b9f8648f46734401fddef06625e27e691",
+      "baseSHA256": "01195abf7779c0f6ee1d56932d613e0958e820a5a91e0c9169630efbcbf60019"
+    },
+    {
+      "path": "XNBYEngine/rhi/src/vulkan/VulkanDevice.h",
+      "gitBlob": "edc2e7745d9fab917c28e13787b4f31913d74025",
+      "baseSHA256": "e77ec27f6d62c1e7cd8038ff42d1cdc2a1f333794353212a2b672be01fe14af9"
+    },
+    {
+      "path": "XNBYEngine/rhi/src/vulkan/VulkanOffscreenTarget.cpp",
+      "gitBlob": "d5d25a63ff5cbf9771bcbec8f5f69087e9a1111e",
+      "baseSHA256": "7bc987bd84b8d699efa8869a54bd9e5e08a6f4b463b0f6f725fd2f426d282015"
+    },
+    {
+      "path": "XNBYEngine/rhi/src/vulkan/VulkanOffscreenTarget.h",
+      "gitBlob": "7dffe0a6d25df2b2fa076f58a0cb4ba4ab80fd69",
+      "baseSHA256": "bee0f12b1a443298dfcfd1726c1c9cfed606b8820be761bfe00457b87dcf2189"
+    },
+    {
+      "path": "XNBYEngine/asset/include/hongtu/asset/indexed_mesh_compaction.hpp",
+      "gitBlob": "2292fe10ac4aebd64fc8e0457ba6a08095d41aad",
+      "baseSHA256": "4f5ce9998fdc94f17a03dcabee82fb9b0d1eca6144b1aeb8063729a20de44ad8"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/native_source_frontier.hpp",
+      "gitBlob": "11ac56ef5e350b1136e329049b6a0ed6da4c75fd",
+      "baseSHA256": "b0fe51ec2a46755da466b6a3bb0eea1d9974b1fd8b5ad0032671dd8b96ee419c"
+    }
+  ],
+  "probeFiles": {
+    "production/native_retained_page_draw.hpp": "ccbba736813c1f52688a2481bbc0adc7b9cd24e200568e396e1d3c0c6145f417",
+    "production/native_retained_page_identity.inl": "214dcc2de1c552b43aa5c9fbd2e83787daac05a34a0b111f89c6bba91a583a70",
+    "production/native_retained_page_lifecycle.inl": "56774333e25c9be14119b1884d7e10717d61ed118bc37c19250be46e2b9ec78a",
+    "native_page_rhi_probe.cpp": "25f4a3ecf7986efe912ec66e89ae80e59bd7e51a5068e8a489cf7d29c46d13f1",
+    "CMakeLists.txt": "b290c6790c83f185dc70d7b4a07118d2c6387b40c5938630748ca775943613e5",
+    "page.vert": "b1b677a7a8a2295d2b135f3f4ff2a04ea335c2c437a089addd13c7ce04d0d6cd",
+    "page.frag": "f6a91bb5d769fed8b5d1cb85ec97741f69dffe2d53a5eb0bcbca367a48bc3f26"
+  }
+}

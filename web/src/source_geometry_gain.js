@@ -1,3 +1,4 @@
+import {SOURCE_PRECISE_DEPTH_POLICY,observedDepthNovelty} from './source_pair_priority.js';
 import {isMemorySourcePart} from './source_page_format.js';
 // CPU-only, SHA-pinned geometry. No renderer, texture, DOM, network or file IO.
 import {Vector3,Ray,Box3,Matrix4} from 'three';
@@ -8,6 +9,14 @@ export const sampleDepth=bin=>.5*120000**(bin/255);
 const depthBin=depth=>Math.max(0,Math.min(255,Math.round(Math.log2(Math.max(depth,.5)/.5)/Math.log2(120000)*255)));
 const scaleFor=(node,fov,height)=>Math.max(node.longest_edge_p90_m,node.texel_world_p90_m*4)*height/(2*Math.tan(fov*Math.PI/360));
 const deficit=(scale,depth,weight)=>scale/depth>6?Math.log2(1+scale/depth/6)*weight:0;
+export function texelAwareSourceGain(result){
+ require(Number.isFinite(result?.gain)&&result.gain>=0,'Invalid source gain');
+ const keys=['beforeTexelDeficit','afterTexelDeficit','texelGain','signedTexelGain'];
+ if(result.texelModel===undefined&&keys.every(k=>!Object.hasOwn(result,k)))return result.gain;
+ require(result.texelModel==='visible_texel_deficit_v1'&&keys.every(k=>Number.isFinite(result[k]))&&['beforeTexelDeficit','afterTexelDeficit','texelGain'].every(k=>result[k]>=0)&&Number.isFinite(result.signedGain),'Invalid source texel gain');
+ // QA: accept a texture-only improvement only when neither proxy regresses.
+ return result.signedGain>=0&&result.signedTexelGain>=0?Math.max(result.gain,result.texelGain):0;
+}
 function validMetric(node){return Number.isFinite(node?.longest_edge_p90_m)&&node.longest_edge_p90_m>=0&&Number.isFinite(node?.texel_world_p90_m)&&node.texel_world_p90_m>=0;}
 
 function accessor(gltf,index,binary,type,componentType,count){
@@ -62,6 +71,7 @@ function validateSnapshot(snapshot){
  for(const key of ['cameraWorld','projectionInverse','viewMatrix'])require(Array.isArray(snapshot[key])&&snapshot[key].length===16&&snapshot[key].every(Number.isFinite),'Invalid snapshot camera matrix');
  const near=snapshot.near??.5,far=snapshot.far??60000;require(Number.isFinite(near)&&near>0&&Number.isFinite(far)&&far>near,'Invalid snapshot clipping range');
  require(Array.isArray(snapshot.nodes)&&snapshot.nodes.length<=8192&&snapshot.nodes.every(validMetric)&&snapshot.samples instanceof Float64Array&&snapshot.samples.length%5===0&&snapshot.samples.length/5<=16384,'Invalid visible source pixels');
+ if(snapshot.surfaceDepths!==undefined)require(snapshot.surfaceDepthPolicy===SOURCE_PRECISE_DEPTH_POLICY&&snapshot.surfaceDepths instanceof Float64Array&&snapshot.surfaceDepths.length===snapshot.samples.length/5&&snapshot.surfaceDepths.every(d=>Number.isFinite(d)&&d>0),'Invalid precise surface depths');
  let total=0;for(let i=0;i<snapshot.samples.length;i+=5){const [x,y,bin,weight,node]=snapshot.samples.subarray(i,i+5);require(Number.isFinite(x)&&Math.abs(x)<1&&Number.isFinite(y)&&Math.abs(y)<1&&Number.isInteger(bin)&&bin>=0&&bin<=255&&Number.isFinite(weight)&&weight>0&&Number.isInteger(node)&&node>=0&&node<snapshot.nodes.length,'Invalid source pixel');total+=weight;}require(total<=1+1e-6,'Visible pixel weight exceeds viewport');
 }
 export async function evaluateSourceGeometryGain({marker,packets,snapshot,identity}){
@@ -75,12 +85,13 @@ export async function evaluateSourceGeometryGain({marker,packets,snapshot,identi
  const parts=[];for(let i=0;i<marker.parts.length;i++)parts.push(buildGeometryBvh(await geometryPart(marker.parts[i],packets[i],marker.source_nodes)));
  const projection=new Matrix4().fromArray(snapshot.projectionInverse),world=new Matrix4().fromArray(snapshot.cameraWorld),view=new Matrix4().fromArray(snapshot.viewMatrix),origin=new Vector3().setFromMatrixPosition(world),direction=new Vector3(),ray=new Ray();
  const beforeScales=snapshot.nodes.map(n=>scaleFor(n,snapshot.fov,snapshot.height)),afterScales=marker.source_nodes.map(n=>scaleFor(n,snapshot.fov,snapshot.height));
- let beforeDeficit=0,afterDeficit=0,hits=0,missing=0;const mapped=new Map();
- for(let i=0;i<snapshot.samples.length;i+=5){const [x,y,bin,weight,node]=snapshot.samples.subarray(i,i+5),before=deficit(beforeScales[node],sampleDepth(bin),weight);beforeDeficit+=before;
+ const beforeTexelScales=snapshot.nodes.map(n=>scaleFor({...n,longest_edge_p90_m:0},snapshot.fov,snapshot.height)),afterTexelScales=marker.source_nodes.map(n=>scaleFor({...n,longest_edge_p90_m:0},snapshot.fov,snapshot.height));
+ let beforeDeficit=0,afterDeficit=0,beforeTexelDeficit=0,afterTexelDeficit=0,hits=0,missing=0,depthNovelty=0,maxDepthSeparationScaled=0;const mapped=new Map();
+ for(let i=0;i<snapshot.samples.length;i+=5){const [x,y,bin,weight,node]=snapshot.samples.subarray(i,i+5),before=deficit(beforeScales[node],sampleDepth(bin),weight);beforeDeficit+=before;const beforeTexel=deficit(beforeTexelScales[node],sampleDepth(bin),weight);beforeTexelDeficit+=beforeTexel;
   direction.set(x,y,.5).applyMatrix4(projection).applyMatrix4(world).sub(origin).normalize();ray.set(origin,direction);let closest=null;
   const forwardDepth=-(view.elements[2]*direction.x+view.elements[6]*direction.y+view.elements[10]*direction.z),minimum=(snapshot.near??.5)/forwardDepth,maximum=(snapshot.far??60000)/forwardDepth;
   if(forwardDepth>0)for(const part of parts){const hit=intersectGeometryBvh(part,ray,closest?.distance??maximum,minimum);if(hit)closest=hit;}
-  if(!closest){missing++;afterDeficit+=before;continue;}hits++;const depth=-closest.point.applyMatrix4(view).z;afterDeficit+=deficit(afterScales[closest.node],sampleDepth(depthBin(depth)),weight);mapped.set(marker.source_nodes[closest.node].name,(mapped.get(marker.source_nodes[closest.node].name)??0)+1);
+  if(!closest){missing++;afterDeficit+=before;afterTexelDeficit+=beforeTexel;continue;}hits++;const depth=-closest.point.applyMatrix4(view).z;if(snapshot.surfaceDepths){const novelty=observedDepthNovelty(snapshot.surfaceDepths[i/5],depth,snapshot.fov,snapshot.height,weight);depthNovelty+=novelty.score;maxDepthSeparationScaled=Math.max(maxDepthSeparationScaled,novelty.separationScaled);}afterDeficit+=deficit(afterScales[closest.node],sampleDepth(depthBin(depth)),weight);afterTexelDeficit+=deficit(afterTexelScales[closest.node],sampleDepth(depthBin(depth)),weight);mapped.set(marker.source_nodes[closest.node].name,(mapped.get(marker.source_nodes[closest.node].name)??0)+1);
  }
- return {identity,cameraKey:snapshot.cameraKey,samples:snapshot.samples.length/5,hits,missing,beforeDeficit,afterDeficit,signedGain:beforeDeficit-afterDeficit,gain:Math.max(0,beforeDeficit-afterDeficit),triangles:parts.reduce((sum,p)=>sum+p.indices.length/3,0),geometryBytes:packets.reduce((sum,p)=>sum+p.json.byteLength+p.binary.byteLength,0),nodeHits:Object.fromEntries(mapped),milliseconds:performance.now()-start,model:'gpu_visible_pixels_cpu_child_triangles_v1',gpuAllocations:0};
+ return {identity,cameraKey:snapshot.cameraKey,...(snapshot.surfaceDepths?{surfaceDepthPolicy:SOURCE_PRECISE_DEPTH_POLICY,depthNovelty,maxDepthSeparationScaled}:{}),samples:snapshot.samples.length/5,hits,missing,beforeDeficit,afterDeficit,beforeTexelDeficit,afterTexelDeficit,signedTexelGain:beforeTexelDeficit-afterTexelDeficit,texelGain:Math.max(0,beforeTexelDeficit-afterTexelDeficit),texelModel:'visible_texel_deficit_v1',signedGain:beforeDeficit-afterDeficit,gain:Math.max(0,beforeDeficit-afterDeficit),triangles:parts.reduce((sum,p)=>sum+p.indices.length/3,0),geometryBytes:packets.reduce((sum,p)=>sum+p.json.byteLength+p.binary.byteLength,0),nodeHits:Object.fromEntries(mapped),milliseconds:performance.now()-start,model:'gpu_visible_pixels_cpu_child_triangles_v1',gpuAllocations:0};
 }

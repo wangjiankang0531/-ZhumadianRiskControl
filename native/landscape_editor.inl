@@ -771,6 +771,7 @@ void ShowcaseInteractiveApp::editorCommand(int id) {
         editorDraft_["positions"] = Json::array();
       }
     } else if (id == 3021) {
+      hongtu::landscape::requireLayerSlot(layers);
       editorCheckpoint();
       layers.push_back({{"id", "layer-" + std::to_string(GetTickCount64())},
                         {"name", "新图层"},

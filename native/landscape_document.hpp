@@ -15,6 +15,11 @@
 
 namespace hongtu::landscape {
   using Json = nlohmann::json;
+  inline constexpr size_t kMaximumLayerCount = 1000;
+  inline void requireLayerSlot(const Json& layers) {
+    if (!layers.is_array() || layers.size() >= kMaximumLayerCount)
+      throw std::runtime_error("图层数应小于等于 1000");
+  }
   inline void validateLabel(const Json& label);
   inline const std::vector<std::string>& businessObjectTypes() {
     static const std::vector<std::string> types = {"enterprise",
@@ -146,8 +151,8 @@ namespace hongtu::landscape {
         doc.at("coordinates") != emptyDocument().at("coordinates"))
       throw std::runtime_error("图层文件的格式或驻马店坐标系不匹配");
     const auto& layers = doc.at("layers");
-    if (!layers.is_array() || layers.size() > 256)
-      throw std::runtime_error("图层数应小于等于 256");
+    if (!layers.is_array() || layers.size() > kMaximumLayerCount)
+      throw std::runtime_error("图层数应小于等于 1000");
     std::set<std::string> ids;
     size_t total = 0;
     for (const auto& l : layers) {

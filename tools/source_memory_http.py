@@ -20,7 +20,7 @@ class MemorySourceHTTP:
     def _leases(self):
         return self.memory_sources if self.memory_sources is not None else super()._leases()
 
-    def _memory_json(self, value, status=200, marker_sha=None, plan_wait_ms=None):
+    def _memory_json(self, value, status=200, marker_sha=None, plan_wait_ms=None, bundle_wait_ms=None):
         raw = json.dumps(value, allow_nan=False, separators=(",", ":")).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
@@ -30,6 +30,8 @@ class MemorySourceHTTP:
             self.send_header("Retry-After", "1")
         if plan_wait_ms is not None:
             self.send_header("X-XNBY-Source-Plan-Wait-Ms", str(plan_wait_ms))
+        if bundle_wait_ms is not None:
+            self.send_header("X-XNBY-Source-Bundle-Wait-Ms", str(bundle_wait_ms))
         if marker_sha:
             self.send_header("X-XNBY-Source-Marker-SHA256", marker_sha)
         self.end_headers()
@@ -96,16 +98,24 @@ class MemorySourceHTTP:
     def _readonly_bundle(self, tile, *, depth=None, parent=None):
         if self.memory_sources is None:
             return super()._readonly_bundle(tile, depth=depth, parent=parent)
-        if urlsplit(self.path).query:
+        try:
+            query = parse_qs(urlsplit(self.path).query, strict_parsing=True,
+                             max_num_fields=1, keep_blank_values=True)
+            if set(query) - {"wait_ms"}:
+                raise ValueError("unknown bundle query")
+            wait_ms = self._plan_wait_ms(query)
+        except ValueError:
             return self.send_error(400)
         token = None
         try:
-            granted = self.memory_sources.grant(tile, depth=depth, parent=parent)
+            granted = self.memory_sources.grant(tile, depth=depth, parent=parent, wait_ms=wait_ms)
             if granted is None:
-                return self._memory_json({"status": "preparing_source_memory"}, 202)
+                return self._memory_json({"status": "preparing_source_memory"}, 202,
+                                         bundle_wait_ms=wait_ms if "wait_ms" in query else None)
             marker, digest = granted
             token = marker["cache_lease"]
-            self._memory_json(marker, marker_sha=digest)
+            self._memory_json(marker, marker_sha=digest,
+                              bundle_wait_ms=wait_ms if "wait_ms" in query else None)
         except (ValueError, RuntimeError, KeyError, TypeError, OSError) as error:
             if token:
                 self.memory_sources.release(token)

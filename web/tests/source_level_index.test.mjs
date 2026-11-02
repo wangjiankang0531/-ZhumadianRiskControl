@@ -55,3 +55,25 @@ test('first complete coverage tier uses measured texture pixels and no arbitrary
  assert.equal(initialIndexedCoverageDepth(record,3,500,1000),1);assert.equal(initialIndexedCoverageDepth(record,3,500,200),2);assert.equal(initialIndexedCoverageDepth(record,3,500,100),3);assert.equal(initialIndexedCoverageDepth({},3,500,100),3);
  assert.equal(indexedResidentCapacity(2346),2346);assert.throws(()=>indexedResidentCapacity(2347));assert.throws(()=>initialIndexedCoverageDepth({coverageTiers:[{depth:1,sourceCount:0,maxTexel:1}]},3,500,100));
 });
+
+
+function retainedFixture(){
+ const f=fixture(),second=tile(),root='Tile_2_L16_0u.osgb';second.tile=2;second.root=root;second.roots=[root];second.nodes=[{...second.nodes[0],name:root,children:[]}];
+ const raw=new TextEncoder().encode(JSON.stringify(second)),path='api/level-index/files/index_manifest.json',manifest=JSON.parse(f.files.get(path));Object.assign(manifest.tiles[1],{bytes:raw.length,sha256:hash(raw)});const text=JSON.stringify(manifest);f.files.set(path,text);const status=JSON.parse(f.files.get('api/level-index/status'));status.identity=hash(text);f.files.set('api/level-index/status',JSON.stringify(status));f.files.set('api/level-index/files/tile_2.json',raw);return f;
+}
+test('resident immutable topology survives LRU eviction without another fetch or copy',async()=>{
+ const f=retainedFixture(),index=await loadSourceLevelIndex({...f,hash,cacheSize:1}),first=await index.tile(1);await index.tile(2);assert.equal(index.cachedTiles,1);assert.equal(index.tileFetches,2);f.files.set('api/level-index/files/tile_1.json','corrupt');assert.equal(await index.tile(1,first),first);assert.equal(index.retainedTileHits,1);assert.equal(index.tileFetches,2);await assert.rejects(index.tile(1),/SHA differs/);assert.equal(index.tileFetches,3);
+});
+test('retained tile from another index, a clone, another root or external validator is rejected',async()=>{
+ const f=retainedFixture(),index=await loadSourceLevelIndex({...f,hash}),first=await index.tile(1),other=await loadSourceLevelIndex({...f,hash}),foreign=await other.tile(1),fabricated=tile();validateLevelTile(fabricated,options);Object.freeze(fabricated);
+ for(const candidate of [structuredClone(first),foreign,fabricated,{},undefined]){if(candidate===undefined)continue;await assert.rejects(index.tile(1,candidate),/retained/);}await assert.rejects(index.tile(2,first),/retained/);assert.equal(index.retainedTileHits,0);
+});
+test('cancellation is checked before a retained hit and cannot bypass demand ownership',async()=>{
+ let live=true;const index=await loadSourceLevelIndex({...fixture(),hash,stillWanted:()=>live}),first=await index.tile(1);live=false;await assert.rejects(index.tile(1,first),/cancel/i);assert.equal(index.retainedTileHits,0);
+});
+test('retained reuse keeps recursively frozen source metadata and existing cache/request bounds',async()=>{
+ const index=await loadSourceLevelIndex({...fixture(),hash}),first=await index.tile(1);assert.throws(()=>first.nodes[0].children.push('changed'));for(let n=0;n<50;n++)assert.equal(await index.tile(1,first),first);assert.equal(index.retainedTileHits,50);assert.equal(index.cachedTiles,1);assert.equal(index.pendingTiles,0);assert.equal(index.tileFetches,1);await assert.rejects(loadSourceLevelIndex({...fixture(),hash,cacheSize:17}),/bound/);
+});
+test('ordinary cache access remains backward compatible and does not count retained hits',async()=>{
+ const index=await loadSourceLevelIndex({...fixture(),hash}),first=await index.tile(1);assert.equal(await index.tile(1),first);assert.equal(await index.tile(1,null),first);assert.equal(index.retainedTileHits,0);assert.equal(index.tileFetches,1);
+});

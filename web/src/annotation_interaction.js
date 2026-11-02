@@ -30,13 +30,20 @@ export function insideRing(point, points) {
 const insideBox = (point, box) => box && point[0] >= box[0] && point[0] <= box[2] &&
   point[1] >= box[1] && point[1] <= box[3];
 
-export function buildHitTarget(feature, layer, points, labelBox = null) {
-  const complete = points.length > 0 && points.every(Boolean);
-  const body = complete && feature.style.opacity > 0;
-  const fill = complete && feature.type === 'region' && feature.style.fillOpacity > 0;
+const finiteScreenPoint = p => Array.isArray(p) && p.length === 2 && p.every(Number.isFinite);
+const validPath = (path, minimum) => Array.isArray(path) && path.length >= minimum && path.every(finiteScreenPoint);
+export function buildHitTarget(feature, layer, points, labelBox = null, geometry = null) {
+  const complete = points.length > 0 && points.every(finiteScreenPoint);
+  const strokePaths = feature.type === 'point' ? [] : geometry ?
+    (geometry.strokePaths ?? []).filter(path => validPath(path, 2)) : complete ?
+      [feature.type === 'region' ? [...points, points[0]] : points] : [];
+  const fillRings = feature.type !== 'region' ? [] : geometry ?
+    (geometry.fillRings ?? []).filter(path => validPath(path, 3)) : complete ? [points] : [];
+  const body = (feature.type === 'point' ? complete : strokePaths.length > 0) && feature.style.opacity > 0;
+  const fill = fillRings.length > 0 && feature.style.fillOpacity > 0;
   if (!body && !fill && !labelBox) return null;
   const tolerance = feature.type === 'point' ? feature.style.sizePx / 2 + 4 : Math.max(6, feature.style.widthPx / 2 + 4);
-  const visible = body || fill ? points : [];
+  const visible = [...(body ? feature.type === 'point' ? points : strokePaths.flat() : []), ...(fill ? fillRings.flat() : [])];
   let bounds = visible.length ? [Infinity, Infinity, -Infinity, -Infinity] : [...labelBox];
   for (const p of visible) {
     bounds[0] = Math.min(bounds[0], p[0] - tolerance);
@@ -46,7 +53,8 @@ export function buildHitTarget(feature, layer, points, labelBox = null) {
   }
   if (labelBox) bounds = [Math.min(bounds[0], labelBox[0]), Math.min(bounds[1], labelBox[1]),
     Math.max(bounds[2], labelBox[2]), Math.max(bounds[3], labelBox[3])];
-  return { feature, layer, points, body, fill, labelBox, bounds, tolerance };
+  const segments = strokePaths.flatMap(path => path.slice(1).map((p, i) => [path[i], p]));
+  return { feature, layer, points, body, fill, labelBox, bounds, tolerance, segments, fillRings };
 }
 
 export function pickAnnotation(targets, point) {
@@ -61,15 +69,14 @@ export function pickAnnotation(targets, point) {
         Math.abs(point[0] - p[0][0]) <= target.tolerance &&
         Math.abs(point[1] - p[0][1]) <= target.tolerance) hit = Math.max(hit, 3);
     else if (target.body && target.feature.type !== 'point') {
-      const count = target.feature.type === 'region' ? p.length : p.length - 1;
-      for (let edge = 0; edge < count; edge++) {
-        if (distanceToSegment(point, p[edge], p[(edge + 1) % p.length]) <= target.tolerance) {
+      for (const [a, b] of target.segments) {
+        if (distanceToSegment(point, a, b) <= target.tolerance) {
           hit = Math.max(hit, 2);
           break;
         }
       }
     }
-    if (target.fill && insideRing(point, p)) hit = Math.max(hit, 1);
+    if (target.fill && target.fillRings.some(ring => insideRing(point, ring))) hit = Math.max(hit, 1);
     if (hit > priority) { winner = target; priority = hit; }
     if (priority === 4) break;
   }

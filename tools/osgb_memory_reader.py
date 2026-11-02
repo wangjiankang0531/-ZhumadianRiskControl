@@ -1,6 +1,8 @@
 """Validate a bounded read-only OSGB stdout frame; never create converted asset files."""
 from __future__ import annotations
 import hashlib
+import array
+import sys
 import json
 import math
 import os
@@ -19,6 +21,26 @@ def integer(value, name, maximum):
     if type(value) is not int or not 0 <= value <= maximum:
         raise ValueError(f"invalid {name}")
     return value
+
+
+def finite_source_float32(data):
+    """Same finite predicate with at most 64KiB of decoded scratch.
+
+    A block has at most 16384 float32 values, each finite value <= 3.403e38.
+    Their sum cannot overflow a Python double. A NaN or infinity produces a
+    nonfinite sum, including opposite infinities, so no invalid value cancels.
+    Array decoding and summation use C loops without changing source bytes.
+    """
+    if len(data)%4:
+        raise ValueError('partial source float32')
+    for at in range(0,len(data),65536):
+        values=array.array('f')
+        if values.itemsize!=4:
+            return all(math.isfinite(v[0]) for v in struct.iter_unpack('<f',data))
+        values.frombytes(data[at:at+65536])
+        if sys.byteorder!='little':values.byteswap()
+        if not math.isfinite(sum(values)):return False
+    return True
 
 
 def parse_frame(data, expected_node, expected_source_bytes):
@@ -90,7 +112,7 @@ def _parse_frame(data, expected_node, expected_source_bytes, *, geometry_only=Fa
         if not isinstance(sampler, dict) or set(sampler) != {"wrapS","wrapT","minFilter","magFilter"} or any(type(v) is not int for v in sampler.values()):
             raise ValueError("invalid source sampler")
         integer(mesh.get("image"), "mesh image", len(images)-1)
-        if any(not math.isfinite(value[0]) for value in struct.iter_unpack("<f", positions)) or any(not math.isfinite(value[0]) for value in struct.iter_unpack("<f", uv)):
+        if not finite_source_float32(positions) or not finite_source_float32(uv):
             raise ValueError("nonfinite source arrays")
         if any(index[0] >= count for index in struct.iter_unpack("<I", indices)):
             raise ValueError("source index exceeds vertex count")

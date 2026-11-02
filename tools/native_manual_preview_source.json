@@ -1,0 +1,2755 @@
+{
+  "schema": "xnby.native.manual-preview.source.v1",
+  "sourceFiles": 391,
+  "commits": {
+    "Application": "b9525b8e0949c26a4a247aa91940acfb2706a7ab",
+    "XNBYEngine": "8966e32b370a10b1e8f5d4fba512f42f439c2451"
+  },
+  "overlays": {
+    "native/landscape_document.hpp": "ef850c95236a9cf66fade321e880cba613724c5df656734bf34aa6379627c6b7",
+    "native/landscape_editor.inl": "35c1daf7f75a9853a1b6e4eb77b4138686cea581deb1a45f793b2938355fcf1f"
+  },
+  "patches": {
+    "native_static_shell_patch.py": "cdcfa3f026c6742fe83c5474d46cbca1babf24d67a42b0fc34199e23b6db8a08",
+    "native_annotation_probe_patch.py": "6cf516464db3288d85ea6f68eeb31d61e65d1104d590dd2a9f56c2e8c7e9476c",
+    "native_manual_preview_patch.py": "34548143a0ec621a7c326b3bc606e695538f7ae7871521b9fbbf5b6d9520eed2"
+  },
+  "files": [
+    {
+      "path": "Application/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "e9056652d7ce567600764d82d5d4703e18d9c5ae",
+      "baseSHA256": "2ad1841bf7e003c31c7746c184d2f396acefa7718bfc4c507707b8e37ab4773b",
+      "SHA256": "2ad1841bf7e003c31c7746c184d2f396acefa7718bfc4c507707b8e37ab4773b"
+    },
+    {
+      "path": "Application/native/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "d5f3a8bef9965ff23689466a3324c8fcdcf645c6",
+      "baseSHA256": "1eed1d2ec3c53f3637de395f1f97d8f7cdca5f35dd752d54f1cbeaa895beafdb",
+      "SHA256": "1eed1d2ec3c53f3637de395f1f97d8f7cdca5f35dd752d54f1cbeaa895beafdb"
+    },
+    {
+      "path": "Application/native/landscape_document.hpp",
+      "origin": "git",
+      "gitBlob": "ae94c5af5c751bcc035eced51e8bce49ce048243",
+      "baseSHA256": "3aadb14f6f1ea185954644af83d0624cbcea9a2777a0fbf2ff7aec6577436dae",
+      "SHA256": "ef850c95236a9cf66fade321e880cba613724c5df656734bf34aa6379627c6b7"
+    },
+    {
+      "path": "Application/native/landscape_editor.inl",
+      "origin": "git",
+      "gitBlob": "6473b26ff70d04309441135864edf790df490b3e",
+      "baseSHA256": "2c42cba5bc27b0eef5451c742fd650d18dc12cffb32813575fb7db4b1396b398",
+      "SHA256": "298084de099cd69b71a4659490f95df640a9715e31d5c390a7efb3022eaba10d"
+    },
+    {
+      "path": "Application/native/landscape_editor_annotation_probe.inl",
+      "origin": "annotation-probe",
+      "baseSHA256": "9a73f6c4fd0d697ff400054b6b4015171281b1c80fbd64029f9ea3b254270a2b",
+      "SHA256": "9a73f6c4fd0d697ff400054b6b4015171281b1c80fbd64029f9ea3b254270a2b"
+    },
+    {
+      "path": "Application/native/landscape_editor_panel.inl",
+      "origin": "git",
+      "gitBlob": "147faa11686525e25cf5fdeaccd16b040eafb759",
+      "baseSHA256": "60e1ac365ec87412a1dd0e3643ade11e9f20be13c8ecc53980027fa3937bd509",
+      "SHA256": "60e1ac365ec87412a1dd0e3643ade11e9f20be13c8ecc53980027fa3937bd509"
+    },
+    {
+      "path": "Application/native/landscape_overlay.hpp",
+      "origin": "git",
+      "gitBlob": "db5724f8b1939e6302c3d7ecd6f5cdeb12a40836",
+      "baseSHA256": "7933c8203e058d8afe6b5b1d8318cf0a35684727ef07886b7a62e335666afc59",
+      "SHA256": "7933c8203e058d8afe6b5b1d8318cf0a35684727ef07886b7a62e335666afc59"
+    },
+    {
+      "path": "Application/native/main.cpp",
+      "origin": "git",
+      "gitBlob": "5989a8a0fb01fc97027bd4b571938a3459627121",
+      "baseSHA256": "cb86cba500cfcc14c7e471982cb645691aa4403bedbbfed8b0d34cc6f0b01172",
+      "SHA256": "fa09a818096713d11c654d4d42f823ea62932a1bf5727b66807ba8e9dd9ef943"
+    },
+    {
+      "path": "Application/native/mesh_sun_shadow.h",
+      "origin": "git",
+      "gitBlob": "9390538d9e091beeb05c0949fc96ab4ed4e00351",
+      "baseSHA256": "154856372acc0d56ca9a742b442de20590fff0333de4eac9bf3d8a91229c1be2",
+      "SHA256": "154856372acc0d56ca9a742b442de20590fff0333de4eac9bf3d8a91229c1be2"
+    },
+    {
+      "path": "Application/native/showcase_demo.manifest",
+      "origin": "git",
+      "gitBlob": "224864d75f7c836def13eefbab9540f4faf74271",
+      "baseSHA256": "db468fabdec4d53cde5aa60bac43ae385da273564818416ddd5d364b170c1966",
+      "SHA256": "db468fabdec4d53cde5aa60bac43ae385da273564818416ddd5d364b170c1966"
+    },
+    {
+      "path": "Application/native/showcase_demo.rc",
+      "origin": "git",
+      "gitBlob": "9b723ddca3d050dab498bb3d92cb32f585e6bbbf",
+      "baseSHA256": "e205d05e07dc049452d27cc41d93c9ee108d94c1b9cfb3fad0c8856f8fa813e0",
+      "SHA256": "e205d05e07dc049452d27cc41d93c9ee108d94c1b9cfb3fad0c8856f8fa813e0"
+    },
+    {
+      "path": "Application/native/zhumadian_cache_read_lock.inl",
+      "origin": "git",
+      "gitBlob": "53d81d1c00e123442cbe952535225a7c7e857662",
+      "baseSHA256": "9b123620c2987adea6dd404edce34db4e1eb52c3a71a2a049348f4fc331e86dc",
+      "SHA256": "9b123620c2987adea6dd404edce34db4e1eb52c3a71a2a049348f4fc331e86dc"
+    },
+    {
+      "path": "Application/native/zhumadian_native_chunk_decode.inl",
+      "origin": "git",
+      "gitBlob": "6e929a7cb3e91cbcb34f0f8bb98e8b30580d6b7f",
+      "baseSHA256": "d7a32934bb3de8dbf120b62554b92cf03fdfe34339c0f89c99561debaaa67a48",
+      "SHA256": "d7a32934bb3de8dbf120b62554b92cf03fdfe34339c0f89c99561debaaa67a48"
+    },
+    {
+      "path": "Application/native/zhumadian_native_family_pager.inl",
+      "origin": "git",
+      "gitBlob": "4df175936cb29d4c5714130dbe3e25bcaefc69b0",
+      "baseSHA256": "ad91222326f4aca13549cec9ca2d1a38c237c32a34638c718473f43a64d144c9",
+      "SHA256": "ad91222326f4aca13549cec9ca2d1a38c237c32a34638c718473f43a64d144c9"
+    },
+    {
+      "path": "Application/native/zhumadian_native_pager.inl",
+      "origin": "git",
+      "gitBlob": "5d26fc9ef10b497fc5f40746c28ce74f6b79deba",
+      "baseSHA256": "e4e569e9a0979c65a22438f63e8e82563cc0574cfb7f8603b31152aa68783223",
+      "SHA256": "e4e569e9a0979c65a22438f63e8e82563cc0574cfb7f8603b31152aa68783223"
+    },
+    {
+      "path": "Application/native/zhumadian_native_visibility.inl",
+      "origin": "git",
+      "gitBlob": "f4d132f4e210792c3da32f1dbc82c9249d70062a",
+      "baseSHA256": "949293bd00ab98d777b2d3b17e77868327c07e32af16333b436bb6b2df15f77c",
+      "SHA256": "949293bd00ab98d777b2d3b17e77868327c07e32af16333b436bb6b2df15f77c"
+    },
+    {
+      "path": "Application/native/zhumadian_native_visibility.md",
+      "origin": "git",
+      "gitBlob": "b38ce09a9d77ef62b625b9c39becefff6750bb3e",
+      "baseSHA256": "d23d341a777068302f4f5bb411fc944ea8215f49d874c7d21b2310dd8426081d",
+      "SHA256": "d23d341a777068302f4f5bb411fc944ea8215f49d874c7d21b2310dd8426081d"
+    },
+    {
+      "path": "Application/native/zhumadian_native_visibility_budget.inl",
+      "origin": "git",
+      "gitBlob": "b8e052947a1be8f6cd20f39887c4ee4f765e14b9",
+      "baseSHA256": "0643eb64c54c3899c9c01a251b58eefaae2b4c540a195793b9dac10d76597bfb",
+      "SHA256": "0643eb64c54c3899c9c01a251b58eefaae2b4c540a195793b9dac10d76597bfb"
+    },
+    {
+      "path": "Application/native/zhumadian_native_visibility_scores.inl",
+      "origin": "git",
+      "gitBlob": "7d6eb44964e96e4426329b276d1224474c20459b",
+      "baseSHA256": "93520abd4eab15a8869183f827b67996259a20f072b56aac6e036d10d35fbb8d",
+      "SHA256": "93520abd4eab15a8869183f827b67996259a20f072b56aac6e036d10d35fbb8d"
+    },
+    {
+      "path": "Application/native/zhumadian_owned_worker.inl",
+      "origin": "git",
+      "gitBlob": "27dad8da1b5c9e2b517cb666dc0f6a4ae5d4694a",
+      "baseSHA256": "d97d8fb914ca637b8a2274b0af3fd94f2b700138281af82694c4983ed802f136",
+      "SHA256": "d97d8fb914ca637b8a2274b0af3fd94f2b700138281af82694c4983ed802f136"
+    },
+    {
+      "path": "XNBYEngine/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "4bd2426d12321193ff9339a8299726c2b6c24ac7",
+      "baseSHA256": "6b31596ad279ba8caca6b9a5de10feed8c7ddd3361ab7df66209f80a3b0612fb",
+      "SHA256": "6b31596ad279ba8caca6b9a5de10feed8c7ddd3361ab7df66209f80a3b0612fb"
+    },
+    {
+      "path": "XNBYEngine/asset/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "1c3a0a3f1aaa036671ed142305711397efcfad8f",
+      "baseSHA256": "b9bb0c7b03a0451a39890bd3d7169d14a2dd2bd7fd66e238d353b5a6719d1256",
+      "SHA256": "b9bb0c7b03a0451a39890bd3d7169d14a2dd2bd7fd66e238d353b5a6719d1256"
+    },
+    {
+      "path": "XNBYEngine/asset/include/hongtu/asset/GltfLoader.h",
+      "origin": "git",
+      "gitBlob": "31554a4296166f1106f1f65d2f1ae612163cfa42",
+      "baseSHA256": "89fdf437c144a61289e4b9179923a972e449a9bb191a97cfa918cca727280113",
+      "SHA256": "89fdf437c144a61289e4b9179923a972e449a9bb191a97cfa918cca727280113"
+    },
+    {
+      "path": "XNBYEngine/asset/include/hongtu/asset/ShaderCompiler.h",
+      "origin": "git",
+      "gitBlob": "5304d02e83283fc834c6627e01338af340548097",
+      "baseSHA256": "64714fa8c4e2972f5090406d7e4b66918febaaac8224d87a7108cdad495756ea",
+      "SHA256": "64714fa8c4e2972f5090406d7e4b66918febaaac8224d87a7108cdad495756ea"
+    },
+    {
+      "path": "XNBYEngine/asset/include/hongtu/asset/indexed_mesh_compaction.hpp",
+      "origin": "git",
+      "gitBlob": "2292fe10ac4aebd64fc8e0457ba6a08095d41aad",
+      "baseSHA256": "4f5ce9998fdc94f17a03dcabee82fb9b0d1eca6144b1aeb8063729a20de44ad8",
+      "SHA256": "4f5ce9998fdc94f17a03dcabee82fb9b0d1eca6144b1aeb8063729a20de44ad8"
+    },
+    {
+      "path": "XNBYEngine/asset/include/hongtu/asset/temporary_file_cleanup.hpp",
+      "origin": "git",
+      "gitBlob": "01187a1b40b8bef83df6cd6adf5bc2cafc24c48f",
+      "baseSHA256": "a9c569b1391344982d81ddecaa08a052edab8d3f003888efa3cabc1c346d1c98",
+      "SHA256": "a9c569b1391344982d81ddecaa08a052edab8d3f003888efa3cabc1c346d1c98"
+    },
+    {
+      "path": "XNBYEngine/asset/src/ShaderCompiler.cpp",
+      "origin": "git",
+      "gitBlob": "c0fd61301c99dd549e540c6c8235ebcfefa90bb0",
+      "baseSHA256": "f71a2c7f8c5dc1541c9d253cc9a30ceadbacc8a6c9238b35fceb65f3be62062e",
+      "SHA256": "f71a2c7f8c5dc1541c9d253cc9a30ceadbacc8a6c9238b35fceb65f3be62062e"
+    },
+    {
+      "path": "XNBYEngine/asset/src/asset_loader.cpp",
+      "origin": "git",
+      "gitBlob": "e1b886d355ce4148a7eeca5c42b0862c2679b6d7",
+      "baseSHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd",
+      "SHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd"
+    },
+    {
+      "path": "XNBYEngine/asset/src/asset_manager.cpp",
+      "origin": "git",
+      "gitBlob": "e1b886d355ce4148a7eeca5c42b0862c2679b6d7",
+      "baseSHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd",
+      "SHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd"
+    },
+    {
+      "path": "XNBYEngine/asset/src/audio_loader.cpp",
+      "origin": "git",
+      "gitBlob": "e1b886d355ce4148a7eeca5c42b0862c2679b6d7",
+      "baseSHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd",
+      "SHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd"
+    },
+    {
+      "path": "XNBYEngine/asset/src/gltf_loader.cpp",
+      "origin": "git",
+      "gitBlob": "b2be222d390eb34d0b4c1a9245e5547b06761f8e",
+      "baseSHA256": "82378178560960416d1f866f01a03fa410a03d992ef94ddda636e67c76d10328",
+      "SHA256": "82378178560960416d1f866f01a03fa410a03d992ef94ddda636e67c76d10328"
+    },
+    {
+      "path": "XNBYEngine/asset/src/material_loader.cpp",
+      "origin": "git",
+      "gitBlob": "e1b886d355ce4148a7eeca5c42b0862c2679b6d7",
+      "baseSHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd",
+      "SHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd"
+    },
+    {
+      "path": "XNBYEngine/asset/src/model_loader.cpp",
+      "origin": "git",
+      "gitBlob": "e1b886d355ce4148a7eeca5c42b0862c2679b6d7",
+      "baseSHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd",
+      "SHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd"
+    },
+    {
+      "path": "XNBYEngine/asset/src/resource_cache.cpp",
+      "origin": "git",
+      "gitBlob": "e1b886d355ce4148a7eeca5c42b0862c2679b6d7",
+      "baseSHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd",
+      "SHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd"
+    },
+    {
+      "path": "XNBYEngine/asset/src/shader_compiler.cpp",
+      "origin": "git",
+      "gitBlob": "e1b886d355ce4148a7eeca5c42b0862c2679b6d7",
+      "baseSHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd",
+      "SHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd"
+    },
+    {
+      "path": "XNBYEngine/asset/src/shader_loader.cpp",
+      "origin": "git",
+      "gitBlob": "e1b886d355ce4148a7eeca5c42b0862c2679b6d7",
+      "baseSHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd",
+      "SHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd"
+    },
+    {
+      "path": "XNBYEngine/asset/src/streaming/streaming_manager.cpp",
+      "origin": "git",
+      "gitBlob": "e1b886d355ce4148a7eeca5c42b0862c2679b6d7",
+      "baseSHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd",
+      "SHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd"
+    },
+    {
+      "path": "XNBYEngine/asset/src/texture_loader.cpp",
+      "origin": "git",
+      "gitBlob": "e1b886d355ce4148a7eeca5c42b0862c2679b6d7",
+      "baseSHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd",
+      "SHA256": "7a27a571e3c5bb2badf65e1664ab187737140a9bd627ffe72ce4cff84b5413dd"
+    },
+    {
+      "path": "XNBYEngine/cloud/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "e389bbd500be8641474fa125ffcd13336cb593c8",
+      "baseSHA256": "45188f67d77defd36ac7ec79ac8fa6161a39c1bb09cbd7c7e61dc31b2236a8e4",
+      "SHA256": "45188f67d77defd36ac7ec79ac8fa6161a39c1bb09cbd7c7e61dc31b2236a8e4"
+    },
+    {
+      "path": "XNBYEngine/cloud/include/hongtu/cloud/headless_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "9ab59cf36b796ddb8bc0f1246e9322a2a241914e",
+      "baseSHA256": "0d10cf2b4316a32bb2c1bfdf392a54dbf6ee2e026ced22f22f585e33aaca53d4",
+      "SHA256": "0d10cf2b4316a32bb2c1bfdf392a54dbf6ee2e026ced22f22f585e33aaca53d4"
+    },
+    {
+      "path": "XNBYEngine/cloud/include/hongtu/cloud/mp4_writer.hpp",
+      "origin": "git",
+      "gitBlob": "187c843942a6828fdff7ef63e183eea73cc3d46a",
+      "baseSHA256": "a9aec14f24931a1bee849c106a083ae050352106f91bb9a742edb9b3d3a7de64",
+      "SHA256": "a9aec14f24931a1bee849c106a083ae050352106f91bb9a742edb9b3d3a7de64"
+    },
+    {
+      "path": "XNBYEngine/cloud/include/hongtu/cloud/network_event_pump.hpp",
+      "origin": "git",
+      "gitBlob": "e61b6c35a578e107679712c9ebd0b0da5f644216",
+      "baseSHA256": "ab5a78c8e6c7df6e24905e71cfec15aa2d9e633d52ae1e55d19b6f24be7b6653",
+      "SHA256": "ab5a78c8e6c7df6e24905e71cfec15aa2d9e633d52ae1e55d19b6f24be7b6653"
+    },
+    {
+      "path": "XNBYEngine/cloud/include/hongtu/cloud/video_encoder.hpp",
+      "origin": "git",
+      "gitBlob": "7076a9715a558424b69635629af2ed3d16eba558",
+      "baseSHA256": "f14328d832acce1550d9c97d25c3078986e3e1dfd2050275e6b5a8862051645a",
+      "SHA256": "f14328d832acce1550d9c97d25c3078986e3e1dfd2050275e6b5a8862051645a"
+    },
+    {
+      "path": "XNBYEngine/cloud/include/hongtu/cloud/vt_encoder.hpp",
+      "origin": "git",
+      "gitBlob": "3641051351af070f9cea5376ab2516c8b6029742",
+      "baseSHA256": "1229091a3daecfb91a1b8094e9e89c3cd2e41ba0646d6a461dd1a6be1be16916",
+      "SHA256": "1229091a3daecfb91a1b8094e9e89c3cd2e41ba0646d6a461dd1a6be1be16916"
+    },
+    {
+      "path": "XNBYEngine/cloud/include/hongtu/cloud/webrtc_transport.hpp",
+      "origin": "git",
+      "gitBlob": "93e591ffb6e9fbd3ad61ec30d7fad35666056b5b",
+      "baseSHA256": "c3f3b675f5f7a27fd78722e7866c6a2326863407c403686a3a59b38bd69eb0da",
+      "SHA256": "c3f3b675f5f7a27fd78722e7866c6a2326863407c403686a3a59b38bd69eb0da"
+    },
+    {
+      "path": "XNBYEngine/cloud/src/headless_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "902d5dae02086ea25da6b0a9ed61274dcb839a83",
+      "baseSHA256": "79a9597a73d304fbca68d0f085401d0e26627d1ff7764bf2be7f42d8a3d0f98e",
+      "SHA256": "79a9597a73d304fbca68d0f085401d0e26627d1ff7764bf2be7f42d8a3d0f98e"
+    },
+    {
+      "path": "XNBYEngine/cloud/src/mp4_writer.mm",
+      "origin": "git",
+      "gitBlob": "84ad7332a5cc9aabffc9e6be6314304f1437ec5c",
+      "baseSHA256": "d49d187a8704b98afe5eb5c93485e3249fdeafeceedb6ef895938d09222f0701",
+      "SHA256": "d49d187a8704b98afe5eb5c93485e3249fdeafeceedb6ef895938d09222f0701"
+    },
+    {
+      "path": "XNBYEngine/cloud/src/network_event_pump.cpp",
+      "origin": "git",
+      "gitBlob": "8ea43ac97633089a44bc384c72e707f0b39d0780",
+      "baseSHA256": "f63d76e0fc22501242986d21aecb959f10dd6a0ea32b19c6f4a741cf2735b14f",
+      "SHA256": "f63d76e0fc22501242986d21aecb959f10dd6a0ea32b19c6f4a741cf2735b14f"
+    },
+    {
+      "path": "XNBYEngine/cloud/src/video_encoder.cpp",
+      "origin": "git",
+      "gitBlob": "89da6aa1f1420d0d69087dc522e01384d174a7de",
+      "baseSHA256": "a3b8a575042b09f9d924695816b8cdc0c26bf29cf9ce98905775c8cd8c8e2afe",
+      "SHA256": "a3b8a575042b09f9d924695816b8cdc0c26bf29cf9ce98905775c8cd8c8e2afe"
+    },
+    {
+      "path": "XNBYEngine/cloud/src/vt_encoder.cpp",
+      "origin": "git",
+      "gitBlob": "efa9a4fc98331bc0467eac615ef1dde3430ffdda",
+      "baseSHA256": "7cd9f60c5f7e3799d9d17880f6693f8fe2a9917ecb696b89175892ab436aa65c",
+      "SHA256": "7cd9f60c5f7e3799d9d17880f6693f8fe2a9917ecb696b89175892ab436aa65c"
+    },
+    {
+      "path": "XNBYEngine/cloud/src/webrtc_transport.cpp",
+      "origin": "git",
+      "gitBlob": "bfa72aae48caee3a6fdce7f9d2329d91fd7d02bb",
+      "baseSHA256": "b05e560505367aafca3696b4511b309d4f58ee7cbac2355126f584b05189f3d6",
+      "SHA256": "b05e560505367aafca3696b4511b309d4f58ee7cbac2355126f584b05189f3d6"
+    },
+    {
+      "path": "XNBYEngine/cmake/CompilerOptions.cmake",
+      "origin": "git",
+      "gitBlob": "7f57b4a08b2d960e6a30f084cfa606a6f60cb8a5",
+      "baseSHA256": "9039646d25d829c925cf547e1e7e7ab286b345b35539b3a783f7ce43a9a6ece6",
+      "SHA256": "9039646d25d829c925cf547e1e7e7ab286b345b35539b3a783f7ce43a9a6ece6"
+    },
+    {
+      "path": "XNBYEngine/cmake/Dependencies.cmake",
+      "origin": "git",
+      "gitBlob": "fa28ecc0b5771323a74374bdb4edeaa7db652724",
+      "baseSHA256": "5d7d4a661d06f11ca0711fe99254879d2c8dadc9b3c8e8119da01ddfc1ca2fad",
+      "SHA256": "5d7d4a661d06f11ca0711fe99254879d2c8dadc9b3c8e8119da01ddfc1ca2fad"
+    },
+    {
+      "path": "XNBYEngine/cmake/Platform.cmake",
+      "origin": "git",
+      "gitBlob": "6fec9a9002c2ffbd832aaf1242c77ed78fc5b3fb",
+      "baseSHA256": "4f308924619f7c1acc1652c2f2276d58dba784b0b19cb877812bf824f1e00922",
+      "SHA256": "4f308924619f7c1acc1652c2f2276d58dba784b0b19cb877812bf824f1e00922"
+    },
+    {
+      "path": "XNBYEngine/coordinate/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "18bde518f2892c321c514554093f832424caa4aa",
+      "baseSHA256": "38d1cf7c9f4a6c33fb91b45cdb1f16e889376e9fcb24bccde57e45a9b306f5b8",
+      "SHA256": "38d1cf7c9f4a6c33fb91b45cdb1f16e889376e9fcb24bccde57e45a9b306f5b8"
+    },
+    {
+      "path": "XNBYEngine/coordinate/include/hongtu/coordinate/anchor_manager.hpp",
+      "origin": "git",
+      "gitBlob": "ca9c9df9c9a0ea4d70d4c68b1895bec4ba948329",
+      "baseSHA256": "d2489690e9a3bcc23e8b7bf3d8fe8dfb8654da1477377a7f827cc567ac648bfa",
+      "SHA256": "d2489690e9a3bcc23e8b7bf3d8fe8dfb8654da1477377a7f827cc567ac648bfa"
+    },
+    {
+      "path": "XNBYEngine/coordinate/include/hongtu/coordinate/datum_transform.hpp",
+      "origin": "git",
+      "gitBlob": "456ad91127523c660ae2fb40e1cd5ffd2f7333bd",
+      "baseSHA256": "0b72e9a4c84395f9b3bff89cdbbdac9e285a74e63809d520e8725a1c9c3a0297",
+      "SHA256": "0b72e9a4c84395f9b3bff89cdbbdac9e285a74e63809d520e8725a1c9c3a0297"
+    },
+    {
+      "path": "XNBYEngine/coordinate/include/hongtu/coordinate/dispersion/gaussian_plume.hpp",
+      "origin": "git",
+      "gitBlob": "f9c4ece3678859dc46558026521498cc2d579cd6",
+      "baseSHA256": "24284441ca7cd54a417f72ad406462ac9d4e56a561144a9d0de8086ff9e57888",
+      "SHA256": "24284441ca7cd54a417f72ad406462ac9d4e56a561144a9d0de8086ff9e57888"
+    },
+    {
+      "path": "XNBYEngine/coordinate/include/hongtu/coordinate/ellipsoid.hpp",
+      "origin": "git",
+      "gitBlob": "b5df51e71f71573bc546100f21a55cc0cc22928b",
+      "baseSHA256": "7fcd6568dbb397eeb3c9df930c669c995664e68387891ca09770e19f651a13ab",
+      "SHA256": "7fcd6568dbb397eeb3c9df930c669c995664e68387891ca09770e19f651a13ab"
+    },
+    {
+      "path": "XNBYEngine/coordinate/include/hongtu/coordinate/enu_frame.hpp",
+      "origin": "git",
+      "gitBlob": "bfd3f8657651554cbce42f91b6fbb62b93b11cdd",
+      "baseSHA256": "ff3ac611eb3adb37f798c9afd259279ba82db37e97faba8c17045860334a6463",
+      "SHA256": "ff3ac611eb3adb37f798c9afd259279ba82db37e97faba8c17045860334a6463"
+    },
+    {
+      "path": "XNBYEngine/coordinate/include/hongtu/coordinate/geodetic.hpp",
+      "origin": "git",
+      "gitBlob": "f708f8e36e3b2d23a9161bb9f40faa832c966b6f",
+      "baseSHA256": "bec10e33358adb28bb39a4693d30b720b71d3a58113b8293fd62b477ec4f372f",
+      "SHA256": "bec10e33358adb28bb39a4693d30b720b71d3a58113b8293fd62b477ec4f372f"
+    },
+    {
+      "path": "XNBYEngine/coordinate/include/hongtu/coordinate/global_local_transition.hpp",
+      "origin": "git",
+      "gitBlob": "4cf9e6b99e6cb578004d56aead0e74db79fa74bb",
+      "baseSHA256": "3989a6dd6076ffebc8b4bfeb399a0274d389b5003617efee09ed90ebfa21f62c",
+      "SHA256": "3989a6dd6076ffebc8b4bfeb399a0274d389b5003617efee09ed90ebfa21f62c"
+    },
+    {
+      "path": "XNBYEngine/coordinate/include/hongtu/coordinate/projection.hpp",
+      "origin": "git",
+      "gitBlob": "1ba2c8fdf0986704d9d7402879eff5d26686a5ce",
+      "baseSHA256": "a68537a7d77adaad213acb64298d660d1e80475f61e429f7fb9821418a836b47",
+      "SHA256": "a68537a7d77adaad213acb64298d660d1e80475f61e429f7fb9821418a836b47"
+    },
+    {
+      "path": "XNBYEngine/coordinate/include/hongtu/coordinate/rtc_transform.hpp",
+      "origin": "git",
+      "gitBlob": "99d5e5c02e7de1d6049bcfeed8ac1ce018e1942e",
+      "baseSHA256": "6bb0941eecf94ec1aa92d57eadc147524d9c2983748d62a6819ebb5d49069922",
+      "SHA256": "6bb0941eecf94ec1aa92d57eadc147524d9c2983748d62a6819ebb5d49069922"
+    },
+    {
+      "path": "XNBYEngine/coordinate/include/hongtu/coordinate/scale_switch.hpp",
+      "origin": "git",
+      "gitBlob": "d5b1576b1f5a96f6ef075db32cd0a9c92f9e2912",
+      "baseSHA256": "3fa57b0e47693b2c5a908410e4df14e1dbad8864f371454a038b38c8c027f75b",
+      "SHA256": "3fa57b0e47693b2c5a908410e4df14e1dbad8864f371454a038b38c8c027f75b"
+    },
+    {
+      "path": "XNBYEngine/coordinate/src/anchor_manager.cpp",
+      "origin": "git",
+      "gitBlob": "571ab8e7b02622c7af1176e7413958fd227cc978",
+      "baseSHA256": "99372a38d2a3f44632d1befb8b2c3e6839c28bda6fdbf911c1b69e8cc9088b71",
+      "SHA256": "99372a38d2a3f44632d1befb8b2c3e6839c28bda6fdbf911c1b69e8cc9088b71"
+    },
+    {
+      "path": "XNBYEngine/coordinate/src/datum_transform.cpp",
+      "origin": "git",
+      "gitBlob": "4c5ce728ee007cb32699950bbb6f8c03d553978e",
+      "baseSHA256": "ba889001a6072e7c1978bfca1d92260ad4d1d6c578e6f2385dd78b32c53240ae",
+      "SHA256": "ba889001a6072e7c1978bfca1d92260ad4d1d6c578e6f2385dd78b32c53240ae"
+    },
+    {
+      "path": "XNBYEngine/coordinate/src/dispersion/gaussian_plume.cpp",
+      "origin": "git",
+      "gitBlob": "f07b0f1074d1a40a47bb7e9b3474e897346a6273",
+      "baseSHA256": "54125e94ef784d6e52a332403f5c0933a9aa5df9e1104b6534ed135ecbf0cf5d",
+      "SHA256": "54125e94ef784d6e52a332403f5c0933a9aa5df9e1104b6534ed135ecbf0cf5d"
+    },
+    {
+      "path": "XNBYEngine/coordinate/src/enu_frame.cpp",
+      "origin": "git",
+      "gitBlob": "a88cff657ff709f99b0a37b562cdc23e57aa0122",
+      "baseSHA256": "c703bdf54cf427dbc23a3f64303ac8ba2b68569fdff60a62439a6ea5063e00dc",
+      "SHA256": "c703bdf54cf427dbc23a3f64303ac8ba2b68569fdff60a62439a6ea5063e00dc"
+    },
+    {
+      "path": "XNBYEngine/coordinate/src/geodetic.cpp",
+      "origin": "git",
+      "gitBlob": "bfe356bf03d55989891193d6e400700c3dacde4c",
+      "baseSHA256": "0b721666c8e03021842f04072f27df2d96ce5eccb0cdbcd555122bd041eed51a",
+      "SHA256": "0b721666c8e03021842f04072f27df2d96ce5eccb0cdbcd555122bd041eed51a"
+    },
+    {
+      "path": "XNBYEngine/coordinate/src/global_local_transition.cpp",
+      "origin": "git",
+      "gitBlob": "e4b6126df1da352daab564ab7f465e38b06bf3a0",
+      "baseSHA256": "46050d4ff00b3cd00423ff39340d98c280ac0084aa4222a2bf7f361fcbaa53eb",
+      "SHA256": "46050d4ff00b3cd00423ff39340d98c280ac0084aa4222a2bf7f361fcbaa53eb"
+    },
+    {
+      "path": "XNBYEngine/coordinate/src/projection.cpp",
+      "origin": "git",
+      "gitBlob": "8e6d36c3258aaade033979dbcedaa1916190ac74",
+      "baseSHA256": "b3153f502d22645101e46e8ee185384a047f3199a51c52ee9d63eb52b8af5170",
+      "SHA256": "b3153f502d22645101e46e8ee185384a047f3199a51c52ee9d63eb52b8af5170"
+    },
+    {
+      "path": "XNBYEngine/coordinate/src/rtc_transform.cpp",
+      "origin": "git",
+      "gitBlob": "c4d78ca21699a88aac63655a2684ca9422d96e22",
+      "baseSHA256": "1935e8405f14145ff9e11cceb496d2529db9b0820a6000d8e5fb71457a80630a",
+      "SHA256": "1935e8405f14145ff9e11cceb496d2529db9b0820a6000d8e5fb71457a80630a"
+    },
+    {
+      "path": "XNBYEngine/coordinate/src/scale_switch.cpp",
+      "origin": "git",
+      "gitBlob": "3f281a3211bf487a31f625696be61e9ec078af0c",
+      "baseSHA256": "f14be0c798aaf7fa48bdd2508092cecc07860b5b04e27a0d728e958d984796d3",
+      "SHA256": "f14be0c798aaf7fa48bdd2508092cecc07860b5b04e27a0d728e958d984796d3"
+    },
+    {
+      "path": "XNBYEngine/core/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "b7b5b69c6e33f587ff4d17db0785ea5a593702f2",
+      "baseSHA256": "af75ccd33dc41eb49a2ffcf757d67920de34cafa3ec90731df6763873bbf0536",
+      "SHA256": "af75ccd33dc41eb49a2ffcf757d67920de34cafa3ec90731df6763873bbf0536"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/aligned_allocator.hpp",
+      "origin": "git",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/common.hpp",
+      "origin": "git",
+      "gitBlob": "472c65b24be77b12bcba841a1061cf69cb91ac02",
+      "baseSHA256": "22c2ae72e2d85bacca20e6bdc2611caa8711d43d13edde66f581348733d60002",
+      "SHA256": "22c2ae72e2d85bacca20e6bdc2611caa8711d43d13edde66f581348733d60002"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/logging/log_level.hpp",
+      "origin": "git",
+      "gitBlob": "213f244de6c0d6310300656151ddbbe36cfff6a9",
+      "baseSHA256": "febc6f641d6e55dd2c5d6bfafb5aa081956b12b6c7a4d914a3ab13629379bcfe",
+      "SHA256": "febc6f641d6e55dd2c5d6bfafb5aa081956b12b6c7a4d914a3ab13629379bcfe"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/logging/logger.hpp",
+      "origin": "git",
+      "gitBlob": "04394673b5f19aece49f706779e8a92ca0f97925",
+      "baseSHA256": "994ab4bd658725045e9356ca5518e7902c4aefcfc403c06b29bf71427e89ea31",
+      "SHA256": "994ab4bd658725045e9356ca5518e7902c4aefcfc403c06b29bf71427e89ea31"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/math.hpp",
+      "origin": "git",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/math/math.hpp",
+      "origin": "git",
+      "gitBlob": "a5c7bdda50ac88ff6dfe10a82e315fddb3d3a12d",
+      "baseSHA256": "ee291b943d91c733692d9b266ef6e9e94c46aea6e43450d0abd45a6703ebcbb1",
+      "SHA256": "ee291b943d91c733692d9b266ef6e9e94c46aea6e43450d0abd45a6703ebcbb1"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/matrix.hpp",
+      "origin": "git",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/memory/allocator.hpp",
+      "origin": "git",
+      "gitBlob": "46e043ad845d8b4fc988e19440ee7717e2d6915f",
+      "baseSHA256": "f4c489eca7b8aac0de8ff6c01a044791c86015f79a0b4a6b0346a8542a7d4cb7",
+      "SHA256": "f4c489eca7b8aac0de8ff6c01a044791c86015f79a0b4a6b0346a8542a7d4cb7"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/memory/memory_pool.hpp",
+      "origin": "git",
+      "gitBlob": "d6a34f657dc8cac8d382e2c8afd9ea87ef38077c",
+      "baseSHA256": "65ccb9ce1b600b4695a6dd8ce0fb6a9f965b6057821d074b677f1c31b3ad1993",
+      "SHA256": "65ccb9ce1b600b4695a6dd8ce0fb6a9f965b6057821d074b677f1c31b3ad1993"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/net/download_queue.hpp",
+      "origin": "git",
+      "gitBlob": "bea28d112066fbde755d94d57796409afe3c5d59",
+      "baseSHA256": "8bd1e2ba33f0ed64429b24d8d2be4a9fe2c4fed253950161b3e43ceb049c7296",
+      "SHA256": "8bd1e2ba33f0ed64429b24d8d2be4a9fe2c4fed253950161b3e43ceb049c7296"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/net/http_client.hpp",
+      "origin": "git",
+      "gitBlob": "cd11f1d04b13c0499107628e5b6c15d1f7b93fa1",
+      "baseSHA256": "cc31cfe50cc6a3e693f785bfeb30f11f2f6ca62e1b6e417c18cc75302e2c4688",
+      "SHA256": "cc31cfe50cc6a3e693f785bfeb30f11f2f6ca62e1b6e417c18cc75302e2c4688"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/profiler/profiler.hpp",
+      "origin": "git",
+      "gitBlob": "88d533fad9de8c08ede237ade148f04d47eec1eb",
+      "baseSHA256": "67b273c0fedefdc6a4ca59cb45f45e305a8ad6c6f8173f550aa8941cda6da303",
+      "SHA256": "67b273c0fedefdc6a4ca59cb45f45e305a8ad6c6f8173f550aa8941cda6da303"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/profiler_scope.hpp",
+      "origin": "git",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/result.hpp",
+      "origin": "git",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/types.hpp",
+      "origin": "git",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/types/result.hpp",
+      "origin": "git",
+      "gitBlob": "be299a61d29e85cb3e687d3ebc95a288e2b157fd",
+      "baseSHA256": "ea66246b9d7c6f3177d8c1ed0302847214a89c4dcf290833b8a45f8cf1c6e2f6",
+      "SHA256": "ea66246b9d7c6f3177d8c1ed0302847214a89c4dcf290833b8a45f8cf1c6e2f6"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/types/types.hpp",
+      "origin": "git",
+      "gitBlob": "8d631f846134c7d8f7c24e9011d959544066c5f5",
+      "baseSHA256": "eb94e5d90341d0d0eb38a759ed0c000349f763923f493e7888dfca299fa55cfa",
+      "SHA256": "eb94e5d90341d0d0eb38a759ed0c000349f763923f493e7888dfca299fa55cfa"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/types/uuid.hpp",
+      "origin": "git",
+      "gitBlob": "8be7fd4aa970b44f376f87cba082525861e5c1f1",
+      "baseSHA256": "ea61901e0e72af980021bacad3d5706b38ed417ade6926dbdb91c57fed8a7ed0",
+      "SHA256": "ea61901e0e72af980021bacad3d5706b38ed417ade6926dbdb91c57fed8a7ed0"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/uuid.hpp",
+      "origin": "git",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/include/hongtu/core/vector.hpp",
+      "origin": "git",
+      "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "baseSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "XNBYEngine/core/src/logging/logger.cpp",
+      "origin": "git",
+      "gitBlob": "004385a942851385c251867dcdd6093fb03da875",
+      "baseSHA256": "0c4345100fd7f7908a65d79731a2253e8d6a572552ad229fad9918b5a449af91",
+      "SHA256": "0c4345100fd7f7908a65d79731a2253e8d6a572552ad229fad9918b5a449af91"
+    },
+    {
+      "path": "XNBYEngine/core/src/math/math.cpp",
+      "origin": "git",
+      "gitBlob": "c34821916c5cf704f0b0751050c3820be44cd4a2",
+      "baseSHA256": "6dbb81661dfd50763081f2a3c4e855c23bcd61297cd13ebed47f675de82acbfc",
+      "SHA256": "6dbb81661dfd50763081f2a3c4e855c23bcd61297cd13ebed47f675de82acbfc"
+    },
+    {
+      "path": "XNBYEngine/core/src/memory/allocator.cpp",
+      "origin": "git",
+      "gitBlob": "2e731f62ef4f950bbd3f9b7e6be884dff46ec575",
+      "baseSHA256": "9676d8fa01d25ea6dcfd3238c7f9454447b9dd07ae731f1da68ba6847ce8e31a",
+      "SHA256": "9676d8fa01d25ea6dcfd3238c7f9454447b9dd07ae731f1da68ba6847ce8e31a"
+    },
+    {
+      "path": "XNBYEngine/core/src/memory/memory_pool.cpp",
+      "origin": "git",
+      "gitBlob": "6c6501eb8f3ed9552a61378193ab2aab4571d955",
+      "baseSHA256": "f7c945206330ba064707529375333bfa9998700d22d0009da2e307904693d043",
+      "SHA256": "f7c945206330ba064707529375333bfa9998700d22d0009da2e307904693d043"
+    },
+    {
+      "path": "XNBYEngine/core/src/net/download_queue.cpp",
+      "origin": "git",
+      "gitBlob": "a1b1448c1c91723f25ea4eebb38d04e35163ed5b",
+      "baseSHA256": "65c9a86cb55784e2c9449bc97ba5e4980929d09aa6d1fd9656897bea9b4c38de",
+      "SHA256": "65c9a86cb55784e2c9449bc97ba5e4980929d09aa6d1fd9656897bea9b4c38de"
+    },
+    {
+      "path": "XNBYEngine/core/src/net/http_client.cpp",
+      "origin": "git",
+      "gitBlob": "3c291320194b9efb31feda7c1105748f2a64c12a",
+      "baseSHA256": "ec6eac23551793903385ee9fc48ed82c1174e48418cf8b3c1ce6196d5ed07a56",
+      "SHA256": "ec6eac23551793903385ee9fc48ed82c1174e48418cf8b3c1ce6196d5ed07a56"
+    },
+    {
+      "path": "XNBYEngine/core/src/profiler/profiler.cpp",
+      "origin": "git",
+      "gitBlob": "26954360685364e2f92f0209020747af0f233929",
+      "baseSHA256": "70d53da63ed88221c1a6f9225fee9e19ee83f8d4b97b01fa0f24ea34942a0bef",
+      "SHA256": "70d53da63ed88221c1a6f9225fee9e19ee83f8d4b97b01fa0f24ea34942a0bef"
+    },
+    {
+      "path": "XNBYEngine/core/src/types/uuid.cpp",
+      "origin": "git",
+      "gitBlob": "0f49ee0fef0116529fc3d9a2654126b035483f89",
+      "baseSHA256": "a6efbdc0bb1dcfb452c465437c98424d65fda09feaebce834098daccf87b209a",
+      "SHA256": "a6efbdc0bb1dcfb452c465437c98424d65fda09feaebce834098daccf87b209a"
+    },
+    {
+      "path": "XNBYEngine/gis/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "268f59c4a26f6746cb93684b84e9358c179a551c",
+      "baseSHA256": "d87025fcf4c4c6dd35840cc24df80640e1767757ca91544f10aa88ca2a37c4a4",
+      "SHA256": "d87025fcf4c4c6dd35840cc24df80640e1767757ca91544f10aa88ca2a37c4a4"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/dlg_layer.hpp",
+      "origin": "git",
+      "gitBlob": "c8150c770b560dcc284c25f492b13338cac2d0fc",
+      "baseSHA256": "052dfa9124d9bc60a4ed6cf979a88a2d79209aa39ba41bf3b63648f7e704d3d1",
+      "SHA256": "052dfa9124d9bc60a4ed6cf979a88a2d79209aa39ba41bf3b63648f7e704d3d1"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/geojson_reader.hpp",
+      "origin": "git",
+      "gitBlob": "f6120ed3676c58a98998a6bc97589a64ac46d705",
+      "baseSHA256": "d7a0e850d800b632f592d00147a15d9fbb7827e576462517af15b81fb15f8b7c",
+      "SHA256": "d7a0e850d800b632f592d00147a15d9fbb7827e576462517af15b81fb15f8b7c"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/geometry.hpp",
+      "origin": "git",
+      "gitBlob": "3303633c0e7751027686919373495d4ed98a8d74",
+      "baseSHA256": "9dc423362745f4103f61e2f437e94e0b95d69b9916bb3dc2dc2d64cadd2c342e",
+      "SHA256": "9dc423362745f4103f61e2f437e94e0b95d69b9916bb3dc2dc2d64cadd2c342e"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/imagery/esri_provider.hpp",
+      "origin": "git",
+      "gitBlob": "52ed35c32bd210ace40ca6382ce28eea315b0732",
+      "baseSHA256": "9d7a73e59c3f41f6c0d4d8eb688ca5f6f9de5ea03afcb52c9ec01771e0f408a3",
+      "SHA256": "9d7a73e59c3f41f6c0d4d8eb688ca5f6f9de5ea03afcb52c9ec01771e0f408a3"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/imagery/imagery_provider.hpp",
+      "origin": "git",
+      "gitBlob": "5ad4777ef5a29b86ccf4846a5238ba60f5ac8651",
+      "baseSHA256": "90a44f9029ef5c69494f8eac81b467844d29db145f424db8638b094b5c886f98",
+      "SHA256": "90a44f9029ef5c69494f8eac81b467844d29db145f424db8638b094b5c886f98"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/imagery/local_imagery_provider.hpp",
+      "origin": "git",
+      "gitBlob": "bf2d90442442d73c9526cb4ef6e5f7d712840502",
+      "baseSHA256": "3b40a336cb771c98fecc580f3cfd77bd46465704ef94ecc7d9bad770af0e8e42",
+      "SHA256": "3b40a336cb771c98fecc580f3cfd77bd46465704ef94ecc7d9bad770af0e8e42"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/imagery/osm_provider.hpp",
+      "origin": "git",
+      "gitBlob": "7826988e5bf0f0b7c9eb2abcf610364a0851f240",
+      "baseSHA256": "d9791d9d10b83b75e8b7dada6c36d3045936e966d6fab835c0c99b8cfc0ec54e",
+      "SHA256": "d9791d9d10b83b75e8b7dada6c36d3045936e966d6fab835c0c99b8cfc0ec54e"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/imagery/routed_imagery_provider.hpp",
+      "origin": "git",
+      "gitBlob": "47cebdc6e7413c5f3b1a5c778d44bf74aa2cf051",
+      "baseSHA256": "9c179e3c4f1698499cdfd95b32a108121a841d1cacb41b1ff8d3e10ad7220302",
+      "SHA256": "9c179e3c4f1698499cdfd95b32a108121a841d1cacb41b1ff8d3e10ad7220302"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/imagery/tianditu_provider.hpp",
+      "origin": "git",
+      "gitBlob": "050e9a604df5a68a47f8491e13825b8d92d5bdfe",
+      "baseSHA256": "f0e4eaa7d6b8531bf85d06c48725f8befe2a41bad96ab51df3ac4c6f3ccafaf4",
+      "SHA256": "f0e4eaa7d6b8531bf85d06c48725f8befe2a41bad96ab51df3ac4c6f3ccafaf4"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/shapefile_reader.hpp",
+      "origin": "git",
+      "gitBlob": "546c36cd339c91eeeffb8a1e09dd2826e576a080",
+      "baseSHA256": "db2e35116333908d1f16ad9f5ff3aa67b5e30fe4e7e4e6b445f7646289c99ec2",
+      "SHA256": "db2e35116333908d1f16ad9f5ff3aa67b5e30fe4e7e4e6b445f7646289c99ec2"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/terrain/dem_provider.hpp",
+      "origin": "git",
+      "gitBlob": "e752c90707692147e7186a8530638023015f57c6",
+      "baseSHA256": "40d40359f4c68d4842d1d5624af3848573372e892ee4b0e382d7910f43e6ad7d",
+      "SHA256": "40d40359f4c68d4842d1d5624af3848573372e892ee4b0e382d7910f43e6ad7d"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/terrain/terrarium_provider.hpp",
+      "origin": "git",
+      "gitBlob": "f30a086a966e3dd000be8ef1ce7164cff81b0735",
+      "baseSHA256": "c7f7b2ccc4d5fcad2ffcbbf02f8ab2bd67a2f7c7d613a5b04d5cde7f9c86b414",
+      "SHA256": "c7f7b2ccc4d5fcad2ffcbbf02f8ab2bd67a2f7c7d613a5b04d5cde7f9c86b414"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/tile/dem_baker.hpp",
+      "origin": "git",
+      "gitBlob": "723bff394976aa7dea37d4c5638cab3f4115a326",
+      "baseSHA256": "a48acf64a7def64bc00d50d02bc06d1d9b73a9082fb030450fe67e4fd4a095f1",
+      "SHA256": "a48acf64a7def64bc00d50d02bc06d1d9b73a9082fb030450fe67e4fd4a095f1"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/tile/obb.hpp",
+      "origin": "git",
+      "gitBlob": "4d2df543133037dbaae6072a1a7aa3c2e88f8ead",
+      "baseSHA256": "d09d06e3f46c5f3f42554869c8db3b844e4cd6922f0b80aa140c68284b6d22e7",
+      "SHA256": "d09d06e3f46c5f3f42554869c8db3b844e4cd6922f0b80aa140c68284b6d22e7"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/tile/tile_cache.hpp",
+      "origin": "git",
+      "gitBlob": "fe7fb3cdcb2acea595d5c1876cea4e9ab3665a12",
+      "baseSHA256": "164c04f672dcbcbd39ac507dceac708e7db2f5e6b9f6d362a47e016a24b11692",
+      "SHA256": "164c04f672dcbcbd39ac507dceac708e7db2f5e6b9f6d362a47e016a24b11692"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/tile/tile_coord.hpp",
+      "origin": "git",
+      "gitBlob": "d26b8a0c33c34396531508c8d76bdb342747e02f",
+      "baseSHA256": "e2dddaae48538ebd6a6b83d7da1c9569c4a5ad5510ed851ca63ccd0e45b9abdf",
+      "SHA256": "e2dddaae48538ebd6a6b83d7da1c9569c4a5ad5510ed851ca63ccd0e45b9abdf"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/tile/tile_geometry_cache.hpp",
+      "origin": "git",
+      "gitBlob": "f20c4f200ae6c7acb07e37c61266f803680f00f9",
+      "baseSHA256": "afec81e40d5ab1d3e66e69a6a315cc9fd963bbdaa7c6a5f8254b2c5da32c4015",
+      "SHA256": "afec81e40d5ab1d3e66e69a6a315cc9fd963bbdaa7c6a5f8254b2c5da32c4015"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/tile/tile_quad_tree_selector.hpp",
+      "origin": "git",
+      "gitBlob": "770a26842466c06e09be0490458d8e6935d8d70f",
+      "baseSHA256": "965164e70b523dbe098fbc327ce4b1fa716a338c6ff992392170d27da1f1c38b",
+      "SHA256": "965164e70b523dbe098fbc327ce4b1fa716a338c6ff992392170d27da1f1c38b"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/tiles3d/b3dm_reader.hpp",
+      "origin": "git",
+      "gitBlob": "e87019e1587dcf85539fdc6de2b26128f40a3e79",
+      "baseSHA256": "a530120c788cfaf3347c2a2012ed295aa2b18b7e17101375dd94746a894a437b",
+      "SHA256": "a530120c788cfaf3347c2a2012ed295aa2b18b7e17101375dd94746a894a437b"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/tiles3d/tile_scheduler.hpp",
+      "origin": "git",
+      "gitBlob": "06c0f7abe69ada2e7902b245b932c5dbd4925d53",
+      "baseSHA256": "e647551d653e3042e663fd663f06301235c5c61ead79649969dae89c44d9624e",
+      "SHA256": "e647551d653e3042e663fd663f06301235c5c61ead79649969dae89c44d9624e"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/tiles3d/tileset_loader.hpp",
+      "origin": "git",
+      "gitBlob": "709b84349b5d0f16ea472469f7c39e7e245c5ac1",
+      "baseSHA256": "56f0685c56ff24340e7b7177940f2416c715959fee93e799d3902e3a2b0bcce9",
+      "SHA256": "56f0685c56ff24340e7b7177940f2416c715959fee93e799d3902e3a2b0bcce9"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/tiles3d/tileset_node.hpp",
+      "origin": "git",
+      "gitBlob": "428c17c07483187594ee1dc4360b00e475769bcd",
+      "baseSHA256": "318e7bfec11af4b855bbe1223fe2f4ac94768823bd70c319fbb630eb2083250a",
+      "SHA256": "318e7bfec11af4b855bbe1223fe2f4ac94768823bd70c319fbb630eb2083250a"
+    },
+    {
+      "path": "XNBYEngine/gis/include/hongtu/gis/tiles3d_reader.hpp",
+      "origin": "git",
+      "gitBlob": "7420264efc374f20fdc899fa6c1ab8f6d9612e56",
+      "baseSHA256": "4b99ca0fa9281caf3309a8d3843b59aaec5aa79502804cb02ce082029aa4b7e2",
+      "SHA256": "4b99ca0fa9281caf3309a8d3843b59aaec5aa79502804cb02ce082029aa4b7e2"
+    },
+    {
+      "path": "XNBYEngine/gis/src/dlg_layer.cpp",
+      "origin": "git",
+      "gitBlob": "0e47bee7931bd5456c0577b51b4b9530cd6587de",
+      "baseSHA256": "8862cc1eec2ee6a1f209263d9b82989163efdbc2d1d4a53c342a011497c797eb",
+      "SHA256": "8862cc1eec2ee6a1f209263d9b82989163efdbc2d1d4a53c342a011497c797eb"
+    },
+    {
+      "path": "XNBYEngine/gis/src/geojson_reader.cpp",
+      "origin": "git",
+      "gitBlob": "b3d068e02ec0ab048670ece65cc633b7898d46af",
+      "baseSHA256": "ab2ef49efc8fcc8fd2e2e1a53755a0396b9c60fbf70b143374e78932b42b6ee8",
+      "SHA256": "ab2ef49efc8fcc8fd2e2e1a53755a0396b9c60fbf70b143374e78932b42b6ee8"
+    },
+    {
+      "path": "XNBYEngine/gis/src/geometry.cpp",
+      "origin": "git",
+      "gitBlob": "90e70b5be6c451f1c3baef24549921fe121fad27",
+      "baseSHA256": "a7efb390958e64fe3f582eeda6c2d48c831d3aa86e2d566472a0c831683932b3",
+      "SHA256": "a7efb390958e64fe3f582eeda6c2d48c831d3aa86e2d566472a0c831683932b3"
+    },
+    {
+      "path": "XNBYEngine/gis/src/imagery/esri_provider.cpp",
+      "origin": "git",
+      "gitBlob": "ddb952badf967fcbe4dc476056ca5343bffd9787",
+      "baseSHA256": "05be7128067ca75b6543e3af3a51c2ef3ab906bd45c35b5f06bc8506ce93dcf0",
+      "SHA256": "05be7128067ca75b6543e3af3a51c2ef3ab906bd45c35b5f06bc8506ce93dcf0"
+    },
+    {
+      "path": "XNBYEngine/gis/src/imagery/local_imagery_provider.cpp",
+      "origin": "git",
+      "gitBlob": "fe89aa854e12316e714a7f955b6e2630710ad8ec",
+      "baseSHA256": "aa158995d6c98ae46ce0ecacf51910b5f8f7cd03cbfe6df26f86e668c8ac7eaf",
+      "SHA256": "aa158995d6c98ae46ce0ecacf51910b5f8f7cd03cbfe6df26f86e668c8ac7eaf"
+    },
+    {
+      "path": "XNBYEngine/gis/src/imagery/osm_provider.cpp",
+      "origin": "git",
+      "gitBlob": "82bc14c1835433b668819b231d6190647966a0db",
+      "baseSHA256": "19d20ffa11aced3e5da2bf63c84bd73f37539f4c5ab19ef3f08d6e95f0e68cd8",
+      "SHA256": "19d20ffa11aced3e5da2bf63c84bd73f37539f4c5ab19ef3f08d6e95f0e68cd8"
+    },
+    {
+      "path": "XNBYEngine/gis/src/imagery/routed_imagery_provider.cpp",
+      "origin": "git",
+      "gitBlob": "c350dd5973770e63a565aca78754b1fadad7111d",
+      "baseSHA256": "99b3caf503a5afc9e4b7a73a644105c700ac8094d9b322833291a372f3f236db",
+      "SHA256": "99b3caf503a5afc9e4b7a73a644105c700ac8094d9b322833291a372f3f236db"
+    },
+    {
+      "path": "XNBYEngine/gis/src/imagery/tianditu_provider.cpp",
+      "origin": "git",
+      "gitBlob": "10a2d131c7290f350dec173ce948e8ec9f37de1b",
+      "baseSHA256": "cb15167fc061182d2575d2de93c48e2051907a9618ace8e86dd10fde0a34b4bb",
+      "SHA256": "cb15167fc061182d2575d2de93c48e2051907a9618ace8e86dd10fde0a34b4bb"
+    },
+    {
+      "path": "XNBYEngine/gis/src/shapefile_reader.cpp",
+      "origin": "git",
+      "gitBlob": "c5456c688d1f85b7d33ade676742f9dc133c3f3e",
+      "baseSHA256": "26998f320e8133f115225b9de868da7dd2585fce4e966faeb6a203e84d1128e0",
+      "SHA256": "26998f320e8133f115225b9de868da7dd2585fce4e966faeb6a203e84d1128e0"
+    },
+    {
+      "path": "XNBYEngine/gis/src/terrain/terrarium_provider.cpp",
+      "origin": "git",
+      "gitBlob": "a90c9e4cf4ee412314f80f410ce55d60005d0cab",
+      "baseSHA256": "4726030e6d8c4cef86f536c77a99a814e8768674f51e3b6b49de11489ddfbd02",
+      "SHA256": "4726030e6d8c4cef86f536c77a99a814e8768674f51e3b6b49de11489ddfbd02"
+    },
+    {
+      "path": "XNBYEngine/gis/src/tile/dem_baker.cpp",
+      "origin": "git",
+      "gitBlob": "87c8e606407a52769a93d7aa42a1d08de05070af",
+      "baseSHA256": "edba6173ad9543b3fd612cec9d718acd75e75b0b0a12ff3bd4316419ed8c6d5d",
+      "SHA256": "edba6173ad9543b3fd612cec9d718acd75e75b0b0a12ff3bd4316419ed8c6d5d"
+    },
+    {
+      "path": "XNBYEngine/gis/src/tile/obb.cpp",
+      "origin": "git",
+      "gitBlob": "9d23d0e3d51368e574c6a6704f5f27cc5497cf0b",
+      "baseSHA256": "92e42bf45b23d73e62563077701ec4c6ef29a389c3b7afc5e11831d0a91e51d6",
+      "SHA256": "92e42bf45b23d73e62563077701ec4c6ef29a389c3b7afc5e11831d0a91e51d6"
+    },
+    {
+      "path": "XNBYEngine/gis/src/tile/tile_cache.cpp",
+      "origin": "git",
+      "gitBlob": "c2e92898a62edf05a1f8bc6253c3083dde582809",
+      "baseSHA256": "bc27198f3f861ba22f6be5642b716e4cf53795f43019af775cd77eb37606775b",
+      "SHA256": "bc27198f3f861ba22f6be5642b716e4cf53795f43019af775cd77eb37606775b"
+    },
+    {
+      "path": "XNBYEngine/gis/src/tile/tile_coord.cpp",
+      "origin": "git",
+      "gitBlob": "e77480bd7e78998c019ddfd122d44c12115f76c9",
+      "baseSHA256": "4dae724c727f3bc57188cf456602fccd23cf601fc25e17db114bc5d368968cd4",
+      "SHA256": "4dae724c727f3bc57188cf456602fccd23cf601fc25e17db114bc5d368968cd4"
+    },
+    {
+      "path": "XNBYEngine/gis/src/tile/tile_geometry_cache.cpp",
+      "origin": "git",
+      "gitBlob": "bd0b185046b46e2584f503f7a7561aba87b00e39",
+      "baseSHA256": "f517cb1d87f19cb48f024b317e616777d5fc3583abf09b6b29a081d2adc6e1a9",
+      "SHA256": "f517cb1d87f19cb48f024b317e616777d5fc3583abf09b6b29a081d2adc6e1a9"
+    },
+    {
+      "path": "XNBYEngine/gis/src/tile/tile_quad_tree_selector.cpp",
+      "origin": "git",
+      "gitBlob": "91253355157d5a8440b6b5210600af8450582dd4",
+      "baseSHA256": "e45a8a4418c8dc191ed2abd83f0d89c09bced21036e12f2364c7e5de7735dc0a",
+      "SHA256": "e45a8a4418c8dc191ed2abd83f0d89c09bced21036e12f2364c7e5de7735dc0a"
+    },
+    {
+      "path": "XNBYEngine/gis/src/tiles3d/b3dm_reader.cpp",
+      "origin": "git",
+      "gitBlob": "296665f73d429653ec0b37e1dbbe5a156bbd5c5b",
+      "baseSHA256": "910cadb3405c420a9bcfe0b78fdc8b17eddca1b1b1aec75357ef63c614d38941",
+      "SHA256": "910cadb3405c420a9bcfe0b78fdc8b17eddca1b1b1aec75357ef63c614d38941"
+    },
+    {
+      "path": "XNBYEngine/gis/src/tiles3d/tile_scheduler.cpp",
+      "origin": "git",
+      "gitBlob": "f7c0dba4775b59835f5b399580fd3b6f1794a98a",
+      "baseSHA256": "daacfff845edd123312cc326da7b06ce2b7bb5027107492f8c719353c3feb97f",
+      "SHA256": "daacfff845edd123312cc326da7b06ce2b7bb5027107492f8c719353c3feb97f"
+    },
+    {
+      "path": "XNBYEngine/gis/src/tiles3d/tileset_loader.cpp",
+      "origin": "git",
+      "gitBlob": "e7ebc904e112102016000b1f8e09df3b3e17f8b3",
+      "baseSHA256": "f622bf36f6702ca9237094e76fe89e0baab94866375d4e070dec86d6699474f2",
+      "SHA256": "f622bf36f6702ca9237094e76fe89e0baab94866375d4e070dec86d6699474f2"
+    },
+    {
+      "path": "XNBYEngine/gis/src/tiles3d_reader.cpp",
+      "origin": "git",
+      "gitBlob": "d197938a3f998f9a01c4991ab65b0746966036f5",
+      "baseSHA256": "04e3e69a421a7ee3694efb4092dd0999d3e649eb4d31d3a069c392e8a0f7f277",
+      "SHA256": "04e3e69a421a7ee3694efb4092dd0999d3e649eb4d31d3a069c392e8a0f7f277"
+    },
+    {
+      "path": "XNBYEngine/measure/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "2132989d966071791468eb53ecbd5df9b97d286b",
+      "baseSHA256": "546597bca72eb8ac51c465e80b6679b96a69df4aae0b2ff7a84da1310488cb40",
+      "SHA256": "546597bca72eb8ac51c465e80b6679b96a69df4aae0b2ff7a84da1310488cb40"
+    },
+    {
+      "path": "XNBYEngine/measure/include/hongtu/measure/measurement.hpp",
+      "origin": "git",
+      "gitBlob": "bc3886a6e0256fbdad57780601c14af0814437df",
+      "baseSHA256": "c758df50b90d3e406dcef066e056d1464b9bc64a2089b9e89d3411086f84c4f9",
+      "SHA256": "c758df50b90d3e406dcef066e056d1464b9bc64a2089b9e89d3411086f84c4f9"
+    },
+    {
+      "path": "XNBYEngine/measure/src/measurement.cpp",
+      "origin": "git",
+      "gitBlob": "d6f5cf3f71ca0f2e3ca476ee4cf7d78c221c37e6",
+      "baseSHA256": "f5a4cb8dc3d8946330dc04ef6df166458bf4565828e453a73fba0a6161d3bc76",
+      "SHA256": "f5a4cb8dc3d8946330dc04ef6df166458bf4565828e453a73fba0a6161d3bc76"
+    },
+    {
+      "path": "XNBYEngine/renderer/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "78064fc36e978f7affe3b47e9de106be1374740a",
+      "baseSHA256": "8a47d32e43b59e526ca4442c79721e4f645b080d49fcba20ed0f7ce6a15a2bd5",
+      "SHA256": "8a47d32e43b59e526ca4442c79721e4f645b080d49fcba20ed0f7ce6a15a2bd5"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/animation/animation_clip.hpp",
+      "origin": "git",
+      "gitBlob": "c48f63f09b4474c578c0f3d638b49fca39e21a77",
+      "baseSHA256": "d42e1043c8addafdd6e7f4e731be52548284dcc518afc7d213c059a84b6f27bb",
+      "SHA256": "d42e1043c8addafdd6e7f4e731be52548284dcc518afc7d213c059a84b6f27bb"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/animation/procedural_character.hpp",
+      "origin": "git",
+      "gitBlob": "d9dd1d626ca0a69b79d6b90037fe7f9ed5c7af8d",
+      "baseSHA256": "af5d786317b6cb88b53ecf605253c480eb78e5115df442b854099e3c9854dd90",
+      "SHA256": "af5d786317b6cb88b53ecf605253c480eb78e5115df442b854099e3c9854dd90"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/animation/skeleton.hpp",
+      "origin": "git",
+      "gitBlob": "8cf76a889f02588280b0f39b5c7ed9cf80ae97af",
+      "baseSHA256": "ccc1edb347e2e6cffd0eaad5d10a121e94112ec58317b8325624d67f0ee62c0c",
+      "SHA256": "ccc1edb347e2e6cffd0eaad5d10a121e94112ec58317b8325624d67f0ee62c0c"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/camera/camera_base.hpp",
+      "origin": "git",
+      "gitBlob": "bde67d23ae7eb867a9822ad66dbff3bcb0032281",
+      "baseSHA256": "7a920fcdcf37d8b1e7bf854728fea3c8541f6cbaa513b13b6fe0500230931799",
+      "SHA256": "7a920fcdcf37d8b1e7bf854728fea3c8541f6cbaa513b13b6fe0500230931799"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/camera/local_camera.hpp",
+      "origin": "git",
+      "gitBlob": "dbc47ed04fd406b9a7c1124b226b91172499fd01",
+      "baseSHA256": "015f09d6490e37af781ea92ebfb49d64d3b6d6b9843d9962dce3ed4277b539bf",
+      "SHA256": "015f09d6490e37af781ea92ebfb49d64d3b6d6b9843d9962dce3ed4277b539bf"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/camera/orbit_camera_controller.hpp",
+      "origin": "git",
+      "gitBlob": "0e6fa9eae622ca9020293767df5d503512908e18",
+      "baseSHA256": "e774d3d18e889830050cb0a45439e71978500fbc1b1816dbdf6201849a568650",
+      "SHA256": "e774d3d18e889830050cb0a45439e71978500fbc1b1816dbdf6201849a568650"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/culling/occlusion_culling.hpp",
+      "origin": "git",
+      "gitBlob": "830ba7a33a126a6362d79ff3f0eda40435e29e16",
+      "baseSHA256": "4afba3d6318651848cb5c7eca3a5e4568877fab4e1d9c891e68c9a8172afacf2",
+      "SHA256": "4afba3d6318651848cb5c7eca3a5e4568877fab4e1d9c891e68c9a8172afacf2"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/dom_view_lod.hpp",
+      "origin": "git",
+      "gitBlob": "b2b9de7fe0c5246a9f2c4ac24a4bedcb2159791a",
+      "baseSHA256": "f44cb50c715a0092b3b00a19270c7f352e288efd305f78d205cb55d38c0f00b0",
+      "SHA256": "f44cb50c715a0092b3b00a19270c7f352e288efd305f78d205cb55d38c0f00b0"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/effects/billboard_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "ba146ccaa4b047020e3698e501e4dd3700b39667",
+      "baseSHA256": "5a08d74fe191e79a4e6f192c6652d491d77b14e2ba5835a0fe1c0f769c506b98",
+      "SHA256": "5a08d74fe191e79a4e6f192c6652d491d77b14e2ba5835a0fe1c0f769c506b98"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/effects/infinite_grid_pass.hpp",
+      "origin": "git",
+      "gitBlob": "47536a44f08c766d6095073e9ae891927b2b5f16",
+      "baseSHA256": "cf755b93f9ca9336d6e06f9e69adf167da9711c4cef5f71f8dd7833ba83d4f7b",
+      "SHA256": "cf755b93f9ca9336d6e06f9e69adf167da9711c4cef5f71f8dd7833ba83d4f7b"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/effects/light_wall_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "ddb71450b46a4f1b0d0fea3c45479b6ec121287f",
+      "baseSHA256": "12073a8fb38308dc5d724bbd10e9f0bef555600ab16c1bc7492fdc746005848a",
+      "SHA256": "12073a8fb38308dc5d724bbd10e9f0bef555600ab16c1bc7492fdc746005848a"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/effects/particle_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "3261fc3b6158ea3f1bcef779f7c3a70f1366c5f4",
+      "baseSHA256": "e40c721ea2fc94fa1d2c770d684aa9201bacd948ad03f5fd84cbad4e3768f10a",
+      "SHA256": "e40c721ea2fc94fa1d2c770d684aa9201bacd948ad03f5fd84cbad4e3768f10a"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/effects/particle_system.hpp",
+      "origin": "git",
+      "gitBlob": "6be4efe5a138e8129fe7ba908013031344bf73b2",
+      "baseSHA256": "2aebc1ab03a821aa0f1eeec0a1bf8e8098990ec3afca0412e3b733e8ad1b5ccc",
+      "SHA256": "2aebc1ab03a821aa0f1eeec0a1bf8e8098990ec3afca0412e3b733e8ad1b5ccc"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/effects/polygon_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "45dca7cd5cca92a76f1fda906d25db07d77f289e",
+      "baseSHA256": "a06561a43cf24c3a731ea82829eab50d0f17016c79e216d88b953a8ae00f0011",
+      "SHA256": "a06561a43cf24c3a731ea82829eab50d0f17016c79e216d88b953a8ae00f0011"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/effects/polyline_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "1fbf1697ffd47045bd17718d8cd832f8c2c702d2",
+      "baseSHA256": "37ad70212909b5bde01f7a94c059b17c4728007851ae008a4fdab2742f3c2afb",
+      "SHA256": "37ad70212909b5bde01f7a94c059b17c4728007851ae008a4fdab2742f3c2afb"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/effects/shading_glsl.hpp",
+      "origin": "git",
+      "gitBlob": "704343a4e5d43745e555b108ef88e8860d07b32e",
+      "baseSHA256": "4d3560cfd7a5c166e44a15440bd268ee3821eee472a0bcb0e8a5d00c99883e74",
+      "SHA256": "4d3560cfd7a5c166e44a15440bd268ee3821eee472a0bcb0e8a5d00c99883e74"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/effects/shockwave_pass.hpp",
+      "origin": "git",
+      "gitBlob": "db6fa2daaaf81f1a02290ffcc94223883e169c95",
+      "baseSHA256": "87fe27ef081def260c1d027d72a1624dc39373528a00edf18bfd7cf85f0a24fd",
+      "SHA256": "87fe27ef081def260c1d027d72a1624dc39373528a00edf18bfd7cf85f0a24fd"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/effects/volumetric_pass.hpp",
+      "origin": "git",
+      "gitBlob": "a954c42fc23e88e8fbd5ee3d80f02b0d8354a25c",
+      "baseSHA256": "71f52bafa5628a30203c0542633116a1fa7c554b6985d4d70e0b4f4adfa64ab3",
+      "SHA256": "71f52bafa5628a30203c0542633116a1fa7c554b6985d4d70e0b4f4adfa64ab3"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/environment/apply_environment.hpp",
+      "origin": "git",
+      "gitBlob": "7483853d2073f7cd905b966d54cf3f96cf1532f0",
+      "baseSHA256": "66e2c95f3f4496ca358718782f729c36d23c66352400b7057b35e6a30e3db702",
+      "SHA256": "66e2c95f3f4496ca358718782f729c36d23c66352400b7057b35e6a30e3db702"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/environment/environment_settings.hpp",
+      "origin": "git",
+      "gitBlob": "3467cd13571e4d1cea0ff529f2c1b2e497bfe2f3",
+      "baseSHA256": "ebc727ce38c99dc369d2e0ee34382ba18989a4b64f685fc5c47080d0983a8af5",
+      "SHA256": "ebc727ce38c99dc369d2e0ee34382ba18989a4b64f685fc5c47080d0983a8af5"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/environment/time_of_day.hpp",
+      "origin": "git",
+      "gitBlob": "09be081114f15b1ff1cd1a2f6f913e9d9210e754",
+      "baseSHA256": "3757a4c3f0887ceca32cf9aa0ae4916e323ef7d9b4f5c41b805d135c0e9d31e3",
+      "SHA256": "3757a4c3f0887ceca32cf9aa0ae4916e323ef7d9b4f5c41b805d135c0e9d31e3"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/gi/probe_gi.hpp",
+      "origin": "git",
+      "gitBlob": "31f19f32a19e44792a35de0d46342ecfee4f60af",
+      "baseSHA256": "ccaea971aff8e177d013b7289ee988a7c8ff390feb13a7bb9e61da2ff12f72d7",
+      "SHA256": "ccaea971aff8e177d013b7289ee988a7c8ff390feb13a7bb9e61da2ff12f72d7"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/ancestor_fallback.hpp",
+      "origin": "git",
+      "gitBlob": "0078bcc2f525dacbf172b938d4cd61683d0472f5",
+      "baseSHA256": "cbcd702ec230d7e6df92cc83982107e4692473413c17d2a3c540d9ef5f747936",
+      "SHA256": "cbcd702ec230d7e6df92cc83982107e4692473413c17d2a3c540d9ef5f747936"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/atmosphere_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "64e477876badd77e321f2fbec78395a2f8e80639",
+      "baseSHA256": "0ac98eda3c50387773648d3dd38f547a48d560db935db0735f043c93ca31b02c",
+      "SHA256": "0ac98eda3c50387773648d3dd38f547a48d560db935db0735f043c93ca31b02c"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/earth_texture_loader.hpp",
+      "origin": "git",
+      "gitBlob": "ae9e6b55c0030596b961ab15c5360417db80bf25",
+      "baseSHA256": "5c3aacb9ab38acfd3ca75d50037f9cd58458dc0670cf9f8cad5d3f2dc7e15384",
+      "SHA256": "5c3aacb9ab38acfd3ca75d50037f9cd58458dc0670cf9f8cad5d3f2dc7e15384"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/ellipsoid_mesh.hpp",
+      "origin": "git",
+      "gitBlob": "9e4a089308f122cfbfb38985a137f2f9fbf36ab6",
+      "baseSHA256": "0983c4d56166e460cc02f1da407600d033ae331c99bd289e8bab01a66282cbef",
+      "SHA256": "0983c4d56166e460cc02f1da407600d033ae331c99bd289e8bab01a66282cbef"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/globe_camera.hpp",
+      "origin": "git",
+      "gitBlob": "e5b911078404fc4f7e9a00a5945543b2759d1be7",
+      "baseSHA256": "3d567ca006bd11e543f4ec38c44b03e7978214eacfdae328c9c2c3a761b7d641",
+      "SHA256": "3d567ca006bd11e543f4ec38c44b03e7978214eacfdae328c9c2c3a761b7d641"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/globe_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "c1d3b994c64a35c30dda817a14b3ba3ad2e5ae0a",
+      "baseSHA256": "5d1179f7dea0d4ee49b43c640d0633e5b8c570d45cd54c5f20b815a61f6162c9",
+      "SHA256": "5d1179f7dea0d4ee49b43c640d0633e5b8c570d45cd54c5f20b815a61f6162c9"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/index_buffer_table.hpp",
+      "origin": "git",
+      "gitBlob": "f5e5b513f7ad9630e564730abbc6289dad4d9a3f",
+      "baseSHA256": "79031ed56aa51d9c26eea2b7fef8d43a3b39b98d4643861cbf537888b067d825",
+      "SHA256": "79031ed56aa51d9c26eea2b7fef8d43a3b39b98d4643861cbf537888b067d825"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/label_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "7f45ecd309e28549a0a4ea79d07ba1e348738cd9",
+      "baseSHA256": "67969d752b2af2581db9e1aae9c20f8ca74caa9b9c97475d2e39e12661e16d03",
+      "SHA256": "67969d752b2af2581db9e1aae9c20f8ca74caa9b9c97475d2e39e12661e16d03"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/regional_imagery_lod.hpp",
+      "origin": "git",
+      "gitBlob": "580b0a056ee06a7d9bbb1a0dfa86af990de7b719",
+      "baseSHA256": "612a66a630ec47eb6a258011eee5aca7c076ca7f8106fe0ef3189d0fe563013e",
+      "SHA256": "612a66a630ec47eb6a258011eee5aca7c076ca7f8106fe0ef3189d0fe563013e"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/rgba8_mip_chain.hpp",
+      "origin": "git",
+      "gitBlob": "f0cdd8a94e21fc2fb8d8160351f7623275f29fb9",
+      "baseSHA256": "31436772c480b534773d49a26700c665d5d6805e0393d60038e088fad79e9123",
+      "SHA256": "31436772c480b534773d49a26700c665d5d6805e0393d60038e088fad79e9123"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/skybox_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "cdc58ee1bf1eb9e13e91b6b1dcd75b7d36099b5e",
+      "baseSHA256": "1d9297e2bab3f9e81cd4f2ce7628cc255bacee9bb4cf6d5b900a5e22c3837171",
+      "SHA256": "1d9297e2bab3f9e81cd4f2ce7628cc255bacee9bb4cf6d5b900a5e22c3837171"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/tile_gpu_cache.hpp",
+      "origin": "git",
+      "gitBlob": "9270a5b867043fd4f72d2509bce056cc78971f3b",
+      "baseSHA256": "ac0eb6722f1d968e79568fa515fa932f85558f7a2e8f5b94555379cd5369a3e5",
+      "SHA256": "ac0eb6722f1d968e79568fa515fa932f85558f7a2e8f5b94555379cd5369a3e5"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/tile_mesh_builder.hpp",
+      "origin": "git",
+      "gitBlob": "865c8b87c0e82a5314e947dfc0740793347c9f92",
+      "baseSHA256": "3132b50e4b52e527175a77e9f9cddc3eef1c40d4faadf2b9c88bcd2f87e218bc",
+      "SHA256": "3132b50e4b52e527175a77e9f9cddc3eef1c40d4faadf2b9c88bcd2f87e218bc"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/vector_layer_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "5423a2d345ca01ea73da19c94f827dff9480bc45",
+      "baseSHA256": "6fc6d454b590b1c00538330552dd239fbf38589262b1c26477c0f5531092eec5",
+      "SHA256": "6fc6d454b590b1c00538330552dd239fbf38589262b1c26477c0f5531092eec5"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/globe/water_surface_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "09c59937734f359d914f41ec13fae663e5e22643",
+      "baseSHA256": "994037e1628774d5169d834c76df87c4c96b623a521dfcbc126cefa4df6b7ec3",
+      "SHA256": "994037e1628774d5169d834c76df87c4c96b623a521dfcbc126cefa4df6b7ec3"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/hdr/hdr_pipeline.hpp",
+      "origin": "git",
+      "gitBlob": "9bbd6ee3dfd28b5627a0dda83efd2abaf6bd1449",
+      "baseSHA256": "11bc08a3696a7320d009d0d907c761acd2aa7c5dedbce2d6ea522d0f211db293",
+      "SHA256": "11bc08a3696a7320d009d0d907c761acd2aa7c5dedbce2d6ea522d0f211db293"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/instancing/instance_buffer.hpp",
+      "origin": "git",
+      "gitBlob": "38d20fa1bb7abee7d76d2c10d5964cef091be546",
+      "baseSHA256": "c8fe04877d59354ca1f982d8998a52662efbe391100e2093fad649a5cfc7ff9e",
+      "SHA256": "c8fe04877d59354ca1f982d8998a52662efbe391100e2093fad649a5cfc7ff9e"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/lod/lod_system.hpp",
+      "origin": "git",
+      "gitBlob": "127006532e6465db8f6abe0ba3a7b01eb7014153",
+      "baseSHA256": "b9c4c10bf439cf9fec9cb063d7758817a00791d3bde4fb6fafae7161de9b769e",
+      "SHA256": "b9c4c10bf439cf9fec9cb063d7758817a00791d3bde4fb6fafae7161de9b769e"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/motion/follow_camera.hpp",
+      "origin": "git",
+      "gitBlob": "fbf14a10e9a51fee60f7b5c9e09cce51dc1f8617",
+      "baseSHA256": "a7117e100d09365fd339b1526700da5be8784324c8ca8b3f3f44e0b52abec629",
+      "SHA256": "a7117e100d09365fd339b1526700da5be8784324c8ca8b3f3f44e0b52abec629"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/motion/geo_motion.hpp",
+      "origin": "git",
+      "gitBlob": "fa6f37a1bac1679b84fb4f3230aa0e77dbc447fb",
+      "baseSHA256": "e556db4da990017d40b17c82ac46d77aed1d00f92065e46d642299df50b4519c",
+      "SHA256": "e556db4da990017d40b17c82ac46d77aed1d00f92065e46d642299df50b4519c"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/motion/pose_smoother.hpp",
+      "origin": "git",
+      "gitBlob": "ff68d091e269c8402eea69dd95d2845238664799",
+      "baseSHA256": "0b12d1e3fc9f7b76129d146c77809d8b187e46b0e9a2d7f88e02b1d9192feca9",
+      "SHA256": "0b12d1e3fc9f7b76129d146c77809d8b187e46b0e9a2d7f88e02b1d9192feca9"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/native_geometry_lod.hpp",
+      "origin": "git",
+      "gitBlob": "67e53c99727095d73976052a871c8b5493816f37",
+      "baseSHA256": "4c633e9c31835700c0a045d2d72b455ff7d8b73f7cd77b2067f80d13ca4f97af",
+      "SHA256": "4c633e9c31835700c0a045d2d72b455ff7d8b73f7cd77b2067f80d13ca4f97af"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/native_level_index.hpp",
+      "origin": "git",
+      "gitBlob": "11f6be6be076c5a8a4c6e8ba10c97e847089e748",
+      "baseSHA256": "8279174cd0e97a5bb6621d2a0f20c3a3e25e23428725949cbdd7d429a3776ce9",
+      "SHA256": "8279174cd0e97a5bb6621d2a0f20c3a3e25e23428725949cbdd7d429a3776ce9"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/native_source_frontier.hpp",
+      "origin": "git",
+      "gitBlob": "11ac56ef5e350b1136e329049b6a0ed6da4c75fd",
+      "baseSHA256": "b0fe51ec2a46755da466b6a3bb0eea1d9974b1fd8b5ad0032671dd8b96ee419c",
+      "SHA256": "b0fe51ec2a46755da466b6a3bb0eea1d9974b1fd8b5ad0032671dd8b96ee419c"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/native_source_refinement.hpp",
+      "origin": "git",
+      "gitBlob": "f6e42bda31a5746350e7a2a567885b52b35516d3",
+      "baseSHA256": "f3fd44f3986d982b59c903101728fcad201a342b06fbfff1c42f66b43063809c",
+      "SHA256": "f3fd44f3986d982b59c903101728fcad201a342b06fbfff1c42f66b43063809c"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/bloom_pass.hpp",
+      "origin": "git",
+      "gitBlob": "197c549687ec04b83648c7659bcd07429acfce82",
+      "baseSHA256": "1fd30fa418427f63900f6d2ce3a92b273fed3ac52bc5cea86457728bd2383734",
+      "SHA256": "1fd30fa418427f63900f6d2ce3a92b273fed3ac52bc5cea86457728bd2383734"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/forward_scene_renderer.hpp",
+      "origin": "git",
+      "gitBlob": "28235e31e074aebe912d1c6537500c032fa8628c",
+      "baseSHA256": "4ec79e49877ad2e55f56ae2a4c44ab0546d9f112a29ec69ba33ca665180b1601",
+      "SHA256": "4ec79e49877ad2e55f56ae2a4c44ab0546d9f112a29ec69ba33ca665180b1601"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/ground_plane_pass.hpp",
+      "origin": "git",
+      "gitBlob": "da966b0bddf20d1c315e2140e628ad82bea37165",
+      "baseSHA256": "45496d8ce222b95985ca00ab37a308cd9a764b17880e9f72613cbf47bae53d4b",
+      "SHA256": "45496d8ce222b95985ca00ab37a308cd9a764b17880e9f72613cbf47bae53d4b"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/hdr_compose_target.hpp",
+      "origin": "git",
+      "gitBlob": "1eace8c6621b4aa1448ea964dbe65b2b41c46d75",
+      "baseSHA256": "a315875b7a8768a535e9aaed4c233a878c6ce4bf5baf21481c38bac29531b39f",
+      "SHA256": "a315875b7a8768a535e9aaed4c233a878c6ce4bf5baf21481c38bac29531b39f"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/instanced_pbr_pipeline.hpp",
+      "origin": "git",
+      "gitBlob": "e335bf5fa64a8b22a4ead19864212f550152c2fd",
+      "baseSHA256": "633723dc4b465248220972f9fa6c62d7654a453945aabcdf493b7a5ac12a9381",
+      "SHA256": "633723dc4b465248220972f9fa6c62d7654a453945aabcdf493b7a5ac12a9381"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/mesh_vertex.hpp",
+      "origin": "git",
+      "gitBlob": "b6dacc98320a605cc78e1517d74910ea9b9987fc",
+      "baseSHA256": "9d7baf13a7462caa1669a8efafadb5f818f10bdd23bb9bcab731b3fac89e647c",
+      "SHA256": "9d7baf13a7462caa1669a8efafadb5f818f10bdd23bb9bcab731b3fac89e647c"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/path_ribbon.hpp",
+      "origin": "git",
+      "gitBlob": "d447d0842e83e2185e4a607ced5051f1c4744a67",
+      "baseSHA256": "8f8031144907461e8eab96d3c7138735025b5005b8bedb615e6ab034e416117f",
+      "SHA256": "8f8031144907461e8eab96d3c7138735025b5005b8bedb615e6ab034e416117f"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/pbr_forward_pipeline.hpp",
+      "origin": "git",
+      "gitBlob": "e8b3728030c650b6ef3b2020d71ecf85b008f718",
+      "baseSHA256": "bb603c326ab3155f96f11c47227a5d298f5f0e6c522f441283f2494dc1e3f538",
+      "SHA256": "bb603c326ab3155f96f11c47227a5d298f5f0e6c522f441283f2494dc1e3f538"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/pbr_material.hpp",
+      "origin": "git",
+      "gitBlob": "3afe039692a3da0a0504dd9c01fec0430f5387dd",
+      "baseSHA256": "8e1e1f729325c7dd80295aa2e613d5f5688081d8c54c7933d926337ff9a17f24",
+      "SHA256": "8e1e1f729325c7dd80295aa2e613d5f5688081d8c54c7933d926337ff9a17f24"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/point_light.hpp",
+      "origin": "git",
+      "gitBlob": "410d73de7c1ea41689c10cbccf8d6d87614d53e4",
+      "baseSHA256": "44e8f658bdb75ef0f56e0e743b0277257c7b71cbd11e476784704b602035608c",
+      "SHA256": "44e8f658bdb75ef0f56e0e743b0277257c7b71cbd11e476784704b602035608c"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/procedural_ibl.hpp",
+      "origin": "git",
+      "gitBlob": "8d46657b67f399995ec71cdf1cd026fb15fbbda1",
+      "baseSHA256": "d699d3d72137cdaf677bba00acc00fe753ba57d3c17f16176ad46fabfaa2840b",
+      "SHA256": "d699d3d72137cdaf677bba00acc00fe753ba57d3c17f16176ad46fabfaa2840b"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/shadow_pass.hpp",
+      "origin": "git",
+      "gitBlob": "63ba896b8c0253883c4009acc1ef9dd86862b424",
+      "baseSHA256": "2317b73fc2552849909bf4b28fe6e1ba62b93ee6507851610ccea74eeb5f872e",
+      "SHA256": "2317b73fc2552849909bf4b28fe6e1ba62b93ee6507851610ccea74eeb5f872e"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/skinned_pbr_pipeline.hpp",
+      "origin": "git",
+      "gitBlob": "4c30a017bfa8dc0eb384b23fcf396f847758ee4d",
+      "baseSHA256": "ed1533fe18f99815b5200d97220b22649b4804c027d38580acf1bfa635fe17b2",
+      "SHA256": "ed1533fe18f99815b5200d97220b22649b4804c027d38580acf1bfa635fe17b2"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/skybox_pass.hpp",
+      "origin": "git",
+      "gitBlob": "c0b1fe61fef804b431ad5f0ab1860508a7169ded",
+      "baseSHA256": "d155a38165469d55b3e54b03b30cffe2d870bdbb05439ea13fd8425c65fe33dc",
+      "SHA256": "d155a38165469d55b3e54b03b30cffe2d870bdbb05439ea13fd8425c65fe33dc"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/pbr/ssao_pass.hpp",
+      "origin": "git",
+      "gitBlob": "acfcb04fef19526d7dc14e95cd1a0f6728302a4a",
+      "baseSHA256": "aa7369971b6812b9616f6ad75ac4a6b572316441a450c37b5f73633492072cb8",
+      "SHA256": "aa7369971b6812b9616f6ad75ac4a6b572316441a450c37b5f73633492072cb8"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/picking/ray_caster.hpp",
+      "origin": "git",
+      "gitBlob": "780df1c0cd4591982bf19eee00adbfabffe53007",
+      "baseSHA256": "b6d52f5a0b2a7dba45bc8e10aabe69671d0a1b7d07330654647afe0c4c939846",
+      "SHA256": "b6d52f5a0b2a7dba45bc8e10aabe69671d0a1b7d07330654647afe0c4c939846"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/picking/triangle_bvh.hpp",
+      "origin": "git",
+      "gitBlob": "71f4c39b954a0b9417b586bbdda5bd44a8545770",
+      "baseSHA256": "645f0259d3be896c3487843d289d6280aab317a81f5d301ab4656c0bcffda395",
+      "SHA256": "645f0259d3be896c3487843d289d6280aab317a81f5d301ab4656c0bcffda395"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/postprocessing/post_process_pipeline.hpp",
+      "origin": "git",
+      "gitBlob": "a82de6d6d22ec81ab5384f9180bbb2ffe5f53b7c",
+      "baseSHA256": "b86fa8d812aa9c1bedfb8f2a152a0131872c1b812e42a3de68dc6b7137c9c7bb",
+      "SHA256": "b86fa8d812aa9c1bedfb8f2a152a0131872c1b812e42a3de68dc6b7137c9c7bb"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/profiler/render_profiler.hpp",
+      "origin": "git",
+      "gitBlob": "a653de29d6426a2ef3e6bf0759f5d837ed79e091",
+      "baseSHA256": "3fbb81415cc00b255cade12a4f37ad701b8c89172702014bc0a1d11c54dd81bc",
+      "SHA256": "3fbb81415cc00b255cade12a4f37ad701b8c89172702014bc0a1d11c54dd81bc"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/ssao/ssao_kernel.hpp",
+      "origin": "git",
+      "gitBlob": "f797c3e31ba997006d202c63085b1efab1518959",
+      "baseSHA256": "ef72a298fe8ade723e9cb4b3534b3391d972c6c84e9b689bda09d96b0b549f85",
+      "SHA256": "ef72a298fe8ade723e9cb4b3534b3391d972c6c84e9b689bda09d96b0b549f85"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/ssr/ssr_system.hpp",
+      "origin": "git",
+      "gitBlob": "9d370f2f2fe82b656d8190cd9a4dcc0c846ad877",
+      "baseSHA256": "8821bedd305f715233567453b8f6a491e426e718c81e9ec3d4843cc5ea9ab27f",
+      "SHA256": "8821bedd305f715233567453b8f6a491e426e718c81e9ec3d4843cc5ea9ab27f"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/streaming/world_partition.hpp",
+      "origin": "git",
+      "gitBlob": "c352c9fadc66049792d1ad87d1d0fa887dc2a1b2",
+      "baseSHA256": "b5e6f77f4b1b801d8320e2df5c7f15cfaa6128d09a360d3eab6ea9ad0e3158c8",
+      "SHA256": "b5e6f77f4b1b801d8320e2df5c7f15cfaa6128d09a360d3eab6ea9ad0e3158c8"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/terrain/terrain_system.hpp",
+      "origin": "git",
+      "gitBlob": "5ea878f5a0736a7780d31fad781ff484e50b8e71",
+      "baseSHA256": "2c2fc8daa32210d4eb9e0d9e402b82f3e91542272a36153029d6cfb7f5e1d365",
+      "SHA256": "2c2fc8daa32210d4eb9e0d9e402b82f3e91542272a36153029d6cfb7f5e1d365"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/text/label_layout.hpp",
+      "origin": "git",
+      "gitBlob": "9fe33986e64b689a3c52190f3e17a07afe07ff1b",
+      "baseSHA256": "d595f883602687980ac822597499deff7b97faa5bd1bd577e5f3b70ad0358a51",
+      "SHA256": "d595f883602687980ac822597499deff7b97faa5bd1bd577e5f3b70ad0358a51"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/text/label_types.hpp",
+      "origin": "git",
+      "gitBlob": "ad59bfa3a75c0dba17aee29525d3dea84a20cacd",
+      "baseSHA256": "a7a66b6dee0c7e4ceb577d3eedf7ccc6319937762e190082756cb21e899c1841",
+      "SHA256": "a7a66b6dee0c7e4ceb577d3eedf7ccc6319937762e190082756cb21e899c1841"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/vegetation/vegetation_layer.hpp",
+      "origin": "git",
+      "gitBlob": "20b67d3530fe2cd209fcb44017751ef8f8aaf010",
+      "baseSHA256": "f216e2e230bba5390e06d15b3bbc299f75ebce3e97acdd85258e508ea67eee71",
+      "SHA256": "f216e2e230bba5390e06d15b3bbc299f75ebce3e97acdd85258e508ea67eee71"
+    },
+    {
+      "path": "XNBYEngine/renderer/include/hongtu/renderer/vegetation/vegetation_pipeline.hpp",
+      "origin": "git",
+      "gitBlob": "01f7b5d15ee8643af15812184ffde5f212c46100",
+      "baseSHA256": "fc3ee2b46833e03c742df346fc8765438ec4724824aeb0ea0e92a51201b12870",
+      "SHA256": "fc3ee2b46833e03c742df346fc8765438ec4724824aeb0ea0e92a51201b12870"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/animation/animation_clip.cpp",
+      "origin": "git",
+      "gitBlob": "f4ee973974e18d99d1b6dcd06a6cc6ec08748dae",
+      "baseSHA256": "89d605667b6a6c7877a3923e097b8043850ad8204a3f65282b3523ebb75eb925",
+      "SHA256": "89d605667b6a6c7877a3923e097b8043850ad8204a3f65282b3523ebb75eb925"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/animation/procedural_character.cpp",
+      "origin": "git",
+      "gitBlob": "3caf6816abf5400b5f33dafee1455b27aca7e5db",
+      "baseSHA256": "5f89eab5e6c2ecfcd5a229dc265f239477fdebb602c697f4807802ccf8168aeb",
+      "SHA256": "5f89eab5e6c2ecfcd5a229dc265f239477fdebb602c697f4807802ccf8168aeb"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/animation/skeleton.cpp",
+      "origin": "git",
+      "gitBlob": "b4335ef2a57e1abd9fd241006f6f23f8952c58f2",
+      "baseSHA256": "835f8e7146fac702f7108b257c1aa8e907fe0ede840e6aca317b6e7cddc123f9",
+      "SHA256": "835f8e7146fac702f7108b257c1aa8e907fe0ede840e6aca317b6e7cddc123f9"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/camera.cpp",
+      "origin": "git",
+      "gitBlob": "567df10a456304ce4ce5d24490f1e0b85ef4b830",
+      "baseSHA256": "5fb48428f69a4ce6b8e8884d5e40b886bf9f1016459c1b08fd50f3db3bdad962",
+      "SHA256": "5fb48428f69a4ce6b8e8884d5e40b886bf9f1016459c1b08fd50f3db3bdad962"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/camera/camera_base.cpp",
+      "origin": "git",
+      "gitBlob": "870b682dfd6836b1d2d7603c560030a787bfeaa8",
+      "baseSHA256": "b52a5c1285ad2b9b61f59dd3516b4becb0fe1603809a53ab0222bdf3e0444beb",
+      "SHA256": "b52a5c1285ad2b9b61f59dd3516b4becb0fe1603809a53ab0222bdf3e0444beb"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/camera/local_camera.cpp",
+      "origin": "git",
+      "gitBlob": "b7aa8f76457def23e6d95f39513130262bb619af",
+      "baseSHA256": "a4afd72b4fdf3d353a6b9e057fa86f92b10f7754b72376d4da4bfaec07610950",
+      "SHA256": "a4afd72b4fdf3d353a6b9e057fa86f92b10f7754b72376d4da4bfaec07610950"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/camera/orbit_camera_controller.cpp",
+      "origin": "git",
+      "gitBlob": "58c10253c0352086cfe4e59f0c7b7e425ad136e6",
+      "baseSHA256": "367ea2cb70a3bfe5ad184b3d86a909c74e33678c07025d94ac010aa052fa674b",
+      "SHA256": "367ea2cb70a3bfe5ad184b3d86a909c74e33678c07025d94ac010aa052fa674b"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/culling/occlusion_culling.cpp",
+      "origin": "git",
+      "gitBlob": "ce6a89fc989d1e9a4b578b2c4c0c8203db9b2585",
+      "baseSHA256": "de44f2630dfc56eab18612c95887cc83b586cd0663ab5834194631bffbd59c37",
+      "SHA256": "de44f2630dfc56eab18612c95887cc83b586cd0663ab5834194631bffbd59c37"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/deferred/deferred_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "9f22eb72f64bd76c651c39d9cbd3886668ceb4f6",
+      "baseSHA256": "7c64b4c9e647faae9e7bddb6dc701c34ebc9be2222657f4c506d90b622bbc27b",
+      "SHA256": "7c64b4c9e647faae9e7bddb6dc701c34ebc9be2222657f4c506d90b622bbc27b"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/effects/billboard_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "6d339e45a2547a803651dfe703a219273ffe67e5",
+      "baseSHA256": "1d38da8193021288c8137a0a1e1980179fe5689cca94cc15d901de51036cd076",
+      "SHA256": "1d38da8193021288c8137a0a1e1980179fe5689cca94cc15d901de51036cd076"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/effects/infinite_grid_pass.cpp",
+      "origin": "git",
+      "gitBlob": "25717df8ca0e066d62a446c1dae3a1ea5587715c",
+      "baseSHA256": "c9093143f60956c60cc4832404c0d2ab4286b6e0583de4a8bf87fce9527af612",
+      "SHA256": "c9093143f60956c60cc4832404c0d2ab4286b6e0583de4a8bf87fce9527af612"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/effects/light_wall_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "95beeb2a5301a9081ea6015c4ef357801090d467",
+      "baseSHA256": "5319fccf4965f84455991dd06800c1df15923815f3eda4fb2557d7d61ce46cab",
+      "SHA256": "5319fccf4965f84455991dd06800c1df15923815f3eda4fb2557d7d61ce46cab"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/effects/particle_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "cd4d75a2b26003e0b28c2f2ca8a1a222fab2109b",
+      "baseSHA256": "f3b426bb2d622f35ff3c4d9a7899b65606688b54247706bdeaad850e5338211e",
+      "SHA256": "f3b426bb2d622f35ff3c4d9a7899b65606688b54247706bdeaad850e5338211e"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/effects/particle_system.cpp",
+      "origin": "git",
+      "gitBlob": "dadba5db36e25ea36198f0392c8fec03a019653e",
+      "baseSHA256": "fdb6eaed4e727f3a22a9bef5c2dc45100860b5c53334635646fd9df6c730bc41",
+      "SHA256": "fdb6eaed4e727f3a22a9bef5c2dc45100860b5c53334635646fd9df6c730bc41"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/effects/polygon_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "3586f3595a48eedf68171ecd212f2d0d6f3511d9",
+      "baseSHA256": "8eb12e71cec46b350fbce06d14dfb7c9918683bacfb51d9c6e4eb76e157bcd72",
+      "SHA256": "8eb12e71cec46b350fbce06d14dfb7c9918683bacfb51d9c6e4eb76e157bcd72"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/effects/polyline_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "dae65eac0271c4e18405a04a639ef4d04e9d2975",
+      "baseSHA256": "43597f77fe2b51bed9266f95f7cf4bbd95a21f7eeae767342f357165e6d958de",
+      "SHA256": "43597f77fe2b51bed9266f95f7cf4bbd95a21f7eeae767342f357165e6d958de"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/effects/shockwave_pass.cpp",
+      "origin": "git",
+      "gitBlob": "3f13d5a91cf0de6b47be8e2a92fc029aad2b5dba",
+      "baseSHA256": "c1beb09eeb0de81d192cd0de8a58b863542f68b68f7a0ec12dbaf9fb97228d60",
+      "SHA256": "c1beb09eeb0de81d192cd0de8a58b863542f68b68f7a0ec12dbaf9fb97228d60"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/effects/volumetric_pass.cpp",
+      "origin": "git",
+      "gitBlob": "b1fd4f232de68d22277a468aac1a6dbde3956a81",
+      "baseSHA256": "e26552ff808b20dadbec7b1f61d32bd48075e52bcd9120a7ff1f9573336d6741",
+      "SHA256": "e26552ff808b20dadbec7b1f61d32bd48075e52bcd9120a7ff1f9573336d6741"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/environment/apply_environment.cpp",
+      "origin": "git",
+      "gitBlob": "0a184d976e4f28f09a2c6c052a2592650eca19ac",
+      "baseSHA256": "344dcabcf9b74b1516635743d4105e04c11e68df88221f33db786b51fd96afee",
+      "SHA256": "344dcabcf9b74b1516635743d4105e04c11e68df88221f33db786b51fd96afee"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/environment/environment_settings.cpp",
+      "origin": "git",
+      "gitBlob": "db98b6ffb34e51a6d1d5e82ce4de62eb839c72f3",
+      "baseSHA256": "b69cc7d8aad44fca61983e491f9d320d79bed9f6655e88f4361f6d5faa5ed0e6",
+      "SHA256": "b69cc7d8aad44fca61983e491f9d320d79bed9f6655e88f4361f6d5faa5ed0e6"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/environment/time_of_day.cpp",
+      "origin": "git",
+      "gitBlob": "080c95b9be3b0734b39eaf86572a731f799e7905",
+      "baseSHA256": "7ed89ba265b3ee18812ffb8a956b60604b2edbc762dd0504a8d2ca6831316e1f",
+      "SHA256": "7ed89ba265b3ee18812ffb8a956b60604b2edbc762dd0504a8d2ca6831316e1f"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/forward/deferred_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "9f22eb72f64bd76c651c39d9cbd3886668ceb4f6",
+      "baseSHA256": "7c64b4c9e647faae9e7bddb6dc701c34ebc9be2222657f4c506d90b622bbc27b",
+      "SHA256": "7c64b4c9e647faae9e7bddb6dc701c34ebc9be2222657f4c506d90b622bbc27b"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/forward/forward_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "9f22eb72f64bd76c651c39d9cbd3886668ceb4f6",
+      "baseSHA256": "7c64b4c9e647faae9e7bddb6dc701c34ebc9be2222657f4c506d90b622bbc27b",
+      "SHA256": "7c64b4c9e647faae9e7bddb6dc701c34ebc9be2222657f4c506d90b622bbc27b"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/gi/probe_gi.cpp",
+      "origin": "git",
+      "gitBlob": "a943e75b25a0df3095dfaa34331d92b176058bc1",
+      "baseSHA256": "26c9c9c77284359f55046c6a926be512235169bfaf406c2690134ff6623cfa72",
+      "SHA256": "26c9c9c77284359f55046c6a926be512235169bfaf406c2690134ff6623cfa72"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/ancestor_fallback.cpp",
+      "origin": "git",
+      "gitBlob": "08f233a0dda6f6d7dd80f90f4c5c84fbe4468d57",
+      "baseSHA256": "1fb27483e29ded4c5cd6a9e081f59ad4d29974bf38f45998f9a0db465f5ba41a",
+      "SHA256": "1fb27483e29ded4c5cd6a9e081f59ad4d29974bf38f45998f9a0db465f5ba41a"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/atmosphere_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "4f3ea793b99b0d4f162de8a4b2cc3e933c4960db",
+      "baseSHA256": "d772accf9957564ddaae639ae8fec95f4cd2e2bc58682d7aca60a702efc320bb",
+      "SHA256": "d772accf9957564ddaae639ae8fec95f4cd2e2bc58682d7aca60a702efc320bb"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/earth_texture_loader.cpp",
+      "origin": "git",
+      "gitBlob": "944676503713be6bef80ce9bb2c5da06b99f57f1",
+      "baseSHA256": "f120e1ae2113690b1fd689aa0282d4a76b999675c5bb9096e788f72f4cb3ac5d",
+      "SHA256": "f120e1ae2113690b1fd689aa0282d4a76b999675c5bb9096e788f72f4cb3ac5d"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/ellipsoid_mesh.cpp",
+      "origin": "git",
+      "gitBlob": "79a72bed643f4cc9de78e41845e6793f6a3b2a69",
+      "baseSHA256": "d1b123f0927366db4998af33f06ab2737c0192765feeab38bdfb2b14816d6d3a",
+      "SHA256": "d1b123f0927366db4998af33f06ab2737c0192765feeab38bdfb2b14816d6d3a"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/globe_camera.cpp",
+      "origin": "git",
+      "gitBlob": "bd3ade69084dd29c6627d3ea9350a3c4f744e8c5",
+      "baseSHA256": "06ffbea407e10bb8be12de51c2c738a886cc1c924c33a8fb4314fbb8df9dc392",
+      "SHA256": "06ffbea407e10bb8be12de51c2c738a886cc1c924c33a8fb4314fbb8df9dc392"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/globe_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "d2e004b6424d3e0bc4448da11650589a842b0606",
+      "baseSHA256": "fb78f1e2a3b58991921aabca72a00a2599d1fe676a07a2788025be8efc84fa00",
+      "SHA256": "fb78f1e2a3b58991921aabca72a00a2599d1fe676a07a2788025be8efc84fa00"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/index_buffer_table.cpp",
+      "origin": "git",
+      "gitBlob": "4ab0e950ad5d9037d0f9eda8cd69ac7b1334fe3f",
+      "baseSHA256": "63b758fac26731eb11cecccb009c82d6717148ad00fb72127814e5e652baab1e",
+      "SHA256": "63b758fac26731eb11cecccb009c82d6717148ad00fb72127814e5e652baab1e"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/label_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "cd5257a44f57d11d2173eea732fe4879b2f10660",
+      "baseSHA256": "b33e0529435167b547ca5fa9409a61c222566716d4c1af4ff01f31018b7f95a1",
+      "SHA256": "b33e0529435167b547ca5fa9409a61c222566716d4c1af4ff01f31018b7f95a1"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/regional_imagery_lod.cpp",
+      "origin": "git",
+      "gitBlob": "b129a0e8eb3a61ba3dd67a94aada23d01299af13",
+      "baseSHA256": "9a3652b954ce9ffd73b59c64c89bcfb5a6ef84003b62a21ac16bf62755a09590",
+      "SHA256": "9a3652b954ce9ffd73b59c64c89bcfb5a6ef84003b62a21ac16bf62755a09590"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/rgba8_mip_chain.cpp",
+      "origin": "git",
+      "gitBlob": "ffb038a0b66679ffbabf58a7aef4090688747c59",
+      "baseSHA256": "226925e07323254bfaf4ca4695d1435987dcabf66e893e3d3f73666f8140aebe",
+      "SHA256": "226925e07323254bfaf4ca4695d1435987dcabf66e893e3d3f73666f8140aebe"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/skybox_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "14a58ebb6f5dc5a8b4d0aa246abc1b193c6d1226",
+      "baseSHA256": "5dd0d13ac0a8639f4df1df2a7926b80efdd53d9e9b6263b5e692a7ada2fb7d1f",
+      "SHA256": "5dd0d13ac0a8639f4df1df2a7926b80efdd53d9e9b6263b5e692a7ada2fb7d1f"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/tile_gpu_cache.cpp",
+      "origin": "git",
+      "gitBlob": "12eca54ebddc950702351ad6701af6947a670f45",
+      "baseSHA256": "88285466a737c0c4aed521b62bd93f868177f6db0b17741fa1dc1260d539771a",
+      "SHA256": "88285466a737c0c4aed521b62bd93f868177f6db0b17741fa1dc1260d539771a"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/tile_mesh_builder.cpp",
+      "origin": "git",
+      "gitBlob": "c450ae43731a6c3e5337650e32eee339e273fd06",
+      "baseSHA256": "46a2c8d136c55d99151156fbf9173269bbd5ffbc73072eac3575442a178d96e9",
+      "SHA256": "46a2c8d136c55d99151156fbf9173269bbd5ffbc73072eac3575442a178d96e9"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/vector_layer_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "331742fce1c50212d4b5d718ba063801ba65f356",
+      "baseSHA256": "b07e78bdc9946e1896ec661ee33c28a6f4aac269acb716a73212a1c544553474",
+      "SHA256": "b07e78bdc9946e1896ec661ee33c28a6f4aac269acb716a73212a1c544553474"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/water_shading_glsl.hpp",
+      "origin": "git",
+      "gitBlob": "0b5c2f8a0fc56669c529d8d24ddb454bcdc61154",
+      "baseSHA256": "99e07aa8889f7a167346bda0db8cc804db2271c7341639662c4e43f0e5f4b337",
+      "SHA256": "99e07aa8889f7a167346bda0db8cc804db2271c7341639662c4e43f0e5f4b337"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/globe/water_surface_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "349ddaf9638bb15802adbfeefbf36647b089dee3",
+      "baseSHA256": "70c170e72dc284cc4e30eadac36585bb399406150287d75384940de9809c5cf0",
+      "SHA256": "70c170e72dc284cc4e30eadac36585bb399406150287d75384940de9809c5cf0"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/hdr/hdr_pipeline.cpp",
+      "origin": "git",
+      "gitBlob": "99d614b45ff6e619811f558c363f8faed35f097f",
+      "baseSHA256": "ca442e3b06c04eae9cf4fb33011d5f0027333f1b2cf290df30498c0cc8cbd00e",
+      "SHA256": "ca442e3b06c04eae9cf4fb33011d5f0027333f1b2cf290df30498c0cc8cbd00e"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/instancing/instance_buffer.cpp",
+      "origin": "git",
+      "gitBlob": "751667c6fa074e033488c516aec562bc1fd93263",
+      "baseSHA256": "d966d22c98d8b26813dcd35f960d54a1fc3c1aa9a7f6459f71bf68310386a3a0",
+      "SHA256": "d966d22c98d8b26813dcd35f960d54a1fc3c1aa9a7f6459f71bf68310386a3a0"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/light.cpp",
+      "origin": "git",
+      "gitBlob": "dd18f2952a2171fb611dd243d56812848e179091",
+      "baseSHA256": "58ce4d46d2b9e00b1eeb71e09e0bfaf267cc8518909f9b2fab792faf25de4143",
+      "SHA256": "58ce4d46d2b9e00b1eeb71e09e0bfaf267cc8518909f9b2fab792faf25de4143"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/lod/lod_system.cpp",
+      "origin": "git",
+      "gitBlob": "f04fd9230236f1a16accf0ce6c2e4af7fb890095",
+      "baseSHA256": "99f0f69888b3df733c2e6e20dc7a501cd7ed81f35625022905d9f1677f6dfc45",
+      "SHA256": "99f0f69888b3df733c2e6e20dc7a501cd7ed81f35625022905d9f1677f6dfc45"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/material.cpp",
+      "origin": "git",
+      "gitBlob": "4892366441e0313e67568978dc8d2e3459b22f07",
+      "baseSHA256": "9dfc7f7145b3e704754d8939b56fd8ac0f514d8d2e10f0089d0f94161064549b",
+      "SHA256": "9dfc7f7145b3e704754d8939b56fd8ac0f514d8d2e10f0089d0f94161064549b"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/material_system.cpp",
+      "origin": "git",
+      "gitBlob": "6f9134deebd953a65ca671948bfa41434c7b37a2",
+      "baseSHA256": "2002824236cc0261097cecb04707a6658f1cd230ae746db8adeb0198db8489cb",
+      "SHA256": "2002824236cc0261097cecb04707a6658f1cd230ae746db8adeb0198db8489cb"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/bloom_pass.cpp",
+      "origin": "git",
+      "gitBlob": "c7957e4feab2bd6d79f2358a656bf544c4cc95e7",
+      "baseSHA256": "60d12a5b9246f41e4bab8162dfabf8842e49318fa697acc50323abd76598d11b",
+      "SHA256": "60d12a5b9246f41e4bab8162dfabf8842e49318fa697acc50323abd76598d11b"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/forward_scene_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "b2908a8533acae2770a572bd23dd79d0df464802",
+      "baseSHA256": "1845058f2d6fb9c4e52b35fd044da0ee1acf0f8b2a8218fa11080e134a4cd17f",
+      "SHA256": "1845058f2d6fb9c4e52b35fd044da0ee1acf0f8b2a8218fa11080e134a4cd17f"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/ground_plane_pass.cpp",
+      "origin": "git",
+      "gitBlob": "36fe8f41a1902fc1bfe7b5b517316a8bf5392306",
+      "baseSHA256": "620e052cdb1f64c4ec19a9efbcac8fe65a554d8987c84e45fbf55f9e2b0f451c",
+      "SHA256": "620e052cdb1f64c4ec19a9efbcac8fe65a554d8987c84e45fbf55f9e2b0f451c"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/hdr_compose_target.cpp",
+      "origin": "git",
+      "gitBlob": "d9e30c7cc19165e1425f39174b07b9260bb0359b",
+      "baseSHA256": "d865b114a2eaafbd3e59d3b96d43060e6dcf058a4bed7cf65649d09d52f4d7a2",
+      "SHA256": "d865b114a2eaafbd3e59d3b96d43060e6dcf058a4bed7cf65649d09d52f4d7a2"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/instanced_pbr_pipeline.cpp",
+      "origin": "git",
+      "gitBlob": "e93bab4d41d36a1df7e880703080c2a63ea34e2d",
+      "baseSHA256": "56d050100ed833986c68a1a30cf5725910527ab17f82cf61b507c8065b8a5474",
+      "SHA256": "56d050100ed833986c68a1a30cf5725910527ab17f82cf61b507c8065b8a5474"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/pbr_forward_pipeline.cpp",
+      "origin": "git",
+      "gitBlob": "6c5dd4e591a1fabce93e6d9963767f463a5b91dd",
+      "baseSHA256": "ff8f427acea32a996fcdbf1b8584be13a0627efdfbec66fad9b8e7f75b75a4bb",
+      "SHA256": "ff8f427acea32a996fcdbf1b8584be13a0627efdfbec66fad9b8e7f75b75a4bb"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/pbr_material.cpp",
+      "origin": "git",
+      "gitBlob": "921a7eb3455cc0af7a43ea9b276f988121c381de",
+      "baseSHA256": "055b6c61178b058bba5b77fe2911a9c882d81e52272f779fa1b9b4020469674a",
+      "SHA256": "055b6c61178b058bba5b77fe2911a9c882d81e52272f779fa1b9b4020469674a"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/point_light.cpp",
+      "origin": "git",
+      "gitBlob": "e13dc67cddefe286f127747d1321e473d9d5c364",
+      "baseSHA256": "79d11ce7e0ade3f8051c9168c0662d5afd7cb72909818d5e325f6fcc4d4edcbd",
+      "SHA256": "79d11ce7e0ade3f8051c9168c0662d5afd7cb72909818d5e325f6fcc4d4edcbd"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/procedural_ibl.cpp",
+      "origin": "git",
+      "gitBlob": "0c45b64c53884099af62553fc10c0636136b6ddd",
+      "baseSHA256": "b5d2aade600a44a68562ef0fc2f3ade01fb6883d53937b8d3514df4b143e1fea",
+      "SHA256": "b5d2aade600a44a68562ef0fc2f3ade01fb6883d53937b8d3514df4b143e1fea"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/shadow_pass.cpp",
+      "origin": "git",
+      "gitBlob": "1694bab77f4e1441a4b344af408308b1c2f0d305",
+      "baseSHA256": "725dc2a35412f0379b9a2059dfe12b6a9c2d97d55cf3339cc58acb0a1df09040",
+      "SHA256": "725dc2a35412f0379b9a2059dfe12b6a9c2d97d55cf3339cc58acb0a1df09040"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/skinned_pbr_pipeline.cpp",
+      "origin": "git",
+      "gitBlob": "fe9d7bfd0faed55be011337b63c3bad39440398d",
+      "baseSHA256": "3cce3e5b3a46a03ab5798b943febbc21d44a4e1a09ecf80adaacc6d1d752514e",
+      "SHA256": "3cce3e5b3a46a03ab5798b943febbc21d44a4e1a09ecf80adaacc6d1d752514e"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/skybox_pass.cpp",
+      "origin": "git",
+      "gitBlob": "afd04e8e8f44e11ed089e4966d05392bdd580ca1",
+      "baseSHA256": "e620bcea4086448435777ccacd2231f9dd5a72138cb89e59b771b6e426d22ec6",
+      "SHA256": "e620bcea4086448435777ccacd2231f9dd5a72138cb89e59b771b6e426d22ec6"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/pbr/ssao_pass.cpp",
+      "origin": "git",
+      "gitBlob": "413d2ca3b532d25ef2111fc33f126016a4645f9c",
+      "baseSHA256": "480a0e14bb9b15828b19418fbe4a1acaaaeec82756c1449765f0d2f000d7d7e8",
+      "SHA256": "480a0e14bb9b15828b19418fbe4a1acaaaeec82756c1449765f0d2f000d7d7e8"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/picking/ray_caster.cpp",
+      "origin": "git",
+      "gitBlob": "f180fe9bb7b290d3b55f6fe5024ade2b321d5c03",
+      "baseSHA256": "fec0310c542c6718a64058deb3223c66fb9dc6afc618095c9e06cac943a205e3",
+      "SHA256": "fec0310c542c6718a64058deb3223c66fb9dc6afc618095c9e06cac943a205e3"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/postprocessing/bloom.cpp",
+      "origin": "git",
+      "gitBlob": "9f22eb72f64bd76c651c39d9cbd3886668ceb4f6",
+      "baseSHA256": "7c64b4c9e647faae9e7bddb6dc701c34ebc9be2222657f4c506d90b622bbc27b",
+      "SHA256": "7c64b4c9e647faae9e7bddb6dc701c34ebc9be2222657f4c506d90b622bbc27b"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/postprocessing/post_process.cpp",
+      "origin": "git",
+      "gitBlob": "9f22eb72f64bd76c651c39d9cbd3886668ceb4f6",
+      "baseSHA256": "7c64b4c9e647faae9e7bddb6dc701c34ebc9be2222657f4c506d90b622bbc27b",
+      "SHA256": "7c64b4c9e647faae9e7bddb6dc701c34ebc9be2222657f4c506d90b622bbc27b"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/postprocessing/post_process_pipeline.cpp",
+      "origin": "git",
+      "gitBlob": "04c7749df86519581be773dd5d318f6e6a422261",
+      "baseSHA256": "3f3bff81c6ac659f385a95da8743779e9ac5c67774b9f0cd5632d0105692d159",
+      "SHA256": "3f3bff81c6ac659f385a95da8743779e9ac5c67774b9f0cd5632d0105692d159"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/postprocessing/tone_mapping.cpp",
+      "origin": "git",
+      "gitBlob": "9f22eb72f64bd76c651c39d9cbd3886668ceb4f6",
+      "baseSHA256": "7c64b4c9e647faae9e7bddb6dc701c34ebc9be2222657f4c506d90b622bbc27b",
+      "SHA256": "7c64b4c9e647faae9e7bddb6dc701c34ebc9be2222657f4c506d90b622bbc27b"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/profiler/render_profiler.cpp",
+      "origin": "git",
+      "gitBlob": "8796cc5a7e900376be57cfc1200775bcfef39c35",
+      "baseSHA256": "7f434e3538dc9aa53de148cd27d3cf6c4c8d76fbebc0ba59f52e132945fe3a4d",
+      "SHA256": "7f434e3538dc9aa53de148cd27d3cf6c4c8d76fbebc0ba59f52e132945fe3a4d"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/render_context.cpp",
+      "origin": "git",
+      "gitBlob": "23d6a32b8505b64a7c3488934b9f5f6a8b8795e9",
+      "baseSHA256": "f86d962d5c216a6dc07f73b8ec0d5e867a1323ef2c337598cc15b04a07840a15",
+      "SHA256": "f86d962d5c216a6dc07f73b8ec0d5e867a1323ef2c337598cc15b04a07840a15"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/render_pass_manager.cpp",
+      "origin": "git",
+      "gitBlob": "b6b18bc1bf4e71389d2b155624b8fa3d2a5a95b6",
+      "baseSHA256": "1f22a6bcb5d997e6b3cae05893fcaca7478c1c41ec34aec14f6518b7b9b2150b",
+      "SHA256": "1f22a6bcb5d997e6b3cae05893fcaca7478c1c41ec34aec14f6518b7b9b2150b"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/renderer.cpp",
+      "origin": "git",
+      "gitBlob": "3b0a935d5f49d0423f58caf603569a6b64f1133a",
+      "baseSHA256": "922d25e01bb697aa0bb5fd508cac0998397f856513b523200aed28604948e1fc",
+      "SHA256": "922d25e01bb697aa0bb5fd508cac0998397f856513b523200aed28604948e1fc"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/shadow_pass.cpp",
+      "origin": "git",
+      "gitBlob": "ac28f8151a7bac9fd5cd70a3c011e88c21bf86b8",
+      "baseSHA256": "b1561a3830f01d4103ffe6da02f3d10c8f443cf3b4a2fd533a4b175bc1ae289c",
+      "SHA256": "b1561a3830f01d4103ffe6da02f3d10c8f443cf3b4a2fd533a4b175bc1ae289c"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/ssao/ssao_kernel.cpp",
+      "origin": "git",
+      "gitBlob": "f10620b69c01f672d363f5f57e2b80d0a88e769f",
+      "baseSHA256": "4b720117cefd48e4d6210da5d2e66a75e0039adb80115ee4f1550a4475782791",
+      "SHA256": "4b720117cefd48e4d6210da5d2e66a75e0039adb80115ee4f1550a4475782791"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/ssr/ssr_system.cpp",
+      "origin": "git",
+      "gitBlob": "969f37372536c3a1bd4bcadd57e5bcf64c5707a2",
+      "baseSHA256": "5a4f695ce251788b3e738df68d84cee8d00e63c6551353e0bbe8b4ae8e962d49",
+      "SHA256": "5a4f695ce251788b3e738df68d84cee8d00e63c6551353e0bbe8b4ae8e962d49"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/streaming/world_partition.cpp",
+      "origin": "git",
+      "gitBlob": "e382d9815f6675208a0d6ce4ae4fc9cc3735eeba",
+      "baseSHA256": "b5f4214a83de7a85d77b5f7ef84d0ea9a16ed0926adc21e10bc73589a4f41a55",
+      "SHA256": "b5f4214a83de7a85d77b5f7ef84d0ea9a16ed0926adc21e10bc73589a4f41a55"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/terrain/terrain_system.cpp",
+      "origin": "git",
+      "gitBlob": "13d6d36df293152125a165e8dde06a27703559df",
+      "baseSHA256": "cd7b631b7e7d62c5aaf19d60c2c027681b938da3f4a408cf6fedd994e2be2492",
+      "SHA256": "cd7b631b7e7d62c5aaf19d60c2c027681b938da3f4a408cf6fedd994e2be2492"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/text/label_layout.cpp",
+      "origin": "git",
+      "gitBlob": "9299d5469f0c094b83222faf31ee8905fdc8b346",
+      "baseSHA256": "d34e9a156ff5571670282e38e0b7af9d4d7ce3f0c565b1aa646403e3238d9f57",
+      "SHA256": "d34e9a156ff5571670282e38e0b7af9d4d7ce3f0c565b1aa646403e3238d9f57"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/vegetation/vegetation_layer.cpp",
+      "origin": "git",
+      "gitBlob": "af584f73603546a74bd9d268f06688fb8e6f422f",
+      "baseSHA256": "594f187939b257d6e5238df0c168e609551880c5c7bc2c0568ae6d46eca0f071",
+      "SHA256": "594f187939b257d6e5238df0c168e609551880c5c7bc2c0568ae6d46eca0f071"
+    },
+    {
+      "path": "XNBYEngine/renderer/src/vegetation/vegetation_pipeline.cpp",
+      "origin": "git",
+      "gitBlob": "be033d492bae17fd75b4f9a44e47b6551550176f",
+      "baseSHA256": "56d7086321342f838d3ac2b141c9f19501e3bacfd78683fc95cc1579f88a2150",
+      "SHA256": "56d7086321342f838d3ac2b141c9f19501e3bacfd78683fc95cc1579f88a2150"
+    },
+    {
+      "path": "XNBYEngine/rhi/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "60adf4e8deb8e9ee8f50949eb57a7cac45c83d32",
+      "baseSHA256": "24bc36159646f38eaae0dcab6f1046920f20ec3de6c324140600d3c6be90b926",
+      "SHA256": "24bc36159646f38eaae0dcab6f1046920f20ec3de6c324140600d3c6be90b926"
+    },
+    {
+      "path": "XNBYEngine/rhi/include/hongtu/rhi/RHIDevice.h",
+      "origin": "git",
+      "gitBlob": "34fdfdfcacb118acab817f6bfc27f8a690d58f45",
+      "baseSHA256": "fd5a3c2abce42af1083f825d778758b6b71f6f060cc5f0676fbd1b7fac8f5b30",
+      "SHA256": "fd5a3c2abce42af1083f825d778758b6b71f6f060cc5f0676fbd1b7fac8f5b30"
+    },
+    {
+      "path": "XNBYEngine/rhi/include/hongtu/rhi/RHIResources.h",
+      "origin": "git",
+      "gitBlob": "16caccbe8a547a3df73f86fc2a158ceebdd55a34",
+      "baseSHA256": "b3e52509784775986f8b57476cca081a73c3bba9dc6dc198bf6589366e8528ad",
+      "SHA256": "b3e52509784775986f8b57476cca081a73c3bba9dc6dc198bf6589366e8528ad"
+    },
+    {
+      "path": "XNBYEngine/rhi/include/hongtu/rhi/RHITypes.h",
+      "origin": "git",
+      "gitBlob": "e627413d350b185bef11b06dd3529bcb1885c009",
+      "baseSHA256": "de9f83cf02a6354d3a292a3fdb8c9c14b5d7be8d6f8f581f1a73a3322f27576d",
+      "SHA256": "de9f83cf02a6354d3a292a3fdb8c9c14b5d7be8d6f8f581f1a73a3322f27576d"
+    },
+    {
+      "path": "XNBYEngine/rhi/include/hongtu/rhi/TextureUploadLayout.h",
+      "origin": "git",
+      "gitBlob": "e8f684f923be84268dd5872bcf44e92f78c47a21",
+      "baseSHA256": "96fc4abf50a21df784e37a34444d774667d4c00db08cf0472d7e18c671edfcae",
+      "SHA256": "96fc4abf50a21df784e37a34444d774667d4c00db08cf0472d7e18c671edfcae"
+    },
+    {
+      "path": "XNBYEngine/rhi/src/vulkan/VulkanCommandBuffer.cpp",
+      "origin": "git",
+      "gitBlob": "5c08dbf5788083e6338da5ffc11ada96b18bf6cd",
+      "baseSHA256": "1305b4dc9a1830bb29aa1e7593c8ed948df10d31b1ee48616564549766cf2457",
+      "SHA256": "1305b4dc9a1830bb29aa1e7593c8ed948df10d31b1ee48616564549766cf2457"
+    },
+    {
+      "path": "XNBYEngine/rhi/src/vulkan/VulkanCommandBuffer.h",
+      "origin": "git",
+      "gitBlob": "cc20a81658722249c3d33eb1b6c09baa7f8f171b",
+      "baseSHA256": "f5ae6347fe5c7cae727ee42d042aff456b46e4a53a480c001af08ee36d6f0cb0",
+      "SHA256": "f5ae6347fe5c7cae727ee42d042aff456b46e4a53a480c001af08ee36d6f0cb0"
+    },
+    {
+      "path": "XNBYEngine/rhi/src/vulkan/VulkanDevice.cpp",
+      "origin": "git",
+      "gitBlob": "004efc5b9f8648f46734401fddef06625e27e691",
+      "baseSHA256": "01195abf7779c0f6ee1d56932d613e0958e820a5a91e0c9169630efbcbf60019",
+      "SHA256": "01195abf7779c0f6ee1d56932d613e0958e820a5a91e0c9169630efbcbf60019"
+    },
+    {
+      "path": "XNBYEngine/rhi/src/vulkan/VulkanDevice.h",
+      "origin": "git",
+      "gitBlob": "edc2e7745d9fab917c28e13787b4f31913d74025",
+      "baseSHA256": "e77ec27f6d62c1e7cd8038ff42d1cdc2a1f333794353212a2b672be01fe14af9",
+      "SHA256": "e77ec27f6d62c1e7cd8038ff42d1cdc2a1f333794353212a2b672be01fe14af9"
+    },
+    {
+      "path": "XNBYEngine/rhi/src/vulkan/VulkanOffscreenTarget.cpp",
+      "origin": "git",
+      "gitBlob": "d5d25a63ff5cbf9771bcbec8f5f69087e9a1111e",
+      "baseSHA256": "7bc987bd84b8d699efa8869a54bd9e5e08a6f4b463b0f6f725fd2f426d282015",
+      "SHA256": "7bc987bd84b8d699efa8869a54bd9e5e08a6f4b463b0f6f725fd2f426d282015"
+    },
+    {
+      "path": "XNBYEngine/rhi/src/vulkan/VulkanOffscreenTarget.h",
+      "origin": "git",
+      "gitBlob": "7dffe0a6d25df2b2fa076f58a0cb4ba4ab80fd69",
+      "baseSHA256": "bee0f12b1a443298dfcfd1726c1c9cfed606b8820be761bfe00457b87dcf2189",
+      "SHA256": "bee0f12b1a443298dfcfd1726c1c9cfed606b8820be761bfe00457b87dcf2189"
+    },
+    {
+      "path": "XNBYEngine/scene/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "afcd7e251a4f0cf9baecabd603d4c9486740b027",
+      "baseSHA256": "1ef8aec061ec78ff68051d45485e3e21bc743296e4b8e7b58e23df9571293134",
+      "SHA256": "1ef8aec061ec78ff68051d45485e3e21bc743296e4b8e7b58e23df9571293134"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/agent.hpp",
+      "origin": "git",
+      "gitBlob": "312b7db277c5429e86b4de45dcbed86598ab130b",
+      "baseSHA256": "d6e0e16498dc024751eee12779934d2c77e0d162b36a27c93bcb4875343af615",
+      "SHA256": "d6e0e16498dc024751eee12779934d2c77e0d162b36a27c93bcb4875343af615"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/annotation/annotation.hpp",
+      "origin": "git",
+      "gitBlob": "102596c57f163de2235ad7aad4949747e4c3bcfd",
+      "baseSHA256": "007104d9cfd22c6ec7828b9d22095fdeaedc3a79c4409c863a0276adb4bfdebb",
+      "SHA256": "007104d9cfd22c6ec7828b9d22095fdeaedc3a79c4409c863a0276adb4bfdebb"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/annotation/annotation_manager.hpp",
+      "origin": "git",
+      "gitBlob": "2a7bd27b642b8fb2f07e59e92d9249118114b8c0",
+      "baseSHA256": "707deeb0d3dbaf90a4c650d3a2128416c9bdd1e98e3d79a65dc8f38828716a05",
+      "SHA256": "707deeb0d3dbaf90a4c650d3a2128416c9bdd1e98e3d79a65dc8f38828716a05"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/annotation/arrow_annotation.hpp",
+      "origin": "git",
+      "gitBlob": "e38c060d87bcea2e4621dfda5f1154b9a122fb71",
+      "baseSHA256": "ae6a93747ad4a8fd3d4ba3025503c70f16aa67db737c41fe7be2135e73296750",
+      "SHA256": "ae6a93747ad4a8fd3d4ba3025503c70f16aa67db737c41fe7be2135e73296750"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/annotation/command_stack.hpp",
+      "origin": "git",
+      "gitBlob": "8679474e452d7a1440e2c52b8867b0a560e6e128",
+      "baseSHA256": "11c20b27fcd35e0815e049c990af0bbce8e8a38abcb80b59cb98260ee3759199",
+      "SHA256": "11c20b27fcd35e0815e049c990af0bbce8e8a38abcb80b59cb98260ee3759199"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/annotation/drawing_tool.hpp",
+      "origin": "git",
+      "gitBlob": "9f821e71a138aeb2d05597865467355667376b42",
+      "baseSHA256": "71934d732b2658b4694a5227450dcae222bce76181da3b3ad3a2a6eba50f8450",
+      "SHA256": "71934d732b2658b4694a5227450dcae222bce76181da3b3ad3a2a6eba50f8450"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/annotation/polygon_annotation.hpp",
+      "origin": "git",
+      "gitBlob": "c7104b196768c256a716807e0fabfb691a12fe29",
+      "baseSHA256": "1a8bf0b7582f33822680e7240b946e6dfe42d0712b1d02f5a1839629477953bf",
+      "SHA256": "1a8bf0b7582f33822680e7240b946e6dfe42d0712b1d02f5a1839629477953bf"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/annotation/polygon_smooth.hpp",
+      "origin": "git",
+      "gitBlob": "6cbb0a644b0cf2f1369e56fe7f1b0164942cdc94",
+      "baseSHA256": "cbf9f272c4a9ad8c64143d5d20bcfcde25273d54514f6383ffc9905acf17bdb0",
+      "SHA256": "cbf9f272c4a9ad8c64143d5d20bcfcde25273d54514f6383ffc9905acf17bdb0"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/annotation/polyline_annotation.hpp",
+      "origin": "git",
+      "gitBlob": "64040df642e87542e379d3485c97e986ecddc41d",
+      "baseSHA256": "21aeb5fa181cd44bd52ed44b3899559a860294f3aef6bbc9f1954ac47b5a98d8",
+      "SHA256": "21aeb5fa181cd44bd52ed44b3899559a860294f3aef6bbc9f1954ac47b5a98d8"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/annotation/symbol_annotation.hpp",
+      "origin": "git",
+      "gitBlob": "54639540146d0dd8068587e7155372aef49151b7",
+      "baseSHA256": "3e4b335ae09a0bfe6b0e85e1a9db8153dddcc1fa4144fa116fa459415bd7ca66",
+      "SHA256": "3e4b335ae09a0bfe6b0e85e1a9db8153dddcc1fa4144fa116fa459415bd7ca66"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/annotation/text_annotation.hpp",
+      "origin": "git",
+      "gitBlob": "f9d9aa5506647dfda4a98b53716582fb3f4b166a",
+      "baseSHA256": "71328f46a4e8e729db1fa9434beed969312622ffb9efa20cc0d9144e233c2b6b",
+      "SHA256": "71328f46a4e8e729db1fa9434beed969312622ffb9efa20cc0d9144e233c2b6b"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/billboard_entity.hpp",
+      "origin": "git",
+      "gitBlob": "0b52d51a996c61fe4625cb6be946206e710a626f",
+      "baseSHA256": "4f3259d329846ed47f5920ed0b19b25f42c412078a4b7d084026b13b31a3f6b6",
+      "SHA256": "4f3259d329846ed47f5920ed0b19b25f42c412078a4b7d084026b13b31a3f6b6"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/crowd/crowd_simulator.hpp",
+      "origin": "git",
+      "gitBlob": "390a9d5ec57fccd0f7f514977f66294cebcd9699",
+      "baseSHA256": "38286051abc1e18e070c824c3c97dd7ad50af8b18b4ea714ec5dcf75c7791f59",
+      "SHA256": "38286051abc1e18e070c824c3c97dd7ad50af8b18b4ea714ec5dcf75c7791f59"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/drill/drill_element.hpp",
+      "origin": "git",
+      "gitBlob": "c30f409413cdc9439eb31c4ace773e12a0581701",
+      "baseSHA256": "b6e44a261c7e879ee025f590b955bca84d2bb461f2f1cadcb5101a5bfdcab1fe",
+      "SHA256": "b6e44a261c7e879ee025f590b955bca84d2bb461f2f1cadcb5101a5bfdcab1fe"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/drill/drill_log.hpp",
+      "origin": "git",
+      "gitBlob": "e09e458918097bed09bbbe79281c5a11c8731a95",
+      "baseSHA256": "29f2a30f00445efae4242454b5e4a449609e506788eeb62fd4ada75a7b33641b",
+      "SHA256": "29f2a30f00445efae4242454b5e4a449609e506788eeb62fd4ada75a7b33641b"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/drill/drill_runtime.hpp",
+      "origin": "git",
+      "gitBlob": "44b0f5035603db934f9308fe1f10c3ca72ff4793",
+      "baseSHA256": "c425be6ee6aa3895554347960187f983f9400019e65e83a924cf6d203c32b14d",
+      "SHA256": "c425be6ee6aa3895554347960187f983f9400019e65e83a924cf6d203c32b14d"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/emitter_entity.hpp",
+      "origin": "git",
+      "gitBlob": "d2782ff9189c864ce78fe757fc4999129500735f",
+      "baseSHA256": "123a4e187e4321a88c390bcd759068841b8d1a56088cf8264ec5b8bec5226fbd",
+      "SHA256": "123a4e187e4321a88c390bcd759068841b8d1a56088cf8264ec5b8bec5226fbd"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/entity.hpp",
+      "origin": "git",
+      "gitBlob": "c53a8131e222b01673591a24315aa64605d5269e",
+      "baseSHA256": "3a947107f082a21ad34c8274aeb3f08c23759d7fdcb7d0d91de07505d93b4dac",
+      "SHA256": "3a947107f082a21ad34c8274aeb3f08c23759d7fdcb7d0d91de07505d93b4dac"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/geo_entity.hpp",
+      "origin": "git",
+      "gitBlob": "50a07060a0a3a57e0b51f0aa11f237ae3b39a4d1",
+      "baseSHA256": "83c1a16a7761847f2764565c9d53965df3c3860c5d5c9b4a0301db586910792d",
+      "SHA256": "83c1a16a7761847f2764565c9d53965df3c3860c5d5c9b4a0301db586910792d"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/local_entity.hpp",
+      "origin": "git",
+      "gitBlob": "4aee4e6fc744cda14fc9052af92d2e4ede7231ec",
+      "baseSHA256": "5742dd7f23fff19a1ed60d925c194095d17ca910d8e7af5ff2651f675d1e744b",
+      "SHA256": "5742dd7f23fff19a1ed60d925c194095d17ca910d8e7af5ff2651f675d1e744b"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/picking/picking_service.hpp",
+      "origin": "git",
+      "gitBlob": "4bbf159e0bfacd07ab97f67b344752c9dacf29f8",
+      "baseSHA256": "c783d3d83b50dbffb0f6bdf2085c85ede937287c429c8761c6278e4a016cc369",
+      "SHA256": "c783d3d83b50dbffb0f6bdf2085c85ede937287c429c8761c6278e4a016cc369"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/polyline_entity.hpp",
+      "origin": "git",
+      "gitBlob": "8de94d1c059bee1bda1d94274bb1b1a727cc515f",
+      "baseSHA256": "e3ce0ff9152afa5470eac436c1a04408dea346f605ad52c1a2ac0a49be7cdfab",
+      "SHA256": "e3ce0ff9152afa5470eac436c1a04408dea346f605ad52c1a2ac0a49be7cdfab"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/scene_graph.hpp",
+      "origin": "git",
+      "gitBlob": "526f5f957b045a0cff20a149e949ecf650293d2c",
+      "baseSHA256": "faa63619a4c3ba6625dadf60dd3f94fa2f40f13d66c23fb6a9e8593c225de50b",
+      "SHA256": "faa63619a4c3ba6625dadf60dd3f94fa2f40f13d66c23fb6a9e8593c225de50b"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/scene_loader.hpp",
+      "origin": "git",
+      "gitBlob": "fead7e63c29eab05055b4108056e6315571dc957",
+      "baseSHA256": "111747d5a9dd9e7e566c9af0f43c3188de67f13434f481fd6735f032ac33d3f0",
+      "SHA256": "111747d5a9dd9e7e566c9af0f43c3188de67f13434f481fd6735f032ac33d3f0"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/shockwave_entity.hpp",
+      "origin": "git",
+      "gitBlob": "a6db0e3ead3a3beda1e54ce15035e300fd0a6555",
+      "baseSHA256": "e1404d20c8d61800e0ecaba94232858507f49ba5ac817b46740c01f2f3a8edf2",
+      "SHA256": "e1404d20c8d61800e0ecaba94232858507f49ba5ac817b46740c01f2f3a8edf2"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/timeline/timeline.hpp",
+      "origin": "git",
+      "gitBlob": "41da75eb4634d3b59e81faabcaf32efa141b4e12",
+      "baseSHA256": "3d0b516e7f2424e365c54268fef027b8c6945cee644e4dc243f1cec641bd821c",
+      "SHA256": "3d0b516e7f2424e365c54268fef027b8c6945cee644e4dc243f1cec641bd821c"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/timeline/track.hpp",
+      "origin": "git",
+      "gitBlob": "51477d04b1beedf881dae257c3a637367fac0ea9",
+      "baseSHA256": "d07228a697b804437a1a7956e5e5862d2598e4f7a79d3eed6404320a8a112b56",
+      "SHA256": "d07228a697b804437a1a7956e5e5862d2598e4f7a79d3eed6404320a8a112b56"
+    },
+    {
+      "path": "XNBYEngine/scene/include/hongtu/scene/volumetric_entity.hpp",
+      "origin": "git",
+      "gitBlob": "f41ef1f9ee815d4a6d6e26a81d8e898812498c1f",
+      "baseSHA256": "16eba93cf5d6c6271f46f737bce108cc33f2976d70317d14400a89b8c3a6aa05",
+      "SHA256": "16eba93cf5d6c6271f46f737bce108cc33f2976d70317d14400a89b8c3a6aa05"
+    },
+    {
+      "path": "XNBYEngine/scene/src/agent.cpp",
+      "origin": "git",
+      "gitBlob": "15eea8275dac86a51f71a996b696c07b781d3163",
+      "baseSHA256": "9b6fe76b17dbb293deb173caba479a1a4d98ca4fd5a5e6223b4533c28aaab43a",
+      "SHA256": "9b6fe76b17dbb293deb173caba479a1a4d98ca4fd5a5e6223b4533c28aaab43a"
+    },
+    {
+      "path": "XNBYEngine/scene/src/annotation/annotation_json.hpp",
+      "origin": "git",
+      "gitBlob": "3ec346b12a5596f60bb7b70b37899cef4269a4d0",
+      "baseSHA256": "e417b133ff39351bffa167cf80c9f218417cc50e19693544c3f39b858ebab756",
+      "SHA256": "e417b133ff39351bffa167cf80c9f218417cc50e19693544c3f39b858ebab756"
+    },
+    {
+      "path": "XNBYEngine/scene/src/annotation/annotation_manager.cpp",
+      "origin": "git",
+      "gitBlob": "bee3e1db1b35b14b158ef9a2cc3604bfc7259618",
+      "baseSHA256": "f85bb23fcf4f7f40854cbf8da0820eb8f9fa90c0d3e21cfb77f451fd9f61ce99",
+      "SHA256": "f85bb23fcf4f7f40854cbf8da0820eb8f9fa90c0d3e21cfb77f451fd9f61ce99"
+    },
+    {
+      "path": "XNBYEngine/scene/src/annotation/arrow_annotation.cpp",
+      "origin": "git",
+      "gitBlob": "46e07a8289508f2a1c0c429f65889b145db9eb29",
+      "baseSHA256": "dfaf57e7d7f1273c6f2f583e587629cfd1ca1f60e4d83d5492c4a237d7dc60cd",
+      "SHA256": "dfaf57e7d7f1273c6f2f583e587629cfd1ca1f60e4d83d5492c4a237d7dc60cd"
+    },
+    {
+      "path": "XNBYEngine/scene/src/annotation/command_stack.cpp",
+      "origin": "git",
+      "gitBlob": "17cced059172461148952ec3b921cd4906573d5a",
+      "baseSHA256": "5a614a7837741cb124f217bd3f16bd7dfc2e2d3c08d61dccbcef2e7a9245fa8e",
+      "SHA256": "5a614a7837741cb124f217bd3f16bd7dfc2e2d3c08d61dccbcef2e7a9245fa8e"
+    },
+    {
+      "path": "XNBYEngine/scene/src/annotation/drawing_tool.cpp",
+      "origin": "git",
+      "gitBlob": "660a32e5cd8671ecab3c4e7fc9668f6923e96625",
+      "baseSHA256": "e739f502b52b5fdc6c974881f2dbaec0615d7da7682d93afcd2f49d0f6249ec1",
+      "SHA256": "e739f502b52b5fdc6c974881f2dbaec0615d7da7682d93afcd2f49d0f6249ec1"
+    },
+    {
+      "path": "XNBYEngine/scene/src/annotation/polygon_annotation.cpp",
+      "origin": "git",
+      "gitBlob": "e80fc6afecb9decdbc7b4841094202e3c6c66fdd",
+      "baseSHA256": "8b0354af726c8bf2823db90745c4086fb95bbe6329ebab88177f86e00f31b5ce",
+      "SHA256": "8b0354af726c8bf2823db90745c4086fb95bbe6329ebab88177f86e00f31b5ce"
+    },
+    {
+      "path": "XNBYEngine/scene/src/annotation/polyline_annotation.cpp",
+      "origin": "git",
+      "gitBlob": "e73d93563452dcbe76b98917d36e16f0986dd84f",
+      "baseSHA256": "ecbc9ed727d459ee517049767639c048456c59a100a75e8fc8d3b64c77c6d5ca",
+      "SHA256": "ecbc9ed727d459ee517049767639c048456c59a100a75e8fc8d3b64c77c6d5ca"
+    },
+    {
+      "path": "XNBYEngine/scene/src/annotation/symbol_annotation.cpp",
+      "origin": "git",
+      "gitBlob": "adb78675a82de435a191cae79d4c67d67f9e4210",
+      "baseSHA256": "36362a6998e966d9d188ed305978078bc7a0863cf31207606fd40808c5d9a75e",
+      "SHA256": "36362a6998e966d9d188ed305978078bc7a0863cf31207606fd40808c5d9a75e"
+    },
+    {
+      "path": "XNBYEngine/scene/src/annotation/text_annotation.cpp",
+      "origin": "git",
+      "gitBlob": "42d66acdbbff4a08ebbf67d5af84ebd1bb79f1bf",
+      "baseSHA256": "45de71ea4d9f41b5c8a12cc360df2721cec32f9197e9ec6b58ea9a8a239f9bd8",
+      "SHA256": "45de71ea4d9f41b5c8a12cc360df2721cec32f9197e9ec6b58ea9a8a239f9bd8"
+    },
+    {
+      "path": "XNBYEngine/scene/src/billboard_entity.cpp",
+      "origin": "git",
+      "gitBlob": "87b40d97a2b18be7c587bb506151dd98f90eeda3",
+      "baseSHA256": "df5390b79ffaa2d494faef21f7eed9756853080aae567add3d73de88fa10ad95",
+      "SHA256": "df5390b79ffaa2d494faef21f7eed9756853080aae567add3d73de88fa10ad95"
+    },
+    {
+      "path": "XNBYEngine/scene/src/component.cpp",
+      "origin": "git",
+      "gitBlob": "b2311668ae949b68220c3379058ecba3ce75634c",
+      "baseSHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad",
+      "SHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad"
+    },
+    {
+      "path": "XNBYEngine/scene/src/crowd/crowd_simulator.cpp",
+      "origin": "git",
+      "gitBlob": "b9f8f6ca0e5de9ad7e9af97fc23cbfbc0f3bc51a",
+      "baseSHA256": "d18eb52dd9c4731f02e0ffcb2d497816eec71df0566f4f223e2841714479409a",
+      "SHA256": "d18eb52dd9c4731f02e0ffcb2d497816eec71df0566f4f223e2841714479409a"
+    },
+    {
+      "path": "XNBYEngine/scene/src/drill/drill_element.cpp",
+      "origin": "git",
+      "gitBlob": "b7fef996360fb4f2ce9a0c0ac0d264cc620aa754",
+      "baseSHA256": "986e342c0eb175f0c0f322a66f84b19f7e9b38306430f80f81fd7183da46b153",
+      "SHA256": "986e342c0eb175f0c0f322a66f84b19f7e9b38306430f80f81fd7183da46b153"
+    },
+    {
+      "path": "XNBYEngine/scene/src/drill/drill_log.cpp",
+      "origin": "git",
+      "gitBlob": "5f8b6b35434b67b292a321e12c3c81b81df86752",
+      "baseSHA256": "10306bdcacb0b71d03e6aa3551e30c5aadc0c5c0e9ddbee7b061ee762014c99f",
+      "SHA256": "10306bdcacb0b71d03e6aa3551e30c5aadc0c5c0e9ddbee7b061ee762014c99f"
+    },
+    {
+      "path": "XNBYEngine/scene/src/drill/drill_runtime.cpp",
+      "origin": "git",
+      "gitBlob": "66b440d28fa9ccb16576b3d48bf818f594842c12",
+      "baseSHA256": "adc50ce0819633999c41ac78c069b1e2013589efdb6701f91311a8e2f1eef534",
+      "SHA256": "adc50ce0819633999c41ac78c069b1e2013589efdb6701f91311a8e2f1eef534"
+    },
+    {
+      "path": "XNBYEngine/scene/src/ecs/component_registry.cpp",
+      "origin": "git",
+      "gitBlob": "b2311668ae949b68220c3379058ecba3ce75634c",
+      "baseSHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad",
+      "SHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad"
+    },
+    {
+      "path": "XNBYEngine/scene/src/ecs/entity_manager.cpp",
+      "origin": "git",
+      "gitBlob": "b2311668ae949b68220c3379058ecba3ce75634c",
+      "baseSHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad",
+      "SHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad"
+    },
+    {
+      "path": "XNBYEngine/scene/src/ecs/system.cpp",
+      "origin": "git",
+      "gitBlob": "b2311668ae949b68220c3379058ecba3ce75634c",
+      "baseSHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad",
+      "SHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad"
+    },
+    {
+      "path": "XNBYEngine/scene/src/ecs/world.cpp",
+      "origin": "git",
+      "gitBlob": "b2311668ae949b68220c3379058ecba3ce75634c",
+      "baseSHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad",
+      "SHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad"
+    },
+    {
+      "path": "XNBYEngine/scene/src/emitter_entity.cpp",
+      "origin": "git",
+      "gitBlob": "31b0a1721c4bb798300483aed9db97cf6c04d2c5",
+      "baseSHA256": "cc3e278da7d8be86bd650feaac001918ab00229e3465583bafe842d2e77a757a",
+      "SHA256": "cc3e278da7d8be86bd650feaac001918ab00229e3465583bafe842d2e77a757a"
+    },
+    {
+      "path": "XNBYEngine/scene/src/entity.cpp",
+      "origin": "git",
+      "gitBlob": "226361039ce9275b6689891eab3df7942dd37373",
+      "baseSHA256": "28cabcd253282791bf39f3e459242a3146ac9dd2516404152fe3e69c8ec3fe09",
+      "SHA256": "28cabcd253282791bf39f3e459242a3146ac9dd2516404152fe3e69c8ec3fe09"
+    },
+    {
+      "path": "XNBYEngine/scene/src/geo_entity.cpp",
+      "origin": "git",
+      "gitBlob": "ce35717293145acce4bba5a3b80eaafb42328f79",
+      "baseSHA256": "1d92de27755eae6e3febf92b590465a39bc94082c674603f82a113dad3dd4406",
+      "SHA256": "1d92de27755eae6e3febf92b590465a39bc94082c674603f82a113dad3dd4406"
+    },
+    {
+      "path": "XNBYEngine/scene/src/local_entity.cpp",
+      "origin": "git",
+      "gitBlob": "1d472d160ba7092ff3b7c8210190f7f44cda3458",
+      "baseSHA256": "9fcc6efbba4005b79d291d6073f01fd6e459c792c847d65f28444369a13a5baa",
+      "SHA256": "9fcc6efbba4005b79d291d6073f01fd6e459c792c847d65f28444369a13a5baa"
+    },
+    {
+      "path": "XNBYEngine/scene/src/mesh_renderer.cpp",
+      "origin": "git",
+      "gitBlob": "b2311668ae949b68220c3379058ecba3ce75634c",
+      "baseSHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad",
+      "SHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad"
+    },
+    {
+      "path": "XNBYEngine/scene/src/octree.cpp",
+      "origin": "git",
+      "gitBlob": "b2311668ae949b68220c3379058ecba3ce75634c",
+      "baseSHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad",
+      "SHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad"
+    },
+    {
+      "path": "XNBYEngine/scene/src/picking/picking_service.cpp",
+      "origin": "git",
+      "gitBlob": "9b23fa588d8ac0301fd997224b976a635f8e152b",
+      "baseSHA256": "b571f5e17a438dd0459ddc825b1596a26cde4d3b231e41f6d91087af75154e7f",
+      "SHA256": "b571f5e17a438dd0459ddc825b1596a26cde4d3b231e41f6d91087af75154e7f"
+    },
+    {
+      "path": "XNBYEngine/scene/src/polyline_entity.cpp",
+      "origin": "git",
+      "gitBlob": "76b604dd9f7de775af5d7261d3501d9aa35ca448",
+      "baseSHA256": "9a596653aa87acc082b98d0f5953fa57790302af8a48c24865a4c3cf16a6d1c6",
+      "SHA256": "9a596653aa87acc082b98d0f5953fa57790302af8a48c24865a4c3cf16a6d1c6"
+    },
+    {
+      "path": "XNBYEngine/scene/src/scene.cpp",
+      "origin": "git",
+      "gitBlob": "b2311668ae949b68220c3379058ecba3ce75634c",
+      "baseSHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad",
+      "SHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad"
+    },
+    {
+      "path": "XNBYEngine/scene/src/scene_graph.cpp",
+      "origin": "git",
+      "gitBlob": "42946b146b406a19708b15a0e32b206ee75daa30",
+      "baseSHA256": "d71172f00f2258adbe4b2d56b76208b76b5936be912454f42c1ec16609ae663b",
+      "SHA256": "d71172f00f2258adbe4b2d56b76208b76b5936be912454f42c1ec16609ae663b"
+    },
+    {
+      "path": "XNBYEngine/scene/src/scene_loader.cpp",
+      "origin": "git",
+      "gitBlob": "7d35c23f8673f4c969b5c2ebe9ec1f68772eff76",
+      "baseSHA256": "8204240b6f3bf54fa0de58fa35f4421e27e465a2ab298c157eb61fb95aa555df",
+      "SHA256": "8204240b6f3bf54fa0de58fa35f4421e27e465a2ab298c157eb61fb95aa555df"
+    },
+    {
+      "path": "XNBYEngine/scene/src/shockwave_entity.cpp",
+      "origin": "git",
+      "gitBlob": "2256b31b42f3bd5a00121b6a16c5614e446d28f5",
+      "baseSHA256": "ed169d36ee88ea4890eef51c982a4e0a332c7044c0977c8855191d8e87b2ec04",
+      "SHA256": "ed169d36ee88ea4890eef51c982a4e0a332c7044c0977c8855191d8e87b2ec04"
+    },
+    {
+      "path": "XNBYEngine/scene/src/spatial_index.cpp",
+      "origin": "git",
+      "gitBlob": "b2311668ae949b68220c3379058ecba3ce75634c",
+      "baseSHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad",
+      "SHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad"
+    },
+    {
+      "path": "XNBYEngine/scene/src/transform.cpp",
+      "origin": "git",
+      "gitBlob": "b2311668ae949b68220c3379058ecba3ce75634c",
+      "baseSHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad",
+      "SHA256": "1019d8642fa3b6bfd0a21e906246fe3e3f20bf6c5b815506d2642aaaec0e24ad"
+    },
+    {
+      "path": "XNBYEngine/scene/src/volumetric_entity.cpp",
+      "origin": "git",
+      "gitBlob": "3c18df7a53cbd4e659b53587c97dd0e84e40c38f",
+      "baseSHA256": "e5665c75cc05b371b3e08f180a80e33658113c1f7dc7edf3f845ac75705fd13e",
+      "SHA256": "e5665c75cc05b371b3e08f180a80e33658113c1f7dc7edf3f845ac75705fd13e"
+    },
+    {
+      "path": "XNBYEngine/shaders/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "3f2ec9c732f48a19820e35c5af7528c11ba3300b",
+      "baseSHA256": "6f4fd2dfd4e3dfad9713bcf7a45270b5dcf6c69117bb93c5ea78d4bc3c9e6545",
+      "SHA256": "6f4fd2dfd4e3dfad9713bcf7a45270b5dcf6c69117bb93c5ea78d4bc3c9e6545"
+    },
+    {
+      "path": "XNBYEngine/shaders/src/skybox.frag",
+      "origin": "git",
+      "gitBlob": "89612ae1112f331e9b40b268981078f684f3bd45",
+      "baseSHA256": "1d14f0bb07a95e0e73b3e4680be75514938687fd9564160bf9fee723648da92a",
+      "SHA256": "1d14f0bb07a95e0e73b3e4680be75514938687fd9564160bf9fee723648da92a"
+    },
+    {
+      "path": "XNBYEngine/shaders/src/skybox.vert",
+      "origin": "git",
+      "gitBlob": "b30acb1d90395060915c48382989c210a03ec6c2",
+      "baseSHA256": "627585102d9e25b47c2f1854ff03f997a7f25070a7e70bfd413ff296be3d48b3",
+      "SHA256": "627585102d9e25b47c2f1854ff03f997a7f25070a7e70bfd413ff296be3d48b3"
+    },
+    {
+      "path": "XNBYEngine/window/CMakeLists.txt",
+      "origin": "git",
+      "gitBlob": "043230d7262f7aca2943573ad4add9d094176933",
+      "baseSHA256": "500fe481f88a4bd932f5095ce9e062bd9d8ed5b523509d7d0c74289733b95e4b",
+      "SHA256": "500fe481f88a4bd932f5095ce9e062bd9d8ed5b523509d7d0c74289733b95e4b"
+    },
+    {
+      "path": "XNBYEngine/window/include/hongtu/window/event.hpp",
+      "origin": "git",
+      "gitBlob": "d1c9b4ba9c21bbb1e3754b76b0a605736854af23",
+      "baseSHA256": "a45b7450b7402ba1e099bd28f654e3bb437e2fed5b15cf7c7fe983d4615cba41",
+      "SHA256": "a45b7450b7402ba1e099bd28f654e3bb437e2fed5b15cf7c7fe983d4615cba41"
+    },
+    {
+      "path": "XNBYEngine/window/include/hongtu/window/event_pump.hpp",
+      "origin": "git",
+      "gitBlob": "0e67ed07e7508cde1446ccb1851b363c597fc18f",
+      "baseSHA256": "2620e55164dae57b7c72f0f07c910b708613563ad853a167f9674aba98b0e502",
+      "SHA256": "2620e55164dae57b7c72f0f07c910b708613563ad853a167f9674aba98b0e502"
+    },
+    {
+      "path": "XNBYEngine/window/include/hongtu/window/sdl_event_pump.hpp",
+      "origin": "git",
+      "gitBlob": "899ac19d2d8443c93b1712f398d47b5ac55e9d2d",
+      "baseSHA256": "e1a2c01307e7a11d05a8985a1e456564f6f98d18d64383e483c125f6e7c67669",
+      "SHA256": "e1a2c01307e7a11d05a8985a1e456564f6f98d18d64383e483c125f6e7c67669"
+    },
+    {
+      "path": "XNBYEngine/window/src/event_dispatcher.cpp",
+      "origin": "git",
+      "gitBlob": "b54304c2003242cf9d7f0fb37795d23f4b070296",
+      "baseSHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4",
+      "SHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4"
+    },
+    {
+      "path": "XNBYEngine/window/src/gamepad_input.cpp",
+      "origin": "git",
+      "gitBlob": "b54304c2003242cf9d7f0fb37795d23f4b070296",
+      "baseSHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4",
+      "SHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4"
+    },
+    {
+      "path": "XNBYEngine/window/src/input_manager.cpp",
+      "origin": "git",
+      "gitBlob": "b54304c2003242cf9d7f0fb37795d23f4b070296",
+      "baseSHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4",
+      "SHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4"
+    },
+    {
+      "path": "XNBYEngine/window/src/keyboard_input.cpp",
+      "origin": "git",
+      "gitBlob": "b54304c2003242cf9d7f0fb37795d23f4b070296",
+      "baseSHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4",
+      "SHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4"
+    },
+    {
+      "path": "XNBYEngine/window/src/mouse_input.cpp",
+      "origin": "git",
+      "gitBlob": "b54304c2003242cf9d7f0fb37795d23f4b070296",
+      "baseSHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4",
+      "SHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4"
+    },
+    {
+      "path": "XNBYEngine/window/src/sdl_event_pump.cpp",
+      "origin": "git",
+      "gitBlob": "ce6b8b5c403c9d8282ddd260c799084878cdc9ca",
+      "baseSHA256": "6fe21372ae90b37bab63cca4577b4599e20b69b712d29f0a0a68f05940e57756",
+      "SHA256": "6fe21372ae90b37bab63cca4577b4599e20b69b712d29f0a0a68f05940e57756"
+    },
+    {
+      "path": "XNBYEngine/window/src/window.cpp",
+      "origin": "git",
+      "gitBlob": "b54304c2003242cf9d7f0fb37795d23f4b070296",
+      "baseSHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4",
+      "SHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4"
+    },
+    {
+      "path": "XNBYEngine/window/src/window_manager.cpp",
+      "origin": "git",
+      "gitBlob": "b54304c2003242cf9d7f0fb37795d23f4b070296",
+      "baseSHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4",
+      "SHA256": "edf912240f53ab9aaa1d41effdff2719c37f0b1011e50f7dcfebc22aff93e0e4"
+    }
+  ]
+}

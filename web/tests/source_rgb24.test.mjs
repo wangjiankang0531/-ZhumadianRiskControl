@@ -1,0 +1,26 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {MeshBasicMaterial,ShaderChunk,LinearFilter} from 'three';
+import {packOpaqueSourceRGB24,createPackedRGB24Texture,createPackedRGB24DecodeLUT,patchSourceRGB24Shader,applyPackedRGB24Sampling,validatePackedRGB24Material,SOURCE_RGB24_POLICY} from '../src/source_rgb24.js';
+const opaque=(w,h)=>Uint8Array.from({length:w*h*4},(_,i)=>i%4===3?255:(i*53+19)%256);
+test('opaque RGB bytes cross word boundaries in exact little-endian storage including a padded final word',()=>{
+ const rgba=new Uint8Array([1,2,3,255,4,5,6,255,7,8,9,255,10,11,12,255]),p=packOpaqueSourceRGB24(rgba,2,2),t=createPackedRGB24Texture(p);assert.deepEqual([...t.image.data],[0x04030201,0x08070605,0x0c0b0a09,0]);assert.equal(p.storageBytes,t.image.data.byteLength);assert.equal(p.originalRGBABytes,16);t.dispose();
+});
+test('NPOT rows preserve every RGB value and opacity; accounting includes actual R32UI row padding',()=>{
+ const rgba=opaque(17,19),p=packOpaqueSourceRGB24(rgba,17,19),t=createPackedRGB24Texture(p),words=t.image.data;for(let i=0;i<17*19;i++)for(let c=0;c<3;c++){const b=i*3+c;assert.equal((words[b>>>2]>>>((b&3)*8))&255,rgba[i*4+c]);}assert.equal(p.storageBytes,p.storageWidth*p.storageHeight*4);assert.equal(p.savedBytes,rgba.length-p.storageBytes);assert.equal(p.policy,SOURCE_RGB24_POLICY);assert.ok(p.savedBytes>0);t.dispose();
+});
+test('nonopaque alpha, mismatched payload, unsafe bounds and insufficient storage cannot create a packet',()=>{
+ const rgba=opaque(4,4);rgba[7]=254;assert.throws(()=>packOpaqueSourceRGB24(rgba,4,4),/opaque alpha/);assert.throws(()=>packOpaqueSourceRGB24(new Uint8Array(1),4,4),/payload/);assert.throws(()=>packOpaqueSourceRGB24(new Uint8Array(),8193,1),/extent/);assert.throws(()=>packOpaqueSourceRGB24(opaque(4,4),4,4,{maxTextureSize:3}),/extent/);assert.throws(()=>createPackedRGB24Texture({width:1}),/Unverified/);
+});
+test('shader keeps centroid interpolation and decodes sRGB before both bilinear axes',()=>{
+ const p=patchSourceRGB24Shader({vertexShader:'#include <uv_pars_vertex>',fragmentShader:'#include <uv_pars_fragment>\n#include <map_pars_fragment>\n#include <map_fragment>'});assert.match(p.vertexShader,/centroid varying vec2 vMapUv/);assert.match(p.fragmentShader,/highp usampler2D map/);assert.match(p.fragmentShader,/texelFetch\(xnbyRGB24DecodeLUT/);assert.match(p.fragmentShader,/xnbyRGB24Sample\(vMapUv\)/);assert.throws(()=>patchSourceRGB24Shader({vertexShader:'',fragmentShader:''}),/contract differs/);assert.throws(()=>patchSourceRGB24Shader({vertexShader:'#include <uv_pars_vertex>',fragmentShader:'#include <uv_pars_fragment>\n#include <map_pars_fragment>\n#include <map_fragment>'},{chunks:{...ShaderChunk,map_fragment:'changed'}}),/contract differs/);
+});
+test('material installation preserves a previous hook, is idempotent and rejects subsequent hook/map/sampler substitution',()=>{
+ const p=packOpaqueSourceRGB24(opaque(8,8),8,8),t=createPackedRGB24Texture(p),m=new MeshBasicMaterial({map:t});const decodeLUT=createPackedRGB24DecodeLUT();let calls=0;m.onBeforeCompile=()=>calls++;const key=m.customProgramCacheKey();applyPackedRGB24Sampling(m,p,{decodeLUT,fractionBits:8});const hook=m.onBeforeCompile;assert.equal(applyPackedRGB24Sampling(m,p,{decodeLUT,fractionBits:8}),p);assert.equal(m.onBeforeCompile,hook);assert.equal(m.customProgramCacheKey(),key+'|'+SOURCE_RGB24_POLICY+'/fraction_bits/8');const s={vertexShader:'#include <uv_pars_vertex>',fragmentShader:'#include <uv_pars_fragment>\n#include <map_pars_fragment>\n#include <map_fragment>',uniforms:{}};hook.call(m,s,{});assert.equal(calls,1);assert.equal(s.uniforms.xnbyRGB24ImageSize.value.x,8);assert.equal(validatePackedRGB24Material(m,p),p);m.onBeforeCompile=()=>{};assert.throws(()=>validatePackedRGB24Material(m,p),/proof differs/);m.onBeforeCompile=hook;t.minFilter=LinearFilter;assert.throws(()=>validatePackedRGB24Material(m,p),/storage differs/);m.dispose();t.dispose();decodeLUT.dispose();
+});
+
+test('sRGB lookup is explicit, shared and rejects an altered texture before material installation',()=>{
+ const p=packOpaqueSourceRGB24(opaque(8,8),8,8),t=createPackedRGB24Texture(p),m=new MeshBasicMaterial({map:t}),lut=createPackedRGB24DecodeLUT();assert.equal(lut.image.data.byteLength,1024);for(let i=0;i<256;i++)assert.deepEqual([...lut.image.data.slice(i*4,i*4+4)],[i,i,i,255]);assert.throws(()=>applyPackedRGB24Sampling(m,p),/lookup differs/);lut.generateMipmaps=true;assert.throws(()=>applyPackedRGB24Sampling(m,p,{decodeLUT:lut}),/lookup differs/);t.dispose();lut.dispose();m.dispose();
+});
+
+test('filter fraction profile must be explicitly qualified and cannot silently change on an installed material',()=>{
+ const p=packOpaqueSourceRGB24(opaque(8,8),8,8),map=createPackedRGB24Texture(p),decodeLUT=createPackedRGB24DecodeLUT(),m=new MeshBasicMaterial({map});assert.throws(()=>applyPackedRGB24Sampling(m,p,{decodeLUT}),/profile unavailable/);assert.throws(()=>applyPackedRGB24Sampling(m,p,{decodeLUT,fractionBits:7}),/profile unavailable/);applyPackedRGB24Sampling(m,p,{decodeLUT,fractionBits:8});assert.throws(()=>applyPackedRGB24Sampling(m,p,{decodeLUT,fractionBits:9}),/lookup identity differs/);m.dispose();map.dispose();decodeLUT.dispose();
+});
