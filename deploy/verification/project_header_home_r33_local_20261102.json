@@ -1,0 +1,58 @@
+{
+  "schema": "xnby.r168.project-mark-and-home-local-release-ready.v1",
+  "at": "2026-11-02T16:37:33.318989+08:00",
+  "localPassed": true,
+  "issues": [
+    {
+      "id": "NEW-17",
+      "description": "应急端左上角仍显示中远海运图标",
+      "localVerified": true,
+      "publicVerified": false
+    },
+    {
+      "id": "NEW-18",
+      "description": "点击图标进入emergency/home并显示404",
+      "localVerified": true,
+      "publicVerified": false
+    }
+  ],
+  "compiledFiles": 338,
+  "staticAssetReferencesVerified": 1522,
+  "originalSDKNormalRoles": 2,
+  "nativeBrowserChecks": 34,
+  "viewports": [
+    1920,
+    1366,
+    1024
+  ],
+  "actualLogoMouseClickAndCanonicalHomeRefreshPassed": true,
+  "legacyHomeQueryHashAndRefreshPassed": true,
+  "unrelatedUnknownRouteRetains404": true,
+  "originalTenReadinessPoolPolicyAnd398DefinitionsPassed": true,
+  "normalSixComponentsAndBrowsersExitedAndActualDescendantsZero": true,
+  "ownFrontendAndManifestOriginalBytesRestored": true,
+  "compositionNegativeCases": 26,
+  "normalAndFaultRecoveryScenarios": 7,
+  "foreignDriftRefusedBeforeRestore": true,
+  "fullProgramFilesVerified": 15554,
+  "originalLifecycleAndRecoveryFunctionsASTUnchanged": true,
+  "newUpdaterActualServiceLifecycleIndependentlyExecuted": false,
+  "fixedTransport": {
+    "passedPreparation": true,
+    "manifestSHA256": "ac0c9b0fbd6f882399ba0c0ad82c96d9d78b1b79963b9def8ee25d3fa40044f5",
+    "transportFiles": 8,
+    "transportBytes": 1954985,
+    "writes": 175,
+    "removedOldFrontendFiles": 172,
+    "totalInstallPaths": 347,
+    "serverPreflightPassed": false,
+    "publicUploadedOrInstalled": false
+  },
+  "serverPreflightPassed": false,
+  "publicUploadedOrInstalled": false,
+  "publicStillR32": true,
+  "publicAuthenticatedLayoutVerified": false,
+  "desktopHandoffRequestedAndStillPending": true,
+  "sourceSheetCellsWritten": 0,
+  "fullCloneReady": false
+}

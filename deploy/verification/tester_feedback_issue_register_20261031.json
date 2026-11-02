@@ -1,8 +1,8 @@
 {
   "title": "测试反馈问题清单",
   "issueCount": 16,
-  "completionColumn": "G",
-  "completionRange": "G2:G17",
+  "completionColumn": "F",
+  "completionRange": null,
   "completionTextAfterPublicVerification": "AI已解决，请测试者复测",
   "authenticatedDocumentWindowAvailable": true,
   "userConfirmedWeChatAccountCanEdit": true,
@@ -17,14 +17,28 @@
       "description": "登录页出现滚屏，建议调整在一屏显示",
       "descriptionSha256": "f627d114b8d5e40b400dd1619fde4a1777075a267ebf91dbd5a0761abe4932ba",
       "completionCell": "G2",
-      "status": "R18公网登录态及窄窗口通过，G2已回填，等待测试者复测",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": true,
       "publicDeployed": true,
       "publicVerified": true,
       "completionWritten": true,
       "screenshotActuallyShowsHomeNavigation": true,
       "publicStaticVerified": true,
-      "completionReadBackVerified": true
+      "completionReadBackVerified": true,
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "R18公网登录态及窄窗口通过，G2已回填，等待测试者复测",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G2",
+      "completionCellIsHistorical": true
     },
     {
       "number": 2,
@@ -33,7 +47,7 @@
       "description": "巡检任务清单调整排班在一行",
       "descriptionSha256": "c247e8b0d0842c4d7f9eb0d1864c8824b6734d4f3a7fc921647f2b0e329a3784",
       "completionCell": "G3",
-      "status": "R21公网正常登录态实际UI通过，原文回填并独立源表回读；待测试者复测",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": true,
       "publicDeployed": true,
       "publicVerified": true,
@@ -43,7 +57,21 @@
       "localTaskHeaderCandidateCases": 24,
       "completionReadBackVerified": true,
       "publicRevision": "R21",
-      "allThreeHeadersSingleLineOnPublic": true
+      "allThreeHeadersSingleLineOnPublic": true,
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "R21公网正常登录态实际UI通过，原文回填并独立源表回读；待测试者复测",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G3",
+      "completionCellIsHistorical": true
     },
     {
       "number": 3,
@@ -52,12 +80,26 @@
       "description": "事件上报统计饼状图与图里重叠",
       "descriptionSha256": "410d198d40d7ffbad7257f29fee689a954bfa6016e28afd3150b393a48df38ba",
       "completionCell": "G4",
-      "status": "R19公网宽窄布局通过，完成情况已回填且共享正文回读；待测试者复测",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": true,
       "publicDeployed": true,
       "publicVerified": true,
       "completionWritten": true,
-      "completionReadBackVerified": true
+      "completionReadBackVerified": true,
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "R19公网宽窄布局通过，完成情况已回填且共享正文回读；待测试者复测",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G4",
+      "completionCellIsHistorical": true
     },
     {
       "number": 4,
@@ -66,12 +108,26 @@
       "description": "时间统计调整格式，字未显示全",
       "descriptionSha256": "e20f9e18e2d651cc08c1dfc8fd1cff2b08fc226776b48e55afb42cb0f6a497c7",
       "completionCell": "G5",
-      "status": "R19公网宽窄布局通过，完成情况已回填且共享正文回读；待测试者复测",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": true,
       "publicDeployed": true,
       "publicVerified": true,
       "completionWritten": true,
-      "completionReadBackVerified": true
+      "completionReadBackVerified": true,
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "R19公网宽窄布局通过，完成情况已回填且共享正文回读；待测试者复测",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G5",
+      "completionCellIsHistorical": true
     },
     {
       "number": 5,
@@ -80,7 +136,7 @@
       "description": "工作流未获取到时间、节点名称及操作者",
       "descriptionSha256": "f7e02361cb203e410fcb4bc877df01b9031596075c2427822b092b2dd30479ba",
       "completionCell": "G6",
-      "status": "R154/r1同实例五阶段及r5重启重开原记录三字段逐DTO一致，原反馈场景仍待复现，不回填。",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": false,
       "publicDeployed": false,
       "publicVerified": false,
@@ -89,7 +145,21 @@
       "actualOriginalPublicFeedbackReproduced": false,
       "actualOriginalPublicFeedbackVerified": false,
       "localActualNativeRecordFieldsVerified": true,
-      "localSameInstanceAttachmentFlowVerified": true
+      "localSameInstanceAttachmentFlowVerified": true,
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "R154/r1同实例五阶段及r5重启重开原记录三字段逐DTO一致，原反馈场景仍待复现，不回填。",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G6",
+      "completionCellIsHistorical": true
     },
     {
       "number": 6,
@@ -98,13 +168,27 @@
       "description": "审批管理按发起人员搜索功能不可用",
       "descriptionSha256": "6b9e6b1326e16c1235cafcb14ea9533ef903a2d9a9a1bed99222de65942e8cbe",
       "completionCell": "G7",
-      "status": "R21公网正常登录态实际UI通过，原文回填并独立源表回读；待测试者复测",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": false,
       "publicDeployed": true,
       "publicVerified": true,
       "completionWritten": true,
       "completionReadBackVerified": true,
-      "publicRevision": "R21"
+      "publicRevision": "R21",
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "R21公网正常登录态实际UI通过，原文回填并独立源表回读；待测试者复测",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G7",
+      "completionCellIsHistorical": true
     },
     {
       "number": 7,
@@ -113,7 +197,7 @@
       "description": "双重预防-安全防线单元增加信息不置顶",
       "descriptionSha256": "2bb659c1eb10fef7b0c45672bce3c3ed10455d7fd058e196cbc764ee3f4fb1f8",
       "completionCell": "G8",
-      "status": "相关风险源码已随版本保留至R31，原R75/R82/R91本地验证保持；R31真实账户列表读取已恢复。实际公网页新增置顶/导出/导入/模板下载的对应反馈复测仍待，不回填。",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": false,
       "publicDeployed": true,
       "publicVerified": false,
@@ -132,7 +216,21 @@
           "bytes": 9885,
           "sha256": "636822c3930a036ddb294dac990c1b9f0f3f62e09baa40afdd46feddcc30070c"
         }
-      }
+      },
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "相关风险源码已随版本保留至R31，原R75/R82/R91本地验证保持；R31真实账户列表读取已恢复。实际公网页新增置顶/导出/导入/模板下载的对应反馈复测仍待，不回填。",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G8",
+      "completionCellIsHistorical": true
     },
     {
       "number": 8,
@@ -141,11 +239,27 @@
       "description": "双重预防-安全防线单元-按部门搜索中数据选项不对应",
       "descriptionSha256": "9d8ac0c1cc0bf8144a7dc07a683d8ab80583b120ab03f3babca013a382736752",
       "completionCell": "G9",
-      "status": "待复现",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": false,
       "publicDeployed": false,
       "publicVerified": false,
-      "completionWritten": false
+      "completionWritten": false,
+      "localEvidence": "deploy/verification/original_department_filter_r162_20261102.json",
+      "completionTextWritten": false,
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "原版六组件/SDK普通角色下，部门A/B实际选择搜索及重置20项通过（R162自有合成场景）；未改产品。真实公网具体部门选项不对应仍待复现，未回填。",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G9",
+      "completionCellIsHistorical": true
     },
     {
       "number": 9,
@@ -154,7 +268,7 @@
       "description": "双重预防-安全防线单元-导出列表无数据且表格不可用",
       "descriptionSha256": "212ed2a4f308a084588f2195b68c02f12da5f5be51bb869f36218d61d4b66ca0",
       "completionCell": "G10",
-      "status": "相关风险源码已随版本保留至R31，原R75/R82/R91本地验证保持；R31真实账户列表读取已恢复。实际公网页新增置顶/导出/导入/模板下载的对应反馈复测仍待，不回填。",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": false,
       "publicDeployed": true,
       "publicVerified": false,
@@ -173,7 +287,21 @@
           "bytes": 9885,
           "sha256": "636822c3930a036ddb294dac990c1b9f0f3f62e09baa40afdd46feddcc30070c"
         }
-      }
+      },
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "相关风险源码已随版本保留至R31，原R75/R82/R91本地验证保持；R31真实账户列表读取已恢复。实际公网页新增置顶/导出/导入/模板下载的对应反馈复测仍待，不回填。",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G10",
+      "completionCellIsHistorical": true
     },
     {
       "number": 10,
@@ -182,7 +310,7 @@
       "description": "双重预防-安全防线单元-导入功能不可用",
       "descriptionSha256": "89cf513d96751e44fcd0fe264e92724345bd8410d5c1b37492076304e4db9cc4",
       "completionCell": "G11",
-      "status": "相关风险源码已随版本保留至R31，原R75/R82/R91本地验证保持；R31真实账户列表读取已恢复。实际公网页新增置顶/导出/导入/模板下载的对应反馈复测仍待，不回填。",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": false,
       "publicDeployed": true,
       "publicVerified": false,
@@ -205,7 +333,21 @@
           "bytes": 9885,
           "sha256": "636822c3930a036ddb294dac990c1b9f0f3f62e09baa40afdd46feddcc30070c"
         }
-      }
+      },
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "相关风险源码已随版本保留至R31，原R75/R82/R91本地验证保持；R31真实账户列表读取已恢复。实际公网页新增置顶/导出/导入/模板下载的对应反馈复测仍待，不回填。",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G11",
+      "completionCellIsHistorical": true
     },
     {
       "number": 11,
@@ -214,7 +356,7 @@
       "description": "双重预防-安全防线单元-下载完的模版不可用",
       "descriptionSha256": "06e1327c0a5bbbed33dc27b8c168f5dffa925fac17d4c4460eae1e2b70316afc",
       "completionCell": "G12",
-      "status": "相关风险源码已随版本保留至R31，原R75/R82/R91本地验证保持；R31真实账户列表读取已恢复。实际公网页新增置顶/导出/导入/模板下载的对应反馈复测仍待，不回填。",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": false,
       "publicDeployed": true,
       "publicVerified": false,
@@ -233,7 +375,21 @@
           "bytes": 9885,
           "sha256": "636822c3930a036ddb294dac990c1b9f0f3f62e09baa40afdd46feddcc30070c"
         }
-      }
+      },
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "相关风险源码已随版本保留至R31，原R75/R82/R91本地验证保持；R31真实账户列表读取已恢复。实际公网页新增置顶/导出/导入/模板下载的对应反馈复测仍待，不回填。",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G12",
+      "completionCellIsHistorical": true
     },
     {
       "number": 12,
@@ -242,11 +398,25 @@
       "description": "双重预防-检查内容-导出、导入、下载模版功能不可用",
       "descriptionSha256": "ae05a88aed430e2ad95e8fe151c89c8c6f7108e19fbe25491b153d0e47aa31ab",
       "completionCell": "G13",
-      "status": "待复现",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": false,
       "publicDeployed": false,
       "publicVerified": false,
-      "completionWritten": false
+      "completionWritten": false,
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "待复现",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G13",
+      "completionCellIsHistorical": true
     },
     {
       "number": 13,
@@ -255,11 +425,25 @@
       "description": "双重预防-排查任务-导出表格不可用",
       "descriptionSha256": "9c04ff12fcae6260fe8f4a848c2693f2e2a711c9e0fc05ec386df5487a683a47",
       "completionCell": "G14",
-      "status": "待复现",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": false,
       "publicDeployed": false,
       "publicVerified": false,
-      "completionWritten": false
+      "completionWritten": false,
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "待复现",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G14",
+      "completionCellIsHistorical": true
     },
     {
       "number": 14,
@@ -268,11 +452,25 @@
       "description": "双重预防-隐患台账-督办功能不可用",
       "descriptionSha256": "4eac7362e2f0d3c38256a5edce8ced2aba2c4270378c50218bdfe4e5f279c394",
       "completionCell": "G15",
-      "status": "待复现",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": false,
       "publicDeployed": false,
       "publicVerified": false,
-      "completionWritten": false
+      "completionWritten": false,
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "待复现",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G15",
+      "completionCellIsHistorical": true
     },
     {
       "number": 15,
@@ -281,11 +479,25 @@
       "description": "智能巡检管理-选检点维护-导出列表表格不能使用",
       "descriptionSha256": "c817630360571d94af4a90cf84a332af6a2ba585e9ec7779f5fc239458a586fe",
       "completionCell": "G16",
-      "status": "待复现",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": false,
       "publicDeployed": false,
       "publicVerified": false,
-      "completionWritten": false
+      "completionWritten": false,
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "待复现",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G16",
+      "completionCellIsHistorical": true
     },
     {
       "number": 16,
@@ -294,11 +506,25 @@
       "description": "底层倾斜摄影加载速度慢",
       "descriptionSha256": "e3eb2ecf03c0462569164ffe6481690d622a2d5f61f23803284852f0c7b68d99",
       "completionCell": "G17",
-      "status": "待复现",
+      "status": "测试团队复测确认已解决，继续测试观察",
       "localLayoutVerified": false,
       "publicDeployed": false,
       "publicVerified": false,
-      "completionWritten": false
+      "completionWritten": false,
+      "resolutionHistory": [
+        {
+          "at": "2026-11-02T15:33:34.311563+08:00",
+          "previousStatus": "待复现",
+          "newStatus": "测试团队确认已解决",
+          "source": "用户2026-11-02转达",
+          "automatedEvidenceUnchanged": true
+        }
+      ],
+      "testerReportedResolved": true,
+      "testerResolutionReportedAt": "2026-11-02T15:33:34.311563+08:00",
+      "testerResolutionSource": "用户转达测试团队结论；非本轮共享表单元格回读",
+      "historicalCompletionCell": "G17",
+      "completionCellIsHistorical": true
     }
   ],
   "publicR18Deployed": true,
@@ -331,12 +557,23 @@
     "G5",
     "G7"
   ],
-  "localLedgerUpdatedAt": "2026-11-02T10:03:53.652868+08:00",
-  "latestKnownPublicRevision": "R31",
+  "localLedgerUpdatedAt": "2026-11-02T16:17:35.667534+08:00",
+  "latestKnownPublicRevision": "R32",
   "latestPublicAuthenticatedReadsVerified": true,
   "latestSourceSheetReadIsHistorical": true,
   "sourceSheetNotReReadDuringDesktopPause": true,
   "sourceSheetCellsWrittenThisRound": 0,
   "wholeModuleAcceptanceCompleted": false,
-  "fullCloneReady": false
+  "fullCloneReady": false,
+  "allPriorFeedbackReportedResolvedByTestTeam": true,
+  "testerResolutionNotice": "deploy/verification/tester_feedback_resolution_notice_20261102.json",
+  "remainingOpenPriorFeedbackItems": 0,
+  "historicalCompletionColumn": "G",
+  "historicalCompletionRange": "G2:G17",
+  "currentHeaderObservedAt": "2026-11-02T16:17:35.667534+08:00",
+  "currentHeaderObservedBy": "匿名快照仅含七列表头，未读到问题行",
+  "completionCellAddressesAreHistorical": true,
+  "currentSourceRowsRequireFreshReadBeforeAnyWrite": true,
+  "currentAnonymousSnapshotHasNoIssueRows": true,
+  "noNewIssuesInFullLiveSheetClaimed": false
 }

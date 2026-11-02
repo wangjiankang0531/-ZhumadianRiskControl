@@ -1,0 +1,29 @@
+{
+  "at": "2026-11-02T14:44:33.933255+08:00",
+  "schema": "xnby.r158.approved-public-source-completed.v1",
+  "approvalQuestionId": "call_81237dbbb27a4c87adc11ce209e89a7f",
+  "manifestSHA256": "62cfb57d97b6be0ff1903214a3e04423aed92054bbbe85793732bd6976097c04",
+  "files": 55,
+  "bytes": 441084,
+  "application": {
+    "repository": "wangjiankang0531/-ZhumadianRiskControl",
+    "branch": "review/workplace-r19-verified-partial-20261031",
+    "soleParent": "cdbbe0286cd5c1d05437561523eccbcb46b24846",
+    "tree": "6662ede84097534576dbdb9ba52baf01e77c5fb0",
+    "commit": "1c44cec0f007709f640152a2b70f52bf32406351"
+  },
+  "engine": {
+    "repository": "wangjiankang0531/-XNBYEngine",
+    "branch": "review/workplace-r19-verified-progress-20261031",
+    "soleParent": "5461c365adf34c443199176a9299efd71ac5e885",
+    "tree": "4bbb40ece1651d8e9279b27a9b0519b7ee54dad6",
+    "commit": "4ca1bc7af3b76bce8689b3b216387a9889fe4646"
+  },
+  "all55FrozenLocalBytesAndSHA256Revalidated": true,
+  "completeRecursiveTreesOnlyDeclared54Plus1BlobChanges": true,
+  "all55PublicBlobUTF8AndNewlinesExactlyReadBack": true,
+  "bothSoleParentsAndTreesAndFinalRefsReadBack": true,
+  "expectedSHACompareAndSwapFastForwardOnly": true,
+  "newBranchesOrMainOrPrivateAncestryChanged": false,
+  "r32PublicDeploymentProvenByThisReceipt": false
+}

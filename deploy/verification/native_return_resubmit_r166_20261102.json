@@ -1,0 +1,145 @@
+{
+  "schema": "xnby.r166.same-native-task-return-resubmit-completed.v1",
+  "at": "2026-11-02T16:11:43.880275+08:00",
+  "passed": true,
+  "sameTaskEventAndNativeInstanceAcrossNormalRestarts": true,
+  "actualOriginalSDKNormalRolesAndSixComponentRuntime": true,
+  "acceptedNativeBrowserPhases": 8,
+  "acceptedBrowserChecks": 78,
+  "stages": [
+    {
+      "attempt": "r1",
+      "phase": "operator",
+      "browserChecks": 20,
+      "businessStatus": 2,
+      "pendingEngineTasks": 1,
+      "engineHistoryEnded": false,
+      "actualPublishedVersionAndDeploymentMatched": true,
+      "feedbackContentRetained": true
+    },
+    {
+      "attempt": "r1",
+      "phase": "operator-disposal",
+      "browserChecks": 9,
+      "businessStatus": 1,
+      "pendingEngineTasks": 1,
+      "engineHistoryEnded": false,
+      "actualPublishedVersionAndDeploymentMatched": true,
+      "feedbackContentRetained": true
+    },
+    {
+      "attempt": "r2",
+      "phase": "reviewer-first",
+      "browserChecks": 8,
+      "businessStatus": 1,
+      "pendingEngineTasks": 1,
+      "engineHistoryEnded": false,
+      "actualPublishedVersionAndDeploymentMatched": true,
+      "feedbackContentRetained": true
+    },
+    {
+      "attempt": "r2",
+      "phase": "operator-readback",
+      "browserChecks": 8,
+      "businessStatus": 1,
+      "pendingEngineTasks": 1,
+      "engineHistoryEnded": false,
+      "actualPublishedVersionAndDeploymentMatched": true,
+      "feedbackContentRetained": true
+    },
+    {
+      "attempt": "r4",
+      "phase": "operator-resubmit",
+      "browserChecks": 9,
+      "businessStatus": 1,
+      "pendingEngineTasks": 1,
+      "engineHistoryEnded": false,
+      "actualPublishedVersionAndDeploymentMatched": true,
+      "feedbackContentRetained": true
+    },
+    {
+      "attempt": "r4",
+      "phase": "reviewer-again",
+      "browserChecks": 8,
+      "businessStatus": 1,
+      "pendingEngineTasks": 1,
+      "engineHistoryEnded": false,
+      "actualPublishedVersionAndDeploymentMatched": true,
+      "feedbackContentRetained": true
+    },
+    {
+      "attempt": "r4",
+      "phase": "reviewer-final",
+      "browserChecks": 8,
+      "businessStatus": 1,
+      "pendingEngineTasks": 0,
+      "engineHistoryEnded": true,
+      "actualPublishedVersionAndDeploymentMatched": true,
+      "feedbackContentRetained": true
+    },
+    {
+      "attempt": "r4",
+      "phase": "operator-completed-readback",
+      "browserChecks": 8,
+      "businessStatus": 1,
+      "pendingEngineTasks": 0,
+      "engineHistoryEnded": true,
+      "actualPublishedVersionAndDeploymentMatched": true,
+      "feedbackContentRetained": true
+    }
+  ],
+  "actualOriginalReturnRequests": 1,
+  "nativeApplicantReturnedTodoAction": "提交审核",
+  "thenTwoNativeReviewActions": "通过",
+  "completedEnginePendingTasks": 0,
+  "completedEngineHistoryHasEndTime": true,
+  "sameOriginalAttachmentAndBytesRetained": true,
+  "sameEventTaskFlowTimeFeedbackAndEvaluationRetained": true,
+  "allAuditTimeNodeActorAndReturnResubmitOpinionRecordsMatchedOriginalProvider": true,
+  "oneSynthetic68BytePNGAndOwnTwoStageTemplateOnly": true,
+  "original398ModelsUnchanged": true,
+  "connectionRefusalsObserved": false,
+  "normalShutdownAndConfigurationRestore": [
+    {
+      "attempt": "r1",
+      "outerExitCode": 1,
+      "normalSixComponentsControllerAndBrowserClose": true,
+      "actualDescendantsZero": true,
+      "exactFakeConfigRestored": true
+    },
+    {
+      "attempt": "r2",
+      "outerExitCode": 0,
+      "normalSixComponentsControllerAndBrowserClose": true,
+      "actualDescendantsZero": true,
+      "exactFakeConfigRestored": true
+    },
+    {
+      "attempt": "r3",
+      "outerExitCode": 1,
+      "normalSixComponentsControllerAndBrowserClose": true,
+      "actualDescendantsZero": true,
+      "exactFakeConfigRestored": true
+    },
+    {
+      "attempt": "r4",
+      "outerExitCode": 0,
+      "normalSixComponentsControllerAndBrowserClose": true,
+      "actualDescendantsZero": true,
+      "exactFakeConfigRestored": true
+    }
+  ],
+  "priorObserverFailuresPreserved": [
+    "r1-return-node-rendering-before-selected-value",
+    "r3-applicant-action-is-submit-audit-not-through"
+  ],
+  "onlyAcceptedPhasesCounted": true,
+  "rawHostModeFlagFalseInR4ExplainedByResubmitModeNotByChangedInstance": true,
+  "sameInstanceIndependentlyProvenByExactContextBytesAndScopedSQL": true,
+  "productCodeChanged": false,
+  "publicFormalOrDesktopChanged": false,
+  "sourceRowsCredentialsTokensRuntimeUUIDsOrRawLogsIncluded": false,
+  "realNangangTemplateAndRolesWholeAcceptanceClaimed": false,
+  "wholeModulesAccepted": 0,
+  "fullCloneReady": false
+}
