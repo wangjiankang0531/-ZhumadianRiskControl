@@ -1,0 +1,30 @@
+{
+  "preparedOnly": true,
+  "onlyOwnedSyntheticG": true,
+  "candidateUpdaterAndR39PayloadUnchanged": true,
+  "browserSource": "verify_native_plan_six_relations_r374.mjs",
+  "browserSHA256": "c3939edd9e7bc8cc708796e8752100b09a6a87fc347b1da8958582834e5bb34f",
+  "sources": [
+    {
+      "role": "inspect",
+      "path": "plan_six_relations_inspect_r373.py",
+      "sha256": "95f4d05475d54adbe29279178cb57cb24f57240cf1df718cd95670718d0c139e"
+    },
+    {
+      "role": "prepare",
+      "path": "plan_six_relations_prepare_r373.py",
+      "sha256": "02940bc2fc2e0662c5c481cb5c1f8ccda0609ab56ca4fe54e2dea811577cb884"
+    },
+    {
+      "role": "run",
+      "path": "plan_six_relations_run_r373.py",
+      "sha256": "0fe1ecca9ac5faa2fa82536c586f279a0fb0cbf3e44eb7cb2a0953d51212973e"
+    }
+  ],
+  "expectedNormalRoleBrowserCases": 29,
+  "threeResourceKindsCreatedViaOriginalNormalRoleSaveAPIs": true,
+  "sixRelationGroupsTwoToOneAndReadonlyToBeVerified": true,
+  "actualLiveTestNotStarted": true,
+  "publicFormalSceneOrDesktopTouched": false,
+  "frozenR39AndPublic184ManifestsUnchanged": true
+}

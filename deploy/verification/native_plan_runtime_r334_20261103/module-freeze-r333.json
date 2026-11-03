@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "moduleManifestSHA256": "656f5feb0e869136a57b32213b442fa467e8e4e12ab70d54cc5ce9aed31b16c4",
+  "moduleFiles": 3,
+  "moduleBytes": 43657,
+  "exactNativeTestedClassPreserved": true,
+  "freshRecompileOrNewUntestedClassNotSubstituted": true,
+  "publicOrFormalInstalled": false
+}

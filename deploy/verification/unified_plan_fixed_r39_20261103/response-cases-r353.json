@@ -1,0 +1,114 @@
+[
+  {
+    "case": "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js-gzip-synthetic-validator",
+    "passed": true
+  },
+  {
+    "case": "status",
+    "passed": true
+  },
+  {
+    "case": "vary",
+    "passed": true
+  },
+  {
+    "case": "cache",
+    "passed": true
+  },
+  {
+    "case": "content",
+    "passed": true
+  },
+  {
+    "case": "zero-gzip",
+    "passed": true
+  },
+  {
+    "case": "explicit-zero-identity",
+    "passed": true
+  },
+  {
+    "case": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-CeoNouGN.js-gzip-synthetic-validator",
+    "passed": true
+  },
+  {
+    "case": "status",
+    "passed": true
+  },
+  {
+    "case": "vary",
+    "passed": true
+  },
+  {
+    "case": "cache",
+    "passed": true
+  },
+  {
+    "case": "content",
+    "passed": true
+  },
+  {
+    "case": "zero-gzip",
+    "passed": true
+  },
+  {
+    "case": "explicit-zero-identity",
+    "passed": true
+  },
+  {
+    "case": "/zhumadian/branding-20261025/assets/css/index-ClWHaJx5.css-gzip-synthetic-validator",
+    "passed": true
+  },
+  {
+    "case": "status",
+    "passed": true
+  },
+  {
+    "case": "vary",
+    "passed": true
+  },
+  {
+    "case": "cache",
+    "passed": true
+  },
+  {
+    "case": "content",
+    "passed": true
+  },
+  {
+    "case": "zero-gzip",
+    "passed": true
+  },
+  {
+    "case": "explicit-zero-identity",
+    "passed": true
+  },
+  {
+    "case": "/zhumadian/emergency/branding-20261025/assets/css/index-D0NHlCez.css-gzip-synthetic-validator",
+    "passed": true
+  },
+  {
+    "case": "status",
+    "passed": true
+  },
+  {
+    "case": "vary",
+    "passed": true
+  },
+  {
+    "case": "cache",
+    "passed": true
+  },
+  {
+    "case": "content",
+    "passed": true
+  },
+  {
+    "case": "zero-gzip",
+    "passed": true
+  },
+  {
+    "case": "explicit-zero-identity",
+    "passed": true
+  }
+]

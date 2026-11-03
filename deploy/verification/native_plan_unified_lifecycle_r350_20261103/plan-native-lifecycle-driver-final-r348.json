@@ -1,0 +1,10 @@
+{
+  "preparedOnly": true,
+  "source": "plan_lifecycle_run_r37_native_r347.py",
+  "supersededUnexecutedSourceSHA256": "fb800729ab402e6412b05d92dfdbce0a56fc325a1505b1845f0dbd04fb0c4bb3",
+  "finalSourceSHA256": "30d1f2dc1a38b484d63a583bc54417f4ff161049298320f060c361cf2b75e594",
+  "onlyUIFailureHandlingChanged": true,
+  "browserFailureWillBeRecordedAndReportedAfterActualRollbackNormalExitAndRestore": true,
+  "candidateUpdaterOrBrowserSourceChanged": false,
+  "actualLifecycleExecutedByThisPreparation": false
+}

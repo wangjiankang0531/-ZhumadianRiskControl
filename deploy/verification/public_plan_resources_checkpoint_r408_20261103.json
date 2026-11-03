@@ -1,0 +1,46 @@
+{
+  "schema": "xnby.public.r40.plan-resources-checkpoint.v1",
+  "informationSystems": 1,
+  "comprehensiveEntries": 2,
+  "shortcutEntries": 6,
+  "oldUnanswered184ProposalSupersededByThisFixedScope": true,
+  "old184FrozenBytesRetainedForHistory": true,
+  "sixPlanRelationGroupsSavedEditedAndReadonlyActualPassed": true,
+  "normalRoleBrowserCases": 29,
+  "javascriptExceptions": 0,
+  "resourceCancelCloseRejectionsOriginalSixCandidateZero": true,
+  "onlyThreeResourceSFCsChangedFromR224": true,
+  "memberReadonlyDisabledInputValuesAndResourceReadonlyRowsPassed": true,
+  "actualAnchorDownloadFinalNameAndExactBytesPassed": true,
+  "r390R37ActualR40ApplyRollbackSixComponentsPassed": true,
+  "r398FinalNormalUIIterationSeparateFromUpdaterLifecycle": true,
+  "r36R40ActualLifecycleNotRepeated": true,
+  "original398ModelsBeforeAfterUpdateRollbackAndUIPassed": true,
+  "r40FullProgramFilesEachBase": {
+    "r36": 15557,
+    "r37": 15557
+  },
+  "r40NegativeCompositionCasesEach": {
+    "r36": 63,
+    "r37": 63
+  },
+  "r40FileRecoveryScenariosEach": {
+    "r36": 16,
+    "r37": 16
+  },
+  "r40FixedFiles": 8,
+  "r40FixedBytes": 2166836,
+  "r40FixedManifestSHA256": "87a2696c7c44e87a5ae57fa4f6f55aa89ad3c05679ec089fc5661bcdd0344dff",
+  "r40Writes": 187,
+  "r40ObsoleteEmergencyFrontendRemovals": 177,
+  "r40SameFinalReleaseBothVariants": "999144eb99fa5d135539b8648c59a196821f1a8c41c756192b08c838cb6ad392",
+  "r40WrapperMainPathsWithExplicitIdentityLifecycleIISSpies": 10,
+  "r40TransportEightFilesReproducedByteForByte": true,
+  "r40UploadedOrDeployed": false,
+  "IISHTTPSAndAuthenticatedPublicTimingPending": true,
+  "r37ManualCompletionReceiptStillMissingExactPublicVersionNotGuessed": true,
+  "fullRealNangangTemplatesPermissionsAndCrossEntryAcceptancePending": true,
+  "fullBusinessBuildFromCleanPublicCheckoutClaimed": false,
+  "actualCredentialsAccountsBusinessRowsRuntimeDatabaseUUIDAssetsSDKClassBinariesRawLogsIncluded": false,
+  "fullCloneReady": false
+}

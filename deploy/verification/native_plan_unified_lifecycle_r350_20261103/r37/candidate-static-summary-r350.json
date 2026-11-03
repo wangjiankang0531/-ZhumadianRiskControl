@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "resource": "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js",
+      "status": 200,
+      "wireBytes": 819234,
+      "decodedBytes": 2624898,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true
+    },
+    {
+      "resource": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-CeoNouGN.js",
+      "status": 200,
+      "wireBytes": 806754,
+      "decodedBytes": 2575935,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true
+    },
+    {
+      "resource": "/zhumadian/branding-20261025/assets/css/index-ClWHaJx5.css",
+      "status": 200,
+      "wireBytes": 126860,
+      "decodedBytes": 869689,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true
+    },
+    {
+      "resource": "/zhumadian/emergency/branding-20261025/assets/css/index-D0NHlCez.css",
+      "status": 200,
+      "wireBytes": 126553,
+      "decodedBytes": 868546,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true
+    }
+  ],
+  "actualOwnedGatewayHTTP": true,
+  "actualIISTLS": false
+}

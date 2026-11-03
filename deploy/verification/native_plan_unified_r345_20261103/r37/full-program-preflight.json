@@ -1,0 +1,51 @@
+{
+  "allPassed": true,
+  "baselineVariant": "R37",
+  "fullProgramFilesVerified": 15557,
+  "oldDeclaredControls": 22,
+  "newDeclaredControls": 22,
+  "liveIISProxyExtraPinVerified": true,
+  "candidateInstallPaths": 187,
+  "obsoleteEmergencyFrontendRemovals": 177,
+  "allChangePaths": 364,
+  "cases": [
+    {
+      "case": "registered-R37-IIS-drift-refused-before-stop",
+      "refused": "FILE_PIN_MISMATCH:iis/App_Code/XnbyReferenceProxy.cs",
+      "noWritesByLoadBundle": true
+    },
+    {
+      "case": "all-R37-programs-and-final-R39-load_bundle",
+      "passed": true
+    },
+    {
+      "case": "same-snapshot-original-mapper-and-numeric-budget-before-stop",
+      "passed": true
+    },
+    {
+      "case": "retained-program-drift-refused:runtime/jdk17/release",
+      "passed": true
+    },
+    {
+      "case": "retained-program-drift-refused:payload/business/run-template/classes/mapper/FirstAidTeamMembersMapper.xml",
+      "passed": true
+    },
+    {
+      "case": "unexpected-preexisting-plan-override-refused-before-stop",
+      "passed": true
+    },
+    {
+      "case": "unknown-primary-layout-refused-before-stop",
+      "passed": true
+    }
+  ],
+  "newUpdaterSHA256": "e935f51aa3c7a5aae3346c632b90423ce99f6a0887b1d44781ea0ed8e8c16d8f",
+  "sourceProgramsUnchanged": true,
+  "onlyLocalTargetAndSyntheticPrivateManifestMetadataAdapted": true,
+  "candidatePlanClassContractAndTransportPassed": true,
+  "internalSameSnapshotMapperGatePassed": true,
+  "servicesStarted": false,
+  "initialSharedHistorySourceAndIISExpectedCodeDriverFailuresRetained": true,
+  "earlierOwnedViewFullyRevalidatedAndRestored": true,
+  "actualServerPreflightOrIISOrPublicDeploymentPassed": false
+}

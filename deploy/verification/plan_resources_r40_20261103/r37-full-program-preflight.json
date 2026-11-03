@@ -1,0 +1,48 @@
+{
+  "allPassed": true,
+  "fullProgramFilesVerified": 15557,
+  "oldDeclaredControls": 22,
+  "newDeclaredControls": 22,
+  "liveIISProxyExtraPinVerified": true,
+  "candidateInstallPaths": 187,
+  "obsoleteEmergencyFrontendRemovals": 177,
+  "allChangePaths": 364,
+  "cases": [
+    {
+      "case": "all-R37-programs-and-final-R40-unified-path-load_bundle",
+      "passed": true
+    },
+    {
+      "case": "exact-retained-pool-budget-before-any-services",
+      "passed": true
+    },
+    {
+      "case": "retained-source-drift-refused:runtime/jdk17/release",
+      "passed": true
+    },
+    {
+      "case": "retained-source-drift-refused:payload/business/run-template/classes/mapper/FirstAidTeamMembersMapper.xml",
+      "passed": true
+    },
+    {
+      "case": "live-IIS-source-drift-refused-before-stop",
+      "passed": true
+    },
+    {
+      "case": "invalid-platform-layout-refused-before-stop",
+      "passed": true
+    }
+  ],
+  "newUpdaterSHA256": "2df899f1b3471b05c5f2312e77055a45290e8053a4ae19f7889c6d18dfb393e2",
+  "readOnlyHardlinks": 15396,
+  "mutableIndependentCopies": 183,
+  "sourceProgramsUnchanged": true,
+  "onlyLocalTargetAndSyntheticPrivateManifestMetadataAdapted": true,
+  "publicDeliveryWrapperNotPreparedYet": true,
+  "internalSameSnapshotMapperGatePassed": true,
+  "candidatePlanClassContractAndTransportPassed": true,
+  "baselineVariant": "R37",
+  "realConfigDatabaseOrAccountRecordsRead": false,
+  "servicesStarted": false,
+  "actualServerPreflightOrIISOrPublicDeploymentPassed": false
+}

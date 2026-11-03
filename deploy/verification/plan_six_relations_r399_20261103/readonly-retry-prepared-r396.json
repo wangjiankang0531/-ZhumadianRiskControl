@@ -1,0 +1,12 @@
+{
+  "preparedOnly": true,
+  "r394ActualAllSixEditedReadbackPassed": true,
+  "r394ThreeResourcesTwelveCancelConfirmStepsPassed": true,
+  "r394ReadonlyTextAssertionNotAcceptedAsMissingDataProof": true,
+  "readonlyNowChecksActualDisabledInputValueForEveryMemberField": true,
+  "browserSHA256": "cb10dfddcbd49031662d7fea0267dc6bbbd3d9268d38692bb0274c4d0952edd3",
+  "driverSHA256": "468eab661043a3e543e763bc7c912eea990c25ac5ef7d14264efe375ac1d6e5f",
+  "fixturePreparerSHA256": "56b538e5f71e09249b7c56b8e59741116b475ddbb1202d70b747747d13cf6e68",
+  "productCandidateChanged": false,
+  "native29Pending": true
+}

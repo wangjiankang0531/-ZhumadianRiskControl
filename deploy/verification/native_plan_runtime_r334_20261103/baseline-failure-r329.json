@@ -1,0 +1,12 @@
+{
+  "reproduced": true,
+  "attempt": "r141",
+  "actualNormalRoleNativeBrowserCompletedCases": 16,
+  "phase": "actual-original-parent-delete-with-two-existing-exercises",
+  "failure": "OWN_PLAN_API_READBACK_emergencyPlan_500_100000",
+  "deletedParentOldDetailHTTP": 500,
+  "deleteReturnedSuccessBeforeOldDetailRead": true,
+  "controllerAndAllChildrenNormallyExitedZero": true,
+  "allFiveRestoreLayersPassed": true,
+  "notCountedAsWholeFlowPass": true
+}

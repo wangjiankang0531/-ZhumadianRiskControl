@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "filteredRows": 1,
+  "resetRows": 2,
+  "requestShape": {
+    "legacyDepartmentNonempty": true,
+    "canonicalOrganizeDepartmentNonempty": true
+  },
+  "resetRequestShape": {
+    "legacyDepartmentNonempty": false,
+    "canonicalOrganizeDepartmentNonempty": false
+  },
+  "actualVisibleRowsMatchedBothResponses": true,
+  "actualOriginalBackendAndCompiledPage": true,
+  "onlyOwnSyntheticRecords": true,
+  "businessRowsChangedByFilterOrReset": false
+}

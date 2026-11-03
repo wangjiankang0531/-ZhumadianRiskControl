@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "declared-installed-and-runtime-copy-exact",
+      "passed": true
+    },
+    {
+      "case": "missing-runtime-copy",
+      "refused": "FILE_PIN_MISMATCH:classes/com/iemp/endanger/server/emergency/service/impl/EmergencyPlanServiceImpl.class"
+    },
+    {
+      "case": "foreign-runtime-copy",
+      "refused": "FILE_PIN_MISMATCH:classes/com/iemp/endanger/server/emergency/service/impl/EmergencyPlanServiceImpl.class"
+    },
+    {
+      "case": "foreign-installed-copy",
+      "refused": "FILE_PIN_MISMATCH:payload/business/run-template/classes/com/iemp/endanger/server/emergency/service/impl/EmergencyPlanServiceImpl.class"
+    },
+    {
+      "case": "missing-descriptor",
+      "refused": "UNDECLARED_NATIVE_PLAN_RUNTIME_CLASS"
+    },
+    {
+      "case": "wrong-class-pin",
+      "refused": "EXACT_NATIVE_PLAN_RUNTIME_CLASS_PIN_REQUIRED"
+    },
+    {
+      "case": "wrong-jar-pin",
+      "refused": "NATIVE_PLAN_REQUIRES_ORIGINAL_BUSINESS_JAR"
+    },
+    {
+      "case": "unchanged-original-base-requires-no-plan-override",
+      "passed": true
+    }
+  ],
+  "onlyOwnedFileFixtures": true,
+  "notActualJVMOrServerHealthAcceptance": true
+}

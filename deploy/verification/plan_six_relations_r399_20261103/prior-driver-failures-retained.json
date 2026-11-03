@@ -1,0 +1,27 @@
+{
+  "supersededDriverFailures": [
+    {
+      "phase": "actual-candidate-gzip-static",
+      "message": "STATIC_HTTP_STATUS_OR_BOUND",
+      "type": "ValueError"
+    },
+    {
+      "phase": "actual-normal-role-six-relations-29-cases",
+      "message": "OWN_UNIFIED_PLAN_NATIVE_UI_FAILED",
+      "type": "AssertionError"
+    },
+    {
+      "stage": "edit-all-six-plan-relation-groups",
+      "message": "OWN_EXPERT_UI_TIMEOUT_edit-all-six-plan-relation-groups"
+    },
+    {
+      "stage": "resource-emergencyExperts-confirm-and-close",
+      "message": "OWN_READONLY_MEMBER_VALUE_副指挥长"
+    },
+    {
+      "stage": "one-real-save-with-duplicate-protection",
+      "message": "EXERCISE_NATIVE_ATTACHMENT_DISK_BYTES"
+    }
+  ],
+  "candidateCodeUnchangedDuringDriverCorrections": true
+}

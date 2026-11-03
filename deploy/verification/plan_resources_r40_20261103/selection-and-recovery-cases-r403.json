@@ -1,0 +1,74 @@
+{
+  "selection": [
+    {
+      "case": "r36-exact-base-and-updater",
+      "passed": true
+    },
+    {
+      "case": "r36-cross-variant-updater-refused",
+      "passed": true
+    },
+    {
+      "case": "r37-exact-base-and-updater",
+      "passed": true
+    },
+    {
+      "case": "r37-cross-variant-updater-refused",
+      "passed": true
+    },
+    {
+      "case": "unknown-release-refused",
+      "passed": true
+    }
+  ],
+  "recovery": [
+    {
+      "case": "r36-exact-own-recovery",
+      "passed": true
+    },
+    {
+      "case": "r36-foreign-updateId",
+      "passed": true
+    },
+    {
+      "case": "r36-foreign-oldReleaseSHA256",
+      "passed": true
+    },
+    {
+      "case": "r36-foreign-newReleaseSHA256",
+      "passed": true
+    },
+    {
+      "case": "r36-foreign-attempt",
+      "passed": true
+    },
+    {
+      "case": "r36-foreign-attempt",
+      "passed": true
+    },
+    {
+      "case": "r37-exact-own-recovery",
+      "passed": true
+    },
+    {
+      "case": "r37-foreign-updateId",
+      "passed": true
+    },
+    {
+      "case": "r37-foreign-oldReleaseSHA256",
+      "passed": true
+    },
+    {
+      "case": "r37-foreign-newReleaseSHA256",
+      "passed": true
+    },
+    {
+      "case": "r37-foreign-attempt",
+      "passed": true
+    },
+    {
+      "case": "r37-foreign-attempt",
+      "passed": true
+    }
+  ]
+}

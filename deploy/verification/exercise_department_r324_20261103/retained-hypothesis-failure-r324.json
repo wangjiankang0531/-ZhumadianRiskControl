@@ -1,0 +1,13 @@
+{
+  "attempt": "r137",
+  "phase": "exercise-organize-department-filter-baseline-or-fixed",
+  "message": "EXPECTED_LEGACY_DEPARTMENT_FILTER_REPRO_NOT_OBSERVED",
+  "completedEarlierCases": 11,
+  "actualFilteredRowsObserved": 1,
+  "javaScriptExceptions": 0,
+  "testHypothesisWrongNotProductFailure": true,
+  "outerExitCode": 1,
+  "controllerAndSixComponentsNormalZero": true,
+  "allRestoreLayersPassed": true,
+  "candidateFixCompiledOrInstalled": false
+}

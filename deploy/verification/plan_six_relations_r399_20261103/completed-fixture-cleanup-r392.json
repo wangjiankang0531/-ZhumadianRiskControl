@@ -1,0 +1,132 @@
+﻿{
+    "passed":  true,
+    "targets":  [
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-cancel-r386\\bundle",
+                        "files":  188,
+                        "logicalBytes":  7278019,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-cancel-r386\\baseline",
+                        "files":  3,
+                        "logicalBytes":  2619372,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-cancel-r386\\original-before",
+                        "files":  14,
+                        "logicalBytes":  2793516,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-typed-r390\\bundle",
+                        "files":  188,
+                        "logicalBytes":  7278019,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-typed-r390\\baseline",
+                        "files":  3,
+                        "logicalBytes":  2619372,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-typed-r390\\original-before",
+                        "files":  14,
+                        "logicalBytes":  2793516,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-ui-r394\\bundle",
+                        "files":  188,
+                        "logicalBytes":  7278019,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-ui-r394\\candidate-code",
+                        "files":  714,
+                        "logicalBytes":  15999691,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-ui-r394\\original-before",
+                        "files":  14,
+                        "logicalBytes":  2793516,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-ui-r396\\bundle",
+                        "files":  188,
+                        "logicalBytes":  7278019,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-ui-r396\\candidate-code",
+                        "files":  714,
+                        "logicalBytes":  15999691,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-ui-r396\\original-before",
+                        "files":  14,
+                        "logicalBytes":  2793516,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-ui-r398\\bundle",
+                        "files":  188,
+                        "logicalBytes":  7278019,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-ui-r398\\candidate-code",
+                        "files":  714,
+                        "logicalBytes":  15999691,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\plan-six-relations-ui-r398\\original-before",
+                        "files":  14,
+                        "logicalBytes":  2793516,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\event_delivery_consistency_20261030\\full-controller-r163\\r149\\plan-browser\\chrome-profile",
+                        "files":  237,
+                        "logicalBytes":  12519445,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\event_delivery_consistency_20261030\\full-controller-r163\\r151\\plan-browser\\chrome-profile",
+                        "files":  263,
+                        "logicalBytes":  51919071,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\event_delivery_consistency_20261030\\full-controller-r163\\r153\\plan-browser\\chrome-profile",
+                        "files":  250,
+                        "logicalBytes":  13507250,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\event_delivery_consistency_20261030\\full-controller-r163\\r155\\plan-browser\\chrome-profile",
+                        "files":  256,
+                        "logicalBytes":  13991607,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\event_delivery_consistency_20261030\\full-controller-r163\\r157\\plan-browser\\chrome-profile",
+                        "files":  263,
+                        "logicalBytes":  20884785,
+                        "exactAbsoluteNoReferencesNoReparse":  true
+                    }
+                ],
+    "removedFiles":  4427,
+    "logicalBytes":  216417650,
+    "observedDFreeDelta":  212320256,
+    "observedChangeNotUniquelyAttributed":  true,
+    "candidateR40BundlesCompiledSourcesAndSmallResultsRetained":  true,
+    "databaseUploadsAssetsReferenceAndFormalApplicationsRetained":  true,
+    "noProcessesTerminated":  true
+}

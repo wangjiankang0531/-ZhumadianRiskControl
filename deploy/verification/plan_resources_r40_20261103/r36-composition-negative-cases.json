@@ -1,0 +1,254 @@
+[
+  {
+    "case": "missing-mapper-descriptor",
+    "refused": "EXPLICIT_ORIGINAL_MAPPER_DEFAULTS_REQUIRED"
+  },
+  {
+    "case": "missing-frontend-descriptor",
+    "refused": "R38_EXACT_COMPILED_FRONTEND_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "missing-static-descriptor",
+    "refused": "R38_RETAINED_STATIC_PERFORMANCE_REQUIRED"
+  },
+  {
+    "case": "mapper-contract-revision",
+    "refused": "EXACT_ORIGINAL_MAPPER_DEFAULT_CONTRACT_REQUIRED"
+  },
+  {
+    "case": "mapper-contract-defaultResourcePattern",
+    "refused": "EXACT_ORIGINAL_MAPPER_DEFAULT_CONTRACT_REQUIRED"
+  },
+  {
+    "case": "mapper-contract-expectedOriginalXMLResources",
+    "refused": "EXACT_ORIGINAL_MAPPER_DEFAULT_CONTRACT_REQUIRED"
+  },
+  {
+    "case": "mapper-contract-expectedOriginalXMLStatements",
+    "refused": "EXACT_ORIGINAL_MAPPER_DEFAULT_CONTRACT_REQUIRED"
+  },
+  {
+    "case": "mapper-contract-onlyWhenNoExplicitMapperLocations",
+    "refused": "EXACT_ORIGINAL_MAPPER_DEFAULT_CONTRACT_REQUIRED"
+  },
+  {
+    "case": "mapper-contract-originalSQLBytesUnchanged",
+    "refused": "EXACT_ORIGINAL_MAPPER_DEFAULT_CONTRACT_REQUIRED"
+  },
+  {
+    "case": "mapper-contract-newDatasourceOrDDL",
+    "refused": "EXACT_ORIGINAL_MAPPER_DEFAULT_CONTRACT_REQUIRED"
+  },
+  {
+    "case": "static-contract-encodedResponseBytesPreserved",
+    "refused": "R37_EXACT_STATIC_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "static-contract-contentEncodingAndVaryForwarded",
+    "refused": "R37_EXACT_STATIC_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "static-contract-successfulHashedAssetsImmutable",
+    "refused": "R37_EXACT_STATIC_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "static-contract-htmlBusinessErrorsAndNonHashedResourcesNotLongCached",
+    "refused": "R37_EXACT_STATIC_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "wrong-control-source-tools/original_server_release_parameters.py",
+    "refused": "EXACT_ORIGINAL_MAPPER_PARAMETER_SOURCE_REQUIRED"
+  },
+  {
+    "case": "wrong-control-source-tools/original_public_test_update.py",
+    "refused": "R37_EXACT_STATIC_CONTROLS_AND_RETAINED_ALL_OTHER_CONTROLS_REQUIRED"
+  },
+  {
+    "case": "wrong-control-source-iis/App_Code/XnbyReferenceProxy.cs",
+    "refused": "R37_EXACT_STATIC_CONTROLS_AND_RETAINED_ALL_OTHER_CONTROLS_REQUIRED"
+  },
+  {
+    "case": "wrong-control-source-tools/original_project_branding.py",
+    "refused": "R37_EXACT_STATIC_CONTROLS_AND_RETAINED_ALL_OTHER_CONTROLS_REQUIRED"
+  },
+  {
+    "case": "wrong-control-source-tools/serve_original_server_release.py",
+    "refused": "EXACT_HISTORY_CONTROLLER_AND_HELPER_REQUIRED"
+  },
+  {
+    "case": "changed-retained-payload-payload/business/application.jar",
+    "refused": "R38_ALL_OTHER_PAYLOAD_AND_PRIVATE_CONFIGURATION_RETAINED"
+  },
+  {
+    "case": "changed-retained-payload-payload/business/run-template/classes/xnby/replica/OriginalNativeSessionInterceptor.class",
+    "refused": "R38_ALL_OTHER_PAYLOAD_AND_PRIVATE_CONFIGURATION_RETAINED"
+  },
+  {
+    "case": "changed-retained-payload-private/server-configuration.json",
+    "refused": "R38_ALL_OTHER_PAYLOAD_AND_PRIVATE_CONFIGURATION_RETAINED"
+  },
+  {
+    "case": "changed-retained-payload-frontend/security_pc/assets/css/Chart1-BMhJYYw6.css",
+    "refused": "R38_ALL_OTHER_PAYLOAD_AND_PRIVATE_CONFIGURATION_RETAINED"
+  },
+  {
+    "case": "extra-payload-class",
+    "refused": "R38_ALL_OTHER_PAYLOAD_AND_PRIVATE_CONFIGURATION_RETAINED"
+  },
+  {
+    "case": "changed-compiled-frontend",
+    "refused": "R38_ALL_OTHER_PAYLOAD_AND_PRIVATE_CONFIGURATION_RETAINED"
+  },
+  {
+    "case": "extra-accepted-release",
+    "refused": "R38_ONE_EXACT_INSTALLED_BASE_REQUIRED"
+  },
+  {
+    "case": "old-controller-metadata-drift",
+    "refused": "R39_EXACT_R36_OR_R37_BASE_METADATA_REQUIRED"
+  },
+  {
+    "case": "old-release-metadata-drift",
+    "refused": "R39_EXACT_R36_OR_R37_BASE_METADATA_REQUIRED"
+  },
+  {
+    "case": "wrong-old-IIS-proxy",
+    "refused": "R38_EXACT_OLD_IIS_PROXY_SOURCE_REQUIRED"
+  },
+  {
+    "case": "wrong-old-IIS-legacy-pin",
+    "refused": "R38_EXACT_OLD_IIS_PROXY_SOURCE_REQUIRED"
+  },
+  {
+    "case": "extra-legacy-path",
+    "refused": "R38_EXACT_OLD_IIS_PROXY_SOURCE_REQUIRED"
+  },
+  {
+    "case": "extra-install-path",
+    "refused": "R38_ONLY_EXACT_COMPOSED_INSTALL_PATHS_REQUIRED"
+  },
+  {
+    "case": "missing-required-parameter",
+    "refused": "R38_ONLY_EXACT_COMPOSED_INSTALL_PATHS_REQUIRED"
+  },
+  {
+    "case": "missing-required-live-IIS",
+    "refused": "R38_ONLY_EXACT_COMPOSED_INSTALL_PATHS_REQUIRED"
+  },
+  {
+    "case": "wrong-parameter-transport",
+    "refused": "R38_EXACT_COMPOSED_TRANSPORT_PIN_REQUIRED:tools/original_server_release_parameters.py"
+  },
+  {
+    "case": "wrong-updater-transport",
+    "refused": "R38_EXACT_COMPOSED_TRANSPORT_PIN_REQUIRED:tools/original_public_test_update.py"
+  },
+  {
+    "case": "missing-obsolete-removal",
+    "refused": "R38_ONLY_EXACT_OBSOLETE_EMERGENCY_FRONTEND_REMOVALS"
+  },
+  {
+    "case": "extra-obsolete-removal",
+    "refused": "R38_ONLY_EXACT_OBSOLETE_EMERGENCY_FRONTEND_REMOVALS"
+  },
+  {
+    "case": "wrong-old-payload-pin",
+    "refused": "R38_EXACT_OLD_PAYLOAD_PINS_REQUIRED"
+  },
+  {
+    "case": "drop-original-history",
+    "refused": "ORIGINAL_MAPPER_REQUIRES_RETAINED_POOL_AND_HISTORY"
+  },
+  {
+    "case": "drop-pool-policy",
+    "refused": "ORIGINAL_MAPPER_REQUIRES_RETAINED_POOL_AND_HISTORY"
+  },
+  {
+    "case": "reuse-old-workflow-parameter-pin",
+    "refused": "R38_EXACT_COMPOSITION_AND_ALL_OTHER_RELEASE_FIELDS_RETAINED"
+  },
+  {
+    "case": "wrong-callback-overlay",
+    "refused": "R38_ORIGINAL_CALLBACK_OVERLAY_RETAINED"
+  },
+  {
+    "case": "premature-public-acceptance",
+    "refused": "R38_EXACT_COMPOSITION_AND_ALL_OTHER_RELEASE_FIELDS_RETAINED"
+  },
+  {
+    "case": "wrong-unified-revision",
+    "refused": "R38_EXACT_COMPOSITION_AND_ALL_OTHER_RELEASE_FIELDS_RETAINED"
+  },
+  {
+    "case": "missing-plan-runtime-descriptor",
+    "refused": "R38_EXACT_COMPOSITION_AND_ALL_OTHER_RELEASE_FIELDS_RETAINED"
+  },
+  {
+    "case": "plan-contract-schema",
+    "refused": "R38_EXACT_COMPOSITION_AND_ALL_OTHER_RELEASE_FIELDS_RETAINED"
+  },
+  {
+    "case": "plan-contract-javaMajor",
+    "refused": "R38_EXACT_COMPOSITION_AND_ALL_OTHER_RELEASE_FIELDS_RETAINED"
+  },
+  {
+    "case": "plan-contract-originalJarPlanClassSHA256",
+    "refused": "R38_EXACT_COMPOSITION_AND_ALL_OTHER_RELEASE_FIELDS_RETAINED"
+  },
+  {
+    "case": "plan-contract-candidateSourceSHA256",
+    "refused": "R38_EXACT_COMPOSITION_AND_ALL_OTHER_RELEASE_FIELDS_RETAINED"
+  },
+  {
+    "case": "plan-contract-schemaOrOriginalJarOrAuthenticationChanged",
+    "refused": "R38_EXACT_COMPOSITION_AND_ALL_OTHER_RELEASE_FIELDS_RETAINED"
+  },
+  {
+    "case": "missing-plan-class-payload",
+    "refused": "R38_ALL_OTHER_PAYLOAD_AND_PRIVATE_CONFIGURATION_RETAINED"
+  },
+  {
+    "case": "wrong-plan-class-payload",
+    "refused": "R38_ALL_OTHER_PAYLOAD_AND_PRIVATE_CONFIGURATION_RETAINED"
+  },
+  {
+    "case": "missing-plan-class-transport",
+    "refused": "R38_ONLY_EXACT_COMPOSED_INSTALL_PATHS_REQUIRED"
+  },
+  {
+    "case": "wrong-plan-class-transport",
+    "refused": "R38_EXACT_COMPOSED_TRANSPORT_PIN_REQUIRED:payload/business/run-template/classes/com/iemp/endanger/server/emergency/service/impl/EmergencyPlanServiceImpl.class"
+  },
+  {
+    "case": "foreign-class-install-path",
+    "refused": "R38_ONLY_EXACT_COMPOSED_INSTALL_PATHS_REQUIRED"
+  },
+  {
+    "case": "different-single-accepted-base",
+    "refused": "R38_ONE_EXACT_INSTALLED_BASE_REQUIRED"
+  },
+  {
+    "case": "resource-cancel-actions-changed",
+    "refused": "R38_EXACT_COMPILED_FRONTEND_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "resource-cancel-unknown-error-swallowed",
+    "refused": "R38_EXACT_COMPILED_FRONTEND_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "resource-cancel-relative-input-metadata-changed",
+    "refused": "R38_EXACT_COMPILED_FRONTEND_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "resource-cancel-component-source-pin-changed",
+    "refused": "R38_EXACT_COMPILED_FRONTEND_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "resource-cancel-frontend-inventory-pin-changed",
+    "refused": "R38_EXACT_COMPILED_FRONTEND_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "resource-cancel-frontend-manifest-pin-changed",
+    "refused": "R38_EXACT_COMPILED_FRONTEND_DESCRIPTOR_REQUIRED"
+  }
+]

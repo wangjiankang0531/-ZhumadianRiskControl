@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "parentDeleteRequests": 1,
+  "parentAbsentFromListAndDetails": true,
+  "childExercisesBefore": 2,
+  "childExercisesAfter": 2,
+  "childDetailsPeopleAndFileMetadataUnchanged": true,
+  "realChildAttachmentHTTP": 200,
+  "realChildAttachmentBytesIdentical": true,
+  "unrelatedOwnPlanExactDetailsUnchanged": true,
+  "onlyOwnSyntheticRecords": true,
+  "originalBehaviorCharacterizedNotNewCascadeRule": true,
+  "allSixResourceRelationsPopulatedOrVerifiedByThisCase": false,
+  "originalControllerAndNormalRoleUIWithCandidatePlanServiceClass": true
+}

@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "controllers": [
+    {
+      "controllerExitCode": 0,
+      "actualDescendantsZero": true,
+      "normalOwnedShutdown": true,
+      "sixChildExitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      }
+    },
+    {
+      "controllerExitCode": 0,
+      "actualDescendantsZero": true,
+      "normalOwnedShutdown": true,
+      "sixChildExitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      }
+    },
+    {
+      "controllerExitCode": 0,
+      "actualDescendantsZero": true,
+      "normalOwnedShutdown": true,
+      "sixChildExitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      }
+    }
+  ],
+  "originalGCodeAndPointersRestored": true,
+  "noRuntimeUUIDsPIDsOrBusinessRowsIncluded": true,
+  "forceTerminationUsed": false,
+  "actualIISTLS": false
+}

@@ -1,0 +1,90 @@
+{
+  "revision": "R40-plan-resources-cancel-original-mappers-native-plan-and-static-performance",
+  "targetFTP": "/Zhumadian/Zhumadian_Plan_Resources_20261103_R40/",
+  "targetApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "files": {
+    "Check_Only_Plan_Resources_R40.cmd": {
+      "bytes": 136,
+      "sha256": "0a4e406665dd3f3148132c936ed0bc433d5cc7c2529eea128b833553b51497c6"
+    },
+    "Deploy_Plan_Resources_R40.cmd": {
+      "bytes": 124,
+      "sha256": "fda4bb231679c8a232f2db71da272b3f07ccf45401c86463cb4a5efc458ed9c4"
+    },
+    "deploy_plan_resources_r40.py": {
+      "bytes": 15659,
+      "sha256": "80821a3ed223efd433289a9b55e1ad868f3fdfe313301671a671642afc765b0a"
+    },
+    "r40_update_runtime.py": {
+      "bytes": 236766,
+      "sha256": "2df899f1b3471b05c5f2312e77055a45290e8053a4ae19f7889c6d18dfb393e2"
+    },
+    "Recover_This_Plan_Resources_R40.cmd": {
+      "bytes": 145,
+      "sha256": "35c0dd9018d24329abaf36b0c9f1a5770b5107b4951d5af915823fb087c4485b"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Plan_Resources_20261103_R40.zip": {
+      "bytes": 1910070,
+      "sha256": "617c63ed87195100e5a6f7a8bc990e36abdc79709c6d3706f0b2178aa4d84ac7"
+    }
+  },
+  "acceptedExactBases": {
+    "daaf0be2b1cb17eab4640b7388901a0f00c1b920cfe2260c4d060234230fb853": {
+      "label": "r36",
+      "updateId": "20261103-r40-resource-cancel-from-r36",
+      "manifestSHA256": "467718c19a0cd8943630fc6a5318be7c74eb0e5ab02c87a8ca2248f9b72d7ee2",
+      "oldUpdaterSHA256": "67545498b3f823e03394ecebdbf9aed12a64c719cca16b7a56a13abb66b49eca"
+    },
+    "909b64aa1315b8764b169c9874b8f52f903268b59c67adbf7b3799e85e29448c": {
+      "label": "r37",
+      "updateId": "20261103-r40-resource-cancel-from-r37",
+      "manifestSHA256": "b16d01e547ce9035542d6d40d733ce2a8d9ee5cd9d81c6c6eeedc2a183f2bd7f",
+      "oldUpdaterSHA256": "52daac9f348be6622592920240794a1ba701d46683fa6b7c3e0cb34da47fcf62"
+    }
+  },
+  "eachExtractedBundleAcceptsOneExactBase": true,
+  "bothVariantsUseOneSharedFinalPayload": true,
+  "newReleaseSHA256": "999144eb99fa5d135539b8648c59a196821f1a8c41c756192b08c838cb6ad392",
+  "newPayloadManifestSHA256": "8cbd73d777bedaa804d8f9839c896e6041601bd54c1d815768ca1159304620a0",
+  "newUpdaterSHA256": "2df899f1b3471b05c5f2312e77055a45290e8053a4ae19f7889c6d18dfb393e2",
+  "writes": 187,
+  "removedFiles": 177,
+  "oldReadinessReports": 11,
+  "newOriginalReadinessReports": 11,
+  "additionalPlanRuntimeByteCheck": true,
+  "newDeclaredControlFiles": 22,
+  "actualThisR40UpdaterApplyAndRollbackBase": "R37",
+  "r37ActualSixComponentLifecycleControllers": 3,
+  "r36ThisR40SixComponentLifecycleNotRepeated": true,
+  "priorR39LifecycleBodiesAllASTRetained": true,
+  "finalCandidateNormalRoleBrowserCasesPassed": 29,
+  "finalCandidateNormalRoleJavaScriptExceptions": 0,
+  "fullProgramFilesEachBase": {
+    "r36": 15557,
+    "r37": 15557
+  },
+  "negativeCompositionCasesEach": {
+    "r36": 63,
+    "r37": 63
+  },
+  "fileRecoveryScenariosEach": {
+    "r36": 16,
+    "r37": 16
+  },
+  "dataConfigurationUploadPathsNotInInstallScope": true,
+  "originalJarAuthHistoryAndSecurityFrontendRetainedByComposition": true,
+  "iisProxySourceUpdatedButMappingsAndOtherSitesRetained": true,
+  "maximumExtractionPathCharacters": 237,
+  "postcheckRollbackBoundToSelectedBaseAndExactAppliedRecord": true,
+  "limitedResultReadbackFile": "r40-scoped-result.json",
+  "limitedResultContainsNoCredentialsBusinessRowsOrRuntimeUUID": true,
+  "wrapperFunctionsUnchangedApartFromVersionLabels": true,
+  "serverIISHTTPSAndPublicLoggedInTimingPending": true,
+  "publicDeployed": false,
+  "newPublicGitIncluded": false,
+  "fullCloneReady": false
+}

@@ -1,0 +1,13 @@
+{
+  "prepared": true,
+  "transportFiles": 8,
+  "transportBytes": 2166836,
+  "manifestSHA256": "87a2696c7c44e87a5ae57fa4f6f55aa89ad3c05679ec089fc5661bcdd0344dff",
+  "archiveSHA256": "617c63ed87195100e5a6f7a8bc990e36abdc79709c6d3706f0b2178aa4d84ac7",
+  "wrapperSHA256": "80821a3ed223efd433289a9b55e1ad868f3fdfe313301671a671642afc765b0a",
+  "builderSHA256": "29d90cbd8c401e7bf7644ee213779676769729fa9020043ea2eb5f0a618042a6",
+  "archiveMembers": 190,
+  "maximumExtractionPathCharacters": 237,
+  "transportVerificationPending": true,
+  "uploadedOrDeployed": false
+}

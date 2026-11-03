@@ -1,0 +1,53 @@
+{
+  "schema": "xnby.r345.plan-unified-candidate.v1",
+  "passedProgramAndFileTransactionStage": true,
+  "candidateUpdaterSHA256": "e935f51aa3c7a5aae3346c632b90423ce99f6a0887b1d44781ea0ed8e8c16d8f",
+  "newReleaseSHA256": "9a3a878ae3f00a1aeafb18187c4eb1acf7fe348dad52a3fa68fa023a4071e690",
+  "newPayloadManifestSHA256": "773049fb330258bafe6bae8aa1d791dbf860a7ec1538ef8e3351efcc3d4bf2ae",
+  "variants": {
+    "R36": {
+      "programFiles": 15557,
+      "compositionNegativeCases": 57,
+      "actualFileRecoveryScenarios": 16,
+      "planRuntimeReadinessByteScenarios": 8,
+      "writes": 187,
+      "removals": 177,
+      "changePaths": 364,
+      "oldControls": 21,
+      "newControls": 22,
+      "allOriginalProgramSourcesKept": true,
+      "estimatedFixturePeakBytes": 349863936
+    },
+    "R37": {
+      "programFiles": 15557,
+      "compositionNegativeCases": 57,
+      "actualFileRecoveryScenarios": 16,
+      "planRuntimeReadinessByteScenarios": 8,
+      "writes": 187,
+      "removals": 177,
+      "changePaths": 364,
+      "oldControls": 22,
+      "newControls": 22,
+      "allOriginalProgramSourcesKept": true,
+      "estimatedFixturePeakBytes": 350598688
+    }
+  },
+  "sameFinalPayloadForBothBases": true,
+  "eachVariantStillAcceptsOneExactInstalledBase": true,
+  "onlyHealthLoadBundleAndCompositionFunctionsChanged": [
+    "health",
+    "load_bundle",
+    "r38_unified_bundle_contract"
+  ],
+  "normalLifecycleBackupRestoreAndPoolPreflightFunctionsASTRetained": true,
+  "exactPreviouslyNativeTestedPlanClassSHA256": "384462cf7671955a1c9aa1fe37b4f2a1ac85d747ec396247af219211f79e682b",
+  "previousNative18CasesNotClaimedAsNewUpdaterWholeLifecycle": true,
+  "newUpdaterWholeSixComponentApplyRollbackExecuted": false,
+  "newCombinedCandidateNativeUIExecuted": false,
+  "actualIISHTTPSOrPublicDeploymentPassed": false,
+  "publicTransportWrapperPrepared": false,
+  "initialR37MissingSharedHistorySourceAndWrongExpectedIISCodeDriverFailuresRetained": true,
+  "allFileViewsCleanedAndOriginalGReleasePreserved": true,
+  "publicFormalSceneAndDesktopChanged": false,
+  "fullCloneReady": false
+}

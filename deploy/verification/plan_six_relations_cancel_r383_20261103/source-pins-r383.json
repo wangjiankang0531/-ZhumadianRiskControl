@@ -1,0 +1,121 @@
+{
+  "files": [
+    {
+      "path": "tools/prepare_plan_six_relations_r372.py",
+      "sha256": "442471bb582f08d56066b94537a76d7523a1b0538f35d318f8f71b44fd0bc022",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/plan_six_relations_inspect_r373.py",
+      "sha256": "95f4d05475d54adbe29279178cb57cb24f57240cf1df718cd95670718d0c139e",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/plan_six_relations_prepare_r373.py",
+      "sha256": "02940bc2fc2e0662c5c481cb5c1f8ccda0609ab56ca4fe54e2dea811577cb884",
+      "neverRunOrSuperseded": true
+    },
+    {
+      "path": "tools/plan_six_relations_run_r373.py",
+      "sha256": "0fe1ecca9ac5faa2fa82536c586f279a0fb0cbf3e44eb7cb2a0953d51212973e",
+      "neverRunOrSuperseded": true
+    },
+    {
+      "path": "tools/verify_native_plan_six_relations_r374.mjs",
+      "sha256": "c3939edd9e7bc8cc708796e8752100b09a6a87fc347b1da8958582834e5bb34f",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/verify_resource_cancel_component_r375.mjs",
+      "sha256": "899032df2b6586ec1d1a2d1f40d9fa2d4c03ee3bdae5674cfaf24411baf80e34",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/run_resource_cancel_component_r375.py",
+      "sha256": "97665aa2a5cebe2df3b287dc85782b8676991f0d48cff1f927dc9bd8766d0ee3",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/original_plan_resource_cancel_compat_r376.py",
+      "sha256": "1badce93f08fa86e768fdf84fe4f231e024e157a5dc5996dc391ac96a85409c9",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/prepare_resource_cancel_candidate_r376.py",
+      "sha256": "ee7a98c39a4f20c8a10ab76870ac681eafd171409fd1cd44e0465c982e8efebd",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/build_plan_resource_cancel_r377.py",
+      "sha256": "794328a8c26a630fbb86171307034d89271645e6d43e0edc7d0130b171af3e24",
+      "neverRunOrSuperseded": true
+    },
+    {
+      "path": "tools/build_plan_resource_cancel_r377.mjs",
+      "sha256": "7b5443df2773dd116577b6182da884aa2f89bcd405fc4d1deaac14689ed0cb3c",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/prepare_scoped_cancel_build_r378.py",
+      "sha256": "a9fef18e187d298e70772c961b6d266f3aaa282f9a5b0aa598d247b07fc28fd5",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/build_plan_resource_cancel_r378.py",
+      "sha256": "2a06ea9d400dabc532e97748bc64d9aa091d9291949d38051991b5e0a125faaf",
+      "neverRunOrSuperseded": true
+    },
+    {
+      "path": "tools/build_plan_resource_cancel_r378.mjs",
+      "sha256": "ce3f6ea68939f75b730ab4cc16a7adf16e89e8ea55943ef1583a6f96e2631ed8",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/prepare_cancel_build_retry_r379.py",
+      "sha256": "a21478014bbd916d3ff29924ba22ebb8edf75e1b53589560b623ee5350d3ab4f",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/build_plan_resource_cancel_r380.py",
+      "sha256": "89e2dcdf4533f9a4e9fe37d4d2e87f3fa2e1b9032212515c2865978bef8ab6c2",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/build_plan_resource_cancel_r380.mjs",
+      "sha256": "ab1e92e5a02c28e8aba9a813362b739a66946d365adc7a3c09303af021370435",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/prepare_resource_cancel_evidence_r381.py",
+      "sha256": "41118f3384f9915a64993cfbe513125b844ff7ce158b57cbebc9bd0f61a780ed",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/cleanup_resource_cancel_fixtures_r382.ps1",
+      "sha256": "e63ceb8e785498fff9e3288a64861d1ff27cf5df394b6274adbe0543fd555335",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "tools/record_resource_cancel_stage_r383.py",
+      "sha256": "b5b73070e2670645c3c8f445870235929150ad25ec7e15b7ff30407b47bbd55f",
+      "neverRunOrSuperseded": false
+    },
+    {
+      "path": "source-review/plan-resource-cancel-r378/src/views/emergencyPlans/structured/components/expertsList.vue",
+      "sha256": "4a3f2979dc9dffafdd5582f528be602cf45e1b1b340aaf5927074a6be060366e",
+      "exactActualCompiledCandidateInput": true
+    },
+    {
+      "path": "source-review/plan-resource-cancel-r378/src/views/emergencyPlans/structured/components/goodsList.vue",
+      "sha256": "12ab095631066f1a7c8c64bcfe567888b8c5c48bff8524b17e7f54c862139456",
+      "exactActualCompiledCandidateInput": true
+    },
+    {
+      "path": "source-review/plan-resource-cancel-r378/src/views/emergencyPlans/structured/components/teamsList.vue",
+      "sha256": "867e696d9244c64da09bf906c03acf78eb13d1ead4282fe28d602f8d05f314b7",
+      "exactActualCompiledCandidateInput": true
+    }
+  ],
+  "native29CasesPending": true,
+  "publicPushed": false
+}

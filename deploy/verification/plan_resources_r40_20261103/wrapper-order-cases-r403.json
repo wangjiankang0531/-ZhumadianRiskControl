@@ -1,0 +1,144 @@
+[
+  {
+    "variant": "r36",
+    "invalidLayout": true,
+    "events": [
+      "load_bundle_explicit_fixture_spy",
+      "actual_budget_enter"
+    ],
+    "actualFixedArchiveValidatedAndExtracted": true,
+    "actualCandidateBudgetAndMapperGateUsed": true,
+    "realServiceCalls": 0
+  },
+  {
+    "variant": "r36",
+    "invalidLayout": false,
+    "events": [
+      "load_bundle_explicit_fixture_spy",
+      "actual_budget_enter",
+      "actual_budget_pass",
+      "owned_ready_explicit_spy",
+      "health_explicit_spy"
+    ],
+    "actualFixedArchiveValidatedAndExtracted": true,
+    "actualCandidateBudgetAndMapperGateUsed": true,
+    "realServiceCalls": 0
+  },
+  {
+    "variant": "r36",
+    "postcheck": "success",
+    "events": [
+      "load_bundle_explicit_fixture_spy",
+      "actual_budget_enter",
+      "actual_budget_pass",
+      "owned_ready_explicit_spy",
+      "health_explicit_spy",
+      "apply_update_explicit_spy",
+      "static_postcheck_explicit_spy"
+    ],
+    "actualFixedArchiveValidatedAndExtracted": true,
+    "lifecycleAndTLSAreExplicitSpies": true
+  },
+  {
+    "variant": "r36",
+    "postcheck": "failure",
+    "events": [
+      "load_bundle_explicit_fixture_spy",
+      "actual_budget_enter",
+      "actual_budget_pass",
+      "owned_ready_explicit_spy",
+      "health_explicit_spy",
+      "apply_update_explicit_spy",
+      "static_postcheck_explicit_spy",
+      "rollback_latest_explicit_spy"
+    ],
+    "actualFixedArchiveValidatedAndExtracted": true,
+    "lifecycleAndTLSAreExplicitSpies": true
+  },
+  {
+    "variant": "r36",
+    "postcheck": "drift",
+    "events": [
+      "load_bundle_explicit_fixture_spy",
+      "actual_budget_enter",
+      "actual_budget_pass",
+      "owned_ready_explicit_spy",
+      "health_explicit_spy",
+      "apply_update_explicit_spy",
+      "static_postcheck_explicit_spy"
+    ],
+    "actualFixedArchiveValidatedAndExtracted": true,
+    "lifecycleAndTLSAreExplicitSpies": true
+  },
+  {
+    "variant": "r37",
+    "invalidLayout": true,
+    "events": [
+      "load_bundle_explicit_fixture_spy",
+      "actual_budget_enter"
+    ],
+    "actualFixedArchiveValidatedAndExtracted": true,
+    "actualCandidateBudgetAndMapperGateUsed": true,
+    "realServiceCalls": 0
+  },
+  {
+    "variant": "r37",
+    "invalidLayout": false,
+    "events": [
+      "load_bundle_explicit_fixture_spy",
+      "actual_budget_enter",
+      "actual_budget_pass",
+      "owned_ready_explicit_spy",
+      "health_explicit_spy"
+    ],
+    "actualFixedArchiveValidatedAndExtracted": true,
+    "actualCandidateBudgetAndMapperGateUsed": true,
+    "realServiceCalls": 0
+  },
+  {
+    "variant": "r37",
+    "postcheck": "success",
+    "events": [
+      "load_bundle_explicit_fixture_spy",
+      "actual_budget_enter",
+      "actual_budget_pass",
+      "owned_ready_explicit_spy",
+      "health_explicit_spy",
+      "apply_update_explicit_spy",
+      "static_postcheck_explicit_spy"
+    ],
+    "actualFixedArchiveValidatedAndExtracted": true,
+    "lifecycleAndTLSAreExplicitSpies": true
+  },
+  {
+    "variant": "r37",
+    "postcheck": "failure",
+    "events": [
+      "load_bundle_explicit_fixture_spy",
+      "actual_budget_enter",
+      "actual_budget_pass",
+      "owned_ready_explicit_spy",
+      "health_explicit_spy",
+      "apply_update_explicit_spy",
+      "static_postcheck_explicit_spy",
+      "rollback_latest_explicit_spy"
+    ],
+    "actualFixedArchiveValidatedAndExtracted": true,
+    "lifecycleAndTLSAreExplicitSpies": true
+  },
+  {
+    "variant": "r37",
+    "postcheck": "drift",
+    "events": [
+      "load_bundle_explicit_fixture_spy",
+      "actual_budget_enter",
+      "actual_budget_pass",
+      "owned_ready_explicit_spy",
+      "health_explicit_spy",
+      "apply_update_explicit_spy",
+      "static_postcheck_explicit_spy"
+    ],
+    "actualFixedArchiveValidatedAndExtracted": true,
+    "lifecycleAndTLSAreExplicitSpies": true
+  }
+]

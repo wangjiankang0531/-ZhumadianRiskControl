@@ -1,0 +1,10 @@
+{
+  "preparedOnly": true,
+  "browserSHA256": "ef68b33a6936a9c47c2a30b289f451bb51b6b87c05c15f1ae8c0d71a866596ab",
+  "driverSHA256": "3592e6439e0febd4a955fa20c8a87eb99fbd6a0d08054aae1e01177feaf5d60a",
+  "sameR40ProductCandidate": true,
+  "eachCancelAndConfirmWaitsForNoVisibleMessageBox": true,
+  "exactSingleVisibleMessageBoxButtonScoped": true,
+  "native29Pending": true,
+  "newApplyRollbackNotClaimedByThisIteration": true
+}

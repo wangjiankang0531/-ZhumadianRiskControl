@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "variants": [
+    {
+      "allPassed": true,
+      "fullProgramFilesVerified": 15557,
+      "oldDeclaredControls": 21,
+      "newDeclaredControls": 22,
+      "candidateInstallPaths": 187,
+      "obsoleteEmergencyFrontendRemovals": 177,
+      "allChangePaths": 364,
+      "sourceProgramsUnchanged": true,
+      "baselineVariant": "R36"
+    },
+    {
+      "allPassed": true,
+      "baselineVariant": "R37",
+      "fullProgramFilesVerified": 15557,
+      "oldDeclaredControls": 22,
+      "newDeclaredControls": 22,
+      "candidateInstallPaths": 187,
+      "obsoleteEmergencyFrontendRemovals": 177,
+      "allChangePaths": 364,
+      "sourceProgramsUnchanged": true
+    }
+  ],
+  "initialR37DriverFailuresRetained": true,
+  "servicesStarted": false,
+  "candidateSourceSHA256": "e935f51aa3c7a5aae3346c632b90423ce99f6a0887b1d44781ea0ed8e8c16d8f",
+  "actualServerIISOrPublicDeploymentPassed": false
+}

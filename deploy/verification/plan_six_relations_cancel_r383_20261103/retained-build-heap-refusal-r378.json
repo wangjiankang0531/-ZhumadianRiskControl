@@ -1,0 +1,13 @@
+{
+  "preparedOnly": true,
+  "priorActualNodeHeapOOMExit134AndDescendantsZero": true,
+  "allSevenSourceLayersExactRestored": true,
+  "existingSourceCopyReusedNoNewFullSourceCopy": true,
+  "retryOwnRoot": "D:\\Project\\Zhumadian\\work\\user_feedback_20261031\\plan-resource-cancel-r378\\retry-r2",
+  "nodeHeapLimitMiB": 2048,
+  "availableMemoryAdmissionGiB": 6,
+  "baselineSixComponentGuardNotLowered": true,
+  "pythonSourceSHA256": "89e2dcdf4533f9a4e9fe37d4d2e87f3fa2e1b9032212515c2865978bef8ab6c2",
+  "nodeSourceSHA256": "ab1e92e5a02c28e8aba9a813362b739a66946d365adc7a3c09303af021370435",
+  "frozenR39Public184RuntimeAndDatabaseChanged": false
+}

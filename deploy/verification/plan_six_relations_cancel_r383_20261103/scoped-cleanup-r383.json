@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "removedFiles": 5938.0,
+  "logicalBytes": 56841657,
+  "observedDFreeDelta": 64327680,
+  "observedChangeNotUniquelyAttributed": true,
+  "componentSourcesFullCompiledCandidateAndSmallResultsRetained": true,
+  "referenceDependenciesAssetsDatabaseAndUploadsRetained": true,
+  "noProcessesTerminated": true,
+  "publicFormalSceneOrDesktopChanged": false,
+  "targets": [
+    {
+      "files": 9,
+      "logicalBytes": 2706740,
+      "exactAbsoluteNoReferencesNoReparse": true,
+      "restoredSourcePinsCompared": false
+    },
+    {
+      "files": 224,
+      "logicalBytes": 9784891,
+      "exactAbsoluteNoReferencesNoReparse": true,
+      "restoredSourcePinsCompared": false
+    },
+    {
+      "files": 9,
+      "logicalBytes": 2707304,
+      "exactAbsoluteNoReferencesNoReparse": true,
+      "restoredSourcePinsCompared": false
+    },
+    {
+      "files": 196,
+      "logicalBytes": 9586134,
+      "exactAbsoluteNoReferencesNoReparse": true,
+      "restoredSourcePinsCompared": false
+    },
+    {
+      "files": 2750,
+      "logicalBytes": 16028294,
+      "exactAbsoluteNoReferencesNoReparse": true,
+      "restoredSourcePinsCompared": true
+    },
+    {
+      "files": 2750,
+      "logicalBytes": 16028294,
+      "exactAbsoluteNoReferencesNoReparse": true,
+      "restoredSourcePinsCompared": true
+    }
+  ]
+}

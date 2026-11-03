@@ -1,0 +1,77 @@
+{
+  "revision": "R39-unified-plan-runtime-original-mappers-and-static-performance",
+  "targetFTP": "/Zhumadian/Zhumadian_Unified_Plan_Runtime_20261103_R39/",
+  "targetApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "files": {
+    "Check_Only_Unified_Plan_R39.cmd": {
+      "bytes": 134,
+      "sha256": "6a6c1795e3c9bf9877ec1bf24320dbd0d82c48dfbc2e611adb876467ee27d403"
+    },
+    "Deploy_Unified_Plan_R39.cmd": {
+      "bytes": 122,
+      "sha256": "eba7d2e62848bda8b2d1ddd7af8f1a0ca4b15e16dd6b1680cd5c7129695d7b15"
+    },
+    "deploy_unified_plan_r39.py": {
+      "bytes": 15659,
+      "sha256": "5bde327f015e5d3a0dc8c7e0e68d4002253fc1f2018860888c9f8fb901f31914"
+    },
+    "r39_update_runtime.py": {
+      "bytes": 236206,
+      "sha256": "e935f51aa3c7a5aae3346c632b90423ce99f6a0887b1d44781ea0ed8e8c16d8f"
+    },
+    "Recover_This_Unified_Plan_R39.cmd": {
+      "bytes": 143,
+      "sha256": "9f0d40919ca0049dafbf7f1bf17577d8228d63d16570ad1cc77d7a7b377ad11c"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Unified_Plan_Runtime_20261103_R39.zip": {
+      "bytes": 1909384,
+      "sha256": "81d02f078d6914183d0581e557b3954353fa1f14c8c6d621e6beccc6a194bd60"
+    }
+  },
+  "acceptedExactBases": {
+    "daaf0be2b1cb17eab4640b7388901a0f00c1b920cfe2260c4d060234230fb853": {
+      "label": "r36",
+      "updateId": "20261103-r39-plan-runtime-from-r36",
+      "manifestSHA256": "6a26e96516bd4a2394882820aeca0d1b28c020e7d306fa358c7769f1c8262fe4",
+      "oldUpdaterSHA256": "67545498b3f823e03394ecebdbf9aed12a64c719cca16b7a56a13abb66b49eca"
+    },
+    "909b64aa1315b8764b169c9874b8f52f903268b59c67adbf7b3799e85e29448c": {
+      "label": "r37",
+      "updateId": "20261103-r39-plan-runtime-from-r37",
+      "manifestSHA256": "b37f2a7b04806982fa438975fc44b75d98b2bbdd90fd1be474bcce03c0f27a7b",
+      "oldUpdaterSHA256": "52daac9f348be6622592920240794a1ba701d46683fa6b7c3e0cb34da47fcf62"
+    }
+  },
+  "eachExtractedBundleAcceptsOneExactBase": true,
+  "bothVariantsUseOneSharedFinalPayload": true,
+  "newReleaseSHA256": "9a3a878ae3f00a1aeafb18187c4eb1acf7fe348dad52a3fa68fa023a4071e690",
+  "newPayloadManifestSHA256": "773049fb330258bafe6bae8aa1d791dbf860a7ec1538ef8e3351efcc3d4bf2ae",
+  "newUpdaterSHA256": "e935f51aa3c7a5aae3346c632b90423ce99f6a0887b1d44781ea0ed8e8c16d8f",
+  "writes": 187,
+  "removedFiles": 177,
+  "oldReadinessReports": 11,
+  "newOriginalReadinessReports": 11,
+  "additionalPlanRuntimeByteCheck": true,
+  "newDeclaredControlFiles": 22,
+  "sameFinalUpdaterActualApplyAndRollbackBothBasesPassed": true,
+  "actualSixComponentControllersAcrossBothBases": 6,
+  "finalCandidateNormalRoleBrowserCasesPassed": 21,
+  "finalCandidateNormalRoleJavaScriptExceptions": 0,
+  "fullProgramFilesEachBase": 15557,
+  "negativeCompositionCasesEach": 57,
+  "fileRecoveryScenariosEach": 16,
+  "originalBusinessJarAuthHistoryDatabasePrivateConfigurationUploadsAndSecurityFrontendRetained": true,
+  "iisProxySourceUpdatedButMappingsAndOtherSitesRetained": true,
+  "maximumExtractionPathCharacters": 237,
+  "serverIISHTTPSAndPublicLoggedInTimingPending": true,
+  "publicDeployed": false,
+  "newPublicGitIncluded": false,
+  "fullCloneReady": false,
+  "postcheckRollbackBoundToSelectedBaseAndExactAppliedRecord": true,
+  "limitedResultReadbackFile": "r39-scoped-result.json",
+  "limitedResultContainsNoCredentialsBusinessRowsOrRuntimeUUID": true
+}

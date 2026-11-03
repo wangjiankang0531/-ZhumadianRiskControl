@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "variant": "R36",
+  "compositionNegativeCases": 57,
+  "actualFileScenarios": 16,
+  "planReadinessFileBoundaries": 8,
+  "writes": 187,
+  "removals": 177,
+  "changePaths": 364,
+  "estimatedPeakBytes": 349863936,
+  "servicesSQLPublicOrFormalStartedOrModified": false
+}

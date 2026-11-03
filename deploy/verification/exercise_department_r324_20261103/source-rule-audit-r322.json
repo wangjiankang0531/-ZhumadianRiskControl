@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "sourcePins": {
+    "originalPlanService": "b9cebe7b016f30f24d34061c0710f5c392d74f78831ba12bf26fbca6ca1dc5b0",
+    "originalExerciseService": "e4bcd5e30de058d0c7389ba6ad3c55a9b94d9179a30444dba809a81b6a074715",
+    "actualCompiledCommonSearchFormItem": "16565942659a5c23309d09f256aff1b82d62f366a57602ec8fcfa9bd3b7f7a4e",
+    "actualCompiledExerciseList": "1a25dc4b6730467f834ebf074fbba723dd887eee136318bb11080c3b642f65cb",
+    "currentAtomicPlanAdapter": "22c4d49a510c42f734c5c0bfb8c1931e3040f25819a38cb144416d0ac1918e95"
+  },
+  "originalPlanDeleteTargetsParentSixResourceRelationsAndOwnAttachmentMetadata": true,
+  "originalPlanDeleteDoesNotExplicitlyDeleteExercisesOrObjectStoreFiles": true,
+  "currentPlanAdapterPreservesThatDeletionSetAndAddsAtomicGuards": true,
+  "runtimeDeleteOfPlanWithExercisesNotAcceptedByThisStaticAudit": true,
+  "commonSearchFormBindsCanonicalColumnNameOrganizeDepartment": true,
+  "initialLegacyKeyAloneDefectHypothesisContradictedByActualFilteredResponse": true,
+  "speculativeR319FixWithdrawnBeforeCompileOrInstall": true,
+  "originalSourcesDatabaseOrProductChanged": false,
+  "fullNangangAccepted": false
+}

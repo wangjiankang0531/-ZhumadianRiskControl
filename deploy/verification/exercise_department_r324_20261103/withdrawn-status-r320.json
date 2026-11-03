@@ -1,0 +1,9 @@
+{
+  "withdrawn": true,
+  "candidateCompiled": false,
+  "candidateInstalled": false,
+  "reason": "Actual native filter returned one record; common SearchFormItem applies canonical column binding",
+  "initialDefectHypothesisNotProven": true,
+  "noProductFixClaimed": true,
+  "preparedSourcesRetainedForTraceability": true
+}

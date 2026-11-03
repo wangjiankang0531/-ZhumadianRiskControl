@@ -1,0 +1,36 @@
+{
+  "at": "2026-11-03T21:24:00.537946+08:00",
+  "passed": true,
+  "transportFiles": 8,
+  "transportBytes": 2166836,
+  "manifestSHA256": "87a2696c7c44e87a5ae57fa4f6f55aa89ad3c05679ec089fc5661bcdd0344dff",
+  "updaterSHA256": "2df899f1b3471b05c5f2312e77055a45290e8053a4ae19f7889c6d18dfb393e2",
+  "finalReleaseSHA256": "999144eb99fa5d135539b8648c59a196821f1a8c41c756192b08c838cb6ad392",
+  "exactBaseVariants": [
+    "R36",
+    "R37"
+  ],
+  "fullProgramFilesEachBase": {
+    "r36": 15557,
+    "r37": 15557
+  },
+  "negativeCompositionCasesEach": {
+    "r36": 63,
+    "r37": 63
+  },
+  "fileRecoveryScenariosEach": {
+    "r36": 16,
+    "r37": 16
+  },
+  "actualCandidateBusinessCases": 29,
+  "actualCandidateBusinessExceptions": 0,
+  "r37ActualUpdaterApplyAndRollbackPassed": true,
+  "r36ThisR40ActualLifecycleNotRepeated": true,
+  "wrapperLifecycleIdentityAndIISChecksInOfflineTestsAreSpies": true,
+  "offlineWrapperMainPaths": 10,
+  "closedArchiveAndExactReproductionPassed": true,
+  "serverActualIISHTTPSAndLoggedInTimingPending": true,
+  "publicDeployed": false,
+  "publicPushed": false,
+  "fullCloneReady": false
+}

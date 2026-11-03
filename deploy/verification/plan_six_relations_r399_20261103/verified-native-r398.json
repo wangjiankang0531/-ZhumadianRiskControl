@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "actualNormalRoleCases": 29,
+  "normalOneControllerUIIteration": true,
+  "newApplyOrRollbackNotClaimed": true,
+  "priorR390ActualApplyAndRollbackEvidenceSeparate": true,
+  "original398ModelsBeforeAfterUIMatched": true,
+  "normalControllerChromeAndActualDescendantsZero": true,
+  "originalGCodeConfigurationAndPointersRestored": true,
+  "actualIISHTTPSOrPublicVerified": false,
+  "fullCloneReady": false
+}

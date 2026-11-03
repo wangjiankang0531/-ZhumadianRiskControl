@@ -1,0 +1,6 @@
+{
+  "superseded": true,
+  "runStarted": false,
+  "allocatedRunRoot": false,
+  "replaceOnlyAfterNewFrontendExactContractAndRealNativeSuite": true
+}

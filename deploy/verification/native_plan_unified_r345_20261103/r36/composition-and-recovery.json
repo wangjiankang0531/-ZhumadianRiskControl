@@ -1,0 +1,106 @@
+{
+  "passed": true,
+  "negativeCompositionCases": 57,
+  "allNegativeCasesRefused": true,
+  "writes": 187,
+  "removals": 177,
+  "changePaths": 364,
+  "normalAndFaultFileRecoveryCases": [
+    {
+      "scenario": "normal",
+      "all364OriginalPathStatesRestored": true,
+      "changesBeforeRestore": 364,
+      "privateUserDataAndUploadSentinelsKept": true
+    },
+    {
+      "scenario": "first-change",
+      "all364OriginalPathStatesRestored": true,
+      "changesBeforeRestore": 1,
+      "privateUserDataAndUploadSentinelsKept": true
+    },
+    {
+      "scenario": "first-obsolete-removal",
+      "all364OriginalPathStatesRestored": true,
+      "changesBeforeRestore": 2,
+      "privateUserDataAndUploadSentinelsKept": true
+    },
+    {
+      "scenario": "middle-change",
+      "all364OriginalPathStatesRestored": true,
+      "changesBeforeRestore": 182,
+      "privateUserDataAndUploadSentinelsKept": true
+    },
+    {
+      "scenario": "branding-write",
+      "all364OriginalPathStatesRestored": true,
+      "changesBeforeRestore": 361,
+      "privateUserDataAndUploadSentinelsKept": true
+    },
+    {
+      "scenario": "live-IIS-write",
+      "all364OriginalPathStatesRestored": true,
+      "changesBeforeRestore": 358,
+      "privateUserDataAndUploadSentinelsKept": true
+    },
+    {
+      "scenario": "plan-class-write",
+      "all364OriginalPathStatesRestored": true,
+      "changesBeforeRestore": 360,
+      "privateUserDataAndUploadSentinelsKept": true
+    },
+    {
+      "scenario": "parameter-write",
+      "all364OriginalPathStatesRestored": true,
+      "changesBeforeRestore": 363,
+      "privateUserDataAndUploadSentinelsKept": true
+    },
+    {
+      "scenario": "updater-write",
+      "all364OriginalPathStatesRestored": true,
+      "changesBeforeRestore": 362,
+      "privateUserDataAndUploadSentinelsKept": true
+    },
+    {
+      "scenario": "payload-manifest-write",
+      "all364OriginalPathStatesRestored": true,
+      "changesBeforeRestore": 359,
+      "privateUserDataAndUploadSentinelsKept": true
+    },
+    {
+      "scenario": "release-pointer-write",
+      "all364OriginalPathStatesRestored": true,
+      "changesBeforeRestore": 364,
+      "privateUserDataAndUploadSentinelsKept": true
+    },
+    {
+      "scenario": "last-change",
+      "all364OriginalPathStatesRestored": true,
+      "changesBeforeRestore": 364,
+      "privateUserDataAndUploadSentinelsKept": true
+    },
+    {
+      "scenario": "foreign-IIS",
+      "foreignDriftRefusedBeforeAnyRestore": true
+    },
+    {
+      "scenario": "foreign-parameter",
+      "foreignDriftRefusedBeforeAnyRestore": true
+    },
+    {
+      "scenario": "foreign-plan-class",
+      "foreignDriftRefusedBeforeAnyRestore": true
+    },
+    {
+      "scenario": "foreign-new-frontend",
+      "foreignDriftRefusedBeforeAnyRestore": true
+    }
+  ],
+  "peakAllocationBudgetBytes": 349863936,
+  "updaterSHA256": "e935f51aa3c7a5aae3346c632b90423ce99f6a0887b1d44781ea0ed8e8c16d8f",
+  "updateManifestSHA256": "6a26e96516bd4a2394882820aeca0d1b28c020e7d306fa358c7769f1c8262fe4",
+  "realProcessesSQLDatabaseOrPublicTouched": false,
+  "newUpdaterApplyUpdateTransactionExecuted": false,
+  "actualFileBackupReplaceRestoreFunctionsExecuted": true,
+  "planReadinessByteBoundaryScenarios": 8,
+  "baselineVariant": "R36"
+}

@@ -1,0 +1,5 @@
+import fs from'node:fs/promises';import{pathToFileURL}from'node:url';
+const R='D:/Project/Zhumadian',W=R+'/work/user_feedback_20261031/plan-resource-cancel-r378/retry-r2',P=R+'/work/user_feedback_20261031/plan-resource-cancel-r378/source',deps=R+'/Application/work/tianjin_native_20261023/emergency_pc/node_modules';
+process.chdir(P);for(const k of Object.keys(process.env))if(k.startsWith('VITE_')||['NODE_OPTIONS','DEBUG'].includes(k))delete process.env[k];
+Object.assign(process.env,{NODE_ENV:'production',BROWSER:'none',VITE_API_URL:'/zhumadian/api',VITE_APP_BASE_PATH:'/zhumadian/emergency',VITE_APP_NAME:'驻马店重大风险防控'});await fs.symlink(deps,P+'/node_modules','junction');
+try{const{build}=await import(pathToFileURL(deps+'/vite/dist/node/index.js').href);await build({root:P,configFile:P+'/vite.config.ts',cacheDir:W+'/cache',base:'/zhumadian/emergency/',esbuild:{drop:['console','debugger']},build:{outDir:W+'/dist',emptyOutDir:false,sourcemap:false,rollupOptions:{output:{entryFileNames:'assets/js/wf-[name]-[hash].js',chunkFileNames:'assets/js/wf-[name]-[hash].js'}}}})}finally{await fs.unlink(P+'/node_modules')}

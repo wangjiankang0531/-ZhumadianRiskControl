@@ -1,0 +1,12 @@
+{
+  "prepared": true,
+  "browserSource": "verify_native_unified_plan_r347.mjs",
+  "browserSHA256": "ab4f66f812ae3e35bb0e8aab608cbd77217ec8b193b06643f386cd3550519e00",
+  "hostSource": "plan_lifecycle_run_r37_native_r347.py",
+  "hostSHA256": "fb800729ab402e6412b05d92dfdbce0a56fc325a1505b1845f0dbd04fb0c4bb3",
+  "candidateUpdaterUnchanged": true,
+  "r346R37RunSourceSupersededBeforeExecution": true,
+  "expectedCases": 21,
+  "servicesStartedByThisPreparation": false,
+  "onlyOwnedSyntheticG": true
+}

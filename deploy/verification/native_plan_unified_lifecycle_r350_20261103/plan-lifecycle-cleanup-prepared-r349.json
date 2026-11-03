@@ -1,0 +1,17 @@
+{
+  "preparedOnly": true,
+  "sources": [
+    {
+      "source": "cleanup_plan_lifecycle_r36_r349.ps1",
+      "sha256": "2ae62c4d5a32e1d672c40bdcc4efeb6736f859e94118bca6b11183ca42d6bca4",
+      "variant": "R36"
+    },
+    {
+      "source": "cleanup_plan_lifecycle_r37_r349.ps1",
+      "sha256": "e5f2b66259cafdcf94870e8cc8f18a968f1c9a6b5d3d9931edbac838fa11d5f0",
+      "variant": "R37"
+    }
+  ],
+  "noDeletionPerformed": true,
+  "requiresActualLifecycleNormalExitAndRestoredG": true
+}

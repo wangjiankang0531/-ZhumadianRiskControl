@@ -1,0 +1,94 @@
+{
+  "passed": true,
+  "actualAnchorDownload": true,
+  "finalNameMatched": true,
+  "all68BytesExactlyMatched": true,
+  "completedEventObserved": true,
+  "observations": [
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 2,
+      "finalNameMatches": false,
+      "exactBytes": false
+    },
+    {
+      "files": 1,
+      "finalNameMatches": true,
+      "exactBytes": true
+    }
+  ]
+}

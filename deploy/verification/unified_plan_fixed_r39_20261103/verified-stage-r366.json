@@ -1,0 +1,122 @@
+{
+  "schema": "xnby.r366.fixed-dual-plan-delivery.v1",
+  "at": "2026-11-03T19:53:59.699604+08:00",
+  "passed": true,
+  "manifestSHA256": "4c5a31aa246858bf8e49db4ae97520fb8c90989bc97e6343c14a198540d402de",
+  "transportFiles": 8,
+  "transportBytes": 2165296,
+  "writes": 187,
+  "removals": 177,
+  "eachVariantAcceptsOneExactBase": true,
+  "sharedFinalPayload": true,
+  "productionMaximumExtractionPathCharacters": 237,
+  "all8FilesReproducedByteForByte": true,
+  "archiveAndExtractionCases": 14,
+  "staticResponseValidatorCases": 28,
+  "baseSelectionCases": 5,
+  "recoveryGuards": 12,
+  "actualWrapperMainTestScenarios": 10,
+  "wrapperTestLifecycleAndIdentityAndIISExplicitSpies": true,
+  "sameActualUpdaterDualSixComponentAnd21NativeUIEvidenceRetained": true,
+  "limitedResultContainsNoCredentialsBusinessRowsOrRuntimeUUID": true,
+  "postcheckRollbackRequiresSameSelectedBaseAndUnchangedAppliedRecord": true,
+  "limitedResultClearedBeforeApplyAndScopedRollbackPhaseReported": true,
+  "twoInitialTemporaryPathLengthDriverFailuresKeptNotProductFailures": true,
+  "temporaryPathBudgetCheckedBeforeAllocation": true,
+  "backgroundSavedFTPProbeNotConnected": true,
+  "noFTPPasswordReadOrExported": true,
+  "noUploadOrServerDeploymentOrDesktopInput": true,
+  "newPublicGitPushed": false,
+  "sourcePins": [
+    {
+      "path": "tools/build_unified_plan_delivery_r351.py",
+      "bytes": 15627,
+      "sha256": "71baafedd558383be5a647d690696eb30e812ffa3ccec0869f0e1c27eed41629",
+      "historicalDriverNotFinalBuildEntry": false
+    },
+    {
+      "path": "tools/refine_unified_plan_wrapper_r352.py",
+      "bytes": 3675,
+      "sha256": "2318427f9fdc5256380f92404b5a00c102bd6e9e12f98fc1de6c289d4dbd448c",
+      "historicalDriverNotFinalBuildEntry": true
+    },
+    {
+      "path": "tools/verify_unified_plan_delivery_r353.py",
+      "bytes": 16829,
+      "sha256": "695293fa854f809beb7e117b46119e4b1ae4f4855af803650c87d2e70573a75c",
+      "historicalDriverNotFinalBuildEntry": true
+    },
+    {
+      "path": "tools/prepare_short_transport_verification_r354.py",
+      "bytes": 1435,
+      "sha256": "2956d7215154c7e74047bbc46b49db87db0fc885f63632472b38fea8a564d193",
+      "historicalDriverNotFinalBuildEntry": true
+    },
+    {
+      "path": "tools/verify_unified_plan_delivery_r354.py",
+      "bytes": 17011,
+      "sha256": "004d7262e813621ff20661553a24ee338f3bf1f09a0b1b9ea12b5ded1263f646",
+      "historicalDriverNotFinalBuildEntry": true
+    },
+    {
+      "path": "tools/prepare_bounded_transport_verifier_r355.py",
+      "bytes": 1228,
+      "sha256": "cec791d78ed9fa65814ebf9a5629decd58d6508faf8a3dd8ba76837d9d6c4db8",
+      "historicalDriverNotFinalBuildEntry": true
+    },
+    {
+      "path": "tools/verify_unified_plan_delivery_r355.py",
+      "bytes": 17271,
+      "sha256": "22e11cc3f7a17bb14d307fe6ebb6064d1e57c43c71d496b56becefcefa465130",
+      "historicalDriverNotFinalBuildEntry": true
+    },
+    {
+      "path": "tools/cleanup_transport_verifiers_r358.ps1",
+      "bytes": 4083,
+      "sha256": "56f00a08c4ad1df40128e2707e01c0f850b6e29051b6487bed2e294f1acf3e3d",
+      "historicalDriverNotFinalBuildEntry": false
+    },
+    {
+      "path": "tools/add_scoped_delivery_result_r362.py",
+      "bytes": 4363,
+      "sha256": "1b215969a2cd359e587f20d246b6e5a0cf74ee3e8a0803147add74c82d7753c4",
+      "historicalDriverNotFinalBuildEntry": true
+    },
+    {
+      "path": "tools/prepare_final_transport_checks_r363.py",
+      "bytes": 4765,
+      "sha256": "3fe62390dbdb6d08429069cb486c439569357440c28c8343ff46120234a73d6f",
+      "historicalDriverNotFinalBuildEntry": true
+    },
+    {
+      "path": "tools/verify_unified_plan_delivery_r364.py",
+      "bytes": 19127,
+      "sha256": "e795b7fe9bc21bc1a40c0e5506dbc8ec3396bdf2ac091365082a179e6ebd5644",
+      "historicalDriverNotFinalBuildEntry": false
+    },
+    {
+      "path": "tools/prepare_final_verifier_cleanup_r365.py",
+      "bytes": 745,
+      "sha256": "1fb1b192ae69c25460d8cc2416ff60d4e34bc1a31de300cd0876a4e2aba853b3",
+      "historicalDriverNotFinalBuildEntry": false
+    },
+    {
+      "path": "tools/cleanup_final_verifier_r365.ps1",
+      "bytes": 4011,
+      "sha256": "24a24a83e8e85ef5256463555c6b1c5d4146274ddabd39c94b6c89f06fc12d5d",
+      "historicalDriverNotFinalBuildEntry": false
+    },
+    {
+      "path": "tools/record_fixed_plan_delivery_r366.py",
+      "bytes": 13978,
+      "sha256": "e0e551d661751b6c6145afeb294b163f6dd12a19b8a362ce7cd68d90226d75bf",
+      "historicalDriverNotFinalBuildEntry": false
+    },
+    {
+      "path": "tools/deploy_unified_plan_r39_20261103.py",
+      "sha256": "5bde327f015e5d3a0dc8c7e0e68d4002253fc1f2018860888c9f8fb901f31914",
+      "matchesFixedDelivery": true
+    }
+  ],
+  "fullCloneReady": false
+}

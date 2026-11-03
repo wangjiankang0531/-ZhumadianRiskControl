@@ -1,0 +1,9 @@
+{
+  "initialPreparationRefusedBeforeAllocation": true,
+  "guard": "SIX_GIB_ADMISSION_REQUIRED_BEFORE_MUTATION",
+  "exactAvailableMemoryAtRefusalNotCaptured": true,
+  "candidateAndRunRootsAbsentAndOriginalReleaseAndZeroOwnProcessesVerifiedBeforeRetry": true,
+  "availableMemoryProbeBeforeRetryGiB": 8.164,
+  "subsequentPreparationAvailableBytes": 8740917248,
+  "guardNotLoweredAndUserApplicationsNotClosed": true
+}

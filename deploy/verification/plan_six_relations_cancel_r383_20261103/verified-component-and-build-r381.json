@@ -1,0 +1,224 @@
+{
+  "passedComponentAndFullBuildStage": true,
+  "components": {
+    "baseline": {
+      "passed": true,
+      "cases": [
+        {
+          "kind": "goods",
+          "action": "cancel",
+          "passed": true,
+          "unhandledRejectionDelta": 1,
+          "selectionCount": 1
+        },
+        {
+          "kind": "goods",
+          "action": "close",
+          "passed": true,
+          "unhandledRejectionDelta": 1,
+          "selectionCount": 1
+        },
+        {
+          "kind": "goods",
+          "action": "confirm",
+          "passed": true,
+          "unhandledRejectionDelta": 0,
+          "selectionCount": 0
+        },
+        {
+          "kind": "teams",
+          "action": "cancel",
+          "passed": true,
+          "unhandledRejectionDelta": 1,
+          "selectionCount": 1
+        },
+        {
+          "kind": "teams",
+          "action": "close",
+          "passed": true,
+          "unhandledRejectionDelta": 1,
+          "selectionCount": 1
+        },
+        {
+          "kind": "teams",
+          "action": "confirm",
+          "passed": true,
+          "unhandledRejectionDelta": 0,
+          "selectionCount": 0
+        },
+        {
+          "kind": "experts",
+          "action": "cancel",
+          "passed": true,
+          "unhandledRejectionDelta": 1,
+          "selectionCount": 1
+        },
+        {
+          "kind": "experts",
+          "action": "close",
+          "passed": true,
+          "unhandledRejectionDelta": 1,
+          "selectionCount": 1
+        },
+        {
+          "kind": "experts",
+          "action": "confirm",
+          "passed": true,
+          "unhandledRejectionDelta": 0,
+          "selectionCount": 0
+        }
+      ],
+      "unhandledRejections": 6,
+      "chromeNodeAndActualDescendantsNormalZero": true,
+      "realResourceSFCAndElementPlus": true,
+      "proTableDictionaryAndApiExplicitStubs": true,
+      "normalRoleOrBackendAccepted": false
+    },
+    "candidate": {
+      "passed": true,
+      "cases": [
+        {
+          "kind": "goods",
+          "action": "cancel",
+          "passed": true,
+          "unhandledRejectionDelta": 0,
+          "selectionCount": 1
+        },
+        {
+          "kind": "goods",
+          "action": "close",
+          "passed": true,
+          "unhandledRejectionDelta": 0,
+          "selectionCount": 1
+        },
+        {
+          "kind": "goods",
+          "action": "confirm",
+          "passed": true,
+          "unhandledRejectionDelta": 0,
+          "selectionCount": 0
+        },
+        {
+          "kind": "teams",
+          "action": "cancel",
+          "passed": true,
+          "unhandledRejectionDelta": 0,
+          "selectionCount": 1
+        },
+        {
+          "kind": "teams",
+          "action": "close",
+          "passed": true,
+          "unhandledRejectionDelta": 0,
+          "selectionCount": 1
+        },
+        {
+          "kind": "teams",
+          "action": "confirm",
+          "passed": true,
+          "unhandledRejectionDelta": 0,
+          "selectionCount": 0
+        },
+        {
+          "kind": "experts",
+          "action": "cancel",
+          "passed": true,
+          "unhandledRejectionDelta": 0,
+          "selectionCount": 1
+        },
+        {
+          "kind": "experts",
+          "action": "close",
+          "passed": true,
+          "unhandledRejectionDelta": 0,
+          "selectionCount": 1
+        },
+        {
+          "kind": "experts",
+          "action": "confirm",
+          "passed": true,
+          "unhandledRejectionDelta": 0,
+          "selectionCount": 0
+        }
+      ],
+      "unhandledRejections": 0,
+      "chromeNodeAndActualDescendantsNormalZero": true,
+      "realResourceSFCAndElementPlus": true,
+      "proTableDictionaryAndApiExplicitStubs": true,
+      "normalRoleOrBackendAccepted": false
+    }
+  },
+  "fullBuild": {
+    "passed": true,
+    "compiledFiles": 341,
+    "changedSourcePaths": [
+      "src/views/emergencyPlans/structured/components/expertsList.vue",
+      "src/views/emergencyPlans/structured/components/goodsList.vue",
+      "src/views/emergencyPlans/structured/components/teamsList.vue"
+    ],
+    "allOtherActualR224InputsKept": true,
+    "sameThreeComponentBytesActuallyCompiled": true,
+    "nodeHeapLimitMiB": 2048,
+    "actualNodeAndDescendantsNormalZero": true,
+    "allSevenSourceLayersRestored": true
+  },
+  "originalSixRelationContracts": [
+    {
+      "group": "副指挥长",
+      "entity": "EmergencyPlanDeputyHeadEntity",
+      "table": "emergency_plan_deputy_head",
+      "originalRequestOrDetailField": "emergencyPlanDeputyHeadList",
+      "sourceSHA256": "5970a4c818c4b159d4af6b2f8b9d8e4073916371b64f4233a69743672db68c08"
+    },
+    {
+      "group": "其他成员",
+      "entity": "EmergencyPlanOthermemberEntity",
+      "table": "emergency_plan_othermember",
+      "originalRequestOrDetailField": "emergencyPlanOthermemberList",
+      "sourceSHA256": "eb2a7bf8831dc5d34d9488d1312a3da7c0011fe2967665fc8f55141ddc054ff7"
+    },
+    {
+      "group": "参与单位",
+      "entity": "EmergencyPlanCompanyEntity",
+      "table": "emergency_plan_company",
+      "originalRequestOrDetailField": "emergencyPlanCompanyList",
+      "sourceSHA256": "e7952d82fc393ccb3a1b8b358b03cee81b1763b24b389ed08688b75bddcc282a"
+    },
+    {
+      "group": "应急物资",
+      "entity": "EmergencyPlanGoodsManageRelatedEntity",
+      "table": "emergency_plan_goods_manage_related",
+      "originalRequestOrDetailField": "emergencyGoodsManageIdList",
+      "sourceSHA256": "975cb276c2aa097a721fec65c5b96fd78720645b9fd4b06a87706d08f8d22677"
+    },
+    {
+      "group": "应急队伍",
+      "entity": "EmergencyPlanTeamRelatedEntity",
+      "table": "emergency_plan_team_related",
+      "originalRequestOrDetailField": "emergencyTeamIdList",
+      "sourceSHA256": "6d4ef1dfcddadcc1d6ed01e6a1823acab6ac6287272954b6606da7d01593889f"
+    },
+    {
+      "group": "应急专家",
+      "entity": "EmergencyPlanExpertRelatedEntity",
+      "table": "emergency_plan_expert_related",
+      "originalRequestOrDetailField": "emergencyExpertIdList",
+      "sourceSHA256": "a1de76ebe1c53acdf138d85fec1d5faa7c8f5d33c394633168fed39cc8904bf3"
+    }
+  ],
+  "originalServiceSHA256": "b9cebe7b016f30f24d34061c0710f5c392d74f78831ba12bf26fbca6ca1dc5b0",
+  "memberFormSHA256": "e95aec44e80c9aeb64e4550bb44cde12212b0bfcba6edbc295eed2951a2c35e3",
+  "compiledMemberFormStillMatchesOriginalBytes": true,
+  "r373SixComponentMemoryAdmissionRefusedBeforeAllocation": true,
+  "availableMemoryMeasuredAfterRefusalGiB": 2.261,
+  "fullSixComponentAdmissionGiBStill": 6,
+  "sixComponent29CaseDriverSupersededBeforeAllocation": true,
+  "reason": "Actual cancel/close rejection reproduced; full native suite must run against the new compiled frontend candidate and an exact new composition, not silently alter frozen R39.",
+  "full29CaseNormalRoleAcceptancePending": true,
+  "newCompiledFrontendInstalledOrPublicDeployed": false,
+  "r377OriginalProjectScopeGuardRefusalAndR378HeapOOMRetained": true,
+  "onlyExactDependencyJunctionRemovedNonRecursivelyAfterActualExit": true,
+  "frozenR39ManifestSHA256": "4c5a31aa246858bf8e49db4ae97520fb8c90989bc97e6343c14a198540d402de",
+  "frozenPublic184ManifestSHA256": "c10870e318047506c1ca0de42467a4fd8be602e5f8a85d5a5f40f3a9bcfe7ed1",
+  "fullCloneReady": false
+}

@@ -1,0 +1,10 @@
+{
+  "preparedOnly": true,
+  "priorBuildStoppedBeforeAnyNodeProcessByExactExistingProjectScopeGuard": true,
+  "priorOwnSourceCopyVerifiedExactAfterHeaderOverrideExit": true,
+  "guardsNotWidened": true,
+  "newBuildRoot": "D:/Project/Zhumadian/work/user_feedback_20261031/plan-resource-cancel-r378",
+  "pythonSourceSHA256": "2a06ea9d400dabc532e97748bc64d9aa091d9291949d38051991b5e0a125faaf",
+  "nodeSourceSHA256": "ce3f6ea68939f75b730ab4cc16a7adf16e89e8ea55943ef1583a6f96e2631ed8",
+  "fixedR39Public184ReferenceRuntimeAndDatabaseUnchanged": true
+}

@@ -1,0 +1,11 @@
+{
+  "preparedOnly": true,
+  "browserSHA256": "bbc40e5a9c5f75d041b2da4850837cf5fc5250ddcc6b2a85ce6b73f74560ebe6",
+  "driverSHA256": "69b0474d6a3378d7e35276d6868ae042d6746449d8b810b2940669914137064a",
+  "allOriginalBeforePinsMatched": true,
+  "allCandidateCodeIndependentCopies": true,
+  "databaseCopiedOrReplaced": false,
+  "originalGCodeStillUntouched": true,
+  "previousActualApplyRollbackCompleteBut29NotAccepted": true,
+  "native29Pending": true
+}

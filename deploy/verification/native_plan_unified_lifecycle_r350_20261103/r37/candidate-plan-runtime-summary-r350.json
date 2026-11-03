@@ -1,0 +1,6 @@
+{
+  "candidatePlanClassSHA256": "384462cf7671955a1c9aa1fe37b4f2a1ac85d747ec396247af219211f79e682b",
+  "installedAndRuntimeClassCopyMatched": true,
+  "businessJDK": 17,
+  "actualBusinessFlowAcceptedByReadinessAlone": false
+}

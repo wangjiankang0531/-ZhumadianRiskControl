@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "at": "2026-11-03T17:43:46.0824491+08:00",
+  "removedFileEntries": 1195.0,
+  "logicalBytes": 64458160.0,
+  "observedDFreeBefore": 368789291008,
+  "observedDFreeAfter": 368855027712,
+  "observedDFreeDelta": 65736704,
+  "observedFreeChangeNotUniquelyAttributed": true,
+  "sourceResultsSmallReceiptsOriginalDatabaseAndUploadedObjectRetained": true,
+  "publicFormal18891Scene8767UserBrowserAndOther3DThreadUntouched": true,
+  "noProcessesTerminated": true,
+  "targets": [
+    {
+      "files": 341,
+      "logicalBytes": 9974295,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 3,
+      "logicalBytes": 2640097,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 4,
+      "logicalBytes": 2773487,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 5,
+      "logicalBytes": 2776749,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 3,
+      "logicalBytes": 2637992,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 341,
+      "logicalBytes": 9974295,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 3,
+      "logicalBytes": 2640097,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 4,
+      "logicalBytes": 2773487,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 5,
+      "logicalBytes": 2776749,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 3,
+      "logicalBytes": 2637992,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 240,
+      "logicalBytes": 11422639,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 243,
+      "logicalBytes": 11430281,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    }
+  ]
+}

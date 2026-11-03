@@ -1,0 +1,102 @@
+{
+  "passed": true,
+  "actualFinalR39UpdaterAndRuntime": true,
+  "actualNormalRoleAndOriginalController": true,
+  "cases": [
+    {
+      "case": "normal-nonadministrator-login-original-plan-menu-and-page",
+      "passed": true
+    },
+    {
+      "case": "plan-required-fields-block-write",
+      "passed": true
+    },
+    {
+      "case": "plan-invalid-phone-keeps-editor-no-save",
+      "passed": true
+    },
+    {
+      "case": "plan-native-create-original-controller-and-normal-role-detail-values",
+      "passed": true
+    },
+    {
+      "case": "plan-edit-reopen-detail-readonly-and-original-identity-kept",
+      "passed": true
+    },
+    {
+      "case": "native-optional-participants-empty-save-and-parent-scoped-list-roundtrip",
+      "passed": true
+    },
+    {
+      "case": "actual-org-tree-and-original-person-checkbox-dialog-select-two-people",
+      "passed": true
+    },
+    {
+      "case": "real-upload-held-before-network-blocks-submit-then-real-object-store-completes",
+      "passed": true
+    },
+    {
+      "case": "browser-only-false-business-response-retains-dialog-fields-people-and-file-no-server-write",
+      "passed": true,
+      "realSQLFailureClaimed": false
+    },
+    {
+      "case": "real-single-save-retry-preserves-two-people-parent-process-description-and-one-file",
+      "passed": true
+    },
+    {
+      "case": "native-exercise-list-view-readonly-details-and-actual-anchor-disk-download-identical",
+      "passed": true
+    },
+    {
+      "case": "native-exercise-organize-department-filters-two-records-to-one",
+      "passed": true,
+      "defectReproduced": false
+    },
+    {
+      "case": "native-exercise-department-reset-restores-both-parent-scoped-records",
+      "passed": true
+    },
+    {
+      "case": "native-plan-delete-cancel-no-request-record-kept",
+      "passed": true
+    },
+    {
+      "case": "native-plan-delete-browser-false-no-server-write-keeps-record-and-reports-failure",
+      "passed": true,
+      "realSQLFailureClaimed": false
+    },
+    {
+      "case": "native-plan-delete-real-confirm-once-parent-disappears-unrelated-plan-exercise-and-file-kept",
+      "passed": true
+    },
+    {
+      "case": "native-parent-with-two-exercises-delete-retains-original-child-details-and-unrelated-plan",
+      "passed": true,
+      "originalBehaviorCharacterization": true,
+      "childCascadeDeletionClaimed": false
+    },
+    {
+      "case": "native-child-attachment-metadata-and-real-object-bytes-kept-after-parent-delete",
+      "passed": true,
+      "objectStoreCascadeDeletionClaimed": false
+    },
+    {
+      "case": "deleted-parent-actual-old-detail-route-shows-friendly-error-without-stale-form",
+      "passed": true
+    },
+    {
+      "case": "deleted-parent-detail-retry-uses-original-endpoint-and-keeps-friendly-empty-state",
+      "passed": true
+    },
+    {
+      "case": "deleted-parent-detail-full-refresh-keeps-normal-auth-and-friendly-empty-state",
+      "passed": true
+    }
+  ],
+  "javascriptExceptions": 0,
+  "onlyOwnedSyntheticRecords": true,
+  "deletedOldDetailNavigationRetryRefresh": true,
+  "allSixPlanRelationsOrFreshSQLFaultTestClaimed": false,
+  "wholeNangangAccepted": false
+}

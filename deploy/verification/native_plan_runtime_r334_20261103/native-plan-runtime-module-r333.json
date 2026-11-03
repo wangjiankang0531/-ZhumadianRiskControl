@@ -1,0 +1,34 @@
+{
+  "schema": "xnby.native-plan-runtime.module.r333.v1",
+  "module": "native-plan-atomic-runtime",
+  "runtimeRelativePath": "payload/business/run-template/classes/com/iemp/endanger/server/emergency/service/impl/EmergencyPlanServiceImpl.class",
+  "classSHA256": "384462cf7671955a1c9aa1fe37b4f2a1ac85d747ec396247af219211f79e682b",
+  "classBytes": 21713,
+  "classMajor": 61,
+  "sourceSHA256": "5ad79c9bbbfcf2cce8488e28cad2fecf153b993e242c1e24a8c34a4b525d9fc6",
+  "sourceBytes": 20253,
+  "originalJarPlanClassSHA256": "3015417dfedfd3a2d0c139f79d7f1f4f5391f3919c9ce9b853a7aee8a8d744ce",
+  "businessJDK": 17,
+  "platformJDK8Unchanged": true,
+  "originalBusinessJarChanged": false,
+  "modelAuthenticationConfigurationOrDataChanged": false,
+  "actualNormalRoleNativeBrowserCases": 18,
+  "actualRuntimeClassCopySHAAssertAndDeletedOldDetailsNullPassed": true,
+  "actualChildExercisePeopleMetadataObjectAndUnrelatedPlanKept": true,
+  "exactClassHadHistoricalTemporaryTableAtomicFaultProof": true,
+  "historicalFaultProofRerunInCurrentSixComponents": false,
+  "originalNoExerciseCascadeSetPreserved": true,
+  "currentFixedR38r2DoesNotContainThisClass": true,
+  "fullCombinedPublicTransportBuiltOrDeployed": false,
+  "fullCloneReady": false,
+  "files": {
+    "source/com/iemp/endanger/server/emergency/service/impl/EmergencyPlanServiceImpl.java": {
+      "bytes": 20253,
+      "sha256": "5ad79c9bbbfcf2cce8488e28cad2fecf153b993e242c1e24a8c34a4b525d9fc6"
+    },
+    "payload/business/run-template/classes/com/iemp/endanger/server/emergency/service/impl/EmergencyPlanServiceImpl.class": {
+      "bytes": 21713,
+      "sha256": "384462cf7671955a1c9aa1fe37b4f2a1ac85d747ec396247af219211f79e682b"
+    }
+  }
+}

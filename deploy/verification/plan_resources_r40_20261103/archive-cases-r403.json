@@ -1,0 +1,58 @@
+[
+  {
+    "case": "r36-closed-190-member-archive-and-187-extracted-payload-pins",
+    "passed": true
+  },
+  {
+    "case": "r36-existing-stage-refused",
+    "passed": true
+  },
+  {
+    "case": "r37-closed-190-member-archive-and-187-extracted-payload-pins",
+    "passed": true
+  },
+  {
+    "case": "r37-existing-stage-refused",
+    "passed": true
+  },
+  {
+    "case": "duplicate-member",
+    "passed": true
+  },
+  {
+    "case": "extra-member",
+    "passed": true
+  },
+  {
+    "case": "missing-second-variant",
+    "passed": true
+  },
+  {
+    "case": "wrong-variant-manifest",
+    "passed": true
+  },
+  {
+    "case": "wrong-payload-bytes",
+    "passed": true
+  },
+  {
+    "case": "parent-path-member",
+    "passed": true
+  },
+  {
+    "case": "windows-drive-member",
+    "passed": true
+  },
+  {
+    "case": "backslash-member",
+    "passed": true
+  },
+  {
+    "case": "trailing-space-member",
+    "passed": true
+  },
+  {
+    "case": "symlink-member",
+    "passed": true
+  }
+]

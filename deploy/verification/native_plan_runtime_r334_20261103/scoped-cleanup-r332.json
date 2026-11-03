@@ -1,0 +1,80 @@
+{
+  "passed": true,
+  "at": "2026-11-03T18:10:53.3595330+08:00",
+  "removedFileEntries": 1201.0,
+  "logicalBytes": 67102823.0,
+  "observedDFreeBefore": 368224579584,
+  "observedDFreeAfter": 368292966400,
+  "observedDFreeDelta": 68386816,
+  "observedFreeChangeNotUniquelyAttributed": true,
+  "sourceResultsSmallReceiptsOriginalDatabaseAndUploadedObjectRetained": true,
+  "publicFormal18891Scene8767UserBrowserAndOther3DThreadUntouched": true,
+  "noProcessesTerminated": true,
+  "targets": [
+    {
+      "files": 341,
+      "logicalBytes": 9974295,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 3,
+      "logicalBytes": 2640097,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 4,
+      "logicalBytes": 2773487,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 5,
+      "logicalBytes": 2776749,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 3,
+      "logicalBytes": 2637992,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 341,
+      "logicalBytes": 9975162,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 3,
+      "logicalBytes": 2640097,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 4,
+      "logicalBytes": 2773487,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 5,
+      "logicalBytes": 2776749,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 3,
+      "logicalBytes": 2637992,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 2,
+      "logicalBytes": 2615799,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 243,
+      "logicalBytes": 11438649,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    },
+    {
+      "files": 244,
+      "logicalBytes": 11442268,
+      "exactAbsoluteScopeNoReferencesNoReparse": true
+    }
+  ]
+}

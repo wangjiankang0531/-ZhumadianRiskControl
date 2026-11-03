@@ -1,0 +1,22 @@
+{
+  "baselineVariant": "R36",
+  "candidatePlanClassInstalledAndActualRuntimeBytesMatched": true,
+  "rollbackRestoredPlanClassAbsence": true,
+  "passed": true,
+  "candidateUpdaterSourceSHA256": "e935f51aa3c7a5aae3346c632b90423ce99f6a0887b1d44781ea0ed8e8c16d8f",
+  "actualApplyUpdateFunctionExecuted": true,
+  "actualRollbackLatestFunctionExecuted": true,
+  "realSixComponentControllersStarted": 3,
+  "allThreeNormalZeroAndActualDescendantsZero": true,
+  "original398ModelsUnchangedAcrossUpdateAndRollback": true,
+  "candidateGatewayGzipAndDecodedSHAActualPassed": true,
+  "loopbackHTTPIngressAdapterUsed": true,
+  "loadBundleOnlyTargetAndGatewayAndPrivateManifestPointersAdapted": true,
+  "identityHealthNormalStopLaunchBackupReplaceRestoreAndRollbackBodiesNotStubbed": true,
+  "actualIISHTTPSOrPublicOrAuthenticatedBusinessFlowVerified": false,
+  "updaterReceiptTLSLabelNotAcceptedAsTLSProof": true,
+  "originalGCodeConfigurationAndPointersRestored": true,
+  "databaseCopiedOrReplaced": false,
+  "publicFormal18891Scene8767OrDesktopTouched": false,
+  "fullCloneReady": false
+}

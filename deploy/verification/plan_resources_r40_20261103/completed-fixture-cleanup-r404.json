@@ -1,0 +1,79 @@
+﻿{
+    "passed":  true,
+    "targets":  [
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\v40",
+                        "files":  2293,
+                        "logicalBytes":  91851552,
+                        "absoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\r40-full-preflight-r36-r401\\Application",
+                        "files":  15582,
+                        "logicalBytes":  1406601263,
+                        "absoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\r40-full-preflight-r36-r401\\bundle",
+                        "files":  188,
+                        "logicalBytes":  7277933,
+                        "absoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\r40-plan-resource-cancel-r385\\r36\\contract-Application",
+                        "files":  2,
+                        "logicalBytes":  2618226,
+                        "absoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\r40-plan-resource-cancel-r385\\r36\\transactions",
+                        "files":  5986,
+                        "logicalBytes":  227177175,
+                        "absoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\r40-plan-resource-cancel-r385\\r36\\plan-readiness",
+                        "files":  2,
+                        "logicalBytes":  2618226,
+                        "absoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\r40-full-preflight-r37-r401\\Application",
+                        "files":  15582,
+                        "logicalBytes":  1406624224,
+                        "absoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\r40-full-preflight-r37-r401\\bundle",
+                        "files":  188,
+                        "logicalBytes":  7278047,
+                        "absoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\r40-plan-resource-cancel-r385\\r37\\contract-Application",
+                        "files":  2,
+                        "logicalBytes":  2619272,
+                        "absoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\r40-plan-resource-cancel-r385\\r37\\transactions",
+                        "files":  5986,
+                        "logicalBytes":  227910017,
+                        "absoluteNoReferencesNoReparse":  true
+                    },
+                    {
+                        "path":  "D:\\Project\\Zhumadian\\work\\r40-plan-resource-cancel-r385\\r37\\plan-readiness",
+                        "files":  2,
+                        "logicalBytes":  2619272,
+                        "absoluteNoReferencesNoReparse":  true
+                    }
+                ],
+    "removedFiles":  45813,
+    "logicalBytes":  3385195207,
+    "observedDFreeDelta":  610766848,
+    "hardlinkLogicalBytesNotPhysicalReclaimed":  true,
+    "observedFreeDeltaNotUniquelyAttributed":  true,
+    "candidateBundlesFixedTransportSourcesAndSmallEvidenceRetained":  true,
+    "assetsReferenceDatabaseUploadsAndFormalApplicationsUntouched":  true,
+    "noProcessesTerminated":  true
+}

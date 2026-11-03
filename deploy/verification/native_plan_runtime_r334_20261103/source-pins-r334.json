@@ -1,0 +1,176 @@
+{
+  "sources": [
+    {
+      "path": "tools/prepare_production_history_runtime_r325.py",
+      "sha256": "6159515415acadbac21f2036dc8b9100428b30717933aecd7d81c52ea4429a30",
+      "acceptedRuntimeSource": false
+    },
+    {
+      "path": "tools/restore_production_history_runtime_r325.py",
+      "sha256": "2fcd1fdf0ca6acf7020c53239930bd2f67dbe43779f0c20b58c20d2890a8be1a",
+      "acceptedRuntimeSource": false
+    },
+    {
+      "path": "tools/prepare_personal_workflow_frontend_r325.py",
+      "sha256": "11fa5d2e9f40b620ad8d714f98e67b75571e8fd85e9674fcaca66b50e0bea15c",
+      "acceptedRuntimeSource": false
+    },
+    {
+      "path": "tools/restore_personal_workflow_frontend_r325.py",
+      "sha256": "5eea63a8b8941ea7dbb16c2bfbb8d59a4f9c8d7051d187a0db5cbeb75e31949e",
+      "acceptedRuntimeSource": false
+    },
+    {
+      "path": "tools/mapper_product_patch_r325.py",
+      "sha256": "f3903051674a1b68c8bc1b28ac90c41bcca039a50973528a632594850d69167f",
+      "acceptedRuntimeSource": false
+    },
+    {
+      "path": "tools/mapper_observation_support_r325.py",
+      "sha256": "748ac0da797df7b35be8ed2305115b75e099ba2db7ab8a1f9b3f2ad3d34aea74",
+      "acceptedRuntimeSource": false
+    },
+    {
+      "path": "tools/verify_full_controller_parent_delete_r325.py",
+      "sha256": "7f1f12139189319782b0482900be57d7f44b7b67d81f2a27b2d5317ef49ebb65",
+      "acceptedRuntimeSource": false
+    },
+    {
+      "path": "tools/run_native_parent_delete_r325.py",
+      "sha256": "da03211116a8356379feddf5e9890ebb6d8256b11ee9ec65b98d2e336518dba7",
+      "acceptedRuntimeSource": false
+    },
+    {
+      "path": "tools/verify_native_parent_delete_r325_20261103.mjs",
+      "sha256": "b15d0673e29fb102d0a3ff732eebc5357e0c5c884416577b9df5a92c4c5d847e",
+      "acceptedRuntimeSource": false
+    },
+    {
+      "path": "tools/prepare_production_history_runtime_r330.py",
+      "sha256": "d4168ea585cefea4ba53bca5f575f12b1437fe2a7dd7e51d860a3381aeecaeed",
+      "acceptedRuntimeSource": true
+    },
+    {
+      "path": "tools/restore_production_history_runtime_r330.py",
+      "sha256": "b326e4cba7bbc7d902b38feea6b22972f130a9ae95d14b5d9b1f5a5924bc98dc",
+      "acceptedRuntimeSource": true
+    },
+    {
+      "path": "tools/prepare_personal_workflow_frontend_r330.py",
+      "sha256": "90d164c2dc0201c4a5a75d332c718a363a90428d4792ff6f5e2621d4da42fe3a",
+      "acceptedRuntimeSource": true
+    },
+    {
+      "path": "tools/restore_personal_workflow_frontend_r330.py",
+      "sha256": "3ba27edecd0aa26d6a546112deb669ce677a546234b903852e9e6c98ace81929",
+      "acceptedRuntimeSource": true
+    },
+    {
+      "path": "tools/mapper_product_patch_r330.py",
+      "sha256": "ce4339106eb4bd89b0346d1a774499a64d66f35cfb899a76b37097f22fb27f90",
+      "acceptedRuntimeSource": true
+    },
+    {
+      "path": "tools/mapper_observation_support_r330.py",
+      "sha256": "fc1b94aa33009fe47d69b1840257652e159c77ec66fe48090583e914e3820bc0",
+      "acceptedRuntimeSource": true
+    },
+    {
+      "path": "tools/verify_full_controller_parent_delete_r330.py",
+      "sha256": "e8d56638e89d32fc1f41ccc2401b8f8042f1470c10ce1af907a53915d411712f",
+      "acceptedRuntimeSource": true
+    },
+    {
+      "path": "tools/run_native_parent_delete_r330.py",
+      "sha256": "cbb2b222b7b664bff5303a61fb5a602414b142e76c069ebed65db95541bad836",
+      "acceptedRuntimeSource": true
+    },
+    {
+      "path": "tools/verify_native_parent_delete_r330_20261103.mjs",
+      "sha256": "b15d0673e29fb102d0a3ff732eebc5357e0c5c884416577b9df5a92c4c5d847e",
+      "acceptedRuntimeSource": true
+    },
+    {
+      "path": "tools/own_plan_runtime_patch_r329.py",
+      "sha256": "6e5929d605ea47dd3b1901a9d4a4179788b7c9785c27554e526ec4c1efb641c0",
+      "acceptedRuntimeSource": true
+    },
+    {
+      "path": "tools/prepare_parent_delete_exercises_r325.py",
+      "sha256": "bbbd138eb1fa80e09fec0cdc632d38a2c6289d46d98d7e0b7b9ce0728c7b659f",
+      "historicalUnusedPrototype": false
+    },
+    {
+      "path": "tools/prepare_parent_delete_exercises_generated_r325.py",
+      "sha256": "499a3dce1f514542210e6c3a5014fb8a7461d82884ace12154a236709152a96f",
+      "historicalUnusedPrototype": false
+    },
+    {
+      "path": "tools/run_parent_delete_exercises_r326.py",
+      "sha256": "c1ed87ec4ab17be68efa1dd160540866aac0e33c65077df864696844a3a2b5ce",
+      "historicalUnusedPrototype": false
+    },
+    {
+      "path": "tools/restore_parent_delete_prestart_r326.py",
+      "sha256": "9a3e8dbc68920de588eae00abdfbca20f69ded4f54ad038d5890c5dba162a027",
+      "historicalUnusedPrototype": true
+    },
+    {
+      "path": "tools/prepare_cleanup_parent_delete_r327.py",
+      "sha256": "a40b1804fc7aba2a14651e254cb8e205439434ace95c1c61db0baaadfbf06640",
+      "historicalUnusedPrototype": true
+    },
+    {
+      "path": "tools/cleanup_parent_delete_r327.ps1",
+      "sha256": "30334fcdfaac0b866a8f05e3899c8c4807fc8b24db95f75d49a64c797553676e",
+      "historicalUnusedPrototype": true
+    },
+    {
+      "path": "tools/inspect_plan_runtime_candidate_r328.py",
+      "sha256": "b61815a918d7f87ace083776f208dad045a92102201e02defe62fbd349b982e2",
+      "historicalUnusedPrototype": false
+    },
+    {
+      "path": "tools/prepare_plan_runtime_candidate_r330.py",
+      "sha256": "017248717b3e9fe6ee4ebb59dcf46fc8e54a72e1fc4cbad99e8604feef55ab8e",
+      "historicalUnusedPrototype": false
+    },
+    {
+      "path": "tools/prepare_plan_runtime_candidate_generated_r330.py",
+      "sha256": "749152a6e9d98e0106dc5cca120651f65965e81d73ffddbef5e24381a436f466",
+      "historicalUnusedPrototype": false
+    },
+    {
+      "path": "tools/run_plan_runtime_candidate_r331.py",
+      "sha256": "e6990d5f23be00abecbc1a737c44e0226da203116ead5442f375a7a0fe27b571",
+      "historicalUnusedPrototype": false
+    },
+    {
+      "path": "tools/restore_plan_runtime_prestart_r331.py",
+      "sha256": "31686f00e61d0c2ae45dab970565654e4d4ce15ff6efff6936f6670a490e5dc0",
+      "historicalUnusedPrototype": false
+    },
+    {
+      "path": "tools/prepare_cleanup_plan_runtime_r332.py",
+      "sha256": "176eb01a9667ac70ac8644d1fb537cfebe8a6672be060f418704f46bbb3e65ff",
+      "historicalUnusedPrototype": false
+    },
+    {
+      "path": "tools/cleanup_plan_runtime_r332.ps1",
+      "sha256": "16bf2efffca03dd23620925c50f51edb168ba6325ba16e8ac10d6c0edffbec19",
+      "historicalUnusedPrototype": false
+    },
+    {
+      "path": "tools/freeze_plan_runtime_module_r333.py",
+      "sha256": "91d077d527c9d40b1d149cff3c0f32ef0316e96cb72537bdafd51daef07c803e",
+      "historicalUnusedPrototype": false
+    },
+    {
+      "path": "tools/record_plan_runtime_r334.py",
+      "sha256": "e37fbeabcfa8aadb575fc510d0ae28cdac7929a59dace659645b409c54910c1e",
+      "historicalUnusedPrototype": false
+    }
+  ],
+  "capturedHostAndBrowserExactlyMatchAcceptedSources": true,
+  "publicPushed": false
+}

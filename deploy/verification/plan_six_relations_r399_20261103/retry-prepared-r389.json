@@ -1,0 +1,29 @@
+{
+  "preparedOnly": true,
+  "originalTeamControllerSHA256": "5507e05d85e790e291307f58433a1afddf92a6c3c87ff65e08f2235a1d6e67c6",
+  "originalTeamServiceSHA256": "babc7d078889f13bfe5ef59616ba9ba0b4fe29e423527296a309ddf8dd00ef4d",
+  "normalTeamBodyShape": "teams-object-and-members-array",
+  "resourceValidationStillOwnNamesAndAllowedFieldsOnly": true,
+  "staticChecksUseCurrentCompiledEntryNamesAndExactDecodedPins": true,
+  "browserSHA256": "651b39eb27ec1894d15dd9d6d00cdc3e7779ec6135dc2571de8d1ad7f817a937",
+  "drivers": [
+    {
+      "role": "inspect",
+      "name": "plan_typed_inspect_r390.py",
+      "sha256": "c6d5a32a27c49d4af96d8ee1e0b7439e3f63825ff5db64372e1bf17e2d5a638d"
+    },
+    {
+      "role": "prepare",
+      "name": "plan_typed_prepare_r390.py",
+      "sha256": "e68e8a8f8b8c8d52ba0ffb717a9830be37da9775a9c6dce60fa5a2ad0258a648"
+    },
+    {
+      "role": "run",
+      "name": "plan_typed_run_r390.py",
+      "sha256": "6e8c3171cc0ea9f6fdac9f5d1cf29f6b0150af5dc00d77b3a01e6ae5283c1093"
+    }
+  ],
+  "productCandidateChanged": false,
+  "frozenR39Changed": false,
+  "newActual29CaseAcceptancePending": true
+}

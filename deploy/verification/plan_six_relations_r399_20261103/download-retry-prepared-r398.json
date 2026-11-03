@@ -1,0 +1,12 @@
+{
+  "preparedOnly": true,
+  "r396Native18CasesIncludingAllSixRelationReadonlyPassed": true,
+  "r396CompletedDownloadFinalBytesActuallyMatchedAfterExit": true,
+  "newTestWaitsForFinalFileNameAndExactBytesNotOnlyDownloadEvent": true,
+  "actualContentEqualityRequirementRetained": true,
+  "browserSHA256": "6e52733a889666a0d540a690d4edaf4b06df8ff1049a00aef19a0103c51ef9cb",
+  "driverSHA256": "5702d102edf559eea9301b51c04869a493462276e15eb6df4f860d38443bd908",
+  "fixturePreparerSHA256": "5861ebd5f3c2ee7a4d2c0671a40727daa06d616f5e7238d2c8881062409e9cd4",
+  "productCandidateChanged": false,
+  "native29Pending": true
+}

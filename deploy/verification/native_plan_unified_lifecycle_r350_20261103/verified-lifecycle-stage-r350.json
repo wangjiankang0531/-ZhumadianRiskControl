@@ -1,0 +1,145 @@
+{
+  "schema": "xnby.r350.plan-unified-actual-lifecycle.v1",
+  "at": "2026-11-03T19:32:39.582304+08:00",
+  "candidateUpdaterSHA256": "e935f51aa3c7a5aae3346c632b90423ce99f6a0887b1d44781ea0ed8e8c16d8f",
+  "finalR37HostSHA256": "30d1f2dc1a38b484d63a583bc54417f4ff161049298320f060c361cf2b75e594",
+  "browserSourceSHA256": "ab4f66f812ae3e35bb0e8aab608cbd77217ec8b193b06643f386cd3550519e00",
+  "bothExactBaselinesPassed": true,
+  "variants": {
+    "R36": {
+      "passed": true,
+      "actualApplyUpdateAndRollbackLatest": true,
+      "actualControllers": 3,
+      "allControllerAndSixChildExitsNormalZero": true,
+      "original398ModelsUnchanged": true,
+      "candidateInstalledAndActualRuntimePlanClassMatched": true,
+      "rollbackRestoresClassAbsence": true,
+      "fourGatewayGzipDecodedHashesPassed": true,
+      "original894CodeAndPointerPreimagesRestored": true,
+      "native21CasesOnThisVariant": false,
+      "explicitHTTPIngressAdapterNotIISTLS": true
+    },
+    "R37": {
+      "passed": true,
+      "actualApplyUpdateAndRollbackLatest": true,
+      "actualControllers": 3,
+      "allControllerAndSixChildExitsNormalZero": true,
+      "original398ModelsUnchanged": true,
+      "candidateInstalledAndActualRuntimePlanClassMatched": true,
+      "rollbackRestoresClassAbsence": true,
+      "fourGatewayGzipDecodedHashesPassed": true,
+      "original894CodeAndPointerPreimagesRestored": true,
+      "native21CasesOnThisVariant": true,
+      "explicitHTTPIngressAdapterNotIISTLS": true
+    }
+  },
+  "actualControllersAcrossBothVariants": 6,
+  "r37CandidateNormalRoleActualCompiledUI21CasesPassed": true,
+  "deletedParentOldDetailNavigateRetryAndRefreshPassed": true,
+  "newProductSourceChangedInThisStage": false,
+  "actualIISHTTPSOrPublicDeploymentPassed": false,
+  "transportWrapperStillPending": true,
+  "ingressOnlyExplicitLoopbackHTTPAdapter": true,
+  "updaterIdentityHealthLifecycleAndFileTransactionBodiesNotStubbed": true,
+  "allCodePrivateConfigurationAndPointersRestored": true,
+  "syntheticDatabaseCopiedOrReplaced": false,
+  "cleanupFileEntries": 1045,
+  "cleanupLogicalBytes": 56391404,
+  "sumObservedDFreeDeltaNotUniquelyAttributed": 47661056,
+  "r348InitialCRLFDriverAssertionRefusedBeforeAnyWriteThenCorrected": true,
+  "sources": [
+    {
+      "path": "tools/prepare_plan_lifecycle_drivers_r346.py",
+      "sha256": "c77dd3de80bcbde891539445d6f63e6bc6d4d9013067f1057909080830ff6973",
+      "bytes": 5912,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/plan_lifecycle_inspect_r36_r346.py",
+      "sha256": "1025c6f26fecc483df552a4a61663f99f85babf5ffc79a952859d231fb0a9135",
+      "bytes": 3279,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/plan_lifecycle_prepare_r36_r346.py",
+      "sha256": "b056ade61103b120b2e34b29e2ab99209b5fa63cdb202c161b2a1c14fde2d024",
+      "bytes": 6757,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/plan_lifecycle_run_r36_r346.py",
+      "sha256": "7c90fa3da68947dbd0a6592c39caea636b1db00e0fa8fc101916565dd64eec97",
+      "bytes": 17392,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/plan_lifecycle_inspect_r37_r346.py",
+      "sha256": "a7801a3cca450941707c8cc9cb4868711a740639d917f138f2dabb415720c94a",
+      "bytes": 3267,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/plan_lifecycle_prepare_r37_r346.py",
+      "sha256": "2ef3fb5b5e85e6b0aa85557b0e2ed4e165a33fd7dcdd1fb59edf0f68cfa31e3c",
+      "bytes": 6773,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/plan_lifecycle_run_r37_r346.py",
+      "sha256": "b48fc98cfb9731e6ea8f1a2757d451e0796158e606ba29ab120874d5a87eb173",
+      "bytes": 17392,
+      "unexecutedSuperseded": true
+    },
+    {
+      "path": "tools/prepare_plan_native_lifecycle_r347.py",
+      "sha256": "7df90d68717271dc8f98a05b9abcfae84e4218361197cee00c46b71dc469c4d6",
+      "bytes": 9533,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/verify_native_unified_plan_r347.mjs",
+      "sha256": "ab4f66f812ae3e35bb0e8aab608cbd77217ec8b193b06643f386cd3550519e00",
+      "bytes": 48957,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/plan_lifecycle_run_r37_native_r347.py",
+      "sha256": "30d1f2dc1a38b484d63a583bc54417f4ff161049298320f060c361cf2b75e594",
+      "bytes": 22557,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/finalize_plan_lifecycle_ui_driver_r348.py",
+      "sha256": "3f2d1d69032254ea4da773bfb976c021ae73be0644899fea86b2f2cce7101436",
+      "bytes": 1956,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/prepare_plan_lifecycle_cleanup_r349.py",
+      "sha256": "5373ee9080fe96470909186afae2e538cd7f6cbce5ccd0307364a7174c6f7406",
+      "bytes": 3355,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/cleanup_plan_lifecycle_r36_r349.ps1",
+      "sha256": "2ae62c4d5a32e1d672c40bdcc4efeb6736f859e94118bca6b11183ca42d6bca4",
+      "bytes": 7540,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/cleanup_plan_lifecycle_r37_r349.ps1",
+      "sha256": "e5f2b66259cafdcf94870e8cc8f18a968f1c9a6b5d3d9931edbac838fa11d5f0",
+      "bytes": 8657,
+      "unexecutedSuperseded": false
+    },
+    {
+      "path": "tools/record_plan_lifecycle_stage_r350.py",
+      "sha256": "1a1419e4e29eb3c0e2c5b57cad4e79616f6bec7c004cd7da83a658f9f9f14f2c",
+      "bytes": 14877,
+      "unexecutedSuperseded": false
+    }
+  ],
+  "publicGitPushedByThisStage": false,
+  "publicFormal18891Scene8767OrDesktopChanged": false,
+  "fullCloneReady": false
+}

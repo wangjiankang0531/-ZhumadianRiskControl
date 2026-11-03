@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "cases": 21,
+  "javascriptExceptions": 0,
+  "normalRoleAndOriginalController": true,
+  "exactFinalR39CandidateRuntime": true,
+  "planDeleteAndExercisePeopleAttachmentRetained": true,
+  "deletedOldDetailNavigationRetryRefreshFriendlyState": true,
+  "fixtures": [
+    {
+      "fixture": "OwnPlanPortalMenusR222",
+      "sourceSHA256": "db9eb68f3fa698a2c56700f8fc4ae3045bef38c48ee0e570d006310b877e047c",
+      "exitCode": 0,
+      "actualDescendantsZero": true
+    },
+    {
+      "fixture": "OwnPlanDictionaryR226",
+      "sourceSHA256": "146ce4b866c8615080122563d0013da520d4fc5a524b13c494c1664659d425d9",
+      "exitCode": 0,
+      "actualDescendantsZero": true
+    }
+  ],
+  "browserAndActualDescendantsNormalZero": true,
+  "publicOrFormalOrDesktopTouched": false
+}

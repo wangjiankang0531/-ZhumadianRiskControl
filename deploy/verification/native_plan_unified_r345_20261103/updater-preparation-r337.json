@@ -1,0 +1,51 @@
+{
+  "prepared": true,
+  "sourceSHA256": "e935f51aa3c7a5aae3346c632b90423ce99f6a0887b1d44781ea0ed8e8c16d8f",
+  "sourceBytes": 236206,
+  "sourceParentSHA256": "f4eae55e6c2b35b4bee67d228bfc8904968ce49d86ea8265436e7e08b2e2964d",
+  "changedExistingFunctions": [
+    "health",
+    "load_bundle",
+    "r38_unified_bundle_contract"
+  ],
+  "newFunctions": [
+    "native_plan_runtime_declared",
+    "native_plan_runtime_ready"
+  ],
+  "normalLifecycleAndBackupReplaceRestoreAndBudgetFunctionsASTRetained": [
+    "normal_stop",
+    "launch",
+    "backup_code",
+    "replace_code",
+    "restore_code",
+    "apply_update",
+    "rollback_latest",
+    "candidate_runtime_pool_preflight"
+  ],
+  "eachBundleStillAcceptsExactlyOneInstalledBase": true,
+  "supportedMetadataBases": [
+    "exact-R36",
+    "exact-R37"
+  ],
+  "publicBaseReleaseSHA256": {
+    "R36": "daaf0be2b1cb17eab4640b7388901a0f00c1b920cfe2260c4d060234230fb853",
+    "R37": "909b64aa1315b8764b169c9874b8f52f903268b59c67adbf7b3799e85e29448c"
+  },
+  "candidatePlanClassSHA256": "384462cf7671955a1c9aa1fe37b4f2a1ac85d747ec396247af219211f79e682b",
+  "candidatePlanContract": {
+    "schema": "xnby.native-plan-atomic.v1",
+    "javaMajor": 61,
+    "originalJarPlanClassSHA256": "3015417dfedfd3a2d0c139f79d7f1f4f5391f3919c9ce9b853a7aee8a8d744ce",
+    "candidateSourceSHA256": "5ad79c9bbbfcf2cce8488e28cad2fecf153b993e242c1e24a8c34a4b525d9fc6",
+    "files": {
+      "payload/business/run-template/classes/com/iemp/endanger/server/emergency/service/impl/EmergencyPlanServiceImpl.class": {
+        "bytes": 21713,
+        "sha256": "384462cf7671955a1c9aa1fe37b4f2a1ac85d747ec396247af219211f79e682b"
+      }
+    },
+    "schemaOrOriginalJarOrAuthenticationChanged": false
+  },
+  "programCompositionFaultAndLifecycleValidationPending": true,
+  "publicOrFormalOrDesktopChanged": false,
+  "fullCloneReady": false
+}

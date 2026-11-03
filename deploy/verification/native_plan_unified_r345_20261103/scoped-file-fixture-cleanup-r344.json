@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "at": "2026-11-03T19:06:39.5190561+08:00",
+  "removedFileEntries": 43520.0,
+  "logicalBytes": 3293340935.0,
+  "observedDFreeBefore": 367608860672,
+  "observedDFreeAfter": 368126599168,
+  "observedDFreeDelta": 517738496,
+  "logicalHardlinkSizeNotClaimedAsPhysicalReclaim": true,
+  "observedFreeDeltaNotUniquelyAttributed": true,
+  "candidateBundlesSourceResultsResolutionMapsOriginalGDataAssetsAndUploadsRetained": true,
+  "noProcessesTerminated": true,
+  "publicFormal18891Scene8767AndDesktopUntouched": true,
+  "targets": [
+    {
+      "files": 15582,
+      "logicalBytes": 1406601263,
+      "exactAbsoluteNoReferencesNoReparse": true
+    },
+    {
+      "files": 188,
+      "logicalBytes": 7276573,
+      "exactAbsoluteNoReferencesNoReparse": true
+    },
+    {
+      "files": 15582,
+      "logicalBytes": 1406624224,
+      "exactAbsoluteNoReferencesNoReparse": true
+    },
+    {
+      "files": 188,
+      "logicalBytes": 7276687,
+      "exactAbsoluteNoReferencesNoReparse": true
+    },
+    {
+      "files": 2,
+      "logicalBytes": 2618226,
+      "exactAbsoluteNoReferencesNoReparse": true
+    },
+    {
+      "files": 5986,
+      "logicalBytes": 227177175,
+      "exactAbsoluteNoReferencesNoReparse": true
+    },
+    {
+      "files": 2,
+      "logicalBytes": 2618226,
+      "exactAbsoluteNoReferencesNoReparse": true
+    },
+    {
+      "files": 2,
+      "logicalBytes": 2619272,
+      "exactAbsoluteNoReferencesNoReparse": true
+    },
+    {
+      "files": 5986,
+      "logicalBytes": 227910017,
+      "exactAbsoluteNoReferencesNoReparse": true
+    },
+    {
+      "files": 2,
+      "logicalBytes": 2619272,
+      "exactAbsoluteNoReferencesNoReparse": true
+    }
+  ]
+}

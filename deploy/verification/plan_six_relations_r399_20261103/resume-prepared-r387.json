@@ -1,0 +1,10 @@
+{
+  "prepared": true,
+  "driver": "plan_cancel_resume_r388.py",
+  "sha256": "2d523c39fb710de2bafb0d9d9bfd0536795cd92927bc8cc67b9e733175622a28",
+  "exactStoppedCandidateKept": true,
+  "originalFailureRetained": true,
+  "originalTwoControllersNormalZero": true,
+  "candidateProductCodeChanged": false,
+  "nativeAndRollbackPending": true
+}

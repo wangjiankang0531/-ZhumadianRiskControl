@@ -1,0 +1,49 @@
+{
+  "actualNativeAccepted": false,
+  "allExistingFunctionAndClassASTUnchanged": true,
+  "browserCancelWaitsUntilDialogActuallyCloses": true,
+  "changedOnlyThreeFrontendContractAssignments": true,
+  "changedOriginalInputPaths": 14,
+  "compiledFileCount": 341,
+  "expectedNativeCases": 29,
+  "nativeBrowserSHA256": "663764a0641170dcd8ec969cccf47ff9ca02d98c3fc1facb82866d06deb569a0",
+  "nativeDrivers": [
+    {
+      "path": "plan_cancel_inspect_r386.py",
+      "role": "inspect",
+      "sha256": "31709dffe20952a6d3358ba5356bfc67841fa59b157227c8a9861e91181c351f"
+    },
+    {
+      "path": "plan_cancel_prepare_r386.py",
+      "role": "prepare",
+      "sha256": "68aff5a288b9e35dbf206dec308133dca07e03c1c7e6f8811c72d130ae1766f0"
+    },
+    {
+      "path": "plan_cancel_run_r386.py",
+      "role": "run",
+      "sha256": "bc4055dab66679ded9d0f48f3df7d40ae379ba8f6664293a48b08336d842f10f"
+    }
+  ],
+  "prepared": true,
+  "publicDeployed": false,
+  "updaterBytes": 236766,
+  "updaterSHA256": "2df899f1b3471b05c5f2312e77055a45290e8053a4ae19f7889c6d18dfb393e2",
+  "variants": {
+    "r36": {
+      "bundle": "D:/Project/Zhumadian/work/r40-plan-resource-cancel-r385/r36/bundle",
+      "manifestSHA256": "467718c19a0cd8943630fc6a5318be7c74eb0e5ab02c87a8ca2248f9b72d7ee2",
+      "newPayloadManifestSHA256": "8cbd73d777bedaa804d8f9839c896e6041601bd54c1d815768ca1159304620a0",
+      "newReleaseSHA256": "999144eb99fa5d135539b8648c59a196821f1a8c41c756192b08c838cb6ad392",
+      "removals": 177,
+      "writes": 187
+    },
+    "r37": {
+      "bundle": "D:/Project/Zhumadian/work/r40-plan-resource-cancel-r385/r37/bundle",
+      "manifestSHA256": "b16d01e547ce9035542d6d40d733ce2a8d9ee5cd9d81c6c6eeedc2a183f2bd7f",
+      "newPayloadManifestSHA256": "8cbd73d777bedaa804d8f9839c896e6041601bd54c1d815768ca1159304620a0",
+      "newReleaseSHA256": "999144eb99fa5d135539b8648c59a196821f1a8c41c756192b08c838cb6ad392",
+      "removals": 177,
+      "writes": 187
+    }
+  }
+}

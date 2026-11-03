@@ -1,0 +1,50 @@
+{
+  "prepared": true,
+  "candidateUpdaterSHA256": "e935f51aa3c7a5aae3346c632b90423ce99f6a0887b1d44781ea0ed8e8c16d8f",
+  "sources": {
+    "R36": [
+      {
+        "role": "inspect",
+        "source": "plan_lifecycle_inspect_r36_r346.py",
+        "bytes": 3279,
+        "sha256": "1025c6f26fecc483df552a4a61663f99f85babf5ffc79a952859d231fb0a9135"
+      },
+      {
+        "role": "prepare",
+        "source": "plan_lifecycle_prepare_r36_r346.py",
+        "bytes": 6757,
+        "sha256": "b056ade61103b120b2e34b29e2ab99209b5fa63cdb202c161b2a1c14fde2d024"
+      },
+      {
+        "role": "run",
+        "source": "plan_lifecycle_run_r36_r346.py",
+        "bytes": 17392,
+        "sha256": "7c90fa3da68947dbd0a6592c39caea636b1db00e0fa8fc101916565dd64eec97"
+      }
+    ],
+    "R37": [
+      {
+        "role": "inspect",
+        "source": "plan_lifecycle_inspect_r37_r346.py",
+        "bytes": 3267,
+        "sha256": "a7801a3cca450941707c8cc9cb4868711a740639d917f138f2dabb415720c94a"
+      },
+      {
+        "role": "prepare",
+        "source": "plan_lifecycle_prepare_r37_r346.py",
+        "bytes": 6773,
+        "sha256": "2ef3fb5b5e85e6b0aa85557b0e2ed4e165a33fd7dcdd1fb59edf0f68cfa31e3c"
+      },
+      {
+        "role": "run",
+        "source": "plan_lifecycle_run_r37_r346.py",
+        "bytes": 17392,
+        "sha256": "b48fc98cfb9731e6ea8f1a2757d451e0796158e606ba29ab120874d5a87eb173"
+      }
+    ]
+  },
+  "originalUpdaterFunctionBodiesNotChanged": true,
+  "onlyTargetGatewayAndSyntheticPrivateManifestAdapted": true,
+  "realIISHTTPSNotClaimedByLoopbackHTTPAdapter": true,
+  "servicesStartedOrFixtureChanged": false
+}

@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "businessRunsJDK17PlatformUsesJDK8Separately": true,
+  "originalJarPlanClassSHA256": "3015417dfedfd3a2d0c139f79d7f1f4f5391f3919c9ce9b853a7aee8a8d744ce",
+  "currentStoppedFixturePlanOverrideAbsent": true,
+  "actualR141DeletedPlanDetailHTTP": 500,
+  "candidateClassSHA256": "384462cf7671955a1c9aa1fe37b4f2a1ac85d747ec396247af219211f79e682b",
+  "candidateClassBytes": 21713,
+  "candidateClassMajor": 61,
+  "candidateSourceSHA256": "5ad79c9bbbfcf2cce8488e28cad2fecf153b993e242c1e24a8c34a4b525d9fc6",
+  "currentCompatGeneratesExactlyPreviouslyCompiledSource": true,
+  "candidateAddsMissingDetailGuardAndOriginalParentRelationsFilesAtomicity": true,
+  "candidatePreservesOriginalNoExerciseOrObjectDeletionSet": true,
+  "newCandidateActuallyInstalledOrExecutedThisStage": false,
+  "publicOrFormalChanged": false,
+  "historicalCompileAndSQLProofDoesNotReplaceNewNativeLifecycle": true
+}

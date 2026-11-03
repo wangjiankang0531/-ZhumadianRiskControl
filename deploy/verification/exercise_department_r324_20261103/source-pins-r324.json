@@ -1,0 +1,171 @@
+{
+  "sources": [
+    {
+      "path": "tools/prepare_production_history_runtime_r317.py",
+      "sha256": "d28607997015b3063be27309f59442b026aace608a6dee8b664b9d7ee0cdbcce",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/restore_production_history_runtime_r317.py",
+      "sha256": "e16d90c622ebfc480f7ab295f23ac447109ff9b7ddc93b8eeddb5cd935d08632",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/prepare_personal_workflow_frontend_r317.py",
+      "sha256": "727a9a18d267e300a021b9a817e01284ccc7effda658a968dd3641827763b598",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/restore_personal_workflow_frontend_r317.py",
+      "sha256": "5be05f40af3291d16a9b5706f3e8782b98d98005053cd66aa380cc88ea0186a0",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/mapper_product_patch_r317.py",
+      "sha256": "a8c8c8389203d3fc8f06466988f95f0ed83d00646f78392e77e8c64d291daad8",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/mapper_observation_support_r317.py",
+      "sha256": "24d50efeb8fbd3ad9dc7b363675ae80a577da81e6b8e0db19782c791227a41ca",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/verify_full_controller_exercise_filter_r317.py",
+      "sha256": "47d2bdeebdc0d88909a680beac538b0d7f7e52e93e9d0d62fbc6494fd4229146",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/run_native_exercise_filter_r317.py",
+      "sha256": "caf008673d952624314d5a84b2663add950115c95befc6901b55634297d3dd2f",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/verify_native_exercise_filter_r317_20261103.mjs",
+      "sha256": "170f02b745cdcec8548c42f3a25e49cce5d5cf9c39df9415e12a218e85896408",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/prepare_production_history_runtime_r320.py",
+      "sha256": "ed1c29906b3168b24293b6866e2a66a765039398850499cc1101af786818b8d7",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/restore_production_history_runtime_r320.py",
+      "sha256": "17ea1ca8bf0fc55410d9c5a64dbedf2482a905cea259b3ff352a099a1eadecb3",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/prepare_personal_workflow_frontend_r320.py",
+      "sha256": "2c68e749041a1fc00179d6930a45b73ce14ac1415f9954b945645c3e957add96",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/restore_personal_workflow_frontend_r320.py",
+      "sha256": "0a94f4b2de77a7233ec278445cf9a972d0bff660335211718588ef9e6508b7ea",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/mapper_product_patch_r320.py",
+      "sha256": "7530dbba72c4aee93ef723188a6605becee6d2f93581f9e78b11b7f5191b1bf6",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/mapper_observation_support_r320.py",
+      "sha256": "475ba68bf182fccd670e3e8cf08df19faf76e29d4d41ddbb5cdd38262d9f437e",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/verify_full_controller_exercise_filter_r320.py",
+      "sha256": "0e44d3a4b5b92d5695c8ce2ddba640fb8611daea631e94068b5fbe62bba96fe7",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/run_native_exercise_filter_r320.py",
+      "sha256": "2d89e235b854e6b6006d034d2abe6f5c550ebc228b8380130e391f1510891978",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/verify_native_exercise_filter_r320_20261103.mjs",
+      "sha256": "d8bd617f1e0c85fb10517d7c4d3e9d22275170367f563ced2711ddac563d5a12",
+      "withdrawnUncompiledCandidate": false
+    },
+    {
+      "path": "tools/original_exercise_department_filter_r319.py",
+      "sha256": "b6760fb8184a4b4c789dbd818900074ee3d679bb5ce5c0bba597dc85662d42c4",
+      "withdrawnUncompiledCandidate": true
+    },
+    {
+      "path": "tools/build_exercise_department_filter_r319.py",
+      "sha256": "ce41e269e3d346e51d83dda05d7ba4dd96dc49d8368fedf47ce5cffc8c05bdb2",
+      "withdrawnUncompiledCandidate": true
+    },
+    {
+      "path": "tools/build_exercise_department_filter_r319.mjs",
+      "sha256": "9e481455b9fe0d93b204ac63cfbefea3dee1111eaa854db42dd032c15adc1b8e",
+      "withdrawnUncompiledCandidate": true
+    },
+    {
+      "path": "tools/prepare_exercise_department_repro_r317.py",
+      "sha256": "a3b58e3a86a9db7d343f9b66aebe6fafe1339aced3cf4b6fc0b457916dea6192",
+      "localToolsOnlyThisStage": true
+    },
+    {
+      "path": "tools/run_exercise_department_repro_r318.py",
+      "sha256": "1955477f2ac6f48c6b60cdcc85632cbadea9d63e0e582ce4e5bd12ec5f77d993",
+      "localToolsOnlyThisStage": true
+    },
+    {
+      "path": "tools/restore_exercise_department_prestart_r318.py",
+      "sha256": "18b0533f795907d3827a8714625c767b18148c9a9ea59fa3bea329593949c0ab",
+      "localToolsOnlyThisStage": true
+    },
+    {
+      "path": "tools/prepare_exercise_department_fix_r319.py",
+      "sha256": "8438a03dde24ee5952c90252608adaba2f256bf10688c6f2ca014ee7affdd918",
+      "localToolsOnlyThisStage": true
+    },
+    {
+      "path": "tools/prepare_exercise_department_verified_r320.py",
+      "sha256": "4df59dbdb83b2b4bd05daeba7f0a8c3847b3844f057437e6d3c74f9f575b0c8c",
+      "localToolsOnlyThisStage": true
+    },
+    {
+      "path": "tools/prepare_exercise_department_verified_generated_r320.py",
+      "sha256": "04e9cad787885424d0847f024a39ed4e51a5712d98940797f0f6b808f4d33cd2",
+      "localToolsOnlyThisStage": true
+    },
+    {
+      "path": "tools/run_exercise_department_verified_r321.py",
+      "sha256": "c771c3ce85f9e32429b47bf4e120026d1a4987f1af95f41837b520e3d8c9fd71",
+      "localToolsOnlyThisStage": true
+    },
+    {
+      "path": "tools/restore_exercise_department_prestart_r321.py",
+      "sha256": "b13f211516e762f18feea8da58e55697062cb15d6eeb3253be507a96ae205a36",
+      "localToolsOnlyThisStage": true
+    },
+    {
+      "path": "tools/audit_exercise_department_and_plan_delete_r322.py",
+      "sha256": "4fb69b475f226ebf5df67b10522aeaaa0aed3e0ca05731f4cc7c30574c417e7d",
+      "localToolsOnlyThisStage": true
+    },
+    {
+      "path": "tools/prepare_cleanup_exercise_department_r323.py",
+      "sha256": "847e2d969c3b57aaf93c1d1f4f44fd2a05de18d23626a8aa849ce5ea8feafda1",
+      "localToolsOnlyThisStage": true
+    },
+    {
+      "path": "tools/cleanup_exercise_department_r323.ps1",
+      "sha256": "a67ce4e4df66fc7ea2fca77a2534a50cf684de74c0d43930a385109f07291c1d",
+      "localToolsOnlyThisStage": true
+    },
+    {
+      "path": "tools/record_exercise_department_r324.py",
+      "sha256": "e57885b1f9f9f73646e56c0dd2702b1fc61a78f3d80cd7badb33cf3f05619669",
+      "localToolsOnlyThisStage": true
+    }
+  ],
+  "finalCapturedHostAndBrowserExactlyMatchSources": true,
+  "newPublicGitPushed": false
+}

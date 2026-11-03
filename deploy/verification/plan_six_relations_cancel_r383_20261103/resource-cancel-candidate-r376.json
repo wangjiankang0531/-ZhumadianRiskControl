@@ -1,0 +1,39 @@
+{
+  "preparedOnly": true,
+  "baselineRealComponentsNineCasesAndSixUnhandledRejectionsReproduced": true,
+  "candidateComponents": [
+    {
+      "component": "goodsList",
+      "candidateSHA256": "12ab095631066f1a7c8c64bcfe567888b8c5c48bff8524b17e7f54c862139456",
+      "beforeSHA256": "e81317dcafbf5c1108775f7cbc3e892709f1af03618eea029d294fef7bb33b45",
+      "afterSHA256": "12ab095631066f1a7c8c64bcfe567888b8c5c48bff8524b17e7f54c862139456",
+      "onlyExpectedCancelAndCloseRejectionsConsumed": true,
+      "unexpectedRejectionsRethrown": true,
+      "resourceSelectionIDsAndSaveAPIsChanged": false
+    },
+    {
+      "component": "teamsList",
+      "candidateSHA256": "867e696d9244c64da09bf906c03acf78eb13d1ead4282fe28d602f8d05f314b7",
+      "beforeSHA256": "0aaa1adc6691b055a2a50e3ac3533184ba227b52bc7cea35eeda329cbd50723c",
+      "afterSHA256": "867e696d9244c64da09bf906c03acf78eb13d1ead4282fe28d602f8d05f314b7",
+      "onlyExpectedCancelAndCloseRejectionsConsumed": true,
+      "unexpectedRejectionsRethrown": true,
+      "resourceSelectionIDsAndSaveAPIsChanged": false
+    },
+    {
+      "component": "expertsList",
+      "candidateSHA256": "4a3f2979dc9dffafdd5582f528be602cf45e1b1b340aaf5927074a6be060366e",
+      "beforeSHA256": "5298e8308b6fbdac305f54a38832b0936c2514d087104c025f0f1623dcfb0de7",
+      "afterSHA256": "4a3f2979dc9dffafdd5582f528be602cf45e1b1b340aaf5927074a6be060366e",
+      "onlyExpectedCancelAndCloseRejectionsConsumed": true,
+      "unexpectedRejectionsRethrown": true,
+      "resourceSelectionIDsAndSaveAPIsChanged": false
+    }
+  ],
+  "moduleSHA256": "1badce93f08fa86e768fdf84fe4f231e024e157a5dc5996dc391ac96a85409c9",
+  "onlyNormalCancelCloseCaughtUnexpectedErrorsPreserved": true,
+  "fullSixComponent29CasesNotRun": true,
+  "r373DriverSupersededBeforeAnyAllocationOrService": true,
+  "r39AndPublic184FrozenBytesUnchanged": true,
+  "publicFormalSceneOrDesktopChanged": false
+}

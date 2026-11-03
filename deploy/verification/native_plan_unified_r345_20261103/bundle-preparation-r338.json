@@ -1,0 +1,40 @@
+{
+  "allOriginalOtherPayloadAuthenticationConfigurationAndDataRetained": true,
+  "candidatePlanClassSHA256": "384462cf7671955a1c9aa1fe37b4f2a1ac85d747ec396247af219211f79e682b",
+  "candidateUpdaterSHA256": "e935f51aa3c7a5aae3346c632b90423ce99f6a0887b1d44781ea0ed8e8c16d8f",
+  "fullCloneReady": false,
+  "fullProgramAndTransactionVerificationPending": true,
+  "prepared": true,
+  "publicOrFormalOrDesktopChanged": false,
+  "publicTransportWrapperPrepared": false,
+  "sameFinalReleaseAndPayloadForBothBases": true,
+  "sharedUnchangedPayloadByHardlink": true,
+  "variants": {
+    "R36": {
+      "bundle": "D:/Project/Zhumadian/work/r39-plan-runtime-unified-r1/r36/bundle",
+      "eachBundleAcceptsOneExactBase": true,
+      "newControls": 22,
+      "newPayloadManifestSHA256": "773049fb330258bafe6bae8aa1d791dbf860a7ec1538ef8e3351efcc3d4bf2ae",
+      "newReleaseSHA256": "9a3a878ae3f00a1aeafb18187c4eb1acf7fe348dad52a3fa68fa023a4071e690",
+      "oldControls": 21,
+      "oldPayloadManifestSHA256": "0b49252f3a1d2a36747d9281e961b8099e0e2af2a5e0ab2f1bf6a101e88e6110",
+      "oldReleaseSHA256": "daaf0be2b1cb17eab4640b7388901a0f00c1b920cfe2260c4d060234230fb853",
+      "removals": 177,
+      "updateManifestSHA256": "6a26e96516bd4a2394882820aeca0d1b28c020e7d306fa358c7769f1c8262fe4",
+      "writes": 187
+    },
+    "R37": {
+      "bundle": "D:/Project/Zhumadian/work/r39-plan-runtime-unified-r1/r37/bundle",
+      "eachBundleAcceptsOneExactBase": true,
+      "newControls": 22,
+      "newPayloadManifestSHA256": "773049fb330258bafe6bae8aa1d791dbf860a7ec1538ef8e3351efcc3d4bf2ae",
+      "newReleaseSHA256": "9a3a878ae3f00a1aeafb18187c4eb1acf7fe348dad52a3fa68fa023a4071e690",
+      "oldControls": 22,
+      "oldPayloadManifestSHA256": "0b49252f3a1d2a36747d9281e961b8099e0e2af2a5e0ab2f1bf6a101e88e6110",
+      "oldReleaseSHA256": "909b64aa1315b8764b169c9874b8f52f903268b59c67adbf7b3799e85e29448c",
+      "removals": 177,
+      "updateManifestSHA256": "b37f2a7b04806982fa438975fc44b75d98b2bbdd90fd1be474bcce03c0f27a7b",
+      "writes": 187
+    }
+  }
+}
