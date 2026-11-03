@@ -1,0 +1,54 @@
+from pathlib import Path
+import hashlib,json
+R=Path('D:/Project/Zhumadian');D=R/'Document/Deployment/public_test_personal_workflow_r35_20261103';W=R/'work/user_feedback_20261031';C=R/'work/event_delivery_consistency_20261030/full-controller-r163';V=Path(__file__).parent
+J=lambda p:json.loads(p.read_bytes());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();enc=lambda o:(json.dumps(o,ensure_ascii=False,indent=2)+'\n').encode()
+for n in ['independent-fixed-delivery-verification.json','transport-order-verification.json']:assert J(D/n).get('passed',J(D/n).get('allPassed'))
+assert J(C/'r96/result.json')['allPassed'] and J(C/'prepared-r96/frontend-restored.json')['passed'] and J(C/'prepared-r96/history-runtime-restored.json')['passed']
+prep=J(D/'preparation-result.json');m=J(D/'delivery-manifest.json');assert sha(D/'delivery-manifest.json')==prep['manifestSHA256']
+evidence={
+ 'public-r34-personal-route-observation-r194.json':J(R/'Document/Deployment/public_test_pending_visibility_r34_20261102/public-ui-r194/result.json'),
+ 'native-personal-routes-and-opinion-r196.json':J(C/'r96/result.json'),
+ 'own-menu-hidden-r196.json':J(C/'r96/own-menu-visibility-hide.json'),
+ 'own-menu-restored-r196.json':J(C/'r96/own-menu-visibility-restore.json'),
+ 'frontend-restored-r196.json':J(C/'prepared-r96/frontend-restored.json'),
+ 'prototype-restored-r196.json':J(C/'prepared-r96/history-runtime-restored.json'),
+ 'native-controller-terminal-r196.json':J(C/'r96/controller-terminal.json'),
+ 'outer-terminal-r196.json':J(C/'r96-outer-terminal.json'),
+ 'native-date-sql-transaction-r191.json':J(R/'work/addsign-history-r180/mybatis-transaction-verification-r191.json'),
+ 'sparse-recovery-result.json':J(W/'r35-personal-workflow-candidate-r1/result.json'),
+ 'composition-negative-cases.json':J(W/'r35-personal-workflow-candidate-r1/contract-negative-cases.json'),
+ 'full-program-preflight.json':J(R/'work/r35gv-r1/full-preflight-result.json')}
+for n,v in evidence.items():
+ p=D/n
+ if p.exists():assert J(p)==v
+ else:p.write_bytes(enc(v))
+text=f'''# R35 固定候选与体验范围（2026-11-03）
+
+公网目前仍为 R34；R35 尚未上传、部署或通过真实公网待办详情验收。
+
+## 已定位的问题
+
+R194 正常登录后的只读检查确认：应急端直接打开 /workflow/flowTodo 显示前端404，没有待办列表组件，也没有发出待办查询。原工程仅根据登录后的服务端菜单注册这些路由；当前应急菜单没有流程入口。原鉴权与菜单加载代码保持，修正是在正常鉴权菜单加载中补齐缺失的个人流程页面，已有菜单路由优先。原匿名登录守卫、后端本人数据过滤与审批权限保持。
+
+## 本包与体验步骤
+
+本包只更新应急前端、固定更新器契约及两个发布清单，178写入、172旧前端移除，共350路径。原R34待办精确处理节点控制保持。正常进入“敏捷应急管理”首页，点击“待办事宜”“已办事宜”“我发起的”；选择本人有权查看的流程进入详情，已办详情只读。旧地址 /workflow/flowTodo 也应正常打开。上线前以上仍为候选体验说明。
+
+R196 在自有合成环境临时隐藏三份精确流程菜单，双普通角色经真实原登录、首页三个入口、原生列表与详情完成八阶段流程及加签，意见保留/时间顺序/已办只读通过；六组件正常退出、实际后代零，临时菜单标记及前端和运行模块已精确恢复。未改账号、角色或授权行。15553完整程序与20控制、32边界拒绝、七种文件恢复及外来漂移拒绝、实际运输包与预算先于任何停服通过。新更新器只增加契约及分发，既有生命周期函数AST保持；本轮未独立启动新更新器六组件生命周期。
+
+## 后端意见修正的界限
+
+审批前加签独立意见原时间使用SQL时钟，与原服务new Date()口径混合。本地R191改为复制原记录的handleTime/creatorTime，10项真实Mapper/动态事务/MySQL测试（含8小时时区偏差、SQL故障回滚、BATCH与缺时间拒绝）和两次正常SQL停启通过；R191七阶段及R196八阶段原服务门控和完整流程通过。该修正仍是隔离原型，未包含在R35；生产模块装配、审批后回归及真实公网验收仍待。不能宣称公网已修好意见或完整南港验收。
+
+## 固定运输范围
+
+8文件，{prep['transportBytes']}字节；清单SHA256：{prep['manifestSHA256']}。
+
+FTP：101.201.65.94 的 {m['targetFTP']}；目标：C:/inetpub/wwwroot/Zhumadian/Application。外发内容为编译前端、本方更新器及内部发布路径，不含数据库、凭据、业务行、资产、Reference、截图或原日志。仅精确R34、运行/文件/数据身份、10份就绪和停服前连接预算通过后正常停启六组件；失败按本轮新备份/updateId/前后SHA恢复，退出不明不恢复、不强杀。此包不修改真实配置、原Jar、数据库、上传、鉴权、安全端前端、其它19控制或IIS。
+
+上线后核HTTPS、正常登录的个人流程列表/详情和刷新，仅读本人有权查看的必要页面，记录状态/条数/布尔，不导出业务原文或读取Cookie/令牌。不自行创建公网测试业务。按用户“只留最新”要求，成功后仅清精确已停无引用/无重解析的退役R34包与本次旧代码副本，保留全部数据、上传和配置。本范围不含公开Git或腾讯回填；桌面需另协调交接，前台焦点变化立即停止。
+
+完整长期UE效果效率、EXE GIS/DLG点线面分层与多源空间标牌、Web3D、全南港B/S目标保持；本阶段不代表整模块完成，fullCloneReady=false。
+'''
+p=D/'固定候选说明.md';assert not p.exists();p.write_text(text,encoding='utf-8')
+print(json.dumps({'documented':True,'evidenceFiles':len(evidence),'manifestSHA256':prep['manifestSHA256'],'publicUploadedOrInstalled':False}))
