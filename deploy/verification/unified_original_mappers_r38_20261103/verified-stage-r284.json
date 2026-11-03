@@ -1,0 +1,127 @@
+{
+  "schema": "xnby.r284.unified-candidate-evidence.v1",
+  "at": "2026-11-03T15:52:51.902515+08:00",
+  "candidate": "R38",
+  "publicUploaded": false,
+  "publicDeployed": false,
+  "newPublicGitPushed": false,
+  "r37PreviouslyUploadedAndCheckOnlyPassed": true,
+  "r37HumanApplyResultNotReceived": true,
+  "r38AcceptsOnlyExactR36Base": true,
+  "r38MayNotBeUsedAfterR37WithoutRebase": true,
+  "transportFiles": 8,
+  "transportBytes": 2111659,
+  "manifestSHA256": "72b7d48b25ce0e14504c20d99fddc6adde0c930f00bc0036bcce3a3c17a002d3",
+  "writes": 186,
+  "removals": 177,
+  "totalInstallPaths": 363,
+  "actualOriginalSpringXMLRegistered": 226,
+  "nativePlanExerciseStages": 11,
+  "nativeTaskParallelStages": 9,
+  "nativeBusinessRunsFromR272NotNewR38ApplyTransaction": true,
+  "fullProgramPreflightFiles": 15557,
+  "negativeCompositionCases": 45,
+  "actualFileRecoveryScenarios": 14,
+  "mapperInputGateChecks": 13,
+  "actualNginxRequestsEachMode": 12,
+  "newAspNetRepeatPassed": false,
+  "newUpdaterApplyUpdateOrRollbackLifecycleRun": false,
+  "lifecycleFunctionASTUnchangedFromR37": true,
+  "actualServerIISHTTPSAndAuthenticatedTimingPending": true,
+  "sourceJarSQLAuthPrivateConfigurationDataUploadsAndSafetyFrontendPreserved": true,
+  "schemaOrOriginalBusinessRowsModified": false,
+  "fullCloneReady": false,
+  "completedOwnFixturesRemoved": true,
+  "sourcePins": [
+    {
+      "path": "tools/prepare_unified_mapper_bundle_r274.py",
+      "sha256": "3453d5ff55a0e810ccf52211d36e7c1245f5bfdc0a8aedc1f16dfb57577c701b",
+      "bytes": 10012,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/prepare_unified_full_preflight_r275.py",
+      "sha256": "3dfee2a4ece45c5558b1c71a92e0c98865d3c3d03a4b566d5543447a4854eced",
+      "bytes": 2347,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/verify_unified_full_program_r275.py",
+      "sha256": "b454956cc0e7b4bfdbac8e397a77155f770bdbd35b2ac9ea96ab3f0295af0b33",
+      "bytes": 8146,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/verify_unified_composition_recovery_r276.py",
+      "sha256": "2e48b47f1bc971fcd6f30542657a70a14dff15ef9526d8e25f9cdec3ba2b9369",
+      "bytes": 9844,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/prepare_unified_static_transport_r277.py",
+      "sha256": "cc6cae07c46d13bf9b74998a2ad6ab2a0b35821cc489008b5e82287c8d7e5bec",
+      "bytes": 823,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/verify_unified_static_transport_r277.py",
+      "sha256": "0c45b9a136a8d139497312011f923bed6c8eb6251daade952f0f113a675f7d64",
+      "bytes": 11496,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/verify_unified_nginx_transport_r278.py",
+      "sha256": "4e80ba3c72e480bd43257d257145c4c072d72669890978bdbc21fb4f76d017a2",
+      "bytes": 8387,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/build_unified_delivery_r279.py",
+      "sha256": "1091d112a528fb50444274ced92bce3615fff949779b0580456f0775c126ba2d",
+      "bytes": 5538,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/verify_unified_delivery_r280.py",
+      "sha256": "ce32786332af6d0d55fc1e7ba3e0e7bff7976ffb0242e41977021c8c03ceabc7",
+      "bytes": 6538,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/add_mapper_input_gate_r281.py",
+      "sha256": "2c030f2ea9d40f8da1d302c27ea4d9f3fb1d4d1c89dea7e90a2e41a9b1f4574b",
+      "bytes": 3153,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/verify_mapper_input_gate_r282.py",
+      "sha256": "aa48098a46bb1b27686ad16780b314b681524c899f256f8390a9e8d48f60340a",
+      "bytes": 4514,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/cleanup_unified_fixtures_r283.ps1",
+      "sha256": "74dd61f2fd4b160b94306d9446865f9c80aa9541cd5e4b2b1779ea2ca7f99684",
+      "bytes": 4119,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/record_unified_stage_r284.py",
+      "sha256": "eb04c4fd3021bdd917abf44c2e63b958f18c9c09075bdfa75cc3e5a89ea734f7",
+      "bytes": 17168,
+      "executedSourcePreserved": true
+    },
+    {
+      "path": "tools/original_public_test_update_r38_unified_20261103.py",
+      "sha256": "61b76c8eab5594cf4294cd40e0750af34b415891c2bbd3f7e5ef80bd34129eab",
+      "bytes": 214608,
+      "exactFinalDeliveryBytes": true
+    },
+    {
+      "path": "tools/deploy_unified_mappers_r38_20261103.py",
+      "sha256": "ef35576ada07170dc252a5f93f2861a2b3441cdfc4c69f0659575446cbe1bb7a",
+      "bytes": 10661,
+      "exactFinalDeliveryBytes": true
+    }
+  ]
+}

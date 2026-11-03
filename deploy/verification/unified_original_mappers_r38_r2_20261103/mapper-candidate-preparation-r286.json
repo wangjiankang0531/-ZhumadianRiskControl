@@ -1,0 +1,14 @@
+{
+  "prepared": true,
+  "baseSourceSHA256": "61b76c8eab5594cf4294cd40e0750af34b415891c2bbd3f7e5ef80bd34129eab",
+  "candidateSourceSHA256": "f4eae55e6c2b35b4bee67d228bfc8904968ce49d86ea8265436e7e08b2e2964d",
+  "existingFunctionsChanged": [
+    "candidate_runtime_pool_preflight"
+  ],
+  "newHelper": "candidate_original_mapper_preflight",
+  "sameRawConfigurationSnapshotUsedForPoolMapperAndPreStopHash": true,
+  "applyStopLaunchReplaceRestoreRecoveryFunctionsUnchanged": true,
+  "fixedR38PackageNotRebuiltOrAuthorizedForThisPrototype": true,
+  "runtimeVerificationPending": true,
+  "publicOrDatabaseOrDesktopTouched": false
+}

@@ -1,0 +1,61 @@
+{
+  "revision": "R37-static-initial-load-performance",
+  "targetFTP": "/Zhumadian/Zhumadian_Static_Performance_20261103_R37/",
+  "targetApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "files": {
+    "Check_Only_Static_Performance_R37.cmd": {
+      "bytes": 140,
+      "sha256": "4a8f6a0cf8d13e2a7a91066dd3b29dc9cfe28348b65617aa57034d9fa6e279fc"
+    },
+    "Deploy_Static_Performance_R37.cmd": {
+      "bytes": 128,
+      "sha256": "22bb80fff170bcd7c51f88cf1c1c3c718313f914810b89590a7282caa47375e7"
+    },
+    "deploy_static_performance_r37.py": {
+      "bytes": 9244,
+      "sha256": "e245101b5afb1d7c72e708b2c14a4bc85aa0d3e01f72ea4351530379d67bcd5e"
+    },
+    "r37_update_runtime.py": {
+      "bytes": 157801,
+      "sha256": "52daac9f348be6622592920240794a1ba701d46683fa6b7c3e0cb34da47fcf62"
+    },
+    "Recover_This_Static_Performance_R37.cmd": {
+      "bytes": 149,
+      "sha256": "f2dc05b1736be7a3cf43f440353ebe39deb3144e44d03464e42ee82b43c755bd"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Static_Performance_20261103_R37.zip": {
+      "bytes": 402973,
+      "sha256": "00228d11c5d1fd85e8a0314b03138eb4219b8edd8c66af91e436d3c9d64e5d91"
+    }
+  },
+  "oldReleaseSHA256": "daaf0be2b1cb17eab4640b7388901a0f00c1b920cfe2260c4d060234230fb853",
+  "oldUpdaterSHA256": "67545498b3f823e03394ecebdbf9aed12a64c719cca16b7a56a13abb66b49eca",
+  "newReleaseSHA256": "909b64aa1315b8764b169c9874b8f52f903268b59c67adbf7b3799e85e29448c",
+  "newUpdaterSHA256": "52daac9f348be6622592920240794a1ba701d46683fa6b7c3e0cb34da47fcf62",
+  "updateManifestSHA256": "617ca95ffd5d01bcc9824fe854040d86c1996bc402356924da58abdf9d49c12d",
+  "writes": 6,
+  "removedFiles": 0,
+  "newDeclaredControlFiles": 22,
+  "oldReadinessReports": 11,
+  "newReadinessReports": 11,
+  "fixedCompositionNegativeCases": 31,
+  "recoveryScenarios": 8,
+  "fullProgramFilesVerified": 15557,
+  "normalStopLaunchBackupReplaceRestoreAndRecoveryASTUnchanged": true,
+  "applyUpdateOnlyAddsAccurateIISFileReceiptFlag": true,
+  "actualNginxAspNetTransportCasesEachMode": 18,
+  "originalProxyTransportSecurityCasesPassed": 13,
+  "quarantined23GzipUnitCasesExecuted": false,
+  "actualChromeAnonymousColdWarmBothPortalsPassed": true,
+  "maximumExtractionPathCharacters": 171,
+  "bothFrontendsBusinessJarsAuthHistoryDatabasePrivateConfigUploadAndIISMappingRetained": true,
+  "onlyActualIISProxySourceAddedToPinnedControls": true,
+  "publicDeployed": false,
+  "actualServerIISPreflightAndExternalUserTimingPending": true,
+  "newPublicGitIncluded": false,
+  "fullCloneReady": false
+}

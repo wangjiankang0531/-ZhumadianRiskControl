@@ -1,0 +1,13 @@
+{
+  "case": "new-R38-dotnet-transport-harness",
+  "passed": false,
+  "stage": "compiled-baseline-executable-start",
+  "exception": "PermissionError [WinError 5] Access is denied",
+  "newAspNetTransportCasesExecuted": false,
+  "oldProxySourceUnchanged": true,
+  "oldProxyEvidenceNotPromotedToNewR38Run": true,
+  "quarantineRestorationOrSecurityBypass": false,
+  "normalOwnedNginxExit": 0,
+  "ownedActiveProcessesAfterQuit": 0,
+  "causeMalwareOrAntivirusNotEstablishedByThisException": true
+}

@@ -1,0 +1,23 @@
+{
+  "r133": {
+    "reason": "available-memory-guard-before-allocation",
+    "minimumGiB": 4,
+    "casesExecuted": 0,
+    "normalReceiptsFabricated": false,
+    "explicitPrestartRestorePassed": true
+  },
+  "r134": {
+    "reason": "test-driver-fixed-schema-reader-path-was-globally-replaced",
+    "phase": "seed-only-own-resource-menus",
+    "casesExecuted": 0,
+    "actualSixComponentsNormallyExitedZero": true,
+    "allRestoreLayersPassed": true
+  },
+  "r135": {
+    "targetedASTAttemptConversionPreservesFixedDependencies": true,
+    "admissionMinimumGiB": 6,
+    "passedBrowserCases": 14
+  },
+  "noFailureCountedAsBusinessPass": true,
+  "noMemoryThresholdLoweredOrUserApplicationsClosed": true
+}

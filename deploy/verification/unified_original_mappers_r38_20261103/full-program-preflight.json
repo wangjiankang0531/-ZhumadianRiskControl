@@ -1,0 +1,45 @@
+{
+  "allPassed": true,
+  "fullProgramFilesVerified": 15557,
+  "oldDeclaredControls": 21,
+  "newDeclaredControls": 22,
+  "liveIISProxyExtraPinVerified": true,
+  "candidateInstallPaths": 186,
+  "obsoleteEmergencyFrontendRemovals": 177,
+  "allChangePaths": 363,
+  "cases": [
+    {
+      "case": "all-R36-programs-and-final-R38-unified-path-load_bundle",
+      "passed": true
+    },
+    {
+      "case": "exact-retained-pool-budget-before-any-services",
+      "passed": true
+    },
+    {
+      "case": "retained-source-drift-refused:runtime/jdk17/release",
+      "passed": true
+    },
+    {
+      "case": "retained-source-drift-refused:payload/business/run-template/classes/mapper/FirstAidTeamMembersMapper.xml",
+      "passed": true
+    },
+    {
+      "case": "live-IIS-source-drift-refused-before-stop",
+      "passed": true
+    },
+    {
+      "case": "invalid-platform-layout-refused-before-stop",
+      "passed": true
+    }
+  ],
+  "newUpdaterSHA256": "61b76c8eab5594cf4294cd40e0750af34b415891c2bbd3f7e5ef80bd34129eab",
+  "readOnlyHardlinks": 15396,
+  "mutableIndependentCopies": 183,
+  "sourceProgramsUnchanged": true,
+  "onlyLocalTargetAndSyntheticPrivateManifestMetadataAdapted": true,
+  "publicDeliveryWrapperNotPreparedYet": true,
+  "realConfigDatabaseOrAccountRecordsRead": false,
+  "servicesStarted": false,
+  "actualServerPreflightOrIISOrPublicDeploymentPassed": false
+}

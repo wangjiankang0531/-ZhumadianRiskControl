@@ -1,0 +1,40 @@
+{
+  "at": "2026-11-03T16:55:48.717468+08:00",
+  "host": "www.joinlinksmart.com",
+  "anonymousHEADOnly": true,
+  "TLSVerificationEnabled": true,
+  "accountSessionCookiesCredentialsOrBusinessResponsesRead": false,
+  "exactDeployedReleaseIdentityNotEstablishedByThisProbe": true,
+  "observations": [
+    {
+      "path": "/zhumadian/home",
+      "status": 200,
+      "elapsedSeconds": 1.456,
+      "contentEncoding": null,
+      "cacheControl": "no-store",
+      "vary": null,
+      "contentLength": "0",
+      "redirectPresent": false
+    },
+    {
+      "path": "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js",
+      "status": 200,
+      "elapsedSeconds": 0.055,
+      "contentEncoding": null,
+      "cacheControl": "no-store",
+      "vary": null,
+      "contentLength": "0",
+      "redirectPresent": false
+    },
+    {
+      "path": "/zhumadian/branding-20261025/assets/css/index-ClWHaJx5.css",
+      "status": 200,
+      "elapsedSeconds": 0.052,
+      "contentEncoding": null,
+      "cacheControl": "no-store",
+      "vary": null,
+      "contentLength": "0",
+      "redirectPresent": false
+    }
+  ]
+}

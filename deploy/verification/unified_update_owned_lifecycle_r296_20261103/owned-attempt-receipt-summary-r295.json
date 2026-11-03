@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "actualApplyAndRollback": true,
+  "controllers": 3,
+  "normalControllerAndChildZeroReceipts": 3,
+  "originalModelsCompared": 398,
+  "exactCodeLedger": 363,
+  "oneOwnAttemptDirectoryVerified": true,
+  "allBackupCodeHashesVerified": true,
+  "actualIISTLS": false,
+  "HTTPIngressAdapterUsed": true,
+  "priorCleanupGuardRefusedFrontendAssetsBeforeAnyDeletion": true,
+  "exactOwnPlanAndRootProtectedPathsNowCheckedSeparately": true,
+  "rawRuntimeUUIDsOrBusinessRowsIncluded": false
+}

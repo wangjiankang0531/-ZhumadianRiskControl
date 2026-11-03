@@ -1,0 +1,46 @@
+{
+  "publicGitR220Completed": {
+    "completed": true,
+    "approvedByUserMessage": "call_74d2f9c6c2274e81b0516e50ecb1b563",
+    "files": 42,
+    "bytes": 336888,
+    "manifestSHA256": "c1e68356ce773ca00e7ecef2ab48cab95267a5cd55348803cd8f3abc0cec66b4",
+    "application": {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "branch": "review/workplace-r19-verified-partial-20261031",
+      "commit": "b68842becc408c1cc4361d87bccffc5a6bbd65c1",
+      "parent": "719f7c5136f3c210a22cb7c1b9266da5c2411e65",
+      "tree": "f5918dcffb92bc3a7c5f97dd9c00d6ab5b19e1a3"
+    },
+    "engine": {
+      "repository": "wangjiankang0531/-XNBYEngine",
+      "branch": "review/workplace-r19-verified-progress-20261031",
+      "commit": "cd8021509ff1d6eee02f800a9de4e117e9402f7d",
+      "parent": "ceed64771a448db0d89346839881adec9038acbe",
+      "tree": "666033f129396769887d74688869bd5d901ae3ff"
+    },
+    "all42BlobsReadBackExact": true,
+    "closedTreesSoleParentsAndFinalRefsReadBack": true,
+    "existingBranchesReused": true,
+    "mainOtherBranchesAndPrivateAncestorsUnchanged": true,
+    "priorAutoReviewRejectionResolvedBySpecificApproval": true,
+    "newPlanExerciseOrPerformanceCandidatesIncluded": false,
+    "publicReleaseUnchanged": "R36"
+  },
+  "performancePriority": true,
+  "performanceBaselineRequests": 11,
+  "planMapperNormalRoleCreateEditReadonlyDetailFiveStagesPassedInR113": true,
+  "exerciseJoinRuntimeReproductionNotYetProven": true,
+  "baselineR113WrongFieldSelectionFailurePreserved": true,
+  "latestHarness": "r227",
+  "nextBaselineAttempt": "r115",
+  "nextCandidateAttempt": "r116",
+  "newCandidateSourcesBuilt": 14,
+  "candidateFiles": 341,
+  "declarationGates": 13,
+  "fullBundlePreflightRecoveryAndFinalNativeFlowsPending": true,
+  "newCandidatePublicOrFormalInstalled": false,
+  "allOwnSixComponentTestsStoppedAndRestored": true,
+  "publicVersion": "R36",
+  "fullCloneReady": false
+}

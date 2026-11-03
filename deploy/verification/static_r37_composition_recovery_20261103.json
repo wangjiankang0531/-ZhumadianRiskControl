@@ -1,0 +1,57 @@
+{
+  "passed": true,
+  "writes": 6,
+  "removals": 0,
+  "negativeCompositionCases": 31,
+  "allNegativeCasesRefused": true,
+  "normalAndFaultRecoveryCases": [
+    {
+      "scenario": "normal",
+      "allSixOriginalFilesRestored": true,
+      "writesBeforeRestore": 6
+    },
+    {
+      "scenario": "first-write",
+      "allSixOriginalFilesRestored": true,
+      "writesBeforeRestore": 1
+    },
+    {
+      "scenario": "IIS-source-write",
+      "allSixOriginalFilesRestored": true,
+      "writesBeforeRestore": 1
+    },
+    {
+      "scenario": "live-IIS-write",
+      "allSixOriginalFilesRestored": true,
+      "writesBeforeRestore": 2
+    },
+    {
+      "scenario": "branding-write",
+      "allSixOriginalFilesRestored": true,
+      "writesBeforeRestore": 4
+    },
+    {
+      "scenario": "updater-write",
+      "allSixOriginalFilesRestored": true,
+      "writesBeforeRestore": 5
+    },
+    {
+      "scenario": "payload-manifest-write",
+      "allSixOriginalFilesRestored": true,
+      "writesBeforeRestore": 3
+    },
+    {
+      "scenario": "release-pointer-write",
+      "allSixOriginalFilesRestored": true,
+      "writesBeforeRestore": 6
+    }
+  ],
+  "foreignIISDriftRefusedBeforeAnyRestore": true,
+  "allPayloadRowsAndOriginalBusinessFrontendsPrivateConfigUnchanged": true,
+  "newUpdaterSHA256": "52daac9f348be6622592920240794a1ba701d46683fa6b7c3e0cb34da47fcf62",
+  "newReleaseSHA256": "909b64aa1315b8764b169c9874b8f52f903268b59c67adbf7b3799e85e29448c",
+  "updateManifestSHA256": "617ca95ffd5d01bcc9824fe854040d86c1996bc402356924da58abdf9d49c12d",
+  "oldReleaseSHA256": "daaf0be2b1cb17eab4640b7388901a0f00c1b920cfe2260c4d060234230fb853",
+  "fullProgramPreflightPassed": false,
+  "publicUploadedOrInstalled": false
+}

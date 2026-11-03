@@ -1,0 +1,84 @@
+def plan_mapper_declared(release, payload):
+    present = set(R37_PLAN_ROWS).intersection(payload['files'])
+    if R37_PLAN_FIELD not in release:
+        require(not present, 'EXPLICIT_PLAN_MAPPER_DESCRIPTOR_REQUIRED')
+        return False
+    require(release[R37_PLAN_FIELD] == R37_PLAN_CONTRACT, 'EXACT_PLAN_MAPPER_DESCRIPTOR_REQUIRED')
+    require(all(payload['files'].get(n) == pin for n, pin in {**R37_PLAN_ROWS, **R37_PLAN_SOURCE}.items()),
+            'EXACT_PLAN_MAPPER_AND_ORIGINAL_SOURCE_PINS_REQUIRED')
+    return True
+
+
+def plan_mapper_ready(app, row):
+    release = read(regular(app, 'release-manifest.json'))
+    payload = read(check_file(app, 'payload-manifest.json', release['payloadManifestSHA256']))
+    if not plan_mapper_declared(release, payload):
+        return None
+    run = regular(app, Path(row['run']).absolute().relative_to(app).as_posix())
+    require(run.parent == app / 'UserData/OriginalServer/runs' and re.fullmatch(r'j[1-9][0-9]{0,3}', run.name),
+            'OWNED_PLAN_MAPPER_RUNTIME_REQUIRED')
+    business = regular(run, 'b')
+    owner = marker(regular(business, 'server-owner.properties'))
+    require(owner.get('schema') == 'zhumadian.original.server.owner.v1' and owner.get('ownerId') == row['ownerId'],
+            'PLAN_MAPPER_RUNTIME_OWNER_MISMATCH')
+    for name, pin in {**R37_PLAN_ROWS, **R37_PLAN_SOURCE}.items():
+        check_file(app, name, pin['sha256'], pin['bytes'])
+        if name.startswith('payload/business/run-template/'):
+            check_file(business, name.removeprefix('payload/business/run-template/'), pin['sha256'], pin['bytes'])
+    return {'originalPlanXMLAndOriginalBusinessJarBytePinned': True,
+            'mappedStatementsOrAuthenticatedBusinessAcceptanceClaimed': False,
+            'businessAccountsSessionsOrCredentialsRead': False}
+
+
+def r37_plan_bundle_contract(app, bundle, plan, old, release, payload):
+    require(plan_mapper_declared(release, payload), 'R37_PLAN_MAPPER_REQUIRED')
+    require(release.get(R37_PACKAGE_FIELD) == R37_PACKAGE_CONTRACT, 'EXACT_R37_RETAINED_FRONTEND_DESCRIPTOR_REQUIRED')
+    require(R37_PLAN_FIELD not in old and R37_PACKAGE_FIELD not in old, 'R37_REQUIRES_FRESH_EXACT_R36_BASE')
+    require(history_declared(old) and old.get(R35_PERSONAL_FIELD) == R35_PERSONAL_CONTRACT,
+            'R37_REQUIRES_RETAINED_R36_HISTORY_AND_R35_PERSONAL_ROUTES')
+    previous = read(check_file(app, 'payload-manifest.json', old['payloadManifestSHA256']))
+    require(not set(R37_PLAN_ROWS).intersection(previous['files']), 'R37_NEW_PLAN_XML_PATH_MUST_BE_ABSENT')
+    for role, expected in R35_PERSONAL_CONTRACT['frontends'].items():
+        require(r32_frontend_manifest(previous['files'], role) == expected, 'EXACT_R36_FRONTEND_BASE_REQUIRED:' + role)
+    for role, expected in R37_PACKAGE_CONTRACT['frontends'].items():
+        require(r32_frontend_manifest(payload['files'], role) == expected, 'EXACT_R37_COMPILED_FRONTEND_REQUIRED:' + role)
+    control = 'tools/original_public_test_update.py'
+    require(old['controllerFiles'].get(control) == R37_OLD_UPDATER_SHA, 'EXACT_R36_UPDATER_REQUIRED')
+    require(set(plan['acceptedOldReleases']) == {sha(regular(app, 'release-manifest.json'))}, 'R37_ONE_EXACT_INSTALLED_BASE_REQUIRED')
+    require(plan.get('legacyEntrySHA256') == {}, 'R37_NO_LEGACY_ENTRY_CHANGES')
+    retained = lambda rows: {n: p for n, p in rows.items() if not n.startswith('frontend/emergency_pc/') and n not in R37_PLAN_ROWS}
+    require(retained(previous['files']) == retained(payload['files']), 'R37_OTHER_PAYLOAD_BYTES_RETAINED')
+    require(set(old['controllerFiles']) == set(release['controllerFiles']) and
+            {n: p for n, p in old['controllerFiles'].items() if n != control} ==
+            {n: p for n, p in release['controllerFiles'].items() if n != control} and
+            release['controllerFiles'][control] == sha(Path(__file__)), 'R37_OTHER_TWENTY_CONTROLS_AND_EXACT_UPDATER_REQUIRED')
+    mutable = {'payloadManifestSHA256', 'controllerFiles', 'publicTestRevision', 'publicAccepted', R37_PLAN_FIELD, R37_PACKAGE_FIELD}
+    require({n: p for n, p in old.items() if n not in mutable} == {n: p for n, p in release.items() if n not in mutable}
+            and release.get('publicAccepted') is False, 'R37_ALL_PRIOR_RELEASE_CONTRACTS_RETAINED')
+    require(risk_declared(release, payload) and native_default_declared(release, payload) and
+            async_declared(release, payload) and workflow_declared(release, payload) and
+            material_declared(release, payload) and team_declared(release, payload) and
+            runtime_pool_declared(release) and history_declared(release), 'R37_ALL_RETAINED_RUNTIME_CONTRACTS_REQUIRED')
+    changed = {n: p for n, p in payload['files'].items() if n.startswith('frontend/emergency_pc/') and previous['files'].get(n) != p}
+    required = {**changed, **R37_PLAN_ROWS}
+    require(set(plan['files']) == set(required) | {control, 'payload-manifest.json', 'release-manifest.json'},
+            'R37_EXACT_FRONTEND_PLAN_XML_AND_UPDATER_TRANSPORT')
+    require(plan['oldPayloadFiles'] == {n: previous['files'][n] for n in changed if n in previous['files']},
+            'R37_EXACT_OLD_CHANGED_FRONTEND_PINS')
+    obsolete = {n: {'bytes': p['bytes'], 'SHA256': p['sha256']} for n, p in previous['files'].items()
+                if n.startswith('frontend/emergency_pc/') and n not in payload['files']}
+    require(plan.get('removedFrontendFiles') == obsolete, 'R37_EXACT_OBSOLETE_EMERGENCY_ASSETS')
+    for name, pin in required.items():
+        require(plan['files'][name] == {'bytes': pin['bytes'], 'SHA256': pin['sha256']}, 'R37_EXACT_TRANSPORT_PIN:' + name)
+        check_file(bundle / 'payload', name, pin['sha256'], pin['bytes'])
+    import zipfile
+    for name, pin in R37_PLAN_SOURCE.items():
+        check_file(app, name, pin['sha256'], pin['bytes'])
+    with zipfile.ZipFile(regular(app, 'payload/business/application.jar')) as archive:
+        info = archive.getinfo('xml/EmergencyPlanMapper.xml')
+        require(info.file_size == 829, 'R37_ORIGINAL_PLAN_XML_SIZE_REQUIRED')
+        original = archive.read(info)
+    require(hashlib.sha256(original).hexdigest() == R37_PLAN_ROWS[R37_PLAN_XML]['sha256'], 'R37_ORIGINAL_PLAN_SQL_BYTES_REQUIRED')
+    return True
+
+

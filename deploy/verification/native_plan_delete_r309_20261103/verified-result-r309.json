@@ -1,0 +1,82 @@
+{
+  "schema": "xnby.r309.native-plan-delete-roundtrip.v1",
+  "at": "2026-11-03T17:02:27.303382+08:00",
+  "passed": true,
+  "attempt": "r135",
+  "normalRoleActualCompiledBrowserCases": 14,
+  "newDeleteCases": 3,
+  "cases": [
+    {
+      "case": "normal-nonadministrator-login-original-plan-menu-and-page",
+      "passed": true
+    },
+    {
+      "case": "plan-required-fields-block-write",
+      "passed": true
+    },
+    {
+      "case": "plan-invalid-phone-keeps-editor-no-save",
+      "passed": true
+    },
+    {
+      "case": "plan-native-create-original-controller-and-normal-role-detail-values",
+      "passed": true
+    },
+    {
+      "case": "plan-edit-reopen-detail-readonly-and-original-identity-kept",
+      "passed": true
+    },
+    {
+      "case": "native-optional-participants-empty-save-and-parent-scoped-list-roundtrip",
+      "passed": true
+    },
+    {
+      "case": "actual-org-tree-and-original-person-checkbox-dialog-select-two-people",
+      "passed": true
+    },
+    {
+      "case": "real-upload-held-before-network-blocks-submit-then-real-object-store-completes",
+      "passed": true
+    },
+    {
+      "case": "browser-only-false-business-response-retains-dialog-fields-people-and-file-no-server-write",
+      "passed": true,
+      "realSQLFailureClaimed": false
+    },
+    {
+      "case": "real-single-save-retry-preserves-two-people-parent-process-description-and-one-file",
+      "passed": true
+    },
+    {
+      "case": "native-exercise-list-view-readonly-details-and-actual-anchor-disk-download-identical",
+      "passed": true
+    },
+    {
+      "case": "native-plan-delete-cancel-no-request-record-kept",
+      "passed": true
+    },
+    {
+      "case": "native-plan-delete-browser-false-no-server-write-keeps-record-and-reports-failure",
+      "passed": true,
+      "realSQLFailureClaimed": false
+    },
+    {
+      "case": "native-plan-delete-real-confirm-once-parent-disappears-unrelated-plan-exercise-and-file-kept",
+      "passed": true
+    }
+  ],
+  "javaScriptExceptions": 0,
+  "falseDeleteResponseInjectedInBrowserBeforeNetworkNotActualSQLFailure": true,
+  "onlyNewOwnNoChildPlanDeletedAndUnrelatedOwnPlanExerciseAttachmentKept": true,
+  "actualR263ParameterDefaultAndFinalR286RuntimeSourceUsed": true,
+  "actualOriginalXMLStatementsRegistered": 226,
+  "originalModelsComparedUnchanged": 398,
+  "connectionCapacityWithoutRefusals": true,
+  "controllerAndBrowserNormalZeroActualDescendantsZero": true,
+  "allFourRestoreLayersPassedAndOriginalGReleaseRestored": true,
+  "businessFixtureMetadataIsNotAnotherFixedPackageUpdate": true,
+  "publicOrFormal18891OrScene8767OrDesktopChanged": false,
+  "newProductCodeChangedByThisTest": false,
+  "fullNangangTemplateOrWholeModuleAccepted": false,
+  "fullCloneReady": false
+}

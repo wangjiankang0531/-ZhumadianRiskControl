@@ -1,0 +1,106 @@
+{
+  "passed": true,
+  "checks": 20,
+  "cases": [
+    {
+      "case": "absent",
+      "acceptedWithSameSnapshotHash": true,
+      "onlyBooleanMapperSummaryReturned": true
+    },
+    {
+      "case": "file-original",
+      "acceptedWithSameSnapshotHash": true,
+      "onlyBooleanMapperSummaryReturned": true
+    },
+    {
+      "case": "file-camel",
+      "acceptedWithSameSnapshotHash": true,
+      "onlyBooleanMapperSummaryReturned": true
+    },
+    {
+      "case": "file-index",
+      "acceptedWithSameSnapshotHash": true,
+      "onlyBooleanMapperSummaryReturned": true
+    },
+    {
+      "case": "file-foreign",
+      "refusedBeforeServiceEntry": true
+    },
+    {
+      "case": "file-empty",
+      "refusedBeforeServiceEntry": true
+    },
+    {
+      "case": "file-list",
+      "refusedBeforeServiceEntry": true
+    },
+    {
+      "case": "environment-original",
+      "acceptedWithSameSnapshotHash": true,
+      "onlyBooleanMapperSummaryReturned": true
+    },
+    {
+      "case": "environment-foreign",
+      "refusedBeforeServiceEntry": true
+    },
+    {
+      "case": "jvm-original",
+      "acceptedWithSameSnapshotHash": true,
+      "onlyBooleanMapperSummaryReturned": true
+    },
+    {
+      "case": "jvm-foreign",
+      "refusedBeforeServiceEntry": true
+    },
+    {
+      "case": "jvm-missing-equals",
+      "refusedBeforeServiceEntry": true
+    },
+    {
+      "case": "cli-original",
+      "acceptedWithSameSnapshotHash": true,
+      "onlyBooleanMapperSummaryReturned": true
+    },
+    {
+      "case": "cli-empty",
+      "refusedBeforeServiceEntry": true
+    },
+    {
+      "case": "conflicting-explicit-values",
+      "refusedBeforeServiceEntry": true
+    },
+    {
+      "case": "argument-shape-non-list",
+      "refusedBeforeServiceEntry": true
+    },
+    {
+      "case": "argument-shape-non-string",
+      "refusedBeforeServiceEntry": true
+    },
+    {
+      "case": "already-foreign-at-apply",
+      "realApplyUpdateRefusedBeforeNormalStop": true,
+      "explicitFixtureEvents": []
+    },
+    {
+      "case": "changed-after-preflight-before-stop",
+      "realApplyUpdateRefusedBeforeNormalStop": true,
+      "explicitFixtureEvents": [
+        "explicit-owned-ready-spy",
+        "explicit-ingress-spy"
+      ]
+    },
+    {
+      "case": "legacy-absence-predicate-spy-does-not-add-mapper-restrictions",
+      "passed": true,
+      "releaseDeployabilityNotAsserted": true
+    }
+  ],
+  "candidateSourceSHA256": "f4eae55e6c2b35b4bee67d228bfc8904968ce49d86ea8265436e7e08b2e2964d",
+  "actualCandidateSnapshotPreflightExecuted": true,
+  "actualApplyUpdateBodyReachedOnlyExplicitIdentityIngressSpies": true,
+  "sameConfigurationSnapshotAndPreStopHashCloseReportedGap": true,
+  "actualSixComponentLifecycleOrIISTLSVerified": false,
+  "databaseNetworkPublicDesktopOrRealCredentialsTouched": false,
+  "fixedR38TransportStillNeedsRebuildAndVerification": true
+}

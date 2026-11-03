@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "exactR38StaticSourcePins": {
+    "security_pc": {
+      "files": 836,
+      "allExactR38StaticFilesPinned": true
+    },
+    "emergency_pc": {
+      "files": 341,
+      "allExactR38StaticFilesPinned": true
+    }
+  },
+  "actualNginxRequestsEachMode": 12,
+  "decodedHTMLStaticAndSyntheticAPIIdentical": true,
+  "savings": [
+    {
+      "resource": "security-js",
+      "beforeBytes": 2624898,
+      "afterBytes": 819234,
+      "reductionPercent": 68.79,
+      "decodedContentIdentical": true
+    },
+    {
+      "resource": "emergency-js",
+      "beforeBytes": 2575935,
+      "afterBytes": 806754,
+      "reductionPercent": 68.68,
+      "decodedContentIdentical": true
+    },
+    {
+      "resource": "security-css",
+      "beforeBytes": 869689,
+      "afterBytes": 126860,
+      "reductionPercent": 85.41,
+      "decodedContentIdentical": true
+    },
+    {
+      "resource": "emergency-css",
+      "beforeBytes": 868546,
+      "afterBytes": 126553,
+      "reductionPercent": 85.43,
+      "decodedContentIdentical": true
+    }
+  ],
+  "staticExpected": {
+    "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js": {
+      "decodedBytes": 2624898,
+      "decodedSHA256": "3fda69730a678c07a2c83117eae03796f9fd3ef5d34a5928cc578a8c957806df"
+    },
+    "/zhumadian/emergency/branding-20261025/assets/js/wf-index-CeoNouGN.js": {
+      "decodedBytes": 2575935,
+      "decodedSHA256": "812250a395899dee82b166db68c034e1f72417571821acc56ffc657383d104a1"
+    },
+    "/zhumadian/branding-20261025/assets/css/index-ClWHaJx5.css": {
+      "decodedBytes": 869689,
+      "decodedSHA256": "4672b6a197d7ab95683739a1dd1677b19dd0c117815f4bcfdec4244de5cd1b66"
+    },
+    "/zhumadian/emergency/branding-20261025/assets/css/index-D0NHlCez.css": {
+      "decodedBytes": 868546,
+      "decodedSHA256": "675d19500149b12bd203e210c359040c5b48f48b8b3f8818f521f1228692992a"
+    }
+  },
+  "normalNginxExitAndDescendantsZero": true,
+  "newAspNetHandlerOrActualIISTested": false,
+  "previousByteExactAspNetHandlerEvidenceUnchanged": true,
+  "quarantinedExecutableRestoredOrSecuritySettingsChanged": false,
+  "realBusinessOrDatabaseOrPublicOrDesktopTouched": false
+}

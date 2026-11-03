@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "originalGCodeAndPointersRestored": true,
+  "allOwnedControllerHandlesTerminal": true,
+  "controllers": [
+    {
+      "controllerExitCode": 0,
+      "actualJobDescendantsZero": true,
+      "receipt": {
+        "normalOwnedShutdown": true,
+        "allOwnedChildrenExited": true,
+        "exitCodesBeforeJobClose": {
+          "store": 0,
+          "mysql": 0,
+          "redis": 0,
+          "platform": 0,
+          "business": 0,
+          "gateway": 0
+        },
+        "platformContextClosed": true,
+        "businessContextClosed": true
+      }
+    },
+    {
+      "controllerExitCode": 0,
+      "actualJobDescendantsZero": true,
+      "receipt": {
+        "normalOwnedShutdown": true,
+        "allOwnedChildrenExited": true,
+        "exitCodesBeforeJobClose": {
+          "store": 0,
+          "mysql": 0,
+          "redis": 0,
+          "platform": 0,
+          "business": 0,
+          "gateway": 0
+        },
+        "platformContextClosed": true,
+        "businessContextClosed": true
+      }
+    },
+    {
+      "controllerExitCode": 0,
+      "actualJobDescendantsZero": true,
+      "receipt": {
+        "normalOwnedShutdown": true,
+        "allOwnedChildrenExited": true,
+        "exitCodesBeforeJobClose": {
+          "store": 0,
+          "mysql": 0,
+          "redis": 0,
+          "platform": 0,
+          "business": 0,
+          "gateway": 0
+        },
+        "platformContextClosed": true,
+        "businessContextClosed": true
+      }
+    }
+  ],
+  "noRuntimeUUIDsPIDsOrBusinessRowsIncluded": true,
+  "actualIISTLSNotTested": true,
+  "forceTerminationUsed": false
+}

@@ -1,0 +1,93 @@
+{
+  "schema": "xnby.r249.plan-exercise-verified-candidate.v1",
+  "actualAttempt": "r120",
+  "result": {
+    "schema": "xnby.r245.native-plan-exercise-regression.v1",
+    "allPassed": true,
+    "baseline": false,
+    "nativeBrowserCases": 11,
+    "normalNonAdministratorLoginAndOriginalPlanExerciseRoutes": true,
+    "sixComponentsAndBrowserNormalZeroActualDescendantsZero": true,
+    "original398ModelsUnchanged": true,
+    "connectionCapacityWithoutRefusals": true,
+    "publicFormalOrDesktopChanged": false,
+    "originalNangangTemplateOrWholeAcceptanceClaimed": false,
+    "fullCloneReady": false
+  },
+  "browserCases": [
+    {
+      "case": "normal-nonadministrator-login-original-plan-menu-and-page",
+      "passed": true
+    },
+    {
+      "case": "plan-required-fields-block-write",
+      "passed": true
+    },
+    {
+      "case": "plan-invalid-phone-keeps-editor-no-save",
+      "passed": true
+    },
+    {
+      "case": "plan-native-create-original-controller-and-normal-role-detail-values",
+      "passed": true
+    },
+    {
+      "case": "plan-edit-reopen-detail-readonly-and-original-identity-kept",
+      "passed": true
+    },
+    {
+      "case": "native-optional-participants-empty-save-and-parent-scoped-list-roundtrip",
+      "passed": true
+    },
+    {
+      "case": "actual-org-tree-and-original-person-checkbox-dialog-select-two-people",
+      "passed": true
+    },
+    {
+      "case": "real-upload-held-before-network-blocks-submit-then-real-object-store-completes",
+      "passed": true
+    },
+    {
+      "case": "browser-only-false-business-response-retains-dialog-fields-people-and-file-no-server-write",
+      "passed": true,
+      "realSQLFailureClaimed": false
+    },
+    {
+      "case": "real-single-save-retry-preserves-two-people-parent-process-description-and-one-file",
+      "passed": true
+    },
+    {
+      "case": "native-exercise-list-view-readonly-details-and-actual-anchor-disk-download-identical",
+      "passed": true
+    }
+  ],
+  "javascriptRuntimeExceptions": 0,
+  "sixNormalExitCodes": {
+    "store": 0,
+    "mysql": 0,
+    "redis": 0,
+    "platform": 0,
+    "business": 0,
+    "gateway": 0
+  },
+  "actualDescendantsZero": true,
+  "originalFrontendMapperUpdaterConfigurationAndManifestRestored": true,
+  "originalReleaseSHA256Restored": "e9dcd8761860dd4624daf4ee2093bb384062996b37c7c8a3af5ff020d50481e4",
+  "sourcePins": {
+    "prepare_owned_return_serial_r163_20261102.py": "c1e6f4599b9aa4afc6534a5ba6ea2d612d7b5c6010b25f3100c1f77e31372124",
+    "prepare_production_history_runtime_r245_candidate.py": "b3b14d8af1e8a976f67261c962b9725e4ad6da82ebe77b9287e47ca7c40fcf20",
+    "plan_mapper_patch_r245.py": "187a9ffa196f73ec18eaa8edafca18ae671a42252d3c38519df7ed36adee78d4",
+    "prepare_personal_workflow_frontend_r245_candidate.py": "fb615ef001f8608835cb74afe800cbfeb65079b305fd6fc9276a63d5aff03939",
+    "run_plan_exercise_r245_candidate_20261103.py": "943c1f712e1f1dbcb64dcf092e6bfbd9d702fcb001417eca3977dad648dd9533",
+    "verify_full_controller_plan_exercise_r245_20261103.py": "2a49d4a5062678a23ca658ef7e59def8381dd4bef81a6299bcafcbb678303a54",
+    "verify_native_plan_exercise_r245_20261103.mjs": "3ec041383da81c0fc79607b8b0b229bf2f05cbc2db30326e60383a98650f5c99",
+    "restore_personal_workflow_frontend_r245_candidate.py": "40ab48de721e449728e64a55402a05e16078ff5147b1d93ec49fc31f3d40869e",
+    "restore_production_history_runtime_r245_candidate.py": "bc9048d68e1a6cf8feb7aabb31df4e397d6ebe5946daf398cf9fc04c31a79c18",
+    "OwnPlanPortalMenusR222.java": "db9eb68f3fa698a2c56700f8fc4ae3045bef38c48ee0e570d006310b877e047c",
+    "OwnPlanDictionaryR226.java": "146ce4b866c8615080122563d0013da520d4fc5a524b13c494c1664659d425d9"
+  },
+  "failureInjectionWasBrowserResponseOnlyNotSQL": true,
+  "sharedTaskUploaderRegressionStillPending": true,
+  "originalNangangFullAcceptancePassed": false,
+  "newProductPublicDeploymentOrPublicGitPerformed": false
+}

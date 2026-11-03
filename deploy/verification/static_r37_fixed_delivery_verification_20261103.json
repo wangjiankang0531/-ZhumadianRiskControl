@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "eightTransportFilesExact": true,
+  "zipClosedAndAllSixPayloadPinsExact": true,
+  "wrapperSyntaxAndFixedOriginalR36LeaseVerified": true,
+  "responseValidatorSyntheticBodyChecks": 28,
+  "realRepresentationsSeparatelyVerifiedByR230AndR231": true,
+  "actualFixedWrapperOrderCases": [
+    {
+      "invalidLayout": true,
+      "events": [
+        "load_bundle_explicit_fixture_spy"
+      ],
+      "serviceCalls": 0,
+      "fixedArchiveActuallyExtracted": true,
+      "actualPoolPreflightUsed": true
+    },
+    {
+      "invalidLayout": false,
+      "events": [
+        "load_bundle_explicit_fixture_spy",
+        "owned_ready_explicit_spy",
+        "health_explicit_spy"
+      ],
+      "serviceCalls": 0,
+      "fixedArchiveActuallyExtracted": true,
+      "actualPoolPreflightUsed": true
+    }
+  ],
+  "fullActualLoadBundleSeparatelyPassed15557Files": true,
+  "identityAndReadinessExplicitSpies": true,
+  "noServicesOrPublicOrDesktopOperated": true,
+  "newUpdaterActualSixComponentLifecycleIndependentlyRun": false,
+  "allStopLaunchAndBackupRestoreFunctionsASTRetainedFromVerifiedR36": true
+}

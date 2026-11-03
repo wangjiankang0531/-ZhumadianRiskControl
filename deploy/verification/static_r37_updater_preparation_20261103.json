@@ -1,0 +1,36 @@
+{
+  "prepared": true,
+  "priorUpdaterSHA256": "67545498b3f823e03394ecebdbf9aed12a64c719cca16b7a56a13abb66b49eca",
+  "newUpdaterSHA256": "52daac9f348be6622592920240794a1ba701d46683fa6b7c3e0cb34da47fcf62",
+  "onlyExistingFunctionsChanged": [
+    "apply_update",
+    "load_bundle"
+  ],
+  "applyUpdateOnlyAdditionalAccurateIISReceiptAssignment": true,
+  "allNormalStopLaunchAndBackupReplaceRestoreRecoveryASTIdentical": true,
+  "staticContract": {
+    "revision": "gzip-hash-assets-no-store-html-api-v1",
+    "files": {
+      "tools/original_project_branding.py": {
+        "bytes": 6955,
+        "sha256": "a8ba77817ab0fd3f1e45d06605204c27f2840f27aedb392f6590a91a9c3def4c"
+      },
+      "deploy/iis_original/App_Code/XnbyReferenceProxy.cs": {
+        "bytes": 12869,
+        "sha256": "555c350a8ba9c15e118761f86de21e5e1373a26ee225a04d3f1602a21ab92e53"
+      },
+      "iis/App_Code/XnbyReferenceProxy.cs": {
+        "bytes": 12869,
+        "sha256": "555c350a8ba9c15e118761f86de21e5e1373a26ee225a04d3f1602a21ab92e53"
+      }
+    },
+    "onlyPublicStaticGETHEADNegotiatesGzip": true,
+    "encodedResponseBytesPreserved": true,
+    "contentEncodingAndVaryForwarded": true,
+    "successfulHashedAssetsImmutable": true,
+    "htmlBusinessErrorsAndNonHashedResourcesNotLongCached": true,
+    "businessPayloadAuthDatabaseAndPrivateConfigurationUnchanged": true
+  },
+  "finalPackageOrFullPreflightOrActualLifecyclePassed": false,
+  "publicDeployed": false
+}

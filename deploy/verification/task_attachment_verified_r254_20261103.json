@@ -1,0 +1,576 @@
+{
+  "schema": "xnby.r254.verified-task-attachment-candidate.v1",
+  "result": {
+    "schema": "xnby.r252.task-attachment-candidate-regression.v1",
+    "allPassed": true,
+    "actualExecutedNativeBrowserPhases": 9,
+    "continuedSamePriorCreateFeedbackInstance": false,
+    "actualNativeCreateUploadFeedbackDistinctParallelBranchesAndFinalApprovalPassed": true,
+    "normalAllSixControllerAndBrowsersExitZeroAndActualDescendantsZero": true,
+    "original398ModelsUnchanged": true,
+    "connectionCapacityWithoutRefusals": true,
+    "productCodeChanged": true,
+    "candidateFrontendR224Installed": true,
+    "onlyOwnDeclaredSeparateHistoryModuleTemporarilyInstalled": true,
+    "productionServiceGateNotSimulated": true,
+    "ordinaryParallelGatewayDidNotCreateNonTargetAddsignHistory": true,
+    "newDatasourceOrDDL": false,
+    "publicFormalOrDesktopChanged": false,
+    "onlyOwnSyntheticConfigurationAndDataUsed": true,
+    "resubmissionNotExecuted": true,
+    "actualDistinctParallelBranchesAndFinalApprovalCompleted": true,
+    "onlyPreviouslyCompletedAddsignReadbackExecuted": false,
+    "addsignType": "none",
+    "originalNangangTemplateOrWholeAcceptanceClaimed": false,
+    "fullCloneReady": false
+  },
+  "phaseResults": [
+    {
+      "phase": "operator",
+      "passed": true,
+      "normalChromeExitCode": 0,
+      "cases": [
+        {
+          "case": "real-original-login-and-standard-workflow-role-menus",
+          "passed": true
+        },
+        {
+          "case": "normal-sdk-native-serial-form-template-release-and-version-binding",
+          "passed": true
+        },
+        {
+          "case": "shared-candidate-uploader-held-before-network-blocks-task-submit-and-keeps-input",
+          "passed": true
+        },
+        {
+          "case": "actual-original-file-controller-and-object-store-upload-through-native-component",
+          "passed": true,
+          "syntheticFileBytes": 68
+        },
+        {
+          "case": "shared-candidate-task-save-has-one-inflight-request-and-retains-form-until-confirmed",
+          "passed": true
+        },
+        {
+          "case": "actual-task-list-add-picker-submit-creates-selected-event-and-native-instance",
+          "passed": true,
+          "taskCreateUIAccepted": true
+        },
+        {
+          "case": "我发起的-native-home-entry-and-list-without-server-workflow-menu",
+          "rows": 10,
+          "passed": true
+        },
+        {
+          "case": "我发起的-normal-browser-refresh-keeps-personal-route-with-missing-menu",
+          "passed": true
+        },
+        {
+          "case": "我发起的-real-detail-record-state-and-diagram-tabs",
+          "passed": true
+        },
+        {
+          "case": "actual-workflow-task-component-read-by-native-instance-and-rendered-read-only",
+          "passed": true
+        },
+        {
+          "case": "initial-submitter-identity-rendered",
+          "passed": true
+        },
+        {
+          "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+          "passed": true,
+          "rows": 3,
+          "actualTimedRows": 1,
+          "actualUntimedRows": 2,
+          "publicG6Reproduced": false
+        },
+        {
+          "case": "actual-business-reopen-workflow-detail-link-and-original-file-download-bytes-match",
+          "passed": true,
+          "bytes": 68,
+          "attachmentPreserved": true
+        }
+      ]
+    },
+    {
+      "phase": "operator-disposal",
+      "passed": true,
+      "normalChromeExitCode": 0,
+      "cases": [
+        {
+          "case": "real-original-login-and-standard-workflow-role-menus",
+          "passed": true
+        },
+        {
+          "case": "empty-real-feedback-required-fields-block-submit",
+          "passed": true
+        },
+        {
+          "case": "one-original-ui-feedback-save-preserves-instance-and-stores-time-feedback-evaluation",
+          "passed": true
+        },
+        {
+          "case": "我发起的-native-home-entry-and-list-without-server-workflow-menu",
+          "rows": 10,
+          "passed": true
+        },
+        {
+          "case": "我发起的-normal-browser-refresh-keeps-personal-route-with-missing-menu",
+          "passed": true
+        },
+        {
+          "case": "我发起的-real-detail-record-state-and-diagram-tabs",
+          "passed": true
+        },
+        {
+          "case": "actual-workflow-task-component-read-by-native-instance-and-rendered-read-only",
+          "passed": true
+        },
+        {
+          "case": "initial-submitter-identity-rendered",
+          "passed": true
+        },
+        {
+          "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+          "passed": true,
+          "rows": 3,
+          "actualTimedRows": 1,
+          "actualUntimedRows": 2,
+          "publicG6Reproduced": false
+        },
+        {
+          "case": "actual-business-reopen-workflow-detail-link-and-original-file-download-bytes-match",
+          "passed": true,
+          "bytes": 68,
+          "attachmentPreserved": true
+        }
+      ]
+    },
+    {
+      "phase": "reviewer-preview",
+      "passed": true,
+      "normalChromeExitCode": 0,
+      "cases": [
+        {
+          "case": "real-original-login-and-standard-workflow-role-menus",
+          "passed": true
+        },
+        {
+          "case": "待办事宜-native-home-entry-and-list-without-server-workflow-menu",
+          "rows": 10,
+          "passed": true
+        },
+        {
+          "case": "待办事宜-normal-browser-refresh-keeps-personal-route-with-missing-menu",
+          "passed": true
+        },
+        {
+          "case": "待办事宜-real-detail-record-state-and-diagram-tabs",
+          "passed": true
+        },
+        {
+          "case": "actual-workflow-task-component-read-by-native-instance-and-rendered-read-only",
+          "passed": true
+        },
+        {
+          "case": "initial-submitter-identity-rendered",
+          "passed": true
+        },
+        {
+          "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+          "passed": true,
+          "rows": 3,
+          "actualTimedRows": 1,
+          "actualUntimedRows": 2,
+          "publicG6Reproduced": false
+        },
+        {
+          "case": "actual-business-reopen-workflow-detail-link-and-original-file-download-bytes-match",
+          "passed": true,
+          "bytes": 68,
+          "attachmentPreserved": true
+        },
+        {
+          "case": "second-distinct-parallel-node-already-pending-before-first-node-approval",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "operator-added",
+      "passed": true,
+      "normalChromeExitCode": 0,
+      "cases": [
+        {
+          "case": "real-original-login-and-standard-workflow-role-menus",
+          "passed": true
+        },
+        {
+          "case": "待办事宜-native-home-entry-and-list-without-server-workflow-menu",
+          "rows": 2,
+          "passed": true
+        },
+        {
+          "case": "待办事宜-normal-browser-refresh-keeps-personal-route-with-missing-menu",
+          "passed": true
+        },
+        {
+          "case": "待办事宜-real-detail-record-state-and-diagram-tabs",
+          "passed": true
+        },
+        {
+          "case": "actual-workflow-task-component-read-by-native-instance-and-rendered-read-only",
+          "passed": true
+        },
+        {
+          "case": "initial-submitter-identity-rendered",
+          "passed": true
+        },
+        {
+          "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+          "passed": true,
+          "rows": 3,
+          "actualTimedRows": 1,
+          "actualUntimedRows": 2,
+          "publicG6Reproduced": false
+        },
+        {
+          "case": "actual-business-reopen-workflow-detail-link-and-original-file-download-bytes-match",
+          "passed": true,
+          "bytes": 68,
+          "attachmentPreserved": true
+        },
+        {
+          "case": "distinct-parallel-branch-single-normal-assignee-operator-added",
+          "passed": true
+        },
+        {
+          "case": "original-addsign-chain-one-native-approval-operator-added",
+          "passed": true,
+          "nativeAuditRequests": 1,
+          "manualBusinessTaskUpdateSent": false,
+          "manualDisposalFeedbackAccepted": true
+        }
+      ]
+    },
+    {
+      "phase": "operator-waiting-parallel-b",
+      "passed": true,
+      "normalChromeExitCode": 0,
+      "cases": [
+        {
+          "case": "real-original-login-and-standard-workflow-role-menus",
+          "passed": true
+        },
+        {
+          "case": "待办事宜-native-home-entry-and-list-without-server-workflow-menu",
+          "rows": 1,
+          "passed": true
+        },
+        {
+          "case": "待办事宜-normal-browser-refresh-keeps-personal-route-with-missing-menu",
+          "passed": true
+        },
+        {
+          "case": "first-countersign-approver-no-longer-has-same-instance-in-pending-list-before-second-approval",
+          "passed": true
+        },
+        {
+          "case": "我发起的-native-home-entry-and-list-without-server-workflow-menu",
+          "rows": 10,
+          "passed": true
+        },
+        {
+          "case": "我发起的-normal-browser-refresh-keeps-personal-route-with-missing-menu",
+          "passed": true
+        },
+        {
+          "case": "我发起的-real-detail-record-state-and-diagram-tabs",
+          "passed": true
+        },
+        {
+          "case": "actual-workflow-task-component-read-by-native-instance-and-rendered-read-only",
+          "passed": true
+        },
+        {
+          "case": "initial-submitter-identity-rendered",
+          "passed": true
+        },
+        {
+          "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+          "passed": true,
+          "rows": 3,
+          "actualTimedRows": 2,
+          "actualUntimedRows": 1,
+          "publicG6Reproduced": false
+        },
+        {
+          "case": "actual-business-reopen-workflow-detail-link-and-original-file-download-bytes-match",
+          "passed": true,
+          "bytes": 68,
+          "attachmentPreserved": true
+        },
+        {
+          "case": "initiator-detail-keeps-only-original-withdraw-and-no-approval-while-other-countersign-pending",
+          "passed": true,
+          "originalWithdrawAvailable": true
+        }
+      ]
+    },
+    {
+      "phase": "reviewer-after-added",
+      "passed": true,
+      "normalChromeExitCode": 0,
+      "cases": [
+        {
+          "case": "real-original-login-and-standard-workflow-role-menus",
+          "passed": true
+        },
+        {
+          "case": "待办事宜-native-home-entry-and-list-without-server-workflow-menu",
+          "rows": 10,
+          "passed": true
+        },
+        {
+          "case": "待办事宜-normal-browser-refresh-keeps-personal-route-with-missing-menu",
+          "passed": true
+        },
+        {
+          "case": "待办事宜-real-detail-record-state-and-diagram-tabs",
+          "passed": true
+        },
+        {
+          "case": "actual-workflow-task-component-read-by-native-instance-and-rendered-read-only",
+          "passed": true
+        },
+        {
+          "case": "initial-submitter-identity-rendered",
+          "passed": true
+        },
+        {
+          "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+          "passed": true,
+          "rows": 3,
+          "actualTimedRows": 2,
+          "actualUntimedRows": 1,
+          "publicG6Reproduced": false
+        },
+        {
+          "case": "actual-business-reopen-workflow-detail-link-and-original-file-download-bytes-match",
+          "passed": true,
+          "bytes": 68,
+          "attachmentPreserved": true
+        },
+        {
+          "case": "distinct-parallel-branch-single-normal-assignee-reviewer-after-added",
+          "passed": true
+        },
+        {
+          "case": "original-addsign-chain-one-native-approval-reviewer-after-added",
+          "passed": true,
+          "nativeAuditRequests": 1,
+          "manualBusinessTaskUpdateSent": false,
+          "manualDisposalFeedbackAccepted": true
+        }
+      ]
+    },
+    {
+      "phase": "reviewer-final",
+      "passed": true,
+      "normalChromeExitCode": 0,
+      "cases": [
+        {
+          "case": "real-original-login-and-standard-workflow-role-menus",
+          "passed": true
+        },
+        {
+          "case": "待办事宜-native-home-entry-and-list-without-server-workflow-menu",
+          "rows": 2,
+          "passed": true
+        },
+        {
+          "case": "待办事宜-normal-browser-refresh-keeps-personal-route-with-missing-menu",
+          "passed": true
+        },
+        {
+          "case": "待办事宜-real-detail-record-state-and-diagram-tabs",
+          "passed": true
+        },
+        {
+          "case": "actual-workflow-task-component-read-by-native-instance-and-rendered-read-only",
+          "passed": true
+        },
+        {
+          "case": "initial-submitter-identity-rendered",
+          "passed": true
+        },
+        {
+          "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+          "passed": true,
+          "rows": 4,
+          "actualTimedRows": 3,
+          "actualUntimedRows": 1,
+          "publicG6Reproduced": false
+        },
+        {
+          "case": "actual-business-reopen-workflow-detail-link-and-original-file-download-bytes-match",
+          "passed": true,
+          "bytes": 68,
+          "attachmentPreserved": true
+        },
+        {
+          "case": "original-addsign-chain-one-native-approval-reviewer-final",
+          "passed": true,
+          "nativeAuditRequests": 1,
+          "manualBusinessTaskUpdateSent": false,
+          "manualDisposalFeedbackAccepted": true
+        }
+      ]
+    },
+    {
+      "phase": "reviewer-handled-readback",
+      "passed": true,
+      "normalChromeExitCode": 0,
+      "cases": [
+        {
+          "case": "real-original-login-and-standard-workflow-role-menus",
+          "passed": true
+        },
+        {
+          "case": "我已处理-native-home-entry-and-list-without-server-workflow-menu",
+          "rows": 10,
+          "passed": true
+        },
+        {
+          "case": "我已处理-normal-browser-refresh-keeps-personal-route-with-missing-menu",
+          "passed": true
+        },
+        {
+          "case": "我已处理-real-detail-record-state-and-diagram-tabs",
+          "passed": true
+        },
+        {
+          "case": "actual-workflow-task-component-read-by-native-instance-and-rendered-read-only",
+          "passed": true
+        },
+        {
+          "case": "initial-submitter-identity-rendered",
+          "passed": true
+        },
+        {
+          "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+          "passed": true,
+          "rows": 5,
+          "actualTimedRows": 5,
+          "actualUntimedRows": 0,
+          "publicG6Reproduced": false
+        },
+        {
+          "case": "actual-business-reopen-workflow-detail-link-and-original-file-download-bytes-match",
+          "passed": true,
+          "bytes": 68,
+          "attachmentPreserved": true
+        },
+        {
+          "case": "original-handled-list-and-detail-accessible-without-workflow-menu-and-remains-readonly",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "operator-completed-readback",
+      "passed": true,
+      "normalChromeExitCode": 0,
+      "cases": [
+        {
+          "case": "real-original-login-and-standard-workflow-role-menus",
+          "passed": true
+        },
+        {
+          "case": "我发起的-native-home-entry-and-list-without-server-workflow-menu",
+          "rows": 10,
+          "passed": true
+        },
+        {
+          "case": "我发起的-normal-browser-refresh-keeps-personal-route-with-missing-menu",
+          "passed": true
+        },
+        {
+          "case": "我发起的-real-detail-record-state-and-diagram-tabs",
+          "passed": true
+        },
+        {
+          "case": "actual-workflow-task-component-read-by-native-instance-and-rendered-read-only",
+          "passed": true
+        },
+        {
+          "case": "initial-submitter-identity-rendered",
+          "passed": true
+        },
+        {
+          "case": "all-native-record-time-node-and-actor-cells-match-actual-provider",
+          "passed": true,
+          "rows": 5,
+          "actualTimedRows": 5,
+          "actualUntimedRows": 0,
+          "publicG6Reproduced": false
+        },
+        {
+          "case": "actual-business-reopen-workflow-detail-link-and-original-file-download-bytes-match",
+          "passed": true,
+          "bytes": 68,
+          "attachmentPreserved": true
+        },
+        {
+          "case": "two-ordinary-countersign-approvers-and-final-node-distinct-opinions-and-order-preserved",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "normalSixComponentExitCodes": {
+    "store": 0,
+    "mysql": 0,
+    "redis": 0,
+    "platform": 0,
+    "business": 0,
+    "gateway": 0
+  },
+  "allActualDescendantsZeroAndOriginalBytesRestored": true,
+  "priorFailedAttemptR121": {
+    "failure": {
+      "type": "AssertionError",
+      "phase": "native-two-level-workflow-browsers",
+      "message": "OWN_SYNTHETIC_MENU_VISIBILITY_HIDE_FAILED",
+      "frames": [
+        {
+          "file": "verify_full_controller_task_attachment_r250_20261103.py",
+          "line": 200,
+          "function": "<module>"
+        },
+        {
+          "file": "verify_full_controller_task_attachment_r250_20261103.py",
+          "line": 52,
+          "function": "own_menu_visibility"
+        }
+      ]
+    },
+    "normalExitAndExactRestorePassed": true,
+    "hardcodedRootGuardRejectedBeforeDatabaseConnection": true,
+    "nativeBusinessBrowserStarted": false
+  },
+  "offlineOriginalMapperRegistration": {
+    "onlyOfflineRegistrationNoSpringSQLNetworkOrDatasource": true,
+    "defaultMapperResources": [
+      "FirstAidTeamMembersMapper.xml"
+    ],
+    "originalXMLParsed": 96,
+    "fullyQualifiedMappedStatements": 1319,
+    "pendingResolutionErrorType": "",
+    "parseErrorTypes": []
+  },
+  "offlineRegistrationIsNotRuntimeSpringProof": true,
+  "originalNangangWholeAcceptancePassed": false,
+  "publicDeploymentOrDesktopOrNewPublicGitPerformed": false
+}

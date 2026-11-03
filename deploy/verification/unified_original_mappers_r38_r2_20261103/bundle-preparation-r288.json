@@ -1,0 +1,15 @@
+{
+  "prepared": true,
+  "previousUnpublishedCandidateSuperseded": true,
+  "updaterSourceSHA256": "f4eae55e6c2b35b4bee67d228bfc8904968ce49d86ea8265436e7e08b2e2964d",
+  "updateManifestSHA256": "7b76dc695252328d0c3e6a891ec9c67fb3038819ea763106f2a1926669732c66",
+  "oldReleaseSHA256": "daaf0be2b1cb17eab4640b7388901a0f00c1b920cfe2260c4d060234230fb853",
+  "newReleaseSHA256": "4bca6275e23cfc44d2a18e60e8409345f6231e3b9c7a6975ca9334bbab6805a4",
+  "writes": 186,
+  "removals": 177,
+  "onlyUpdaterAndReleaseMetadataChangedFromPreviousCandidate": true,
+  "sameSnapshotMapperAndPoolPreflightNowInsideInstallTransaction": true,
+  "publicR37AndR36Untouched": true,
+  "publicUploadedOrInstalled": false,
+  "fullProgramAndFileTransactionsPending": true
+}

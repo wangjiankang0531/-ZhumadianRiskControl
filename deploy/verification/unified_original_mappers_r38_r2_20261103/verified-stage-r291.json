@@ -1,0 +1,96 @@
+{
+  "schema": "xnby.r291.unified-snapshot-candidate.v1",
+  "at": "2026-11-03T16:06:05.539873+08:00",
+  "previousUnpublishedCandidateWithdrawn": true,
+  "previousManifestSHA256": "72b7d48b25ce0e14504c20d99fddc6adde0c930f00bc0036bcce3a3c17a002d3",
+  "manifestSHA256": "3882688ce2836d640530aef872b77b4306d665241e329522ae5c6dd7ebad0956",
+  "transportFiles": 8,
+  "transportBytes": 2114220,
+  "writes": 186,
+  "removals": 177,
+  "sourcePins": [
+    {
+      "path": "tools/reproduce_mapper_preflight_gap_r285.py",
+      "sha256": "f2f009402536fb1af50b85279c1bd07b5dc05d0cc2f7d171e2a01dfdd28e3d42",
+      "bytes": 4877
+    },
+    {
+      "path": "tools/prepare_mapper_install_gate_r286.py",
+      "sha256": "3cfe9a62b5080fe8f7f87cb94b925edab95141f93d60545478c5c108a757a868",
+      "bytes": 3779
+    },
+    {
+      "path": "tools/verify_mapper_install_gate_r287.py",
+      "sha256": "5f27ac278a1bf3c97285338cad66cf4064632ec5632bbed80a980ca42c8b7394",
+      "bytes": 7283
+    },
+    {
+      "path": "tools/prepare_unified_snapshot_candidate_r288.py",
+      "sha256": "95f00055e0963bd266c0809d7b2b178d01583639c885d17138116035cec272a5",
+      "bytes": 4488
+    },
+    {
+      "path": "tools/verify_unified_full_program_r288.py",
+      "sha256": "c1e828666b096e96345daf8ba32c6cd2cb498c0ba795a82db425244109b6b5cb",
+      "bytes": 8310
+    },
+    {
+      "path": "tools/verify_unified_composition_recovery_r288.py",
+      "sha256": "500bee417135b8c09cb69382eeed6b2657ff5fe5523856b6e0193bae89b4e908",
+      "bytes": 9950
+    },
+    {
+      "path": "tools/build_unified_snapshot_delivery_r289.py",
+      "sha256": "efdc23e8a9de333e386652e3f7610f7927107b91e62cb5050f830c2e9793a214",
+      "bytes": 4570
+    },
+    {
+      "path": "tools/verify_unified_snapshot_delivery_r289.py",
+      "sha256": "a32ade78e3012adfd3be4fa389d17c05ae3abffd3fffb1dc4efdd62521be4e7f",
+      "bytes": 6599
+    },
+    {
+      "path": "tools/prepare_snapshot_cleanup_r290.py",
+      "sha256": "b1fb7e6512e3e8bb93cca925879c49b1ca29b30bab035493a34fc3bb7690ffcb",
+      "bytes": 1519
+    },
+    {
+      "path": "tools/cleanup_unified_snapshot_fixtures_r290.ps1",
+      "sha256": "ecc097e95d15f9583cb7126613f67cd9faaa3425ef1a583b075bdfb22f2cedcc",
+      "bytes": 4422
+    },
+    {
+      "path": "tools/record_mapper_snapshot_stage_r291.py",
+      "sha256": "8f1c31fac74e8fcb3af5842cac7aaf53b1e874365bbe23fc3ac1aa2394281a18",
+      "bytes": 15106
+    },
+    {
+      "path": "tools/original_public_test_update_r38_mapper_preflight_r286.py",
+      "sha256": "f4eae55e6c2b35b4bee67d228bfc8904968ce49d86ea8265436e7e08b2e2964d",
+      "bytes": 216298
+    },
+    {
+      "path": "tools/deploy_unified_mappers_r38_r2_20261103.py",
+      "sha256": "349cc5a379419d9e3587360f4fefca590e4d304ab06536cddfdf83241f858656",
+      "bytes": 10667
+    }
+  ],
+  "mapperGapActuallyReproduced": true,
+  "sameSnapshotInstallPreflightChecks": 20,
+  "configurationChangeAfterOuterGateAndAfterSnapshotRefusedBeforeStop": true,
+  "fullProgramPreflightFiles": 15557,
+  "negativeCompositionCases": 45,
+  "actualFileBackupReplaceRestoreScenarios": 14,
+  "independentClosedArchiveAndWrapperChecksPassed": true,
+  "newUpdaterApplyUpdateSixComponentLifecyclePassed": false,
+  "actualApplyUpdatePreStopRejectionPathsUsedExplicitIdentityIngressSpies": true,
+  "realServerIISHTTPSAndAuthenticatedTimingStillPending": true,
+  "actualNginxR278UnchangedByteEvidenceReused": true,
+  "publicUploadedOrDeployed": false,
+  "newPublicGitPushed": false,
+  "r37HumanApplyResultStillMissing": true,
+  "r37ApprovalAndFixedPayloadUnchanged": true,
+  "acceptsOnlyR36R37RequiresRebase": true,
+  "heldNativeAndOther3DBreakpointUnchanged": true,
+  "fullCloneReady": false
+}

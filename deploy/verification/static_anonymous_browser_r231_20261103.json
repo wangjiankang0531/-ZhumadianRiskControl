@@ -1,0 +1,233 @@
+{
+  "passed": true,
+  "staticSourcePins": {
+    "security_pc": {
+      "files": 836,
+      "exactPublicR36StaticRootVerified": true
+    },
+    "emergency_pc": {
+      "files": 340,
+      "exactPublicR36StaticRootVerified": true
+    }
+  },
+  "actualNginxSyntaxAndTransport": true,
+  "actualAspNetHandlerToNginx": true,
+  "iisIntegratedRuntimeTested": false,
+  "publicDeployed": false,
+  "realBusinessOrDatabaseUsed": false,
+  "desktopTouched": false,
+  "casesEachMode": 18,
+  "savings": [
+    {
+      "resource": "security-js",
+      "beforeBytes": 2624898,
+      "afterBytes": 819234,
+      "reductionPercent": 68.79,
+      "decodedContentIdentical": true
+    },
+    {
+      "resource": "emergency-js",
+      "beforeBytes": 2575860,
+      "afterBytes": 806701,
+      "reductionPercent": 68.68,
+      "decodedContentIdentical": true
+    },
+    {
+      "resource": "security-css",
+      "beforeBytes": 869689,
+      "afterBytes": 126860,
+      "reductionPercent": 85.41,
+      "decodedContentIdentical": true
+    },
+    {
+      "resource": "emergency-css",
+      "beforeBytes": 868546,
+      "afterBytes": 126553,
+      "reductionPercent": 85.43,
+      "decodedContentIdentical": true
+    }
+  ],
+  "decodedHTMLAPIAndStaticIdentical": true,
+  "hashOnlyCachingAndErrorNoStore": true,
+  "syntheticAuthCookieAndAPINamesUnchanged": true,
+  "normalNginxExitAndOwnedDescendantsZero": true,
+  "actualHeadlessChromeColdWarmAnonymousLogin": true,
+  "browserResults": {
+    "baseline": {
+      "mode": "baseline",
+      "rows": [
+        {
+          "portal": "security",
+          "cache": "cold",
+          "loginVisibleMs": 3308,
+          "domContentLoadedMs": 3086.7000000029802,
+          "loadMs": 3169.5,
+          "staticWireBytes": 3690423,
+          "cachedStaticResources": 0,
+          "staticRequests": 8,
+          "failedStaticResources": 0
+        },
+        {
+          "portal": "security",
+          "cache": "warm",
+          "loginVisibleMs": 3230,
+          "domContentLoadedMs": 3027.7000000029802,
+          "loadMs": 3120,
+          "staticWireBytes": 3690429,
+          "cachedStaticResources": 0,
+          "staticRequests": 8,
+          "failedStaticResources": 0
+        },
+        {
+          "portal": "emergency",
+          "cache": "cold",
+          "loginVisibleMs": 3265,
+          "domContentLoadedMs": 3030.5,
+          "loadMs": 3124.7999999970198,
+          "staticWireBytes": 3640294,
+          "cachedStaticResources": 0,
+          "staticRequests": 8,
+          "failedStaticResources": 0
+        },
+        {
+          "portal": "emergency",
+          "cache": "warm",
+          "loginVisibleMs": 3186,
+          "domContentLoadedMs": 2979.2999999970198,
+          "loadMs": 3075.2000000029802,
+          "staticWireBytes": 3640294,
+          "cachedStaticResources": 0,
+          "staticRequests": 8,
+          "failedStaticResources": 0
+        }
+      ],
+      "controlledDownloadBytesPerSecond": 1250000,
+      "controlledRTTMs": 60,
+      "anonymousLoginOnly": true,
+      "publicAuthenticatedHomepageOrModuleTiming": false,
+      "failures": [],
+      "blocked": [
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        }
+      ]
+    },
+    "candidate": {
+      "mode": "candidate",
+      "rows": [
+        {
+          "portal": "security",
+          "cache": "cold",
+          "loginVisibleMs": 1289,
+          "domContentLoadedMs": 1065,
+          "loadMs": 1151.4000000059605,
+          "staticWireBytes": 1135409,
+          "cachedStaticResources": 0,
+          "staticRequests": 8,
+          "failedStaticResources": 0
+        },
+        {
+          "portal": "security",
+          "cache": "warm",
+          "loginVisibleMs": 250,
+          "domContentLoadedMs": 188.70000000298023,
+          "loadMs": 204.40000000596046,
+          "staticWireBytes": 0,
+          "cachedStaticResources": 8,
+          "staticRequests": 8,
+          "failedStaticResources": 0
+        },
+        {
+          "portal": "emergency",
+          "cache": "cold",
+          "loginVisibleMs": 1219,
+          "domContentLoadedMs": 1009.5,
+          "loadMs": 1100,
+          "staticWireBytes": 1122565,
+          "cachedStaticResources": 0,
+          "staticRequests": 8,
+          "failedStaticResources": 0
+        },
+        {
+          "portal": "emergency",
+          "cache": "warm",
+          "loginVisibleMs": 140,
+          "domContentLoadedMs": 114.09999999403954,
+          "loadMs": 129.19999998807907,
+          "staticWireBytes": 0,
+          "cachedStaticResources": 8,
+          "staticRequests": 8,
+          "failedStaticResources": 0
+        }
+      ],
+      "controlledDownloadBytesPerSecond": 1250000,
+      "controlledRTTMs": 60,
+      "anonymousLoginOnly": true,
+      "publicAuthenticatedHomepageOrModuleTiming": false,
+      "failures": [],
+      "blocked": [
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        },
+        {
+          "origin": "http://at.alicdn.com",
+          "method": "GET"
+        }
+      ]
+    }
+  }
+}

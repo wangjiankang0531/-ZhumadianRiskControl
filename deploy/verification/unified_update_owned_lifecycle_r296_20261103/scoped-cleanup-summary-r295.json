@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "at": "2026-11-03T16:27:37.1693613+08:00",
+  "removedFileEntries": 395.0,
+  "logicalBytes": 19782399.0,
+  "observedDFreeBefore": 368800452608,
+  "observedDFreeAfter": 368813162496,
+  "observedDFreeDelta": 12709888,
+  "observedFreeDeltaNotUniquelyAttributed": true,
+  "hardlinkLogicalBytesNotPhysicalReclaimedBytes": true,
+  "sourceFixedPublicBundleProofsAndSmallReceiptsRetained": true,
+  "syntheticDatabaseUploadsAndPrivateConfigurationRetained": true,
+  "publicFormal18891Scene8767AndOther3DThreadUntouched": true,
+  "noProcessesTerminated": true,
+  "targets": [
+    {
+      "files": 187,
+      "logicalBytes": 7233852,
+      "absoluteScopeNoReferencesAndNoReparseVerified": true
+    },
+    {
+      "files": 3,
+      "logicalBytes": 2618326,
+      "absoluteScopeNoReferencesAndNoReparseVerified": true
+    },
+    {
+      "files": 14,
+      "logicalBytes": 2793515,
+      "absoluteScopeNoReferencesAndNoReparseVerified": true
+    },
+    {
+      "files": 191,
+      "logicalBytes": 7136706,
+      "absoluteScopeNoReferencesAndNoReparseVerified": true
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-03T16:57:02.476580+08:00",
+  "host": "www.joinlinksmart.com",
+  "path": "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js",
+  "anonymousStaticGETOnly": true,
+  "TLSVerificationEnabled": true,
+  "requestAcceptEncoding": "gzip",
+  "accountSessionCookiesCredentialsOrBusinessRowsRead": false,
+  "exactDeployedReleaseNotEstablished": true,
+  "status": 200,
+  "wireBytes": 2624898,
+  "decodedBytes": 2624898,
+  "decodedSHA256": "3fda69730a678c07a2c83117eae03796f9fd3ef5d34a5928cc578a8c957806df",
+  "contentEncoding": null,
+  "cacheControl": "no-store",
+  "vary": null,
+  "decodedMatchesKnownUnchangedSecurityBundle": true,
+  "elapsedSeconds": 2.778
+}

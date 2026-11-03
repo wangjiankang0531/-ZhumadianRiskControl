@@ -1,0 +1,18 @@
+from pathlib import Path
+import importlib.util,json
+R=Path('D:/Project/Zhumadian');A=R/'Application';E=R/'XNBYEngine';V=Path(__file__).parent;D=R/'Document/Deployment/original_mapper_product_verified_r272_20261103'
+for p in [D/'verified-result.json',A/'deploy/verification/mapper_product_lifecycle_r272_20261103.json']:
+ d=json.loads(p.read_bytes());assert d.pop('finalRuntimeAdapterFileFullLifecyclePassed')is True;d['finalRuntimeAdapterHealthAndDeclarationsValidatedAgainstActualSixComponents']=True;d['newUpdaterApplyUpdateAndRollbackTransactionsExecuted']=False;p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+clarify='\n验证范围精确定义（R273）：R263参数文件确实由原六组件控制器调用并影响业务启动；R268运行声明模块在这些真实进程上执行了健康、身份与声明核验。本轮没有调用新更新器的apply_update安装事务或其回滚事务；两次实际启动/正常停机和自有测试代码恢复由验证驱动执行。不得把“随实际六组件完成健康核验”表述成“新更新器已完整执行发布/回滚”。安装和故障回滚验证属于下一份固定公网组合包工作。\n'
+for p in [D/'阶段说明.md',A/'deploy/handbook/mapper_product_lifecycle_r272_20261103.md',R/'Document/Engine/project/原SQL产品代码运行R272_20261103.md']:
+ s=p.read_text(encoding='utf-8');s=s.replace('最终参数文件和最终运行声明适配器各自均有完整实际生命周期证据，不再仅以渲染或AST来源代替。','参数文件已有真实六组件运行证据，最终运行声明模块已对该运行执行健康/身份/声明核验；新更新器的apply_update与回滚事务本轮尚未执行。');p.write_text(s+clarify,encoding='utf-8')
+for p in [R/'Document/Engine/project/当前工作断点.md',R/'Document/Engine/project/htengine_goal_state.md',R/'Document/Design/驻马店实施基线.md']:
+ s=p.read_text(encoding='utf-8');i=s.index('\n\n');s=s[:i]+clarify+s[i:];p.write_text(s,encoding='utf-8')
+p=R/'Document/Engine/showcase_demo_completion.md';p.write_bytes(p.read_bytes()+clarify.encode())
+for p in [A/'tools/record_mapper_product_lifecycle_r272.py',V/'record_mapper_product_lifecycle_r272.py']:
+ s=p.read_text(encoding='utf-8');s=s.replace("'finalRuntimeAdapterFileFullLifecyclePassed':True","'finalRuntimeAdapterHealthAndDeclarationsValidatedAgainstActualSixComponents':True,'newUpdaterApplyUpdateAndRollbackTransactionsExecuted':False");s=s.replace('最终参数文件和最终运行声明适配器各自均有完整实际生命周期证据，不再仅以渲染或AST来源代替。','参数文件已有真实六组件运行证据，最终运行声明模块已对该运行执行健康/身份/声明核验；新更新器的apply_update与回滚事务本轮尚未执行。');p.write_text(s,encoding='utf-8')
+source=A/'tools/clarify_runtime_scope_r273.py';assert not source.exists();source.write_bytes(Path(__file__).read_bytes())
+spec=importlib.util.spec_from_file_location('local_review',V/'commit_r18_local_review.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);ab='review/workplace-r19-live-local-20261031';eb='review/workplace-r19-live-progress-local-20261031'
+assert m.run(A,['rev-parse','refs/heads/'+ab]).decode().strip()=='6611e11648dd7950e95137eab21cf78a12de6229';assert m.run(E,['rev-parse','refs/heads/'+eb]).decode().strip()=='9c667a579f9b8ff10d54203a8b74513b2f7a0dde'
+held=m.sha(A/'native/main.cpp');a=m.commit(A,'refs/heads/'+ab,ab,['tools/record_mapper_product_lifecycle_r272.py','tools/clarify_runtime_scope_r273.py','deploy/verification/mapper_product_lifecycle_r272_20261103.json','deploy/handbook/mapper_product_lifecycle_r272_20261103.md'],'r273-app','Clarify actual runtime validation versus unexecuted update transactions',True);e=m.commit(E,'refs/heads/'+eb,eb,['docs/project/当前工作断点.md','docs/project/htengine_goal_state.md','docs/project/原SQL产品代码运行R272_20261103.md','docs/showcase_demo_completion.md'],'r273-engine','State precise mapper runtime verification and remaining deployment transaction tests',True);assert m.sha(A/'native/main.cpp')==held
+proof={'application':a,'engine':e,'actualRuntimeValidationPassed':True,'newUpdaterApplyUpdateAndRollbackTransactionsExecuted':False,'publicPushed':False};(D/'verification-scope-clarification-r273.json').write_text(json.dumps(proof,indent=2)+'\n',encoding='utf-8');print(json.dumps(proof))

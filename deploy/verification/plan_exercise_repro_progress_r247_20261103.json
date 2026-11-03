@@ -1,0 +1,107 @@
+{
+  "failedAttempts": [
+    {
+      "attempt": "r115",
+      "hostFailure": {
+        "type": "FileNotFoundError",
+        "phase": "native-normal-plan-exercise-browser",
+        "message": "OWN_CONTROLLER_CHECK_FAILED",
+        "frames": [
+          {
+            "file": "verify_full_controller_plan_exercise_r227_20261103.py",
+            "line": 198,
+            "function": "<module>"
+          },
+          {
+            "file": "verify_full_controller_plan_exercise_r227_20261103.py",
+            "line": 19,
+            "function": "<lambda>"
+          },
+          {
+            "file": "_abc.py",
+            "line": 625,
+            "function": "read_bytes"
+          },
+          {
+            "file": "_local.py",
+            "line": 537,
+            "function": "open"
+          }
+        ]
+      },
+      "normalSixComponentExitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      },
+      "allActualDescendantsZero": true,
+      "allFrontendMapperUpdaterAndSyntheticConfigBytesRestored": true,
+      "nativeBrowserCasesPassed": 0,
+      "browserStage": null,
+      "exerciseSaveRequestsObserved": 0,
+      "original398ModelComparisonReached": false,
+      "publicFormalAndDesktopChanged": false
+    },
+    {
+      "attempt": "r117",
+      "hostFailure": {
+        "type": "AssertionError",
+        "phase": "verify-runtime-connection-capacity",
+        "message": "OWN_NATIVE_SERIAL_WORKFLOW_BROWSER_FAILED",
+        "frames": [
+          {
+            "file": "verify_full_controller_plan_exercise_r243_20261103.py",
+            "line": 240,
+            "function": "<module>"
+          }
+        ]
+      },
+      "normalSixComponentExitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      },
+      "allActualDescendantsZero": true,
+      "allFrontendMapperUpdaterAndSyntheticConfigBytesRestored": true,
+      "nativeBrowserCasesPassed": 5,
+      "browserStage": "optional-participants-baseline-reproduction",
+      "exerciseSaveRequestsObserved": 0,
+      "original398ModelComparisonReached": false,
+      "publicFormalAndDesktopChanged": false
+    }
+  ],
+  "liveAttemptSnapshot": null,
+  "actualBaselineResultR119": {
+    "schema": "xnby.r245.native-plan-exercise-regression.v1",
+    "allPassed": true,
+    "baseline": true,
+    "nativeBrowserCases": 6,
+    "normalNonAdministratorLoginAndOriginalPlanExerciseRoutes": true,
+    "sixComponentsAndBrowserNormalZeroActualDescendantsZero": true,
+    "original398ModelsUnchanged": true,
+    "connectionCapacityWithoutRefusals": true,
+    "publicFormalOrDesktopChanged": false,
+    "originalNangangTemplateOrWholeAcceptanceClaimed": false,
+    "fullCloneReady": false
+  },
+  "actualBaselineReproductionR119": {
+    "reproduced": true,
+    "normalUserActualCompiledPage": true,
+    "optionalPersonSelectionLeftEmpty": true,
+    "actualUndefinedJoinErrorObservedViaRuntimeOrConsole": false,
+    "actualUndefinedJoinErrorObservedViaDebugger": true,
+    "activeChildDialogLocationFilled": true,
+    "noExerciseSaveRequestSent": true,
+    "productChanged": false
+  },
+  "normalAllSixComponentsBrowserAndActualDescendantsZero": true,
+  "allOriginalBytesRestoredAfterR119": true,
+  "productCodeModifiedToCreateOrSuppressError": false,
+  "R37CompletionAnd30FilePublicApprovalStillAwaited": true
+}

@@ -1,0 +1,114 @@
+[
+  {
+    "case": "security-js-gzip-checker-synthetic-body-real-header-shape",
+    "passed": true
+  },
+  {
+    "case": "security-js-wrong-status-refused",
+    "passed": true
+  },
+  {
+    "case": "security-js-missing-vary-refused",
+    "passed": true
+  },
+  {
+    "case": "security-js-private-cache-refused",
+    "passed": true
+  },
+  {
+    "case": "security-js-wrong-content-refused",
+    "passed": true
+  },
+  {
+    "case": "security-js-unexpected-identity-gzip-refused",
+    "passed": true
+  },
+  {
+    "case": "security-js-explicit-zero-identity",
+    "passed": true
+  },
+  {
+    "case": "emergency-js-gzip-checker-synthetic-body-real-header-shape",
+    "passed": true
+  },
+  {
+    "case": "emergency-js-wrong-status-refused",
+    "passed": true
+  },
+  {
+    "case": "emergency-js-missing-vary-refused",
+    "passed": true
+  },
+  {
+    "case": "emergency-js-private-cache-refused",
+    "passed": true
+  },
+  {
+    "case": "emergency-js-wrong-content-refused",
+    "passed": true
+  },
+  {
+    "case": "emergency-js-unexpected-identity-gzip-refused",
+    "passed": true
+  },
+  {
+    "case": "emergency-js-explicit-zero-identity",
+    "passed": true
+  },
+  {
+    "case": "security-css-gzip-checker-synthetic-body-real-header-shape",
+    "passed": true
+  },
+  {
+    "case": "security-css-wrong-status-refused",
+    "passed": true
+  },
+  {
+    "case": "security-css-missing-vary-refused",
+    "passed": true
+  },
+  {
+    "case": "security-css-private-cache-refused",
+    "passed": true
+  },
+  {
+    "case": "security-css-wrong-content-refused",
+    "passed": true
+  },
+  {
+    "case": "security-css-unexpected-identity-gzip-refused",
+    "passed": true
+  },
+  {
+    "case": "security-css-explicit-zero-identity",
+    "passed": true
+  },
+  {
+    "case": "emergency-css-gzip-checker-synthetic-body-real-header-shape",
+    "passed": true
+  },
+  {
+    "case": "emergency-css-wrong-status-refused",
+    "passed": true
+  },
+  {
+    "case": "emergency-css-missing-vary-refused",
+    "passed": true
+  },
+  {
+    "case": "emergency-css-private-cache-refused",
+    "passed": true
+  },
+  {
+    "case": "emergency-css-wrong-content-refused",
+    "passed": true
+  },
+  {
+    "case": "emergency-css-unexpected-identity-gzip-refused",
+    "passed": true
+  },
+  {
+    "case": "emergency-css-explicit-zero-identity",
+    "passed": true
+  }
+]

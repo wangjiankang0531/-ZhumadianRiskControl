@@ -1,0 +1,8 @@
+{
+  "withdrawnForNewDeployments": true,
+  "reason": "Mapper snapshot must be validated inside actual installation preflight; wrapper-only validation is insufficient when configuration changes.",
+  "replacementCandidateDirectory": "D:\\Project\\Zhumadian\\Document\\Deployment\\public_test_unified_mappers_r38_20261103_r2",
+  "previousManifestSHA256": "72b7d48b25ce0e14504c20d99fddc6adde0c930f00bc0036bcce3a3c17a002d3",
+  "previousPackageWasNeverUploadedOrDeployed": true,
+  "existingR37ApprovalAndPayloadUnaffected": true
+}

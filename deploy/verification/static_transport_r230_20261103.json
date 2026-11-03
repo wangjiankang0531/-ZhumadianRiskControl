@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "staticSourcePins": {
+    "security_pc": {
+      "files": 836,
+      "exactPublicR36StaticRootVerified": true
+    },
+    "emergency_pc": {
+      "files": 340,
+      "exactPublicR36StaticRootVerified": true
+    }
+  },
+  "actualNginxSyntaxAndTransport": true,
+  "actualAspNetHandlerToNginx": true,
+  "iisIntegratedRuntimeTested": false,
+  "publicDeployed": false,
+  "realBusinessOrDatabaseUsed": false,
+  "desktopTouched": false,
+  "casesEachMode": 18,
+  "savings": [
+    {
+      "resource": "security-js",
+      "beforeBytes": 2624898,
+      "afterBytes": 819234,
+      "reductionPercent": 68.79,
+      "decodedContentIdentical": true
+    },
+    {
+      "resource": "emergency-js",
+      "beforeBytes": 2575860,
+      "afterBytes": 806701,
+      "reductionPercent": 68.68,
+      "decodedContentIdentical": true
+    },
+    {
+      "resource": "security-css",
+      "beforeBytes": 869689,
+      "afterBytes": 126860,
+      "reductionPercent": 85.41,
+      "decodedContentIdentical": true
+    },
+    {
+      "resource": "emergency-css",
+      "beforeBytes": 868546,
+      "afterBytes": 126553,
+      "reductionPercent": 85.43,
+      "decodedContentIdentical": true
+    }
+  ],
+  "decodedHTMLAPIAndStaticIdentical": true,
+  "hashOnlyCachingAndErrorNoStore": true,
+  "syntheticAuthCookieAndAPINamesUnchanged": true,
+  "normalNginxExitAndOwnedDescendantsZero": true
+}

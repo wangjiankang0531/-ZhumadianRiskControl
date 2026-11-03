@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "eightTransportFilesAndAllSHAExact": true,
+  "zipClosedAndAll186PayloadPinsExact": true,
+  "fixedWrapperSyntaxAndExactR36PinVerified": true,
+  "staticExpectedHashesFromActualR38NginxRepresentations": true,
+  "responseValidatorSyntheticBodyCases": 28,
+  "actualFixedWrapperCheckOnlyOrder": [
+    {
+      "invalidLayout": true,
+      "events": [
+        "load_bundle_explicit_identity_fixture_spy"
+      ],
+      "serviceCalls": 0,
+      "fixedArchiveActuallyExtracted": true,
+      "actualCandidateBudgetFunctionUsed": true
+    },
+    {
+      "invalidLayout": false,
+      "events": [
+        "load_bundle_explicit_identity_fixture_spy",
+        "owned_ready_explicit_spy",
+        "health_explicit_spy"
+      ],
+      "serviceCalls": 0,
+      "fixedArchiveActuallyExtracted": true,
+      "actualCandidateBudgetFunctionUsed": true
+    }
+  ],
+  "recoveryGuardCases": 5,
+  "actualCompleteLoadBundleSeparatelyVerified15557ProgramFiles": true,
+  "newWrapperIdentityAndReadinessReplacedByExplicitSpies": true,
+  "newUpdaterApplyUpdateOrServerIISTLSExecuted": false,
+  "publicOrDesktopOrDatabaseOrServicesTouched": false
+}

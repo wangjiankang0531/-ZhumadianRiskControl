@@ -1,0 +1,202 @@
+{
+  "schema": "xnby.r264.original-mapper-runtime-comparison.v1",
+  "actualRuntimeComparison": {
+    "baseline": {
+      "attempt": "r129",
+      "registeredOriginalXMLStatements": 3,
+      "missingOriginalXMLStatements": 223,
+      "nativeBrowserCases": [],
+      "allOriginal398ModelsAndConnectionCapacityPassed": true,
+      "normalSixComponentExitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      },
+      "actualDescendantsZeroAndOriginalBytesRestored": true
+    },
+    "candidate": {
+      "attempt": "r130",
+      "registeredOriginalXMLStatements": 226,
+      "missingOriginalXMLStatements": 0,
+      "nativeBrowserCases": [
+        {
+          "case": "normal-nonadministrator-login-original-plan-menu-and-page",
+          "passed": true
+        },
+        {
+          "case": "plan-required-fields-block-write",
+          "passed": true
+        },
+        {
+          "case": "plan-invalid-phone-keeps-editor-no-save",
+          "passed": true
+        },
+        {
+          "case": "plan-native-create-original-controller-and-normal-role-detail-values",
+          "passed": true
+        },
+        {
+          "case": "plan-edit-reopen-detail-readonly-and-original-identity-kept",
+          "passed": true
+        },
+        {
+          "case": "native-optional-participants-empty-save-and-parent-scoped-list-roundtrip",
+          "passed": true
+        },
+        {
+          "case": "actual-org-tree-and-original-person-checkbox-dialog-select-two-people",
+          "passed": true
+        },
+        {
+          "case": "real-upload-held-before-network-blocks-submit-then-real-object-store-completes",
+          "passed": true
+        },
+        {
+          "case": "browser-only-false-business-response-retains-dialog-fields-people-and-file-no-server-write",
+          "passed": true,
+          "realSQLFailureClaimed": false
+        },
+        {
+          "case": "real-single-save-retry-preserves-two-people-parent-process-description-and-one-file",
+          "passed": true
+        },
+        {
+          "case": "native-exercise-list-view-readonly-details-and-actual-anchor-disk-download-identical",
+          "passed": true
+        }
+      ],
+      "allOriginal398ModelsAndConnectionCapacityPassed": true,
+      "normalSixComponentExitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      },
+      "actualDescendantsZeroAndOriginalBytesRestored": true
+    }
+  },
+  "resourcePatternProof": {
+    "passed": true,
+    "defaultResources": 1,
+    "originalPatternResources": 96,
+    "allResolvedBytesExactlyOriginalJar": true,
+    "duplicateFilenameOrResource": false,
+    "retainedTeamXMLBytesEqualOriginalJar": true,
+    "springContainerSQLOrNetworkStarted": false
+  },
+  "productRendererCandidate": {
+    "sourceBeforeSHA256": "8ca02e5e99c0b0c1aae282889ceca6c9f31c9ee0f2cd4750e506a25c6267c106",
+    "sourceCandidateSHA256": "b804d7e29921fd70bab4db2f711d01175a35bf11a1a77dcf99a8d147e9f41471",
+    "onlyExistingFunctionChanged": "materialize",
+    "newPureHelper": "original_business_mapper_defaults",
+    "allOtherFunctionsASTIdentical": true,
+    "actualFrozenConfigurationRendererCases": [
+      {
+        "case": "platform-actual-frozen-input-render-diff",
+        "passed": true
+      },
+      {
+        "case": "business-actual-frozen-input-render-diff",
+        "passed": true
+      },
+      {
+        "case": "explicit-mybatis-plus.mapper-locations",
+        "passed": true
+      },
+      {
+        "case": "explicit-mybatis-plus.mapperLocations",
+        "passed": true
+      },
+      {
+        "case": "explicit-mybatis-plus.mapper-locations[0]",
+        "passed": true
+      },
+      {
+        "case": "explicit-mybatis_plus.mapper_locations",
+        "passed": true
+      },
+      {
+        "case": "explicit-mybatis-plus.mapper-locations-empty-preserved",
+        "passed": true
+      },
+      {
+        "case": "explicit-mybatis-plus.mapper-locations",
+        "passed": true
+      }
+    ],
+    "privateValuesOrCredentialsExported": false,
+    "originalSQLJarOrControllersInstalled": false,
+    "runtimeCandidateUsesTemporaryConfigurationNotThisProductHelper": true,
+    "publicDeployed": false
+  },
+  "failedObservationAttemptsPreserved": [
+    {
+      "attempt": "r123",
+      "failure": {
+        "type": "AssertionError",
+        "phase": "reading-current-run",
+        "message": "OWN_CONTROLLER_EXITED_BEFORE_READY",
+        "frames": [
+          {
+            "file": "verify_full_controller_mapper_r255_baseline.py",
+            "line": 80,
+            "function": "<module>"
+          }
+        ]
+      },
+      "allActualDescendantsZero": true,
+      "exactOwnCodeAndConfigurationRestored": true,
+      "businessNormalStartup": false,
+      "original398ModelComparisonReached": false
+    },
+    {
+      "attempt": "r125",
+      "failure": {
+        "type": "AssertionError",
+        "phase": "observe-actual-original-mapper-registration",
+        "message": "OWN_MAPPER_OBSERVATION_NOT_READY",
+        "frames": [
+          {
+            "file": "verify_full_controller_mapper_r256_baseline.py",
+            "line": 107,
+            "function": "<module>"
+          }
+        ]
+      },
+      "allActualDescendantsZero": true,
+      "exactOwnCodeAndConfigurationRestored": true,
+      "businessNormalStartup": true,
+      "original398ModelComparisonReached": false
+    },
+    {
+      "attempt": "r127",
+      "failure": {
+        "type": "AssertionError",
+        "phase": "reading-current-run",
+        "message": "OWN_CONTROLLER_EXITED_BEFORE_READY",
+        "frames": [
+          {
+            "file": "verify_full_controller_mapper_r257_baseline.py",
+            "line": 80,
+            "function": "<module>"
+          }
+        ]
+      },
+      "allActualDescendantsZero": true,
+      "exactOwnCodeAndConfigurationRestored": true,
+      "businessNormalStartup": false,
+      "original398ModelComparisonReached": false
+    }
+  ],
+  "originalJarOrSQLBytesChanged": false,
+  "publicServerMissingStatementCountDirectlyMeasured": false,
+  "runtimeComparisonUsedTemporarySyntheticConfiguration": true,
+  "productRendererHelperFullLifecycleStillPending": true,
+  "wholeNangangBusinessAcceptancePassed": false,
+  "publicOrDesktopOrFormalOrSceneChanged": false
+}

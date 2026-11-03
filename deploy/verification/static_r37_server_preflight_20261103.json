@@ -1,0 +1,11 @@
+{
+  "schema": "xnby.public.r37.stage.v1",
+  "stage": "preflight",
+  "exitCode": 0,
+  "transportEightSHA256Matched": true,
+  "fixedManifestSHA256": "1bf56d75d5edb8b12dd82831ea863fde1e03dfaefa8ef2b37f5f471575baa1b4",
+  "candidateVersion": "R37",
+  "passed": true,
+  "actualPublicHTTPSAndLoggedInUIPending": true,
+  "rawManifestAccountsSessionsBusinessCredentialsOrLogsIncluded": false
+}

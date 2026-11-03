@@ -1,0 +1,358 @@
+{
+  "schema": "xnby.r272.actual-product-mapper-lifecycle.v1",
+  "runs": {
+    "r131": {
+      "result": {
+        "schema": "xnby.r266.actual-product-mapper-runtime.v1",
+        "actualR263ParameterFileUsedWithoutExplicitMapperSetting": true,
+        "publicTransportContractProven": false,
+        "allPassed": true,
+        "mode": "candidate",
+        "nativeBrowserCases": 11,
+        "actualMapperRegistration": {
+          "schema": "xnby.own.r255.actual-mapper-registration.v1",
+          "actualApplicationReadySpringFactoryObservation": true,
+          "originalXMLResources": 96,
+          "expectedOriginalXMLStatements": 226,
+          "factoryCount": 1,
+          "allFactoriesHaveEveryOriginalXMLStatement": true,
+          "factories": [
+            {
+              "factory": "sqlSessionFactory",
+              "registeredOriginalXMLStatements": 226,
+              "missingOriginalXMLStatements": 0,
+              "missingStaticStatementIdentities": [],
+              "registeredResourceCounts": {
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/AlarmMapper.xml]": 4,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/AntiTerrorismLedgerMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/AtmosphericPollutantsMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/BlackLogMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/CheckHiddenDangerLogMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/CheckHiddenDangerMapper.xml]": 9,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/CheckHiddenDangerWorkorderMapper.xml]": 4,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/CheckInventoryMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/CheckPlanItemsScheduleMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/CheckPlanMapper.xml]": 3,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/CheckPlanScheduleMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/CommandMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/DutyLogMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/DutyPersonnelMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/DutyScheduleMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/EmergencyExpertsMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/EmergencyMapper.xml]": 19,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/EmergencyPlanMapper.xml]": 3,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/EmployeeExamRecordMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/EmployeeTrainRecordMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/EnvMapper.xml]": 14,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/EquipmentAlarmMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/EquipmentMonitoringMapper.xml]": 3,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/EventInfoMapper.xml]": 5,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/EventReportMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/EventTaskMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/FirstAidTeamMembersMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/FirstAidTeamsMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/GroundwaterPollutantsMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/HazardSourceMapper.xml]": 7,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/HiddenDangerMapper.xml]": 3,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/HumidityAlarmMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/HumidityHistoryMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/InspectionIssueMapper.xml]": 5,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/InspectionPersonInfoMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/InspectionPointsContentsMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/InspectionPointsMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/InspectionPostDutyMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/InspectionPostMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/InspectionPostPersonMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/InspectionRoutesMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/InspectionSignMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/InspectionTasksMapper.xml]": 3,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/InspectionTasksPersonMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/InspectionTasksPersonPointMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/MaterialsMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/MeteorologicalDataMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/ParkBasicInfoMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/ParkSafetyManagementSystemMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/PatrolMapper.xml]": 13,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/RiskLevelMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/SafetyCommitmentInformationDetailMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/SafetyCommitmentTccDetailMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/SafetyInspectionMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/SafetyManageFileMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/SoilPollutantsMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/SpecialTaskItemMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/SpecialTaskMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/SpecialTaskScoringMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/ThirdPartyUnitInfoAccidentMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/ThirdPartyUnitInfoAppraisalMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/ThirdPartyUnitInfoCredentialMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WarningLogMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WarningSetMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WaterPollutantsMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkBlindMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkFiniteSpaceMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkGasElectricityMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkGasHotMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkGasSpaceMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkGroundbreakingMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkGroupsMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkHighMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkHoistingMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkHotMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkJsaMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkMapper.xml]": 18,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkMeasuresRelevanceMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkOpenCircuitMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkProgrammeMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkReservationBaseMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkReservationPersonnelMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkSafetyMeasuresMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkSignMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkSuperviseMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkTemporaryElectricityMapper.xml]": 2,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkUserExtendListMapper.xml]": 1,
+                "URL [jar:file:/D:/Project/Zhumadian/_g/Application/payload/business/application.jar!/xml/WorkUserExtendMapper.xml]": 1
+              },
+              "registeredPlanStatements": 3
+            }
+          ],
+          "SQLExecutedOrConfigurationRegistrationMutatedByObserver": false,
+          "accountsBusinessRowsCredentialsOrRuntimeUUIDIncluded": false
+        },
+        "sixComponentsNormalZeroActualDescendantsZero": true,
+        "original398ModelsUnchanged": true,
+        "connectionCapacityWithoutRefusals": true,
+        "publicFormalOrDesktopChanged": false,
+        "originalNangangWholeAcceptanceClaimed": false,
+        "fullCloneReady": false
+      },
+      "normalSixExitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      },
+      "allActualDescendantsZeroAndOriginalBytesRestored": true,
+      "cases": [
+        {
+          "case": "normal-nonadministrator-login-original-plan-menu-and-page",
+          "passed": true
+        },
+        {
+          "case": "plan-required-fields-block-write",
+          "passed": true
+        },
+        {
+          "case": "plan-invalid-phone-keeps-editor-no-save",
+          "passed": true
+        },
+        {
+          "case": "plan-native-create-original-controller-and-normal-role-detail-values",
+          "passed": true
+        },
+        {
+          "case": "plan-edit-reopen-detail-readonly-and-original-identity-kept",
+          "passed": true
+        },
+        {
+          "case": "native-optional-participants-empty-save-and-parent-scoped-list-roundtrip",
+          "passed": true
+        },
+        {
+          "case": "actual-org-tree-and-original-person-checkbox-dialog-select-two-people",
+          "passed": true
+        },
+        {
+          "case": "real-upload-held-before-network-blocks-submit-then-real-object-store-completes",
+          "passed": true
+        },
+        {
+          "case": "browser-only-false-business-response-retains-dialog-fields-people-and-file-no-server-write",
+          "passed": true,
+          "realSQLFailureClaimed": false
+        },
+        {
+          "case": "real-single-save-retry-preserves-two-people-parent-process-description-and-one-file",
+          "passed": true
+        },
+        {
+          "case": "native-exercise-list-view-readonly-details-and-actual-anchor-disk-download-identical",
+          "passed": true
+        }
+      ],
+      "actualProductSourcePins": {
+        "tools/original_server_release_parameters.py": {
+          "bytes": 18172,
+          "sha256": "b804d7e29921fd70bab4db2f711d01175a35bf11a1a77dcf99a8d147e9f41471"
+        },
+        "tools/original_public_test_update.py": {
+          "bytes": 156057,
+          "sha256": "8b34d037d21359a1441ed8378bc8f9ca374f86269360717b7f23a10d82275bb2"
+        }
+      }
+    },
+    "r132": {
+      "result": {
+        "schema": "xnby.r270.product-mapper-and-task-regression.v1",
+        "actualProductParameterAndFinalRuntimeAdapterUsed": true,
+        "actualAll226OriginalXMLStatementsRegistered": true,
+        "publicTransportContractProven": false,
+        "allPassed": true,
+        "actualExecutedNativeBrowserPhases": 9,
+        "continuedSamePriorCreateFeedbackInstance": false,
+        "actualNativeCreateUploadFeedbackDistinctParallelBranchesAndFinalApprovalPassed": true,
+        "normalAllSixControllerAndBrowsersExitZeroAndActualDescendantsZero": true,
+        "original398ModelsUnchanged": true,
+        "connectionCapacityWithoutRefusals": true,
+        "productCodeChanged": true,
+        "candidateFrontendR224Installed": true,
+        "onlyOwnDeclaredSeparateHistoryModuleTemporarilyInstalled": true,
+        "productionServiceGateNotSimulated": true,
+        "ordinaryParallelGatewayDidNotCreateNonTargetAddsignHistory": true,
+        "newDatasourceOrDDL": false,
+        "publicFormalOrDesktopChanged": false,
+        "onlyOwnSyntheticConfigurationAndDataUsed": true,
+        "resubmissionNotExecuted": true,
+        "actualDistinctParallelBranchesAndFinalApprovalCompleted": true,
+        "onlyPreviouslyCompletedAddsignReadbackExecuted": false,
+        "addsignType": "none",
+        "originalNangangTemplateOrWholeAcceptanceClaimed": false,
+        "fullCloneReady": false
+      },
+      "normalSixExitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      },
+      "allActualDescendantsZeroAndOriginalBytesRestored": true,
+      "cases": [
+        {
+          "phase": "operator",
+          "passed": true
+        },
+        {
+          "phase": "operator-disposal",
+          "passed": true
+        },
+        {
+          "phase": "reviewer-preview",
+          "passed": true
+        },
+        {
+          "phase": "operator-added",
+          "passed": true
+        },
+        {
+          "phase": "operator-waiting-parallel-b",
+          "passed": true
+        },
+        {
+          "phase": "reviewer-after-added",
+          "passed": true
+        },
+        {
+          "phase": "reviewer-final",
+          "passed": true
+        },
+        {
+          "phase": "reviewer-handled-readback",
+          "passed": true
+        },
+        {
+          "phase": "operator-completed-readback",
+          "passed": true
+        }
+      ],
+      "actualProductSourcePins": {
+        "tools/original_server_release_parameters.py": {
+          "bytes": 18172,
+          "sha256": "b804d7e29921fd70bab4db2f711d01175a35bf11a1a77dcf99a8d147e9f41471"
+        },
+        "tools/original_public_test_update.py": {
+          "bytes": 156104,
+          "sha256": "8e02ccea725f1ce5c29c7399690ceb76b877b52a5f2b71f639b29427fb3b4234"
+        }
+      }
+    }
+  },
+  "finalDeclarationBoundaryChecks": {
+    "passed": true,
+    "cases": [
+      {
+        "case": "legacy-original-parameter-and-pool-metadata-still-valid",
+        "passed": true
+      },
+      {
+        "case": "new-exact-parameter-pool-workflow-contract-valid",
+        "passed": true
+      },
+      {
+        "case": "new-parameter-without-explicit-mapper-contract",
+        "rejected": true
+      },
+      {
+        "case": "mapper-contract-revision-drift",
+        "rejected": true
+      },
+      {
+        "case": "old-parameter-source-under-new-contract",
+        "rejected": true
+      },
+      {
+        "case": "foreign-parameter-source-under-new-contract",
+        "rejected": true
+      },
+      {
+        "case": "mapper-contract-invented-DDL",
+        "rejected": true
+      },
+      {
+        "case": "mapper-contract-dropped-original-Jar-pin",
+        "rejected": true
+      },
+      {
+        "case": "pool-policy-missing",
+        "rejected": true
+      },
+      {
+        "case": "history-contract-missing",
+        "rejected": true
+      },
+      {
+        "case": "old-workflow-parameter-pin-not-silently-reused",
+        "rejected": true
+      },
+      {
+        "case": "task-class-cannot-be-dropped-by-mapper-extension",
+        "rejected": true
+      },
+      {
+        "case": "legacy-global-workflow-contract-not-mutated",
+        "passed": true
+      }
+    ],
+    "updaterSourceSHA256": "8e02ccea725f1ce5c29c7399690ceb76b877b52a5f2b71f639b29427fb3b4234",
+    "lifecycleOrPublicTransportAcceptanceClaimed": false,
+    "sqlOrNetworkOrCredentialsUsed": false
+  },
+  "priorDeclarationCheckFailurePreserved": {
+    "failed": true,
+    "case": "pool-policy-missing",
+    "actualFailure": "INVALID_DECLARATION_ACCEPTED:pool-policy-missing",
+    "originalSourceSHA256": "8b34d037d21359a1441ed8378bc8f9ca374f86269360717b7f23a10d82275bb2",
+    "productOrPublicDeployed": false
+  },
+  "actualProductParameterFileFullLifecyclePassed": true,
+  "temporaryConfigurationDidNotInjectMapperSetting": true,
+  "originalJarSQLAuthAnd398ModelsKept": true,
+  "publicTransportBundleAndCombinedStaticPerformanceAcceptanceStillPending": true,
+  "newProductPublicDeployed": false,
+  "fullNangangAcceptancePassed": false,
+  "fullCloneReady": false,
+  "finalRuntimeAdapterHealthAndDeclarationsValidatedAgainstActualSixComponents": true,
+  "newUpdaterApplyUpdateAndRollbackTransactionsExecuted": false
+}

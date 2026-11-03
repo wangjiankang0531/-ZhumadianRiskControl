@@ -1,0 +1,11 @@
+{
+  "prepared": true,
+  "transportFiles": 8,
+  "transportBytes": 2114220,
+  "manifestSHA256": "3882688ce2836d640530aef872b77b4306d665241e329522ae5c6dd7ebad0956",
+  "writes": 186,
+  "removals": 177,
+  "publicUploadedOrInstalled": false,
+  "newPublicGitIncluded": false,
+  "previousR38Withdrawn": true
+}

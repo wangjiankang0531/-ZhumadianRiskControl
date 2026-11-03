@@ -1,0 +1,126 @@
+[
+  {
+    "case": "missing-static-descriptor",
+    "refused": "R37_EXPLICIT_STATIC_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "descriptor-revision",
+    "refused": "R37_EXACT_STATIC_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "descriptor-onlyPublicStaticGETHEADNegotiatesGzip",
+    "refused": "R37_EXACT_STATIC_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "descriptor-encodedResponseBytesPreserved",
+    "refused": "R37_EXACT_STATIC_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "descriptor-contentEncodingAndVaryForwarded",
+    "refused": "R37_EXACT_STATIC_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "descriptor-successfulHashedAssetsImmutable",
+    "refused": "R37_EXACT_STATIC_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "descriptor-htmlBusinessErrorsAndNonHashedResourcesNotLongCached",
+    "refused": "R37_EXACT_STATIC_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "descriptor-businessPayloadAuthDatabaseAndPrivateConfigurationUnchanged",
+    "refused": "R37_EXACT_STATIC_DESCRIPTOR_REQUIRED"
+  },
+  {
+    "case": "wrong-candidate-control-tools/original_project_branding.py",
+    "refused": "R37_EXACT_STATIC_CONTROLS_AND_RETAINED_ALL_OTHER_CONTROLS_REQUIRED"
+  },
+  {
+    "case": "wrong-candidate-control-deploy/iis_original/App_Code/XnbyReferenceProxy.cs",
+    "refused": "R37_EXACT_STATIC_CONTROLS_AND_RETAINED_ALL_OTHER_CONTROLS_REQUIRED"
+  },
+  {
+    "case": "wrong-candidate-control-iis/App_Code/XnbyReferenceProxy.cs",
+    "refused": "R37_EXACT_STATIC_CONTROLS_AND_RETAINED_ALL_OTHER_CONTROLS_REQUIRED"
+  },
+  {
+    "case": "wrong-candidate-control-tools/original_public_test_update.py",
+    "refused": "R37_EXACT_STATIC_CONTROLS_AND_RETAINED_ALL_OTHER_CONTROLS_REQUIRED"
+  },
+  {
+    "case": "wrong-retained-controller",
+    "refused": "R37_EXACT_STATIC_CONTROLS_AND_RETAINED_ALL_OTHER_CONTROLS_REQUIRED"
+  },
+  {
+    "case": "wrong-old-updater",
+    "refused": "R37_EXACT_R36_RELEASE_METADATA_AND_CONTROLS_REQUIRED"
+  },
+  {
+    "case": "changed-retained-payload-payload/business/application.jar",
+    "refused": "R37_EVERY_PAYLOAD_ROW_AND_MANIFEST_BYTE_RETAINED"
+  },
+  {
+    "case": "changed-retained-payload-payload/business/run-template/classes/xnby/replica/OriginalNativeSessionInterceptor.class",
+    "refused": "R37_EVERY_PAYLOAD_ROW_AND_MANIFEST_BYTE_RETAINED"
+  },
+  {
+    "case": "changed-retained-payload-frontend/emergency_pc/favicon.ico",
+    "refused": "R37_EVERY_PAYLOAD_ROW_AND_MANIFEST_BYTE_RETAINED"
+  },
+  {
+    "case": "changed-retained-payload-private/server-configuration.json",
+    "refused": "R37_EVERY_PAYLOAD_ROW_AND_MANIFEST_BYTE_RETAINED"
+  },
+  {
+    "case": "extra-accepted-release",
+    "refused": "R37_ONLY_ONE_INSTALLED_RELEASE_REQUIRED"
+  },
+  {
+    "case": "wrong-existing-IIS-proxy",
+    "refused": "R37_OLD_IIS_PROXY_PIN_REQUIRED_BEFORE_MUTATION"
+  },
+  {
+    "case": "extra-legacy-entry",
+    "refused": "R37_ONLY_EXACT_EXISTING_IIS_PROXY_LEGACY_PIN_REQUIRED"
+  },
+  {
+    "case": "wrong-existing-IIS-legacy-pin",
+    "refused": "R37_ONLY_EXACT_EXISTING_IIS_PROXY_LEGACY_PIN_REQUIRED"
+  },
+  {
+    "case": "unexpected-frontend-write",
+    "refused": "R37_EXACT_SIX_STATIC_INSTALL_PATHS_REQUIRED"
+  },
+  {
+    "case": "unexpected-removal",
+    "refused": "R37_NO_BUSINESS_OR_FRONTEND_CHANGE_OR_REMOVAL"
+  },
+  {
+    "case": "unexpected-old-payload-adaptation",
+    "refused": "R37_NO_BUSINESS_OR_FRONTEND_CHANGE_OR_REMOVAL"
+  },
+  {
+    "case": "missing-required-IIS-write",
+    "refused": "R37_EXACT_SIX_STATIC_INSTALL_PATHS_REQUIRED"
+  },
+  {
+    "case": "wrong-static-file-transport",
+    "refused": "R37_EXACT_STATIC_TRANSPORT_PIN_REQUIRED:iis/App_Code/XnbyReferenceProxy.cs"
+  },
+  {
+    "case": "wrong-updater-transport",
+    "refused": "R37_EXACT_SELF_UPDATER_REQUIRED"
+  },
+  {
+    "case": "drop-original-history",
+    "refused": "R37_ALL_BUSINESS_FRONTEND_AUTH_AND_HISTORY_RELEASE_FIELDS_RETAINED"
+  },
+  {
+    "case": "premature-full-acceptance",
+    "refused": "R37_EXACT_STATIC_REVISION_REQUIRED"
+  },
+  {
+    "case": "wrong-static-revision",
+    "refused": "R37_EXACT_STATIC_REVISION_REQUIRED"
+  }
+]

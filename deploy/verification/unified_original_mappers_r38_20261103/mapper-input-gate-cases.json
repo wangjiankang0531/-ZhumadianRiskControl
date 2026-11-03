@@ -1,0 +1,72 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "absent",
+      "passed": true,
+      "noSettingValuesReturned": true
+    },
+    {
+      "case": "explicit-original",
+      "passed": true,
+      "noSettingValuesReturned": true
+    },
+    {
+      "case": "explicit-camel",
+      "passed": true,
+      "noSettingValuesReturned": true
+    },
+    {
+      "case": "explicit-index",
+      "passed": true,
+      "noSettingValuesReturned": true
+    },
+    {
+      "case": "wrong-file",
+      "refusedBeforeService": true
+    },
+    {
+      "case": "empty-file",
+      "refusedBeforeService": true
+    },
+    {
+      "case": "env-original",
+      "passed": true,
+      "noSettingValuesReturned": true
+    },
+    {
+      "case": "env-foreign",
+      "refusedBeforeService": true
+    },
+    {
+      "case": "system-original",
+      "passed": true,
+      "noSettingValuesReturned": true
+    },
+    {
+      "case": "system-foreign",
+      "refusedBeforeService": true
+    },
+    {
+      "case": "cli-original",
+      "passed": true,
+      "noSettingValuesReturned": true
+    },
+    {
+      "case": "cli-empty",
+      "refusedBeforeService": true
+    },
+    {
+      "case": "actual-fixed-wrapper-mapper-refusal-before-readiness-or-services",
+      "passed": true,
+      "events": [
+        "load_bundle_explicit_identity_fixture_spy"
+      ]
+    }
+  ],
+  "checks": 13,
+  "wrapperSHA256": "ef35576ada07170dc252a5f93f2861a2b3441cdfc4c69f0659575446cbe1bb7a",
+  "settingsAndEnvironmentValuesNotReturned": true,
+  "originalSyntheticConfigRestored": true,
+  "realProcessesOrPublicOrDatabaseTouched": false
+}

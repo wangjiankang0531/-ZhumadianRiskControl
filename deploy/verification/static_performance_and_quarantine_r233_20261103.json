@@ -1,0 +1,351 @@
+{
+  "staticTransport": {
+    "passed": true,
+    "staticSourcePins": {
+      "security_pc": {
+        "files": 836,
+        "exactPublicR36StaticRootVerified": true
+      },
+      "emergency_pc": {
+        "files": 340,
+        "exactPublicR36StaticRootVerified": true
+      }
+    },
+    "actualNginxSyntaxAndTransport": true,
+    "actualAspNetHandlerToNginx": true,
+    "iisIntegratedRuntimeTested": false,
+    "publicDeployed": false,
+    "realBusinessOrDatabaseUsed": false,
+    "desktopTouched": false,
+    "casesEachMode": 18,
+    "savings": [
+      {
+        "resource": "security-js",
+        "beforeBytes": 2624898,
+        "afterBytes": 819234,
+        "reductionPercent": 68.79,
+        "decodedContentIdentical": true
+      },
+      {
+        "resource": "emergency-js",
+        "beforeBytes": 2575860,
+        "afterBytes": 806701,
+        "reductionPercent": 68.68,
+        "decodedContentIdentical": true
+      },
+      {
+        "resource": "security-css",
+        "beforeBytes": 869689,
+        "afterBytes": 126860,
+        "reductionPercent": 85.41,
+        "decodedContentIdentical": true
+      },
+      {
+        "resource": "emergency-css",
+        "beforeBytes": 868546,
+        "afterBytes": 126553,
+        "reductionPercent": 85.43,
+        "decodedContentIdentical": true
+      }
+    ],
+    "decodedHTMLAPIAndStaticIdentical": true,
+    "hashOnlyCachingAndErrorNoStore": true,
+    "syntheticAuthCookieAndAPINamesUnchanged": true,
+    "normalNginxExitAndOwnedDescendantsZero": true
+  },
+  "browser": {
+    "passed": true,
+    "staticSourcePins": {
+      "security_pc": {
+        "files": 836,
+        "exactPublicR36StaticRootVerified": true
+      },
+      "emergency_pc": {
+        "files": 340,
+        "exactPublicR36StaticRootVerified": true
+      }
+    },
+    "actualNginxSyntaxAndTransport": true,
+    "actualAspNetHandlerToNginx": true,
+    "iisIntegratedRuntimeTested": false,
+    "publicDeployed": false,
+    "realBusinessOrDatabaseUsed": false,
+    "desktopTouched": false,
+    "casesEachMode": 18,
+    "savings": [
+      {
+        "resource": "security-js",
+        "beforeBytes": 2624898,
+        "afterBytes": 819234,
+        "reductionPercent": 68.79,
+        "decodedContentIdentical": true
+      },
+      {
+        "resource": "emergency-js",
+        "beforeBytes": 2575860,
+        "afterBytes": 806701,
+        "reductionPercent": 68.68,
+        "decodedContentIdentical": true
+      },
+      {
+        "resource": "security-css",
+        "beforeBytes": 869689,
+        "afterBytes": 126860,
+        "reductionPercent": 85.41,
+        "decodedContentIdentical": true
+      },
+      {
+        "resource": "emergency-css",
+        "beforeBytes": 868546,
+        "afterBytes": 126553,
+        "reductionPercent": 85.43,
+        "decodedContentIdentical": true
+      }
+    ],
+    "decodedHTMLAPIAndStaticIdentical": true,
+    "hashOnlyCachingAndErrorNoStore": true,
+    "syntheticAuthCookieAndAPINamesUnchanged": true,
+    "normalNginxExitAndOwnedDescendantsZero": true,
+    "actualHeadlessChromeColdWarmAnonymousLogin": true,
+    "browserResults": {
+      "baseline": {
+        "mode": "baseline",
+        "rows": [
+          {
+            "portal": "security",
+            "cache": "cold",
+            "loginVisibleMs": 3308,
+            "domContentLoadedMs": 3086.7000000029802,
+            "loadMs": 3169.5,
+            "staticWireBytes": 3690423,
+            "cachedStaticResources": 0,
+            "staticRequests": 8,
+            "failedStaticResources": 0
+          },
+          {
+            "portal": "security",
+            "cache": "warm",
+            "loginVisibleMs": 3230,
+            "domContentLoadedMs": 3027.7000000029802,
+            "loadMs": 3120,
+            "staticWireBytes": 3690429,
+            "cachedStaticResources": 0,
+            "staticRequests": 8,
+            "failedStaticResources": 0
+          },
+          {
+            "portal": "emergency",
+            "cache": "cold",
+            "loginVisibleMs": 3265,
+            "domContentLoadedMs": 3030.5,
+            "loadMs": 3124.7999999970198,
+            "staticWireBytes": 3640294,
+            "cachedStaticResources": 0,
+            "staticRequests": 8,
+            "failedStaticResources": 0
+          },
+          {
+            "portal": "emergency",
+            "cache": "warm",
+            "loginVisibleMs": 3186,
+            "domContentLoadedMs": 2979.2999999970198,
+            "loadMs": 3075.2000000029802,
+            "staticWireBytes": 3640294,
+            "cachedStaticResources": 0,
+            "staticRequests": 8,
+            "failedStaticResources": 0
+          }
+        ],
+        "controlledDownloadBytesPerSecond": 1250000,
+        "controlledRTTMs": 60,
+        "anonymousLoginOnly": true,
+        "publicAuthenticatedHomepageOrModuleTiming": false,
+        "failures": [],
+        "blocked": [
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          }
+        ]
+      },
+      "candidate": {
+        "mode": "candidate",
+        "rows": [
+          {
+            "portal": "security",
+            "cache": "cold",
+            "loginVisibleMs": 1289,
+            "domContentLoadedMs": 1065,
+            "loadMs": 1151.4000000059605,
+            "staticWireBytes": 1135409,
+            "cachedStaticResources": 0,
+            "staticRequests": 8,
+            "failedStaticResources": 0
+          },
+          {
+            "portal": "security",
+            "cache": "warm",
+            "loginVisibleMs": 250,
+            "domContentLoadedMs": 188.70000000298023,
+            "loadMs": 204.40000000596046,
+            "staticWireBytes": 0,
+            "cachedStaticResources": 8,
+            "staticRequests": 8,
+            "failedStaticResources": 0
+          },
+          {
+            "portal": "emergency",
+            "cache": "cold",
+            "loginVisibleMs": 1219,
+            "domContentLoadedMs": 1009.5,
+            "loadMs": 1100,
+            "staticWireBytes": 1122565,
+            "cachedStaticResources": 0,
+            "staticRequests": 8,
+            "failedStaticResources": 0
+          },
+          {
+            "portal": "emergency",
+            "cache": "warm",
+            "loginVisibleMs": 140,
+            "domContentLoadedMs": 114.09999999403954,
+            "loadMs": 129.19999998807907,
+            "staticWireBytes": 0,
+            "cachedStaticResources": 8,
+            "staticRequests": 8,
+            "failedStaticResources": 0
+          }
+        ],
+        "controlledDownloadBytesPerSecond": 1250000,
+        "controlledRTTMs": 60,
+        "anonymousLoginOnly": true,
+        "publicAuthenticatedHomepageOrModuleTiming": false,
+        "failures": [],
+        "blocked": [
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          },
+          {
+            "origin": "http://at.alicdn.com",
+            "method": "GET"
+          }
+        ]
+      }
+    }
+  },
+  "quarantine": {
+    "generatedTestTools": 2,
+    "screenshotAlerts": 3,
+    "sameNativePathReportedTwiceIgnoringWindowsPathCase": true,
+    "files": [
+      {
+        "name": "cases.exe",
+        "originalPath": "${LOCAL_TEST_WORKSPACE}/static-proxy-boundaries-r232/cases.exe",
+        "source": "${LOCAL_TEST_WORKSPACE}/static-proxy-boundaries-r232/cases.cs",
+        "sourceSHA256": "e422328b2771f72dc250bd74831882bbc4f113ea5e5d0fd12b635eed05676607",
+        "compiler": "Microsoft .NET C# csc.exe",
+        "compilerSignatureVerifiedValid": true,
+        "intendedCases": 23,
+        "actualCasesExecuted": false,
+        "launchRejectedWithWinError5": true,
+        "binarySHA256BeforeQuarantineAvailable": false,
+        "requiredByDeployedApplication": false
+      },
+      {
+        "name": "ht_frame_timing_tests.exe",
+        "originalPath": "D:\\Project\\Zhumadian\\work\\native_frame_profile_20261103\\regression-build\\Release\\ht_frame_timing_tests.exe",
+        "compiler": "Microsoft Visual C++ cl.exe",
+        "compilerSignatureVerifiedValid": true,
+        "cmakeTargetSourcesVerified": true,
+        "archivedBuildInputPins": {
+          "XNBYEngine/tests/src/rhi/test_gpu_frame_timing.cpp": {
+            "bytes": 1669,
+            "sha256": "37d7056f2c191781c8a36a8bfd195653d8f54be7066b9aea51dc7d5eb941a51f"
+          },
+          "Application/tools/test_native_frame_profile_summary.cpp": {
+            "bytes": 1738,
+            "sha256": "831893fdfb3b83c5e35043dddebca332388e09544f9aed78043b1e1f01bf4d3b"
+          },
+          "Application/native/native_frame_profile.hpp": {
+            "bytes": 4537,
+            "sha256": "d9aa1f36d76ecf1a828c4c0cd0495e05e9c7d12799de8580abe5c99967d86dd8"
+          },
+          "XNBYEngine/rhi/include/hongtu/rhi/GpuFrameTiming.h": {
+            "bytes": 2221,
+            "sha256": "25bc2b7eb931cb907a0bf85b7a10305db23f8dcab73de298c844fa82010ffb9e"
+          }
+        },
+        "unitBuildExitCode": 1,
+        "testDiscoveryOperationNotPermittedRecorded": true,
+        "originalExecutableBinaryNotAvailable": true,
+        "currentHeaderHasLaterNormalTraceFieldChanges": true,
+        "reviewUsedOriginalArchivedHeader": true,
+        "requiredByDeployedApplication": false
+      }
+    ],
+    "assessment": "Likely false positives based on source and build provenance; no final quarantined-binary verdict.",
+    "quarantinedSamplesRestored": false,
+    "trustOrExclusionsChanged": false,
+    "antivirusDisabled": false,
+    "samplesUploadedToThirdParty": false,
+    "desktopOperated": false,
+    "publicRuntime": "R36 unchanged",
+    "threeDSourceAssetsAndDedicatedCheckpointChanged": false
+  },
+  "publicDeployed": false,
+  "finalPackagePrepared": false,
+  "fullCloneReady": false
+}

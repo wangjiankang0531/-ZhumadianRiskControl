@@ -1,0 +1,67 @@
+{
+  "revision": "R38-r2-unified-original-mappers-install-snapshot",
+  "targetFTP": "/Zhumadian/Zhumadian_Unified_Original_Mappers_20261103_R38_R2/",
+  "targetApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "files": {
+    "Check_Only_Unified_Mappers_R38_R2.cmd": {
+      "bytes": 137,
+      "sha256": "5c4d0151c31288ed0d50ecbe0f56b9c384b61e65b0eb0f9b36bc5d7dab35cd2e"
+    },
+    "deploy_unified_mappers_r38.py": {
+      "bytes": 10667,
+      "sha256": "349cc5a379419d9e3587360f4fefca590e4d304ab06536cddfdf83241f858656"
+    },
+    "Deploy_Unified_Mappers_R38_R2.cmd": {
+      "bytes": 125,
+      "sha256": "5384b34449159f566811ffedbca0fb802c0524ad2a67d0d9274009ea284ea33e"
+    },
+    "r38_update_runtime.py": {
+      "bytes": 216298,
+      "sha256": "f4eae55e6c2b35b4bee67d228bfc8904968ce49d86ea8265436e7e08b2e2964d"
+    },
+    "Recover_This_Unified_Mappers_R38_R2.cmd": {
+      "bytes": 146,
+      "sha256": "c9eb90686e6998ed017c8ca5797e2846a8b5d1914653e9ad1dbd0d56dc244e3b"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Unified_Original_Mappers_20261103_R38_R2.zip": {
+      "bytes": 1883614,
+      "sha256": "1b8a8f169fb1421cdf27dc770ad861b9ffaed6cedb99b21b41c8c5974ab27fd3"
+    }
+  },
+  "oldReleaseSHA256": "daaf0be2b1cb17eab4640b7388901a0f00c1b920cfe2260c4d060234230fb853",
+  "oldUpdaterSHA256": "67545498b3f823e03394ecebdbf9aed12a64c719cca16b7a56a13abb66b49eca",
+  "newReleaseSHA256": "4bca6275e23cfc44d2a18e60e8409345f6231e3b9c7a6975ca9334bbab6805a4",
+  "newUpdaterSHA256": "f4eae55e6c2b35b4bee67d228bfc8904968ce49d86ea8265436e7e08b2e2964d",
+  "updateManifestSHA256": "7b76dc695252328d0c3e6a891ec9c67fb3038819ea763106f2a1926669732c66",
+  "writes": 186,
+  "removedFiles": 177,
+  "oldReadinessReports": 11,
+  "newReadinessReports": 11,
+  "declaredControlFiles": 22,
+  "fullProgramFilesVerified": 15557,
+  "negativeCompositionCases": 45,
+  "fileRecoveryScenarios": 14,
+  "actualR38NginxRequestsEachMode": 12,
+  "newR38AspNetHandlerTransportRepetitionPassed": false,
+  "priorExactProxyEvidenceRetained": true,
+  "actualR263ParameterNativePlanExerciseCases": 11,
+  "actualFinalRuntimeAdapterTaskParallelPhases": 9,
+  "actualOriginalXMLStatementsRegistered": 226,
+  "newUpdaterApplyUpdateTransactionExecutedLocally": false,
+  "realServerPreflightIISHTTPSAndLoggedInUIPending": true,
+  "maximumExtractionPathCharacters": 225,
+  "originalBusinessJarAuthDatabasePrivateConfigurationUploadsAndSecurityFrontendRetained": true,
+  "publicDeployed": false,
+  "newPublicGitIncluded": false,
+  "fullCloneReady": false,
+  "mapperConfigurationGateBeforeAnyShutdown": true,
+  "sameSnapshotMapperValidationInsideApplyUpdate": true,
+  "mapperInstallPreflightChecks": 20,
+  "actualApplyUpdatePreStopPathsWithExplicitSpiesPassed": true,
+  "priorUnpublishedR38ManifestWithdrawn": "72b7d48b25ce0e14504c20d99fddc6adde0c930f00bc0036bcce3a3c17a002d3",
+  "normalStopLaunchBackupReplaceRestoreRecoveryFunctionsASTRetainedFromR37": true
+}

@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "at": "2026-11-03T16:04:31.5421298+08:00",
+  "targets": [
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\r38-unified-full-preflight-r288\\Application",
+      "fileEntries": 15958,
+      "logicalBytes": 1421069381,
+      "directories": 711,
+      "absoluteScopeVerified": true,
+      "noActiveProcessReferences": true,
+      "noReparsePoints": true
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\r38-unified-full-preflight-r288\\bundle",
+      "fileEntries": 187,
+      "logicalBytes": 7233884,
+      "directories": 13,
+      "absoluteScopeVerified": true,
+      "noActiveProcessReferences": true,
+      "noReparsePoints": true
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\user_feedback_20261031\\r38-unified-original-mappers-r2\\contract-Application",
+      "fileEntries": 2,
+      "logicalBytes": 2618226,
+      "directories": 1,
+      "absoluteScopeVerified": true,
+      "noActiveProcessReferences": true,
+      "noReparsePoints": true
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\user_feedback_20261031\\r38-unified-original-mappers-r2\\transactions",
+      "fileEntries": 5237,
+      "logicalBytes": 198773222,
+      "directories": 407,
+      "absoluteScopeVerified": true,
+      "noActiveProcessReferences": true,
+      "noReparsePoints": true
+    }
+  ],
+  "removedFileEntries": 21384.0,
+  "logicalBytes": 1629694713.0,
+  "observedDFreeBefore": 368557006848,
+  "observedDFreeAfter": 368798687232,
+  "observedDFreeDelta": 241680384,
+  "logicalHardlinkSizesAreNotPhysicalReclaimedBytes": true,
+  "observedFreeDeltaNotUniquelyAttributed": true,
+  "sourceFixedBundleAndDeliveryAndProofsRetained": true,
+  "databaseAssetsUploadsAndUserBrowserUntouched": true,
+  "publicFormal18891AndScene8767Untouched": true,
+  "noProcessesTerminated": true
+}

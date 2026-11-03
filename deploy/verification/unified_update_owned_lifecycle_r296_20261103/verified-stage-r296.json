@@ -1,0 +1,47 @@
+{
+  "schema": "xnby.r296.actual-owned-update-lifecycle.v1",
+  "at": "2026-11-03T16:30:10.191116+08:00",
+  "candidate": "R38-r2",
+  "fixedTransportManifestUnchanged": "3882688ce2836d640530aef872b77b4306d665241e329522ae5c6dd7ebad0956",
+  "sourcePins": [
+    {
+      "path": "tools/inspect_owned_unified_lifecycle_r292.py",
+      "sha256": "4d299b08559bea62c550e57a0a46f0c30215c89ecfeb5727ec059239131cc06f",
+      "bytes": 3234
+    },
+    {
+      "path": "tools/prepare_owned_unified_lifecycle_r293.py",
+      "sha256": "518ac25164b33e896100227c7f5e13dce36f1357d7236082c4ae0442739587cc",
+      "bytes": 6312
+    },
+    {
+      "path": "tools/run_owned_unified_lifecycle_r294.py",
+      "sha256": "729306c09ba27e61b296e79bd449fc787d367f07a6e4ea36054a0007bd699647",
+      "bytes": 16491
+    },
+    {
+      "path": "tools/cleanup_owned_unified_lifecycle_r295.ps1",
+      "sha256": "59ca23c9255abb31273e7f8efb738e7d6eab297c4b72e0e12cbdc88a9e69ad30",
+      "bytes": 7496
+    },
+    {
+      "path": "tools/record_owned_unified_lifecycle_r296.py",
+      "sha256": "6e84fe0f5e126a6812b5eccf8bdbddb5c352bb906882ece65dd93ce7bfbba6d5",
+      "bytes": 12917
+    }
+  ],
+  "actualApplyUpdateAndRollbackLatestExecuted": true,
+  "actualSixComponentControllers": 3,
+  "allNormalZeroAndActualDescendantsZero": true,
+  "original398ModelsUnchangedAcrossUpdateAndRollback": true,
+  "fourActualCandidateGatewayGzipDecodedSHAMatches": true,
+  "loadBundleTargetAndGatewayAndSyntheticPrivateManifestAdapted": true,
+  "explicitIngressHTTPAdapterUsedAndNotAcceptedAsTLSProof": true,
+  "identityHealthNormalStopLaunchBackupReplaceRestoreAndRollbackBodiesNotStubbed": true,
+  "originalGCodePrivateConfigAndPointersRestored": true,
+  "databaseCopiedReplacedOrRestoredFromBackup": false,
+  "publicDeploymentHTTPSIISTLSAndNormalLoggedInBusinessUIStillPending": true,
+  "publicOrFormal18891OrScene8767OrDesktopTouched": false,
+  "newPublicGitPushed": false,
+  "fullCloneReady": false
+}

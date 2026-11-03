@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "processesTerminated": false,
+  "logicalBytesRemoved": 124185563,
+  "fileEntriesRemoved": 2341,
+  "observedDriveFreeDeltaBytes": 125390848,
+  "driveDeltaExclusivelyAttributed": false,
+  "profilesRemoved": 11,
+  "sourceResultsDatabaseAssetsAndUserBrowserKept": true
+}

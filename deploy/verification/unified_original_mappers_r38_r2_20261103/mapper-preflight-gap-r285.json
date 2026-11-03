@@ -1,0 +1,41 @@
+{
+  "gapReproduced": true,
+  "cases": [
+    {
+      "case": "file-foreign",
+      "numericPoolPreflightAccepted": true,
+      "mapperSettingShouldRequireValidation": true
+    },
+    {
+      "case": "file-empty",
+      "numericPoolPreflightAccepted": true,
+      "mapperSettingShouldRequireValidation": true
+    },
+    {
+      "case": "environment-foreign",
+      "numericPoolPreflightAccepted": true,
+      "mapperSettingShouldRequireValidation": true
+    },
+    {
+      "case": "java-system-property-foreign",
+      "numericPoolPreflightAccepted": true,
+      "mapperSettingShouldRequireValidation": true
+    },
+    {
+      "case": "application-argument-foreign",
+      "numericPoolPreflightAccepted": true,
+      "mapperSettingShouldRequireValidation": true
+    },
+    {
+      "case": "configuration-changed-after-wrapper-gate-before-apply-snapshot",
+      "actualApplyUpdateReachedOwnedReadyWithUnknownMapper": true,
+      "ownedReadyReplacedByStopSpy": true
+    }
+  ],
+  "candidateSourceSHA256": "61b76c8eab5594cf4294cd40e0750af34b415891c2bbd3f7e5ef80bd34129eab",
+  "actualCandidateRuntimePoolPreflightExecuted": true,
+  "applyUpdateReachedOnlyExplicitOwnedReadySpy": true,
+  "actualServiceStopLaunchDatabaseOrPublicTouched": false,
+  "realConfigurationOrCredentialsRead": false,
+  "fixedR38DeliveryMustNotBePublishedUntilGuardStrengthened": true
+}

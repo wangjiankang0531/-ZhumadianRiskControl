@@ -1,0 +1,114 @@
+[
+  {
+    "case": "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js-gzip-validator-synthetic-body",
+    "passed": true
+  },
+  {
+    "case": "wrong-status",
+    "passed": true
+  },
+  {
+    "case": "missing-vary",
+    "passed": true
+  },
+  {
+    "case": "private-cache",
+    "passed": true
+  },
+  {
+    "case": "wrong-content",
+    "passed": true
+  },
+  {
+    "case": "unexpected-identity-gzip",
+    "passed": true
+  },
+  {
+    "case": "explicit-zero-identity",
+    "passed": true
+  },
+  {
+    "case": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-CeoNouGN.js-gzip-validator-synthetic-body",
+    "passed": true
+  },
+  {
+    "case": "wrong-status",
+    "passed": true
+  },
+  {
+    "case": "missing-vary",
+    "passed": true
+  },
+  {
+    "case": "private-cache",
+    "passed": true
+  },
+  {
+    "case": "wrong-content",
+    "passed": true
+  },
+  {
+    "case": "unexpected-identity-gzip",
+    "passed": true
+  },
+  {
+    "case": "explicit-zero-identity",
+    "passed": true
+  },
+  {
+    "case": "/zhumadian/branding-20261025/assets/css/index-ClWHaJx5.css-gzip-validator-synthetic-body",
+    "passed": true
+  },
+  {
+    "case": "wrong-status",
+    "passed": true
+  },
+  {
+    "case": "missing-vary",
+    "passed": true
+  },
+  {
+    "case": "private-cache",
+    "passed": true
+  },
+  {
+    "case": "wrong-content",
+    "passed": true
+  },
+  {
+    "case": "unexpected-identity-gzip",
+    "passed": true
+  },
+  {
+    "case": "explicit-zero-identity",
+    "passed": true
+  },
+  {
+    "case": "/zhumadian/emergency/branding-20261025/assets/css/index-D0NHlCez.css-gzip-validator-synthetic-body",
+    "passed": true
+  },
+  {
+    "case": "wrong-status",
+    "passed": true
+  },
+  {
+    "case": "missing-vary",
+    "passed": true
+  },
+  {
+    "case": "private-cache",
+    "passed": true
+  },
+  {
+    "case": "wrong-content",
+    "passed": true
+  },
+  {
+    "case": "unexpected-identity-gzip",
+    "passed": true
+  },
+  {
+    "case": "explicit-zero-identity",
+    "passed": true
+  }
+]
