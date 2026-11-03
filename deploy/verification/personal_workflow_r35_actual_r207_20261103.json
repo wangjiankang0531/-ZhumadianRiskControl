@@ -1,0 +1,46 @@
+{
+  "publicVersion": "R35",
+  "publicReleaseSHA256": "ccede060e9c329d44e65aef3200d86f8666c73d071d743cc1535031ab15d0ca4",
+  "deployed": true,
+  "actualPublicHTTPSFiles": 1176,
+  "actualAuthenticatedPersonalListDetailAndRefreshChecks": 37,
+  "pendingHandledInitiatedActualDetailReadbackPassed": true,
+  "publicBusinessOperationsSubmitted": false,
+  "retiredDirectoriesRemoved": 7,
+  "retiredFilesRemoved": 675,
+  "retiredLogicalBytesRemoved": 25331142,
+  "onlyLatestFTPAndRuntimeRetained": true,
+  "postCleanupHTTPSChecks": 7,
+  "originalDataUploadsConfigurationAndIISKept": true,
+  "publicGitFixed51Completed": {
+    "application": {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "branch": "review/workplace-r19-verified-partial-20261031",
+      "commit": "793ae284002bd90c0a56301a30f8938db7a8fbc9",
+      "soleParent": "62f421212b0981c06eecb268adc648c5909bd0e7",
+      "tree": "90ec5765aee6c0dfbc0be4d52f2db349fae90743"
+    },
+    "engine": {
+      "repository": "wangjiankang0531/-XNBYEngine",
+      "branch": "review/workplace-r19-verified-progress-20261031",
+      "commit": "017e1198d87d80431b7624d575e00a7f5e849511",
+      "soleParent": "7993d972324e14eeeca0d692be34b7d3314469db",
+      "tree": "8f562c28c178a95c0573cb471f67ba89a169512c"
+    },
+    "manifestSHA256": "e332493802046a8281ca76098adb56b1613c5447d26fd1b89edeb99af8fbf9ad",
+    "files": 51,
+    "bytes": 583600,
+    "all51BlobBytesBothRecursiveTreesSoleParentsAndFinalRefsVerified": true,
+    "newBranchesOrPrivateAncestorsOrMainChanges": false,
+    "explicitApprovalQuestionId": "call_7aebd603142a4b969ecebc9651a93d5e"
+  },
+  "nativeHistoryBackendPublicInstalled": false,
+  "nativeSeparateModuleAfterAddsignStages": 7,
+  "nativeSeparateModuleBeforeAddsignWithActualSQLFaultAndOneRetryStages": 8,
+  "eightScopedTableFingerprintsUnchangedOnRealFault": true,
+  "independentOpinionExactlyOnceAndOriginalDateOrderPassed": true,
+  "normalRestartExactCompletedR102ReadbackPassed": true,
+  "original398ModelsUnchanged": true,
+  "fullNativeNangangAcceptance": false,
+  "fullCloneReady": false
+}

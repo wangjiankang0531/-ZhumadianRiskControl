@@ -1,0 +1,18 @@
+from pathlib import Path
+import ast
+V=Path(__file__).parent
+s=(V/'build_personal_workflow_delivery_r197_20261103.py').read_text(encoding='utf-8')
+s=s.replace('r35-personal-workflow-candidate-r1','r36-native-history-candidate-r2').replace('public_test_personal_workflow_r35_20261103','public_test_native_history_r36_20261103').replace('r35gv-r1','r36gv-r2').replace('r96','r102').replace("len(tx['recoveryScenarios'])==7","len(tx['recoveryScenarios'])==8").replace('original_public_test_update_r35_20261103.py','original_public_test_update_r36_20261103_r2.py')
+s=s.replace('Zhumadian_Personal_Workflow_20261103_R35','Zhumadian_Native_History_20261103_R36').replace('r35_update_runtime','r36_update_runtime').replace('deploy_personal_workflow_r35','deploy_native_history_r36').replace('_Personal_Workflow_R35.cmd','_Native_History_R36.cmd').replace('R35-emergency-authenticated-personal-workflow-pages','R36-native-before-addsign-original-date-history')
+old="wrapper=(R/'Document/Deployment/public_test_pending_visibility_r34_20261102/delivery/deploy_pending_visibility_r34.py')"
+new="wrapper=(R/'Document/Deployment/public_test_personal_workflow_r35_20261103/delivery/deploy_personal_workflow_r35.py')"
+assert s.count(old)==1;s=s.replace(old,new)
+old="wrapper=''.join(lines).replace('Zhumadian_Pending_Visibility_20261102_R34.zip',archive.name).replace('r34_update_runtime.py','r36_update_runtime.py').replace('fixed_r34_updater','fixed_r35_updater').replace('R34_','R35_').replace('EXACT_R33_BASE','EXACT_R34_BASE').replace('EXACT_R31_RUNTIME','EXACT_R34_RUNTIME');ast.parse(wrapper)"
+new="wrapper=''.join(lines).replace('Zhumadian_Personal_Workflow_20261103_R35.zip',archive.name).replace('r35_update_runtime.py','r36_update_runtime.py').replace('fixed_r35_updater','fixed_r36_updater').replace('R35_','R36_').replace('EXACT_R34_BASE','EXACT_R35_BASE').replace('EXACT_R34_RUNTIME','EXACT_R35_RUNTIME');ast.parse(wrapper)"
+assert s.count(old)==1;s=s.replace(old,new)
+s=s.replace("'recoveryScenarios':7","'recoveryScenarios':8").replace("'newUpdaterLifecycleIndependentlyStarted':False","'finalR2UpdaterWholeFileIndependentlyStarted':False,'identicalRuntimeLifecycleFunctionsActuallyExercisedByR208':True,'finalR2OnlyLoadBundleWhitelistDiffersFromActualR208Updater':True")
+s=s.replace("'allOther19ControlsAndOriginalJarsConfigurationDataAuthenticationSecurityFrontendAndIISKept':True","'allOther18ControlsOriginalJarsPrivateConfigurationDataAuthAsyncBothFrontendsAndIISKept':True,'oneNewExactHistoryHelperMakes21ControlFiles':True,'oldReadinessReports':10,'newReadinessReports':11,'actualBeforeAddsignSQLFaultEightTablesRollbackAndOneRetryPassed':True,'actualAfterAddsignSevenStagesAndNormalRestartReadbackPassed':True")
+ast.parse(s);p=V/'build_native_history_delivery_r209_20261103.py';assert not p.exists();p.write_text(s,encoding='utf-8')
+s=(V/'verify_personal_workflow_transport_order_r197_20261103.py').read_text(encoding='utf-8').replace('public_test_personal_workflow_r35_20261103','public_test_native_history_r36_20261103').replace('r35gv-r1','r36gv-r2').replace('r35-personal-workflow-candidate-r1','r36-native-history-candidate-r2').replace('deploy_personal_workflow_r35','deploy_native_history_r36').replace('r35_update_runtime','r36_update_runtime').replace('xnby.r197.','xnby.r209.').replace('actualFullLoadBundleSeparatelyPassedR34ProgramFiles','actualFullLoadBundleSeparatelyPassedR35ProgramFiles')
+ast.parse(s);p=V/'verify_native_history_transport_order_r209_20261103.py';assert not p.exists();p.write_text(s,encoding='utf-8')
+print('FINAL_R36_R2_FIXED_DELIVERY_AND_REAL_BUDGET_BEFORE_STOP_VERIFIER_PREPARED')
