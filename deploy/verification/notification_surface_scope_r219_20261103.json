@@ -1,0 +1,34 @@
+{
+  "schema": "xnby.original-notification-static-scope.r219",
+  "oneInformationSystem": true,
+  "sourceGraphSHA256": "709cd6260ac384488340ffdb43f3984c2988f7373db1632beba3c6fa560f4274",
+  "surfaces": [
+    {
+      "technicalProject": "security_pc",
+      "activeHeaderNoticeTemplateTag": true,
+      "activeHeaderNoticeImport": true,
+      "layoutSourceSHA256": "0d0334dadda8c1f78566d12ed63924d3b8f84f0fa0e9547b9c4f05151c002a30",
+      "headerNoticeSourceSHA256": "abc651c3ff85752c8787e5ca2632e77f76638ed5df98eb3c70c80033759a13a1"
+    },
+    {
+      "technicalProject": "emergency_pc",
+      "activeHeaderNoticeTemplateTag": false,
+      "activeHeaderNoticeImport": false,
+      "layoutSourceSHA256": "d9a6de5d165dfafd700fda2ad2b52194967e3fcf50a45f5b241c7e4ac663cea4",
+      "headerNoticeSourceSHA256": "14149a5af88feabe1795f94049e15a8c1e227392818e6aff2cd64a72eae3a97f"
+    }
+  ],
+  "r195ActualCompilerPinsMatchOriginalScope": {
+    "src/layout/index.vue": true,
+    "src/layout/components/header-notice.vue": true
+  },
+  "layoutPinComparedAfterExistingProjectBrandingAdapter": true,
+  "brandingAdapterSHA256": "0c5e94c17387c2e980798a96d0734d53acb10ab87ee44d16c245afdebe7e46a8",
+  "securityHeaderIsActualPersonalPendingListPoll": true,
+  "emergencyExampleHeaderComponentDisabledInOriginalLayout": true,
+  "disabledDemoComponentIsNotProofOfLivePublicExternalRequests": true,
+  "standaloneExamplePagesAreNotProofOfEnabledBusinessNotification": true,
+  "runtimeDeliverySMSWeChatEmailAndRealTemplateConfigurationVerified": false,
+  "noUnrequestedNotificationFeatureEnabled": true,
+  "productPublicOrDesktopChanged": false
+}

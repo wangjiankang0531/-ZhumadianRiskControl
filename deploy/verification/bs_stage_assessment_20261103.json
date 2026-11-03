@@ -1,0 +1,55 @@
+{
+  "schema": "xnby.bs.engineering-stage-estimate.20261103.v1",
+  "at": "2026-11-03T11:28:00.514462+08:00",
+  "scope": "eight-original-Nangang-non3D-BS-entrypoints",
+  "includesUEEngineEXEOrWeb3DInThesePercentages": false,
+  "classification": "withdrawn-pending-unique-business-functional-denominator",
+  "uniformAllEightDetailedAcceptanceDenominatorAudited": false,
+  "fullyAcceptedWholeModules": 0,
+  "totalEntryModules": 8,
+  "testerReportedPriorIssuesResolved": 16,
+  "priorIssueCount": 16,
+  "publicVersion": "R36",
+  "publicReadOnlyUIChecks": 37,
+  "newPublicBusinessApprovalFlowExecutedByR36Verifier": false,
+  "nativeTwoOrdinaryRoleCountersignPhases": 8,
+  "sourceFileTestOrIssueCountsUsedAsCompletionDenominator": false,
+  "requirementExtensionsNotFoundInOriginalCloneIncludedInCloneDenominator": false,
+  "allOriginalNangangTemplatesRolesExternalNotificationsAndPublicFullFlowsAccepted": false,
+  "fullCloneReady": false,
+  "newOrSignExecutionStartedByThisAssessment": false,
+  "supersededEngineeringEstimates": {
+    "overallEightModules": {
+      "centralEstimatePercent": 60,
+      "rangePercent": [
+        50,
+        65
+      ],
+      "confidence": "limited-by-incomplete-six-module-acceptance-inventory"
+    },
+    "focusedM02M07": {
+      "centralEstimatePercent": 75,
+      "rangePercent": [
+        70,
+        80
+      ]
+    },
+    "M02": {
+      "centralEstimatePercent": 80,
+      "rangePercent": [
+        75,
+        85
+      ]
+    },
+    "M07": {
+      "centralEstimatePercent": 70,
+      "rangePercent": [
+        65,
+        75
+      ]
+    }
+  },
+  "validAsProgressBaseline": false,
+  "entryOverlapCorrectionAccepted": true,
+  "replacementPercentage": null
+}

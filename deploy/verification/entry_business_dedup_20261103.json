@@ -1,0 +1,79 @@
+{
+  "schema": "xnby.bs.entry-to-unique-business-family.v1",
+  "at": "2026-11-03T11:38:46.585620+08:00",
+  "userCorrectionAcknowledged": true,
+  "entryLabelsAreNotIndependentWorkPackages": true,
+  "uniqueFunctionKey": [
+    "businessEntity",
+    "operation",
+    "stateTransitionOrWorkflow",
+    "permissionRule"
+  ],
+  "duplicateEntryCreatesAdditionalFunctionWeight": false,
+  "sharedComponentMakesDifferentBusinessEntitiesEquivalent": false,
+  "actualEightHomeTargetsAllIndependentlyReRead": false,
+  "sourcePortalDirectoryStructureAndUserMajorHazardScreenshotInspected": true,
+  "mapping": [
+    {
+      "entry": "M01",
+      "label": "安全风险智能管控平台",
+      "businessFamily": "安全业务综合门户",
+      "countingRule": "包含风险隐患、巡检、特殊作业、重大危险源、待办及其它安全基础业务；容器本身不再重复计子功能"
+    },
+    {
+      "entry": "M02",
+      "label": "敏捷应急管理",
+      "businessFamily": "应急业务综合门户",
+      "countingRule": "包含预案/演练、资源、值班和emergencyResponse事件/任务/处置；与M07重合部分只计一次"
+    },
+    {
+      "entry": "M03",
+      "label": "双重预防",
+      "businessFamily": "安全门户hiddenInvestigate业务族",
+      "countingRule": "与M01下相同业务实体/操作/流程去重；入口和权限另验"
+    },
+    {
+      "entry": "M04",
+      "label": "智能巡检",
+      "businessFamily": "安全门户intelligentInspection业务族",
+      "countingRule": "与M01下同一巡检功能去重；不同执行/台账功能不合并"
+    },
+    {
+      "entry": "M05",
+      "label": "特殊作业",
+      "businessFamily": "安全门户work业务族",
+      "countingRule": "与M01下同一作业入口去重；八类作业各自业务规则仍须验收"
+    },
+    {
+      "entry": "M06",
+      "label": "重大危险源",
+      "businessFamily": "安全门户majorHazard业务族",
+      "countingRule": "用户截图/zhumadian/majorHazard/hazardSource可见综合安全侧栏；与综合门户同功能只计一次"
+    },
+    {
+      "entry": "M07",
+      "label": "应急处置",
+      "businessFamily": "应急门户emergencyResponse业务族",
+      "countingRule": "与M02下相同事件/研判/任务/处置功能去重"
+    },
+    {
+      "entry": "M08",
+      "label": "我的待办",
+      "businessFamily": "各门户workflow及共享原流程引擎",
+      "countingRule": "公共待办/审批能力只计一次；不同业务单据的绑定、角色和状态回写分别验收"
+    }
+  ],
+  "allAtomicFunctionsAndEvidenceReconciled": false,
+  "revisedOverallCompletionPercent": null,
+  "previous60And75ValidAsBaseline": false,
+  "newPercentAutomaticallyRaisedBecauseOverlap": false,
+  "wholeGoalActive": true,
+  "fullCloneReady": false,
+  "logicalInformationSystems": 1,
+  "leftComprehensiveNavigationEntries": 2,
+  "rightShortcutEntries": 6,
+  "technicalPortalMountsNotIndependentSystems": true,
+  "allEightEntriesAreDifferentPerspectivesOfSameSystem": true,
+  "crossEntryDataWorkflowPermissionConsistencyRequired": true,
+  "percentageRemainsUncomputedPendingUniqueFunctionDenominator": true
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "xnby.single-system-menu-source-reconciliation.r217",
+  "logicalInformationSystems": 1,
+  "comprehensiveEntries": 2,
+  "shortcutEntries": 6,
+  "entranceCountIsProgressDenominator": false,
+  "historicalMetadataDate": "2026-10-24",
+  "historicalMetadataSHA256": "e25721e55ad7fd548ef7e109205171b51cd7a3d4d712b276bda06da912db1c28",
+  "historicalPageRows": 73,
+  "ancestryCounts": {
+    "inactive_parent": 4,
+    "active_ancestry": 67,
+    "missing_parent": 2
+  },
+  "activeAncestryRows": 67,
+  "uniqueActiveSourceViews": 66,
+  "activeRowsWithProvidedSource": 67,
+  "reusedSourceContexts": [
+    {
+      "sourceID": "security_pc:src/views/workflow/startWithMeTwo/index.vue",
+      "menuContexts": [
+        "我发起的",
+        "流程监控"
+      ],
+      "mustReviewPermissionAndQueryDifferencesBeforeBusinessDedup": true
+    }
+  ],
+  "sourceAuditSummary": {
+    "schema": "xnby.r217.single-system-source-candidate-register.v1",
+    "at": "2026-11-03T03:49:49.521Z",
+    "logicalInformationSystems": 1,
+    "entranceCountUsedAsWorkDenominator": false,
+    "sourceFiles": 769,
+    "vueViewSources": 436,
+    "activeTemplateClickBindings": 694,
+    "httpCallDeclarations": 541,
+    "normalizedContractCandidates": 468,
+    "contractCandidatesWithMultipleDeclarations": 39,
+    "contractCandidatesAcrossTechnicalPortals": 16,
+    "unresolvedHTTPCallDeclarations": 33,
+    "sfcParseErrors": 0,
+    "scriptParseErrors": 0,
+    "viewSourcesWithUnresolvedLocalImports": 68,
+    "sourceFilesUnchanged": true,
+    "templateAndScriptCommentsExcludedByAST": true,
+    "APIContractCandidatesAreNotAtomicBusinessFunctions": true,
+    "apiModuleReachabilityIsNotActualFunctionInvocationProof": true,
+    "roleStateVariantsAndBackendMappingsNeedReview": true,
+    "originalSDKDynamicViewsAndRuntimeMenusNotFullyEnumerated": true,
+    "progressDenominatorComplete": false,
+    "completedFunctionalPercentage": null,
+    "sourceDatabaseAccountsSessionsBusinessRowsOrUserAssetsRead": false,
+    "productPublicOrDesktopChanged": false,
+    "fullCloneReady": false,
+    "parserPackages": {
+      "vue": "3.5.13",
+      "typescript": "5.8.3"
+    }
+  },
+  "sourcePresenceIsNotRuntimeAcceptance": true,
+  "sourceComponentsAndHTTPContractsAreNotAtomicBusinessFunctions": true,
+  "wholeFunctionDenominatorReconciled": false,
+  "completionPercentage": null,
+  "publicReleaseUnchanged": "R36",
+  "desktopInputPerformed": false
+}

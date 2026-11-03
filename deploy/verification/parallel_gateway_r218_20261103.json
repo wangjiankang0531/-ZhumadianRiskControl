@@ -1,0 +1,97 @@
+{
+  "at": "2026-11-03T12:08:42.232652+08:00",
+  "allPassed": true,
+  "originalSDKAndFinalR36R2RuntimeActuallyExecuted": true,
+  "distinctOriginalDesignerInterflowBranchNodes": 2,
+  "actualNativeBrowserPhases": 9,
+  "actualStateCheckpoints": [
+    {
+      "phase": "operator",
+      "actualPendingTasks": 2,
+      "exactDistinctNodeKeysMatched": true,
+      "actualBrowserPassed": true,
+      "originalEngineEnded": false
+    },
+    {
+      "phase": "operator-disposal",
+      "actualPendingTasks": 2,
+      "exactDistinctNodeKeysMatched": true,
+      "actualBrowserPassed": true,
+      "originalEngineEnded": false
+    },
+    {
+      "phase": "reviewer-preview",
+      "actualPendingTasks": 2,
+      "exactDistinctNodeKeysMatched": true,
+      "actualBrowserPassed": true,
+      "originalEngineEnded": false
+    },
+    {
+      "phase": "operator-added",
+      "actualPendingTasks": 1,
+      "exactDistinctNodeKeysMatched": true,
+      "actualBrowserPassed": true,
+      "originalEngineEnded": false
+    },
+    {
+      "phase": "operator-waiting-parallel-b",
+      "actualPendingTasks": 1,
+      "exactDistinctNodeKeysMatched": true,
+      "actualBrowserPassed": true,
+      "originalEngineEnded": false
+    },
+    {
+      "phase": "reviewer-after-added",
+      "actualPendingTasks": 1,
+      "exactDistinctNodeKeysMatched": true,
+      "actualBrowserPassed": true,
+      "originalEngineEnded": false
+    },
+    {
+      "phase": "reviewer-final",
+      "actualPendingTasks": 0,
+      "exactDistinctNodeKeysMatched": true,
+      "actualBrowserPassed": true,
+      "originalEngineEnded": true
+    },
+    {
+      "phase": "reviewer-handled-readback",
+      "actualPendingTasks": 0,
+      "exactDistinctNodeKeysMatched": true,
+      "actualBrowserPassed": true,
+      "originalEngineEnded": true
+    },
+    {
+      "phase": "operator-completed-readback",
+      "actualPendingTasks": 0,
+      "exactDistinctNodeKeysMatched": true,
+      "actualBrowserPassed": true,
+      "originalEngineEnded": true
+    }
+  ],
+  "firstBranchAloneDidNotStartFinalReview": true,
+  "secondBranchCompletedThenExactlyOneFinalReview": true,
+  "threeNodeOpinionsExactlyOnceOriginalTimeOrderAndActualAttachmentDownloadPreserved": true,
+  "noAddsignCalledAndNoFalseAddsignHistoryCreated": true,
+  "original398ModelsAndConnectionCapacityUnchanged": true,
+  "allSixComponentsAndNineBrowsersNormalZeroActualDescendantsZero": true,
+  "frontendRuntimeFakeConfigurationAndMenuMarkersRestored": true,
+  "onlyOwnTerminalBrowserProfilesCleaned": {
+    "passed": true,
+    "profiles": 9,
+    "files": 1842,
+    "logicalBytes": 101086376,
+    "observedFreeDelta": 101486592,
+    "exclusivePhysicalAttributionClaimed": false,
+    "normalTerminalAndActualDescendantsZero": true,
+    "allExactOwnProfilesNoActiveReferencesAndNoReparse": true,
+    "onlyOwnedBrowserProfilesRemoved": true,
+    "sourceResultsFailureEvidenceDatabasesAttachmentsAndUserBrowserKept": true,
+    "forceTerminationUsed": false
+  },
+  "publicReleaseUnchanged": "R36",
+  "productChanged": false,
+  "publicFormalOrDesktopChanged": false,
+  "realNangangTemplatesFullyAccepted": false,
+  "fullCloneReady": false
+}
