@@ -1,0 +1,16 @@
+{
+  "candidatePlanSHA256": "6802586b505476efd80c750f9271d6eb6f59ed667aba5f76d973b58a1082c82b",
+  "files": {
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r912\\home_transfer_gateway_r906.py": "56b32e29811c9d6aa5a9947e763ddd924e6011c692670e5a9079052492639bc5",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r912\\home_transfer_health_r906.py": "08efe70d5acfa3f23b7a8aed837540419b065088bff17672e0b4d69cc7230896",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r912\\home_transfer_probe_r906.py": "a1cd61f306a1921defc6a616e5f0a620e3eb4b4981e72dadc5ca047c1faa81b7",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r912\\run_home_transfer_full_r906.py": "b1e2f51b3ead4e5229c43d8b3d4a642d0a08723ef36427bf4de31c31de38f51c",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r912\\verify_home_transfer_browser_r906.mjs": "4b16525a35c24160a985a7a2db168cec42493d348837db1c4bc6acb461d66234",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r912\\OwnHomeNavigationReadbackR912.java": "e64c793e9891a9806097d709610984d00652237192fac364789eb7a95459d034",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r912\\classes\\OwnHomeNavigationReadbackR912.class": "fc0aecc65fbedc8fdcb96e29b5fa6f6c9a9895ed967883d4d3b58ad5e8bb19fa",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r912\\fixture-compile-proof.json": "06da652273b272cd5aa64556aa13e5215ef48640fc196ef40ca001ebc114baa2"
+  },
+  "onlyReadOnlyMetadataReadbackAllowed": true,
+  "previousHomeJournalSHA256": "0ef4df36821e5b6eb94e2e7df005956f9629ad783ab1113a1f4be1daca8eb48d",
+  "normalOriginalSDKStillPending": true
+}

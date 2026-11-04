@@ -1,0 +1,156 @@
+{
+  "passed": true,
+  "sourceCopiesSHA256Checked": 91,
+  "removed": [
+    {
+      "path": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\performance-assets-r893\\gateway-r896\\www",
+      "files": 11,
+      "logicalBytes": 10692265
+    },
+    {
+      "path": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\performance-assets-r893\\gateway-r896\\control-app",
+      "files": 2,
+      "logicalBytes": 7553
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha897\\www",
+      "files": 11,
+      "logicalBytes": 10692265
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha897\\control-app",
+      "files": 2,
+      "logicalBytes": 7553
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha898\\www",
+      "files": 11,
+      "logicalBytes": 10692265
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha898\\control-app",
+      "files": 2,
+      "logicalBytes": 7553
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha899\\www",
+      "files": 11,
+      "logicalBytes": 10692265
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha899\\control-app",
+      "files": 2,
+      "logicalBytes": 7553
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha899\\browser-r896\\chrome-profile",
+      "files": 181,
+      "logicalBytes": 10380084
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha899\\browser-r896\\baseline-1366.png",
+      "files": 1,
+      "logicalBytes": 673243
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha899\\browser-r896\\baseline-1920.png",
+      "files": 1,
+      "logicalBytes": 1243280
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha899\\browser-r896\\baseline-3840.png",
+      "files": 1,
+      "logicalBytes": 3741277
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha899\\browser-r896\\candidate-1366.png",
+      "files": 1,
+      "logicalBytes": 663990
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha899\\browser-r896\\candidate-1920.png",
+      "files": 1,
+      "logicalBytes": 1213103
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha899\\browser-r896\\candidate-3840.png",
+      "files": 1,
+      "logicalBytes": 3505773
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha900\\www",
+      "files": 11,
+      "logicalBytes": 10692891
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha900\\control-app",
+      "files": 2,
+      "logicalBytes": 7553
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha900\\browser-r896\\chrome-profile",
+      "files": 299,
+      "logicalBytes": 6634347
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha901\\www",
+      "files": 11,
+      "logicalBytes": 10692891
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha901\\control-app",
+      "files": 2,
+      "logicalBytes": 7553
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha901\\browser-r896\\chrome-profile",
+      "files": 303,
+      "logicalBytes": 11294589
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha901\\browser-r896\\baseline-1366.png",
+      "files": 1,
+      "logicalBytes": 673243
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha901\\browser-r896\\baseline-1920.png",
+      "files": 1,
+      "logicalBytes": 1243280
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha901\\browser-r896\\baseline-3840.png",
+      "files": 1,
+      "logicalBytes": 3741277
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha902\\www",
+      "files": 11,
+      "logicalBytes": 10692891
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha902\\control-app",
+      "files": 2,
+      "logicalBytes": 7553
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha902\\browser-r896\\chrome-profile",
+      "files": 180,
+      "logicalBytes": 10378620
+    },
+    {
+      "path": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\performance-assets-r893\\candidate-r895",
+      "files": 4,
+      "logicalBytes": 3339112
+    },
+    {
+      "path": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\performance-assets-r893\\candidate",
+      "files": 1,
+      "logicalBytes": 2590666
+    }
+  ],
+  "observedFreeSpaceDeltaNotExclusiveAttribution": 137142272,
+  "originalsFinalCandidateDependenciesLogsFinalRenderProofAndDataRetained": true,
+  "noProcessKilled": true,
+  "freshSelectedProcessReferences": 0,
+  "publicChanged": false
+}

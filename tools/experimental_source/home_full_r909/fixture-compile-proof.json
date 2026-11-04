@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "sourceSHA256": "32d2d25458b2637f53a945bd128c7d996989b1f051352c239a56f93c35c961d7",
+  "classSHA256": "1fa991aee0954733a090b05280c0b857c406ac34eaa291d7c40919051e05ad4a",
+  "terminal": {
+    "exitCode": 0,
+    "actualJobDescendantsZero": true,
+    "forceTerminationUsed": false,
+    "budget": {
+      "limitFlags": 512,
+      "jobCommitLimitBytes": 536870912,
+      "reportedPeakJobMemoryBytes": 263925760,
+      "reportedPeakProcessMemoryBytes": 258248704,
+      "activeProcesses": 0,
+      "totalProcesses": 2,
+      "terminateOnCloseOrBreakawayEnabled": false
+    }
+  }
+}

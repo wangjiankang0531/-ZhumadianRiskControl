@@ -1,0 +1,79 @@
+{
+  "allBaseProgramAndPrivateConfigurationHashesRestored": true,
+  "allFaultTamperingUsedAtomicDetachNotHardlinkInPlaceWrites": true,
+  "changes": 7,
+  "fixtureCleanupStillPending": true,
+  "fixturePrivateConfigurationManifestOnlyAdaptation": true,
+  "fixtureRoot": "D:\\Project\\Zhumadian\\work\\hf915",
+  "fourthWriteFailureAndRestorePassed": true,
+  "fullCloneReady": false,
+  "installedProgramOrControllerFiles": 15585,
+  "logicalSharedProgramBytesNotNewPhysicalCopies": 1404290852,
+  "negativeCases": [
+    {
+      "case": "wrong-manifest-hash",
+      "rejected": true
+    },
+    {
+      "case": "wrong-target",
+      "rejected": true
+    },
+    {
+      "case": "changed-css-transport-bytes",
+      "rejected": true
+    },
+    {
+      "case": "retained-original-business-jar-drift",
+      "rejected": true
+    },
+    {
+      "case": "unknown-base-release",
+      "rejected": true
+    },
+    {
+      "case": "removal",
+      "rejected": true
+    },
+    {
+      "case": "legacy-path",
+      "rejected": true
+    },
+    {
+      "case": "extra-write",
+      "rejected": true
+    },
+    {
+      "case": "changed-home-feature-allOriginalGlyphsRetained",
+      "rejected": true
+    },
+    {
+      "case": "changed-home-feature-originalICCAndPixelsRetained",
+      "rejected": true
+    },
+    {
+      "case": "changed-home-feature-completeSecurityFrontendAfter",
+      "rejected": true
+    },
+    {
+      "case": "changed-home-feature-changedFiles",
+      "rejected": true
+    },
+    {
+      "case": "private-configuration-payload-drift",
+      "rejected": true
+    },
+    {
+      "case": "retained-controller-descriptor-drift",
+      "rejected": true
+    }
+  ],
+  "normalReplacementAndRestorePassed": true,
+  "originalSharedSourceBytesPreserved": true,
+  "passed": true,
+  "poolAndMapperPreflightBeforeDowntimePassed": true,
+  "processNetworkDatabaseOrPublicUsed": false,
+  "productionFunctionBodiesNotPatched": true,
+  "realNewBundleLoaderUsed": true,
+  "removedFiles": 0,
+  "schema": "xnby.home-sparse.file-acceptance.v1"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "xnby.current-supervision.r921-conditional-recovery.v1",
+  "passedAsScopedRecovery": true,
+  "originalTestPassed": false,
+  "failure": "controller-ownership-query-TimeoutExpired-then-missing-observed-ready-for-pointer-restore",
+  "allSixComponentsStartedAndNormallyExited": true,
+  "actualControllerExitCode": 0,
+  "actualJobDescendantsZero": true,
+  "controllerPeakJobBytes": 2907308032,
+  "originalCodeAndPrivateConfigurationAndInstallationIdentityRestored": true,
+  "durableOriginalPointerBeforeImageRestored": true,
+  "currentRunReceiptReadyAndControllerStdoutBoundBeforeRestore": true,
+  "noActiveGProcessReferencesBeforeOrAfter": true,
+  "processesRestartedOrBusinessDataWrittenOrDesktopPublicTouched": false,
+  "originalUIAndPDFChecksAccepted": false,
+  "fullCloneReady": false
+}

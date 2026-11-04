@@ -1,0 +1,197 @@
+{
+  "schema": "xnby.original-feedback.independent-acceptance.v1",
+  "recordedAt": "2026-11-04T18:47:51.872627+08:00",
+  "passed": true,
+  "originalTaskCreatedExactlyOnce": true,
+  "sameTaskResumedWithoutRecreation": true,
+  "feedbackSubmissions": 1,
+  "managerApprovalSubmissions": 1,
+  "UIStages": [
+    {
+      "stage": "ui-create-r887",
+      "assertionCount": 6,
+      "caseNames": [
+        "real-compiled-normal-nonadmin-login",
+        "real-task-list-opens-original-add-form",
+        "missing-confirmed-event-blocks-task-post",
+        "empty-picker-confirm-keeps-dialog-and-task-input",
+        "real-confirmed-event-radio-fills-linked-event-and-retains-task-draft",
+        "real-page-task-save-success-and-linked-pending-list-row"
+      ],
+      "sha256": "1148ddd4cf00eeef1161add0190f630d48f402840c147c6b03767370c05c6879"
+    },
+    {
+      "stage": "ui-feedback-submit-r889",
+      "assertionCount": 8,
+      "caseNames": [
+        "anonymous-login-renders-without-full-component-installer",
+        "normal-original-compiled-nonadmin-login",
+        "all-original-global-components-registered-before-authenticated-home",
+        "canonical-static-urls-avoid-unversioned-preload-alias",
+        "real-pending-task-row-opens-original-disposal-form",
+        "one-real-original-sparse-feedback-update-after-double-click",
+        "real-detail-renders-saved-feedback-evaluation-and-time",
+        "normal-header-logout-returns-to-business-login-not-static-base"
+      ],
+      "sha256": "2df7e87df26e36fcffb654dfaeff82ccce4e9894ac4aae89adeb22d7ecd78283"
+    },
+    {
+      "stage": "ui-pending-approve-r889",
+      "assertionCount": 6,
+      "caseNames": [
+        "normal-original-compiled-nonadmin-login",
+        "real-native-list-card-opens-engine-task-detail",
+        "real-sdk-detail-instance-and-readonly-form-rendered",
+        "real-sdk-detail-instance-and-readonly-form-rendered",
+        "full-page-refresh-retains-native-original-readonly-value",
+        "real-page-submitted-once-original-sdk-approved"
+      ],
+      "sha256": "c0c90836cec52adef44f59152487d925ca15cf5c3dccd581d25d44892cb2b150"
+    },
+    {
+      "stage": "ui-completed-readonly-r889",
+      "assertionCount": 7,
+      "caseNames": [
+        "normal-original-compiled-nonadmin-login",
+        "real-native-initiator-card-opens-same-completed-instance",
+        "original-null-absent-normalization-keeps-same-database-and-display-value",
+        "real-sdk-detail-instance-and-readonly-form-rendered",
+        "real-sdk-detail-instance-and-readonly-form-rendered",
+        "full-page-refresh-retains-native-original-readonly-value",
+        "normal-relogin-completed-detail-opinion-and-no-approval"
+      ],
+      "sha256": "2314586932f409c4ee702be45ca7313351cd543f3c71f52cb081f5de428ce611"
+    },
+    {
+      "stage": "ui-feedback-readonly-r889",
+      "assertionCount": 6,
+      "caseNames": [
+        "anonymous-login-renders-without-full-component-installer",
+        "normal-original-compiled-nonadmin-login",
+        "all-original-global-components-registered-before-authenticated-home",
+        "canonical-static-urls-avoid-unversioned-preload-alias",
+        "normal-restart-detail-retains-original-feedback-evaluation-and-time",
+        "normal-header-logout-returns-to-business-login-not-static-base"
+      ],
+      "sha256": "8c3d29f1ff57a466fdded633a5eb03f43d325cd7e0f47da30421e2a9385062ac"
+    }
+  ],
+  "assertionCountIncludingRepeatedLoginAndReadonlyChecks": 33,
+  "independentSQLSnapshotsMatchedSameTaskAndInstance": true,
+  "SQLSnapshotsUsedReadOnlyTransactions": true,
+  "feedbackEvaluationDisposalTimeOriginalOpinionPersistAfterNormalRestart": true,
+  "readonlyNativeValuePreservedIncludingAbsentNullNormalization": true,
+  "twoActualSixComponentLifecyclesNormallyExited": true,
+  "independentlyRecheckedRestoredCodeConfigurationAndInstallation": true,
+  "lastVerifiedCallbackStage": "work/original-manager-full-lifecycle-r609/feedback-r880/after-submit-r889",
+  "lastVerifiedCallbackJournalSHA256": "441a3970a72830e033a83087f3b352979354130463427c3b7207afa3b32f80b1",
+  "ownedCleanup": [
+    {
+      "path": "work/fb889/code-transaction/before",
+      "files": 711,
+      "logicalBytes": 16020048
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-feedback-submit-r889/chrome-profile",
+      "files": 346,
+      "logicalBytes": 16047641
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-pending-approve-r889/chrome-profile",
+      "files": 206,
+      "logicalBytes": 15074533
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-completed-readonly-r889/chrome-profile",
+      "files": 347,
+      "logicalBytes": 16234890
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-feedback-readonly-r889/chrome-profile",
+      "files": 204,
+      "logicalBytes": 14846597
+    }
+  ],
+  "observedFreeSpaceDeltaBytesNotExclusivePhysicalAttribution": 80437248,
+  "evidence": [
+    {
+      "path": "work/fb889/verified-feedback-chain-r889.json",
+      "sha256": "ca84d119273835deb281194d6808a1d1850bbc56614b2654ff4a3c0fd7f934f4"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-create-r887/result.json",
+      "sha256": "1148ddd4cf00eeef1161add0190f630d48f402840c147c6b03767370c05c6879"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-create-r887/browser-terminal.json",
+      "sha256": "300cd9773376b1b48afad8e9fb289b59e9463ee81133cbe856b870dfe80fc89f"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-feedback-submit-r889/result.json",
+      "sha256": "2df7e87df26e36fcffb654dfaeff82ccce4e9894ac4aae89adeb22d7ecd78283"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-feedback-submit-r889/browser-terminal.json",
+      "sha256": "300cd9773376b1b48afad8e9fb289b59e9463ee81133cbe856b870dfe80fc89f"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-pending-approve-r889/result.json",
+      "sha256": "c0c90836cec52adef44f59152487d925ca15cf5c3dccd581d25d44892cb2b150"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-pending-approve-r889/browser-terminal.json",
+      "sha256": "300cd9773376b1b48afad8e9fb289b59e9463ee81133cbe856b870dfe80fc89f"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-completed-readonly-r889/result.json",
+      "sha256": "2314586932f409c4ee702be45ca7313351cd543f3c71f52cb081f5de428ce611"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-completed-readonly-r889/browser-terminal.json",
+      "sha256": "300cd9773376b1b48afad8e9fb289b59e9463ee81133cbe856b870dfe80fc89f"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-feedback-readonly-r889/result.json",
+      "sha256": "8c3d29f1ff57a466fdded633a5eb03f43d325cd7e0f47da30421e2a9385062ac"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/ui-feedback-readonly-r889/browser-terminal.json",
+      "sha256": "300cd9773376b1b48afad8e9fb289b59e9463ee81133cbe856b870dfe80fc89f"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/snapshot-r889-pending-resume.properties",
+      "sha256": "e666246c705f7884a6856c3da93d4fd9b351916ed8fa2ff7fe3bdf74323f37ba"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/snapshot-r889-submitted.properties",
+      "sha256": "e666246c705f7884a6856c3da93d4fd9b351916ed8fa2ff7fe3bdf74323f37ba"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/snapshot-r889-feedback.properties",
+      "sha256": "0eb65d9a75fac98d0ad7d2d8d2c9b01c37dad50dc9f61ca7ad3c9189ccbd6e4e"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/snapshot-r889-approved.properties",
+      "sha256": "e2a8bc52e4706b86234898382536ad79be5bae8a9160ffb423ce3103b2649a86"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/snapshot-r889-restarted.properties",
+      "sha256": "e194936a3fc041745ff9b013c79ad2b8871313681f81247b53247a8794e557e0"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/runtime-resume-r889/first-start/probe-terminals-r806.json",
+      "sha256": "efa05f9d60dcb044ec3e9457a267d28d8dd1475e67a2737f145879ac6becde04"
+    },
+    {
+      "path": "work/original-manager-full-lifecycle-r609/feedback-r880/runtime-resume-r889/normal-restart/probe-terminals-r806.json",
+      "sha256": "67fd22852c52e8658413aba6cda8a7c3775fa3a94a5396bc6f261d76b535c778"
+    }
+  ],
+  "normalPublicAuthenticatedNetworkTimingMeasured": false,
+  "currentDesktopCheckFoundChromeWindowOrProcess": false,
+  "desktopInputIssuedThisResume": false,
+  "newPublicDeployment": false,
+  "newPublicGitPush": false,
+  "allRealNangangTemplatesAccepted": false,
+  "fullCloneReady": false
+}

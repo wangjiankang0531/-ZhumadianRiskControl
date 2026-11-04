@@ -1,0 +1,61 @@
+{
+  "passed": false,
+  "failure": {
+    "phase": "normal-original-model-setup-normal-restart",
+    "type": "AssertionError"
+  },
+  "actualOneSixComponentLifecycle": true,
+  "health": [
+    {
+      "phase": "normal-restart",
+      "originalReleaseHealthRetained": true,
+      "newBackendOrSupervisionModulePresent": false,
+      "privateApplicationSettingsChanged": false,
+      "publicIISOrTLSAccepted": false
+    }
+  ],
+  "terminals": [
+    {
+      "jobMemoryBudget": {
+        "limitFlags": 512,
+        "jobCommitLimitBytes": 4294967296,
+        "reportedPeakJobMemoryBytes": 3103207424,
+        "reportedPeakProcessMemoryBytes": 1207021568,
+        "activeProcesses": 0,
+        "totalProcesses": 21,
+        "terminateOnCloseOrBreakawayEnabled": false
+      },
+      "phase": "normal-restart",
+      "controllerExitCode": 0,
+      "allOwnedChildrenExited": true,
+      "actualJobDescendantsZero": true,
+      "normalOwnedShutdown": true,
+      "exitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      },
+      "forceTerminationUsed": false
+    }
+  ],
+  "codeRestored": true,
+  "privateConfigurationUnchanged": true,
+  "originalCurrentPointerRestored": true,
+  "originalPrivateConfigurationAndInstallationIdentityRestored": true,
+  "dataDirectoriesNeverClonedOrReplaced": true,
+  "actualReadOnlyCompletedTaskReopen": false,
+  "businessChecks": [],
+  "normalLoginReadOnlyRoutesAndExistingDetailAccepted": false,
+  "actualIISTLSOrPublicAccepted": false,
+  "maxActualBackupAtomicPathCharacters": 203,
+  "boundedControllerPrivateCommitBytes": 4294967296,
+  "startupPhysicalAndCommitRequirementBytes": 7516192768,
+  "completeCompiledOnlineFrontendUsed": true,
+  "durablePointerBeforeSnapshotUsed": true,
+  "exactRunOwnerReceiptSelectionUsed": true,
+  "desktopUsed": false,
+  "fullCloneReady": false
+}

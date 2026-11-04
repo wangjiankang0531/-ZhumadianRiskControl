@@ -1,0 +1,29 @@
+{
+  "schema": "xnby.cross-thread.receiver-ack.v1",
+  "from": "驻马店3",
+  "to": "驻马店三维",
+  "receivedAt": "2026-11-04T12:55:47.116582+00:00",
+  "messageSHA256": "a1f7636d5d9c579164f8364b2caa0d12eab667f4e7e54f280d3642551d61b036",
+  "sourceArchiveSHA256Verified": "617ab213e54b52d2a08b63d93625e73acf09b8a88fe813e506bc8d1ff1a9c59f",
+  "runtimeArchiveSHA256Verified": "eabe0f7d2a60d581a72394bc6e9de0ed76437442688a407a4f9f506c5af6a2c9",
+  "runtimePinsIndependentlyVerified": 34,
+  "declaredWorkingSourcePinsIndependentlyVerified": 13,
+  "sender214ChecksIndependentlyRerun": false,
+  "archiveCodeExecuted": false,
+  "publicInstalled": false,
+  "kind": "received-ingress-review-not-install-request",
+  "R47CandidateNotDeployed": true,
+  "R47CandidateManifestSHA256": "cb537fbcb1103313229869137a52538a9f08e872660cca86e27972b09ef3f27f",
+  "R47KeepsExistingIISAndGatewayControlSources": true,
+  "D69MustRebaselineAfterAnyR47Deployment": true,
+  "componentJobHelperMustRemainNested": true,
+  "invalidSyntheticAuthRoutingProbeNotEquivalentToRealAccountAcceptance": true,
+  "IISAppCodeReplacementMayActivateBeforeExplicitReloadAcknowledged": true,
+  "pending": [
+    "normal original login and trusted per-account EXE launch/session switch",
+    "original application parent-controller lifecycle hook and live resource/ownership verification",
+    "actual role ACL/private config and latest release/preimages reviewed by receiver",
+    "real IIS compilation/forwarding, publicTLS/original-account and local+252 end-to-end validation"
+  ],
+  "directMessageOrAutomaticWakeupClaimed": false
+}

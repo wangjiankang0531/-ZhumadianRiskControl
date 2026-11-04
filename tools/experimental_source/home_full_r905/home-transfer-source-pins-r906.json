@@ -1,0 +1,15 @@
+{
+  "candidatePlanSHA256": "6802586b505476efd80c750f9271d6eb6f59ed667aba5f76d973b58a1082c82b",
+  "originalBrowserSourceSHA256": "ca1d9c01a94b28ada2b071b5bc550d8feb5c6b53b26cb2a33ea06f2578ac32e1",
+  "files": {
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r905\\home_transfer_gateway_r906.py": "1b36df0f5cdf5d83461a73398fa42bb543edb64a68ac99c997c991ba564087c8",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r905\\home_transfer_health_r906.py": "822a53bb857b4dc2e2d7b278fd38b4082adb7fe63491d59aa3520c9c7356b5b0",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r905\\home_transfer_probe_r906.py": "e385dfa0e124b527ebeb761a51f3e496c591b1269da85ff29d6747fda27d2310",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r905\\run_home_transfer_full_r906.py": "9fe98654fa7c8b4800b640da4169ec140bb268b5dd4cd9d73192aa804a845ae1",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r905\\verify_home_transfer_browser_r906.mjs": "7faf43754e2494b30ba933a05660e11152541d47abbdf51904046102647e2b3a"
+  },
+  "normalRoleLoginAndOriginalSDKStillPending": true,
+  "readOnlyOriginalAPIGuardRetained": true,
+  "expectedAdditionalSecurityUICases": 4,
+  "cacheBehaviorNotClaimedBecauseRequestInterceptionRemainsEnabled": true
+}

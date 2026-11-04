@@ -1,0 +1,33 @@
+{
+  "actualFrozenCoreAndInnerCompleteValidatorUsed": true,
+  "fixtureCleanupPending": true,
+  "fourthWriteFailureAndRestorePassed": true,
+  "fullCloneReady": false,
+  "fullInstalledProgramSources": 15585,
+  "logicalSharedBytesNotPhysicalCopies": 1404290852,
+  "moduleAndOriginalJarAndConfigurationPreflightBeforeDowntimePassed": true,
+  "negativeCases": [
+    "wrong-manifest-pin",
+    "wrong-target",
+    "corrupt-inner-manifest",
+    "corrupt-home-css",
+    "corrupt-module",
+    "corrupt-helper",
+    "corrupt-retained-original-jar",
+    "extra-write",
+    "remove-path",
+    "legacy-write",
+    "foreign-update-id"
+  ],
+  "normalReplacementAndRestorePassed": true,
+  "oldAndNewHistoryPoolControllerPinsSelectedByRelease": true,
+  "onlyFixturePrivateIdentityConstantsAdapted": true,
+  "originalSourceAndBaseHashesPreserved": true,
+  "passed": true,
+  "processNetworkOrDatabaseUsed": false,
+  "productionFunctionBodiesNotModifiedForFixture": true,
+  "publicChanged": false,
+  "removals": 0,
+  "schema": "xnby.r47.frozen-core-file-acceptance.v1",
+  "writes": 11
+}

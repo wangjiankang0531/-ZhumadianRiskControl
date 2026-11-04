@@ -1,0 +1,15 @@
+{
+  "candidatePlanSHA256": "6802586b505476efd80c750f9271d6eb6f59ed667aba5f76d973b58a1082c82b",
+  "files": {
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r909\\home_transfer_gateway_r906.py": "e967563da58191af17d6cd78c3b8df0f81d52761ea9bf8029ea0c630cd31a145",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r909\\home_transfer_health_r906.py": "7bdbd01ec94271791d28da54651131bea18797b5cd1d0f871ff89956fe5d4c29",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r909\\home_transfer_probe_r906.py": "2cbad741ca9cd800dbbcd4d9c8bfa94de0c44e621dd2461c49447876d55948c6",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r909\\run_home_transfer_full_r906.py": "aa66900c29ba2e2471f77de1d0d38df438389f719c443f022984ee807c0656fa",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r909\\verify_home_transfer_browser_r906.mjs": "0410e77623504203a886cfc916b406838595846fcb7482a8b41e9dba03d050e2",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\OwnHomeNavigationFixtureR909.java": "32d2d25458b2637f53a945bd128c7d996989b1f051352c239a56f93c35c961d7",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r909\\classes\\OwnHomeNavigationFixtureR909.class": "1fa991aee0954733a090b05280c0b857c406ac34eaa291d7c40919051e05ad4a",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\home_full_r909\\fixture-compile-proof.json": "a97122760bde7252f9e6f70d65ce039ea98ccd9d6dc845c9afdbc861e711fc5c"
+  },
+  "normalOriginalSDKStillPending": true,
+  "onlyOwnSyntheticNavigationMetadataMayBeInserted": true
+}

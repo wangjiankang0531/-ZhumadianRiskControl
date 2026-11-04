@@ -1,0 +1,115 @@
+{
+  "schema": "xnby.owned-feedback-preconditions.v1",
+  "passed": true,
+  "predecessor": {
+    "verified": true,
+    "planSHA256": "5f37e77865116de9ca1e4c1a3d912697e7a61e2af956799366d315094771b92c",
+    "journalSHA256": "6d097be8b8ce094c0d8b0e41c7f1e67faa897fa23d3b821e1869d8ae62d25b98",
+    "afterRowsSHA256": "13ba5bb11dd6e2a86783592ef970c23271d4235557d9baa064255974b9a9ee52",
+    "releaseSHA256": "e957cf851cb253d4ac020ef04711ebd6e9f066bfc1471002b10d53c88de71db2",
+    "provesLiveRuntime": false,
+    "authorizesSQL": false,
+    "oldPortMayBeReusedWithoutObservation": false
+  },
+  "syntheticMetadataTestsPassed": 9,
+  "productionJavaRowDigestParityPassed": true,
+  "actualProductionSources": {
+    "D:\\Project\\Zhumadian\\Application\\tools\\OwnedOriginalCallbacksR648.java": "ef6680784e7aa31af2bf70049b4fb2a86506d234b692b69a875bd2f4c9ca0a36",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\task_ui_r806\\OwnedCallbackProvisioningJournalR658.java": "569afc314cd0913831cc8d55a1f779bfa3a61d9f5dc21403409f939567fa4460",
+    "D:\\Project\\Zhumadian\\Application\\tools\\OwnedOriginalCallbackProvisioningR659.java": "c532c5c4ed6b2f4d75a2cef7d9c26a708f538de33ba281c8f2629a16b59a43ca",
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\feedback-preconditions-r878\\CallbackRowsGoldenR878.java": "4f737cfed9743f7c8aea8fd63255d4e5b5029c09f784a26c18dd9a69b2111ae1"
+  },
+  "oldRuntimeReleaseSHA256": "e957cf851cb253d4ac020ef04711ebd6e9f066bfc1471002b10d53c88de71db2",
+  "r45CodeCandidateReleaseSHA256": "259928b97a66abf959682023ed682f19e8beed4e4088de926caccb3301be5a04",
+  "plannedR45TaskRuntimePins": {
+    "private/server-configuration.json": {
+      "bytes": 24465,
+      "sha256": "76495e8a6ae44c43b7b854e033db26bc5958d2431745190975d4ae5c9bfbe66e"
+    },
+    "payload-manifest.json": {
+      "bytes": 2605426,
+      "sha256": "97397e6c6f9d8e739e93ea9478da247e2c49f9fb2f5a9f4a3d3b17fd99f8f937"
+    },
+    "release-manifest.json": {
+      "bytes": 20898,
+      "sha256": "eb14761be88db0e21f037cd5ad8d3b648eeb8bbf561bf8c71b0f742f1cda6c93"
+    }
+  },
+  "onlySyntheticTaskCodeSettingWouldChange": true,
+  "plannedTaskConfigMatchesPriorAcceptedOriginalModelConfig": true,
+  "unchangedOriginalDependencies": {
+    "payload/business/application.jar": {
+      "bytes": 1371849,
+      "sha256": "363330e27998fadbb780005ee760ee6b0d41fed08577dfb4f2ff58919aadd83a"
+    },
+    "payload/business/portable_runtime.json": {
+      "bytes": 215244,
+      "sha256": "bc0974f40c4be6c3194860fe8d8f199d237497c263aa57168ad71d2b0d7cec3c"
+    },
+    "payload/business/process-boundary.jar": {
+      "bytes": 3557,
+      "sha256": "3f5b36ef4a48714a0424b7470d7a1aecf7bd1beb385a4843fd08adc02bd16bb9"
+    },
+    "payload/business/scheduling-isolation.jar": {
+      "bytes": 2265,
+      "sha256": "dfa7243bc00b684b66baad371c421006cdd305c15868e26c54b54e689a14fbaf"
+    },
+    "payload/platform/original-platform.jar": {
+      "bytes": 230272928,
+      "sha256": "294f809b830374656f8100b3fb6091387d619ff8d7ecf8685e7c61788843eda8"
+    },
+    "payload/platform/process-boundary.jar": {
+      "bytes": 5686,
+      "sha256": "799d1289e3122b0e73ef4b6a3c9639bc5c59d820c7670800c673a1b7acd5a508"
+    },
+    "payload/platform/boot-loader.jar": {
+      "bytes": 122427,
+      "sha256": "3a283820aee2fb4429a92352f69eb71677118a75642f0b8749ea491b592eafaf"
+    },
+    "payload/business/lib/mysql-connector-j-8.0.33.jar": {
+      "bytes": 2481560,
+      "sha256": "e2a3b2fc726a1ac64e998585db86b30fa8bf3f706195b78bb77c5f99bf877bd9"
+    }
+  },
+  "terminals": [
+    {
+      "stage": "compile",
+      "exitCode": 0,
+      "actualJobDescendantsZero": true,
+      "budget": {
+        "limitFlags": 512,
+        "jobCommitLimitBytes": 536870912,
+        "reportedPeakJobMemoryBytes": 253542400,
+        "reportedPeakProcessMemoryBytes": 247861248,
+        "activeProcesses": 0,
+        "totalProcesses": 2,
+        "terminateOnCloseOrBreakawayEnabled": false
+      },
+      "forceTerminationUsed": false
+    },
+    {
+      "stage": "production-digest",
+      "exitCode": 0,
+      "actualJobDescendantsZero": true,
+      "budget": {
+        "limitFlags": 512,
+        "jobCommitLimitBytes": 536870912,
+        "reportedPeakJobMemoryBytes": 260263936,
+        "reportedPeakProcessMemoryBytes": 254578688,
+        "activeProcesses": 0,
+        "totalProcesses": 2,
+        "terminateOnCloseOrBreakawayEnabled": false
+      },
+      "forceTerminationUsed": false
+    }
+  ],
+  "serviceStartPerformed": false,
+  "databaseAccessPerformed": false,
+  "callbackSQLPerformed": false,
+  "taskCreateFeedbackApprovePerformed": false,
+  "crossReleaseExecutionJournalAndRuntimeStillRequired": true,
+  "credentialsOrRawConfigPersisted": false,
+  "nativeEXEBuiltOrRun": false,
+  "publicOrDesktopTouched": false,
+  "fullCloneReady": false
+}

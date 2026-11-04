@@ -1,0 +1,1240 @@
+{
+  "schema": "xnby.approved-public-source-sync.v1",
+  "phase": "completed",
+  "approvedManifestSHA256": "7925fa717b208b092c39007b5ed816c125e6925c2200bca38517df4cb93943a0",
+  "approvedFiles": 153,
+  "approvedBytes": 1577090,
+  "all153RemoteBlobBytesAndSHA256Matched": true,
+  "readback": [
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/handbook/component_bootstrap_r846_20261104.md",
+      "sha": "04cd0513928cc94cbe059bb8d051ad588eb8bcce",
+      "sha256": "e4d7597b8f85cbe40b649ad435bf5df1d5f3e715338a26625cd2a5d7a47b8651",
+      "bytes": 5189
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/handbook/mapper_chart_r44_20261104.md",
+      "sha": "68f000757ac228b24708efaf7bb8badab3703ba3",
+      "sha256": "f7b81725bed825703c3b7e592ec2493aeb8aa7bb0cd526585eafae6f8c42427e",
+      "bytes": 4014
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/handbook/public_iis_performance_recheck_r857_20261104.md",
+      "sha": "8938a0f72621678d5ba405044628b210d5a8951d",
+      "sha256": "5805fe788e41a9a3fbd8b2a1783df439fdde24042ce5c727600ba00db813bcdd",
+      "bytes": 2846
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/handbook/public_r45_3d_coordination_20261104.md",
+      "sha": "cf2c0945e4c6364e71d2fd8fb16b446949b31cfb",
+      "sha256": "fadda95801e4265c160637295d9c5c519de672d967c4f7ce3ee991cfd1a56a71",
+      "bytes": 1170
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/handbook/public_r45_delivered_source_scope_r865_20261104.md",
+      "sha": "b298cfe9f1511569dabdbc185677b2c7c1029923",
+      "sha256": "6b9b7e2c1a0e1f308ee0f30623bd7dee2fc97b52fdcc4fc21d7b1aa59d526e74",
+      "bytes": 2978
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/handbook/public_r45_delivery_20261104.md",
+      "sha": "3a34925d4e28fcbe8767b7c741b39c82c0f36346",
+      "sha256": "fefaec4eceae670a11fe35002f376e95c2ecaf8787ec933a2f1a451c14e3f796",
+      "bytes": 4840
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/handbook/public_source_bootstrap_scope_r858_20261104.md",
+      "sha": "1fb31bc2fb510dff1815581c949f9cca5d6860b0",
+      "sha256": "371cc69b3b3f12e96a740a68dd7c3065d6765f8ce080558dd892a6c46e95d461",
+      "bytes": 2704
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/handbook/r45_original_backend_bootstrap_20261104.md",
+      "sha": "f3f5a795624955e032f71da28fd60f230bd7e4e0",
+      "sha256": "ecd4a755b9d316f848ece692ff0ee318d4251ee9ed1ebc055f1c59ff326580f4",
+      "bytes": 5284
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/review/mapper-chart-r44/Check_Only_Mapper_Chart_R44.cmd",
+      "sha": "b99d662807de298031992f4d1b17402f42ec9f7e",
+      "sha256": "106b3cf0ccc8f9f8fef3150cdda087db1abb98aa6e3c438843003da3363da3fd",
+      "bytes": 134
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/review/mapper-chart-r44/Deploy_Mapper_Chart_R44.cmd",
+      "sha": "77bdd09aff00f2b99c507d7419bcc3425f60ff8e",
+      "sha256": "cc7323f79e0fd702a5be7360b55920c9eea2af7af50e751f8bbf9a9a8b85f53d",
+      "bytes": 122
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/review/mapper-chart-r44/Recover_This_Mapper_Chart_R44.cmd",
+      "sha": "c10be23d80e0b833f02acef5aba9248f3bc1b1c9",
+      "sha256": "058df89fc638b43688a4d4e316e3ebcb3ab8f0d08c7ebd38b2ae94873ec60b42",
+      "bytes": 143
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/review/mapper-chart-r44/deploy_mapper_chart_r44.py",
+      "sha": "863ea1392335b5750c0b604aea45477e3f3a77a8",
+      "sha256": "765bdafc9a8c2560b729ce153020c6522976feabcc09b29de567221b45809472",
+      "bytes": 16110
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/review/mapper-chart-r44/web.config",
+      "sha": "8ce49f5c81bf62814d4a9c4f515d28c4812645ab",
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20",
+      "bytes": 202
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/component-bootstrap-cleanup-r846.json",
+      "sha": "d4a7c0943403ee49c30adae47e434cb3e22a0334",
+      "sha256": "56b20a05f7c6389f24f7b45212c10dda403f213c696f6f5d46188295a24e78ba",
+      "bytes": 2049
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/component-bootstrap-groups-r829.json",
+      "sha": "1378970e5ddf517d851d057f1f288554afa18911",
+      "sha256": "dac69a5dcdb4168384d591267bb4a7949b8f6e2291dac7f96138c62446006401",
+      "bytes": 165
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/component-bootstrap-r846.json",
+      "sha": "dc6e29a373dfb2ead4b156b057ceafebccc1d653",
+      "sha256": "041cac4baf2b42ebc10bcdb9c8236838fd7fd825ad02cebabc58926816d7810c",
+      "bytes": 1023
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/component-bootstrap-static-graph-r832.json",
+      "sha": "6f7af2293cb03f5567e8b7f26ab916f4f0899218",
+      "sha256": "75c97147ff826ece304931ef18f2ed4bea7c4e66499fb9b55c76a636ab89635d",
+      "bytes": 340
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/mapper-chart-r44/delivery-manifest.json",
+      "sha": "069fc290fde8a9aebce809492e8e8633e2717a2f",
+      "sha256": "9a9db792a32e46437763c111badecebb6e4a6a1efe047cae98b05c26f370e9bf",
+      "bytes": 3840
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/mapper-chart-r44/fixture-cleanup-r576.json",
+      "sha": "f2eddff265aa8792f71074d8ef73ef9038282cec",
+      "sha256": "5680b516afda28356fd83f3b4bc2f7a8291393b7ae44cc45d0347d63458b66a1",
+      "bytes": 930
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/mapper-chart-r44/preparation-result-r573.json",
+      "sha": "684071bdf75609e31df44b5b76f418c837eb200c",
+      "sha256": "3059bfa01a4c1bb4a3342d640a855ff2bb871122b37fb2f3419ce6cf0b7a4ad1",
+      "bytes": 562
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/mapper-chart-r44/prepared-bundles-r571.json",
+      "sha": "16a7818585c75bd57cd8262e994d5f4fdc494d49",
+      "sha256": "e3b09022471063cda810aa13d9b9ee34f772ba7aa9d52ad4ff8813d54f4cce54",
+      "bytes": 1128
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/mapper-chart-r44/prepared-runtime-r570.json",
+      "sha": "c067311e7fceecf2b591d87469cd70fe30c2378c",
+      "sha256": "823ca417c778210adf8a976c6f8d7984b14af29d36d1aa84c54336426416d605",
+      "bytes": 1896
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/mapper-chart-r44/stage-sources-r575.json",
+      "sha": "c3d4e5e22d98ed251abb9129ce830ca058d6734d",
+      "sha256": "92c8943c26d7fd26ae28cd0ed2b4df72a8b4b6b3d64598ecc4afb32c97eccb5c",
+      "bytes": 1101
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/mapper-chart-r44/style-scope-summary-r577.json",
+      "sha": "f8bbe3b0c7c2b59efdf1f10f7e418b4b71582186",
+      "sha256": "53894188234687e78b9e5cbe7a46dd5b1cbd4c26303f1fccedade4ae30d32e65",
+      "bytes": 523
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/mapper-chart-r44/verified-full-bundle-files-r572.json",
+      "sha": "08f8a4ea0c659d1d06a041a51e4bccd807f44c44",
+      "sha256": "cbf6f74b5f6bd63939e771238003eb1bd221dafcb7411839d468de7cca3923c1",
+      "bytes": 1982
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/mapper-chart-r44/verified-transport-r574.json",
+      "sha": "4fdf9ea9af325d9ab5c3d3369525fd38f22efe6f",
+      "sha256": "1ca5be78d4923164894e41a50e98cdba5a5511788de411b57bdfaaefecf14530",
+      "bytes": 1810
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/public-r45/anonymous-browser-r863.json",
+      "sha": "b1bdf0287a2e3d4551823aca13c65f2ce765ffe7",
+      "sha256": "3b59e5f4c852009a23059c2d0dc083fb3df39b4850aacd9248e0ec7896ce63c9",
+      "bytes": 15233
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/public-r45/browser-terminal-r863.json",
+      "sha": "43b465b28b5c6aae70e7e4a15689592e4d8b15bd",
+      "sha256": "a73523a7ba8481e2b6f002f2b268077cd5622461d2e9308d23ef6f6fdf314af0",
+      "bytes": 531
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/public-r45/cleanup-r864.json",
+      "sha": "257566cc043edbaa7427f35bd737b123dd805f8e",
+      "sha256": "8e782aeed7d472e7022876892ca5e9504a88de43d387c5cad8dc21c0231195f2",
+      "bytes": 422
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/public-r45/delivery-r864.json",
+      "sha": "6dcc559290d734d3ff8de5fd576808dcffd4c3f9",
+      "sha256": "a5837a76c4db9e937bfed2a00adfd4e9809a151a5c6be16f1a28feda8fffca01",
+      "bytes": 734
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/public-r45/deployment-result-r861.json",
+      "sha": "8ec07a16c009ff6dc49be0837da4917d2f8b05dd",
+      "sha256": "8cf2b9bef5b137c53e13ce316cb59a0c192092f67cfff61b61c896b005e989be",
+      "bytes": 689
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/public-r45/external-static-r862.json",
+      "sha": "94792e31de88a37256ddc9259c60c2728e6fe78f",
+      "sha256": "5a0688325f0994cb7cc257e995271d00bee130c721409b8447cc9c67f6aa9d76",
+      "bytes": 7329
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/public-r45/server-static-r861.json",
+      "sha": "241b0f7ebe78a597e8559e9ab8aab449d473d23c",
+      "sha256": "fe507e99bea9e1882c2894d91ed810a09dcc65c2a9bb590aad82d072dcbeac42",
+      "bytes": 4179
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/public-r45/upload-readback-r861.json",
+      "sha": "92de5a267def73ce4b781e7776b96875f63c4641",
+      "sha256": "2091436eefd2a0f37e69376995f574edffcbf290169acc076b76510fec8a8685",
+      "bytes": 391
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/public_iis_readonly_r857.json",
+      "sha": "91d7008f82b39fdad98897920be6298cc1ac6461",
+      "sha256": "167f2fefc4a6e7d27497b3c4f32fa0e1a61ecbf09b6dc07840d13bda4cde9d6c",
+      "bytes": 990
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/public_static_get_r856.json",
+      "sha": "f92ff180e65efd471e7a990c7dddb5931ddc281c",
+      "sha256": "0963ec3d25fb807c5056d03daf061888f6f7dae434c1a56c2e68adc0cd336b45",
+      "bytes": 3705
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/r45-file-recovery-r852.json",
+      "sha": "ccf7fa985ce9af324ec756df755cdf9529777564",
+      "sha256": "3d4626e2223e79e2778deb387b9b4134e41a33e32694a40a7b469ee9a4da8934",
+      "bytes": 3546
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/r45-fixed-delivery-manifest.json",
+      "sha": "ff47f93267b19d3746fc98ab784415f8433d10be",
+      "sha256": "1c89579f0155c64ea7660114b7135371f726d5da2e10bfb356fe6abd687c9876",
+      "bytes": 3525
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/r45-original-backend-cleanup-r855.json",
+      "sha": "d51d2d3b5b06a5eae10c39e9c118fef8a745c4de",
+      "sha256": "8bc02a4602fcd9323a80a4efe45c23f2bf8c6e62607f684b0fb7c702d6d88e7f",
+      "bytes": 1119
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/r45-original-backend-stage-r855.json",
+      "sha": "239187491ac8b633f735f3d2a640e7abafd6fc0f",
+      "sha256": "fc73ef47fdcb47da5cb233255ff7620377662ac569b3701d6391523f133ac633",
+      "bytes": 926
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/r45-original-gateway-r850.json",
+      "sha": "d3fb5f2b87e05fed2db67ef873d0db8d409d0982",
+      "sha256": "b19025ed773bafb5f5f7bf0d46977d42c14ab1aea471f179af0af612425a61b7",
+      "bytes": 5379
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "deploy/verification/r45-transport-r854.json",
+      "sha": "0b4947c71f9872f5d441b65f9dfd2786d6812288",
+      "sha256": "9a565d59affbc0ef0588513f4daa9d261d74d12ad4c92c368bda3e1ae75a937e",
+      "bytes": 2046
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "source-review/authenticated-bootstrap-r817/src/OriginalAuthenticatedInstallerR817.ts",
+      "sha": "e02c7c32561c4da2048406f8db4a49a84c653cfb",
+      "sha256": "bdf96d80fdd267e0965175333f1d665e3657683f7d99bb579027f56ec5db6371",
+      "bytes": 363
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "source-review/authenticated-bootstrap-r817/src/global-import.ts",
+      "sha": "3bdf611d3b29507446d5450e3a3e5fed2a03eafd",
+      "sha256": "b491dcab7a8fd8538f43cab1713c6c126209cbeea86795d803cca789cb6a3e01",
+      "bytes": 890
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "source-review/authenticated-bootstrap-r817/src/router/index.ts",
+      "sha": "0cebfc79d3b9ac6aeaf2eed56ed5d23c35b0fb9a",
+      "sha256": "6f643bf842c6c98ac007dfd2d2c2d4e5d2fb924f83bf192a312ccbd986d8809e",
+      "bytes": 1798
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "source-review/original-online-integration-r481/src/components/workflow/components/OriginalWorkflowOnlineFormModelR470.ts",
+      "sha": "f08c755c816e1d7ec46ee70903759ffc6d019d19",
+      "sha256": "c2d0a881c86cf94c27585cfa06e427bf6575ec2df26a37472f17f5ecc763010d",
+      "bytes": 5575
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "source-review/original-online-integration-r481/src/components/workflow/components/OriginalWorkflowOnlineFormR470.vue",
+      "sha": "d277c9e44a9d9120dfe194dab81a502355419229",
+      "sha256": "abbd35fc8dd149551acc4258706bd5746726ece6d1331a8abd16bab01d0cca00",
+      "bytes": 2551
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "source-review/original-online-integration-r481/src/components/workflow/components/businessForm.vue",
+      "sha": "c2ce9449c6fd9c6490628ff08e3d9c47a0c0afee",
+      "sha256": "4ca60991bfa6965e4b6c173a8b762d923ce4d2fdf8303f291e2048848f1eaef6",
+      "bytes": 3614
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "source-review/original-online-integration-r481/src/components/workflow/info.vue",
+      "sha": "370c1cd732a43a976dd036ba65543fb75b0d59fa",
+      "sha256": "5d5a3e102a70413a8991fce712f41de720b85b10af4fe8900250bbc93cb9c17c",
+      "bytes": 13790
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "source-review/workplace-period-headers-r489/src/views/workplace/components/Analysis/Chart1.vue",
+      "sha": "e0e2dcbf4866b9afbb14717c574fc4acb718c298",
+      "sha256": "19ed5444b36acce5486fa9d5488026dc2266c160c39538a82c9f92fd78fdea33",
+      "bytes": 4653
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "source-review/workplace-period-headers-r489/src/views/workplace/components/Analysis/Chart2.vue",
+      "sha": "55348f1eca1afd18f96308afd9bf4f7324cf9c2b",
+      "sha256": "202d2f65b5175c95eb17f9cdda8840953c3f0c981d6229cbadce563fa7701a60",
+      "bytes": 3846
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/analyze_authenticated_installer_r819.mjs",
+      "sha": "080130b4bceaac3be0048583a8d9597a8b6dc7f8",
+      "sha256": "dd10c481bb92310722c0a5159b8c69423ccb74584bcc1c29be9963a2392112a0",
+      "bytes": 5135
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/analyze_authenticated_tradeoff_r827.mjs",
+      "sha": "d77ba6893f82b072cfeeb312be9b15ddb9acc970",
+      "sha256": "8fc451c9f87d467c539b9bafca49f9033fa3833228fd96e73489829c35c444b6",
+      "bytes": 5424
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/analyze_canonical_bootstrap_r836.mjs",
+      "sha": "b38b1dda09f6a2b78c3a1a7ad5ab29afc89e6c11",
+      "sha256": "4c8fcf04ae6e9c11c63dd653dffed30bf35eb17fb455696fd19cb78d0660e371",
+      "bytes": 5434
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/analyze_canonical_compatible_r842.mjs",
+      "sha": "32a634970ddfa226b756fd98c8323f0c5396d111",
+      "sha256": "17887a6e98d2dff9f0eabb9ee767e206eefe18b415bb758fd589d77464caa967",
+      "bytes": 5441
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/analyze_grouped_installer_r830.mjs",
+      "sha": "36e08b4ce3ff6a2bbea5f7980e0cb40c07e26596",
+      "sha256": "f9bcd632a8186d0f5974f59cc4ad76e17e571e459a983f15fe6300242e83add9",
+      "bytes": 5415
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/analyze_lazy_layout_r816.mjs",
+      "sha": "46905c3ff78fc04bc59429e27599e97da148d291",
+      "sha256": "354cdfe4147165c5dd18e732363ca217875ae3d6d6a036e452064e9f1bc69ee8",
+      "bytes": 4953
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/authenticated_installer_health_r821.py",
+      "sha": "aedb62da3843d3814c1eca26e193a7dbefdcd841",
+      "sha256": "d7a20c67e73f82b9afb8856416ff2a4db0258b401c174ef77cdddbb83272854e",
+      "bytes": 4241
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_authenticated_installer_bootstrap_r818.mjs",
+      "sha": "8cfa7b819ab73629ec4bb90c9c6b875987990f8f",
+      "sha256": "ca74257ef1da44c315480633822b55ca9be3d260be6d40abf3216901148dd9de",
+      "bytes": 425
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_authenticated_installer_bootstrap_r828.mjs",
+      "sha": "36bb0b0c432ac679d62e13bf67c675ac4b1ef87b",
+      "sha256": "69a8e10045d282d6a0746d8679ff538808db3d0ccd263e126588d5cfe34e8f63",
+      "bytes": 424
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_authenticated_installer_full_r818.mjs",
+      "sha": "9e72a00e0902a4459673e01b63038e90bad7fb04",
+      "sha256": "170e28f9181a18f25284a90ff5e8d4876b5288c3f641c00600b44a7057672e8b",
+      "bytes": 1123
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_authenticated_installer_map_r828.mjs",
+      "sha": "9d9d1294717a2316d6a9938ad6d1c2bf9b7e41e7",
+      "sha256": "97a7db4ad61aa48628b64e86b52925835a800c464b153309d5378c6afbd4800c",
+      "bytes": 1488
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_canonical_bootstrap_full_r835.mjs",
+      "sha": "5d6fdcb593d43e566fad019c91b4c4e12ac71c2f",
+      "sha256": "5128c222ee3ac0f683b3a95245b793f7c63617da49df1f9ed096d6cdb6118fba",
+      "bytes": 2872
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_canonical_bootstrap_r835.mjs",
+      "sha": "64864e031a7544896a73e905d6d2d43d42bea54a",
+      "sha256": "e1faeb7302c74b9418cafd7a3a7cb87290c36c5569d53d3b91b3299c415400e3",
+      "bytes": 421
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_canonical_compatible_bootstrap_r841.mjs",
+      "sha": "90930475268c3503609ecfe691dddebfce0d059a",
+      "sha256": "dd307b886de75269bcb66d87a93e0a6ebb21bed61e41b7566e4c8ef3fbe9ff3e",
+      "bytes": 422
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_canonical_compatible_full_r841.mjs",
+      "sha": "3600a2e3106c12fd3b99a4457a041d8451fb9b16",
+      "sha256": "bc2a4acfc8157c544429be6a06bfc4b088700621c430ca81b978c4fe870e07c4",
+      "bytes": 2954
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_grouped_installer_bootstrap_r829.mjs",
+      "sha": "62250ed144b8284e4ce481598b5a49e4b34d9b9f",
+      "sha256": "e964b77ef7844897c8be464bc68e6726a7fa782413b56c039734248c39d72fea",
+      "bytes": 419
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_lazy_layout_bootstrap_r815.mjs",
+      "sha": "81aea1e29b14a591a706f348933d23520b6810b0",
+      "sha256": "a5a5d0954b4a31e34fba848a9def9426f25b7608759ab303067875103dbb4b18",
+      "bytes": 413
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_lazy_layout_full_r815.mjs",
+      "sha": "40f9d2eba55c26aeb06f019bcb214d210ebb9c95",
+      "sha256": "a1e12abc221f7ba3b6fda77b52fc4ff5e6bf783fef0501257a862017e1f5f177",
+      "bytes": 1111
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_mapper_chart_bundles_r571.py",
+      "sha": "777658670137200365957d967d0bf1c9580ee3a0",
+      "sha256": "578c1c5acbbb2d170a32e229dbc02178dc18a3aeece2eab9550cd4f5f91f48a2",
+      "bytes": 5020
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_mapper_chart_delivery_r573.py",
+      "sha": "8b43ab4825ca547c7e637546c83add66f0205dbd",
+      "sha256": "3555750ceeec36d0c7e1c0f6ebd57c81ec194ef1d3afc2fb94ed17b4d06f9954",
+      "bytes": 7972
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_original_bootstrap_delivery_r853.py",
+      "sha": "730a12b8c72d47af95311f1f08cca47d088862f8",
+      "sha256": "ed167317f0a772eeca803908fbb0a89d0c8b2db9f15ae0d45c02f2ce2c2b6ae9",
+      "bytes": 7931
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_grouped_installer_full_r829.mjs",
+      "sha": "3bbd26b8c7317520acd03fc5011881a263807b38",
+      "sha256": "1fc904231ac29e74255d45c89dec416e5c828a8fe0dac1fe7664e5b217d7e9de",
+      "bytes": 2861
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_workplace_style_delivery_r561.mjs",
+      "sha": "8748701987c56cd3ef23b5ae17be0325c375c7e4",
+      "sha256": "92b6ac0143a39b1abc5d8c6fa621236c542c3a9c418fbf09648f1027693dbf9a",
+      "bytes": 6104
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/build_workplace_style_delivery_r564.mjs",
+      "sha": "2cbcca06feabb7348701c61f2b6709802e2fd34b",
+      "sha256": "07b4eed84708d9fe76c0f1a28d2f5431272d6302f99fd83e208228afd5a57519",
+      "bytes": 6126
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/canonical_bootstrap_health_r839.py",
+      "sha": "6093bb72d99d953dea76cac8bb7c832200b44873",
+      "sha256": "60e36f6cabc556803d8430d3f41bb5621ad165c538f87740d22840593823e64e",
+      "bytes": 4237
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/canonical_compatible_health_r845.py",
+      "sha": "4178c558eec217426dbfc92d644ca850e4923416",
+      "sha256": "2fba7219fc66486aa68116433880472b4d0cc1099d75ed8f9e993b3bc82f7860",
+      "bytes": 4238
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/component-bootstrap-r822-source-pins.json",
+      "sha": "dafa86a69a2c36994d35ae61f6a9d6e5f8519210",
+      "sha256": "5ba5a2aff88871060db62d5b97df7b5d39c8000698925d63a575837d3869bebf",
+      "bytes": 954
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/component-bootstrap-r825-source-pins.json",
+      "sha": "09b29ae331f7ca3e0ea40ba43ee6f6a2ff3053f6",
+      "sha256": "0fbd4b4a4644ff8a8b45170963f58fda1a085c4fcf41e34c29c2fceb10b5fdb1",
+      "bytes": 954
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/component-bootstrap-r833-source-pins.json",
+      "sha": "669e41dd99d2bd5bdde4e87f54464f2140fc81c9",
+      "sha256": "58aeb847423552685d2772d3e17e02db7de6a4a67c5e835437c3ed8bd1c2b6ba",
+      "bytes": 934
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/component-bootstrap-r839-source-pins.json",
+      "sha": "99a1395f8a573cd4b7267c9812902fd6a7cc4314",
+      "sha256": "ea04ecb26adb8289ca73c112837dc70e7a9e2e827ad9da092c1a22ec008b831e",
+      "bytes": 942
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/component-bootstrap-r845-source-pins.json",
+      "sha": "07e91a0f6b63a3abfd5dbcf683b173f6ec523353",
+      "sha256": "d6da22e718a525565ed0bf2efd8d089173c2e2fa483307dd10b83fbecd562dd9",
+      "bytes": 946
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/deploy_original_bootstrap_r45.py",
+      "sha": "b0b67aae7f2af7fff1626d5754d950f8ddb9ffc6",
+      "sha256": "6dbaaeb40efed99acc5e12d41b0728bc1bbf11ccf458b54813843aec663fcc9d",
+      "bytes": 16128
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/freeze_public_bootstrap_scope_r858.py",
+      "sha": "c24c6904f17923e6cda065eb3ae5706de1cff272",
+      "sha256": "fedcc92f4a4d6076ce22400533b770b72530ef4b98018a2c4c772f71036de0d3",
+      "bytes": 9753
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/freeze_public_r45_delivered_r865.py",
+      "sha": "ba8c0892faad31eb158b3ebd30ff158d4c63e405",
+      "sha256": "f8d9ce5e6d187d0ef5c8f84c7242b0aeaa922c0f961b03759a8eae6fbc57a757",
+      "bytes": 6585
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/grouped_installer_health_r833.py",
+      "sha": "b7a3d06f6dfa2820c4b4f058036f117785b24e27",
+      "sha256": "cb7d560e70afd1949885e505ca09d0bbb518ddd1fb97133bb6f28dc537a7a40c",
+      "bytes": 4235
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/measure_public_login_browser_r863.mjs",
+      "sha": "9677fd4614933f37173465a0fe6b1802baf80ee1",
+      "sha256": "5cffdd64686a9d0fa0cbb590d92590f7f3594b49f74d5ab20a3f07047f0231d8",
+      "bytes": 8611
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/measure_public_performance_recheck_r856.py",
+      "sha": "005b2cd52bede604f7a4b903045e32a231a12864",
+      "sha256": "b8b2db5675af48189d4468fc9830b196c112304bfc9b1c19527d068f1431271e",
+      "bytes": 3992
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/original_authenticated_installer_r817.py",
+      "sha": "06ceb843b9c7da00288a070d3158d96510f82c9c",
+      "sha256": "276b8e7a841579065ff1e58bfd5757a68e2464b31540e464fe5fcaca557bd8a2",
+      "bytes": 3955
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/original_lazy_layout_r815.py",
+      "sha": "8c607854b70eac5dd606bc8e7a33b8219ab221bd",
+      "sha256": "009d21f32e6a03a1226baeaf6ea7b5d3e00f1c5def41df63d9cd69e1cd4cb32a",
+      "bytes": 1643
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/original_online_workflow_integration_r483.py",
+      "sha": "5ee0e2abc7863bea558f6a9a056d72673cfdeb71",
+      "sha256": "07c578ab4f41c13876d456467e0994d3455f9e1f2d69ff226104f4fe34f34020",
+      "bytes": 2074
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/original_public_test_update_r42_mapper_equivalence_r457.py",
+      "sha": "936f306cf63d336f61fc94b4262b144ef0d9fcc3",
+      "sha256": "5e63e0f3e1f7d1064b5ae1276bfee56d51ce58b0e0ea64f59e30238c1c2d8b30",
+      "bytes": 233546
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/original_public_test_update_r44_mapper_chart_r570.py",
+      "sha": "c473810c89ab89246f0ed8ea5913d5954c8165c0",
+      "sha256": "cbca17bbb2e98dfda77aed44719641447ef68b8ef18f85a6426d9d120f7d593e",
+      "bytes": 234692
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/original_public_test_update_r45_bootstrap_r847.py",
+      "sha": "84bf11bd278ef3cb5008e436a01c201eeeefc437",
+      "sha256": "d5af4267715b5b4fdcd740c27cdadf3742d5dfc5a8f3f7d06cc84b6ddac0c9df",
+      "bytes": 237007
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/prepare_authenticated_installer_candidate_r820.py",
+      "sha": "e95b7c4820836488e00153a84c1efb0cb0e0279f",
+      "sha256": "1859a100354279932d8d09cb43cb51f73997ab829d2002af0a40861e7d849199",
+      "bytes": 7827
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/prepare_canonical_bootstrap_candidate_r838.py",
+      "sha": "e99af6008b2fc6b9ef654bcfa0c95b887a001f3d",
+      "sha256": "9e6af23bd3e1e0dedbb0596ac54c2cdb0e73a4b41d90743ea9c497e76bb24085",
+      "bytes": 7798
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/prepare_canonical_compatible_candidate_r844.py",
+      "sha": "49a1718c7e2672927181b2b93e8c56baa5881d76",
+      "sha256": "d43a1b10e8e3b8dcae20d5a51ae1a0bf74a0657d3bb3a19f195fb5bc44842be4",
+      "bytes": 7813
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/prepare_grouped_installer_candidate_r831.py",
+      "sha": "cc268adac68b306dbd9790f500ce261a56f62546",
+      "sha256": "af4940709573a0b1a9fddaed87c912c1018193a72d93b5fc670e0d873aab2dba",
+      "bytes": 7803
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/prepare_grouped_installer_r829.py",
+      "sha": "dcdbbbb4e77fc6caeac3e0a5b683d23bde607dc8",
+      "sha256": "3834b81f187627e49946a558855bf947768a358405073969c9a7e1eb65860af7",
+      "bytes": 5044
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/prepare_mapper_chart_candidate_r570.py",
+      "sha": "4a0be8848989722ae2bc4cb439577bde70a0b795",
+      "sha256": "2d6ce003899b1297eec60f2bf8d726b8c690703ac7b0998e82b7edfa3c99b4fa",
+      "bytes": 4289
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/prepare_original_backend_bootstrap_r847.py",
+      "sha": "bf80413680095e046b93586541e74966807b4c19",
+      "sha256": "195e9128a84d048643857d5a8ae113cb27609624943b6ec7c4b09ed81648e0a8",
+      "bytes": 9535
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/prepare_public_browser_r863.py",
+      "sha": "6eadfb94356109d7bdba89b7c9d6109763b1b75e",
+      "sha256": "219fd13b56d9ebbf3709085ea1af02e3e765eb96ff32b4d8592ff0751f799a75",
+      "bytes": 1127
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/prepare_r45_owned_backend_r848.py",
+      "sha": "14e187fb6b63b6845f58a04cf61b33d8e8771a49",
+      "sha256": "be7f1e9b81a343d2a88f96721561de5a7788d503c7653a56eef7d135953e8bff",
+      "bytes": 6556
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/probe_authenticated_installer_r822.py",
+      "sha": "b8914db589ebed160ae8a9f1e04db49ef9d48e29",
+      "sha256": "8be9431a2d0e70ff0007234a603669aeb03f28259c68d12a9b6b7203a7c3e659",
+      "bytes": 5396
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/probe_authenticated_installer_r825.py",
+      "sha": "cfa7f1f29d6db4baa014812730a64087028bc41f",
+      "sha256": "43be9b34d2082f84457be0bc36f92764d4052a8fa00a54b4d52fbc4ff2af7d01",
+      "bytes": 5463
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/probe_canonical_bootstrap_r839.py",
+      "sha": "f5dfac5559412f9a612156235e7ee851c15e8a5b",
+      "sha256": "51d855999b88231a5ae27a84a0303744a0bfe7dc6dd78b939625b7eed2a15eb4",
+      "bytes": 5455
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/probe_canonical_compatible_r845.py",
+      "sha": "f7f4d5ba4a9def2fd0af9e005df100b29921f0cf",
+      "sha256": "b094132226f10dda79991ac40084bb4540ecec950ec457ac3702dfb38a41f748",
+      "bytes": 5457
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/probe_grouped_installer_r833.py",
+      "sha": "7be3b2ab97cc92217cc2ae530421ca7853743f3a",
+      "sha256": "079a9740ee83b9216e39e5330b6f563d21b49c933f457438004f4f673dc5da46",
+      "bytes": 5451
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/probe_r45_original_backend_r850.py",
+      "sha": "9002a5f6ae499abb768d17acfa88ea1ac47f2e27",
+      "sha256": "7066a86ef66c83dfb6045c8f0aa38c7651a1c251632ebe7e804611dd62746042",
+      "bytes": 5662
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/probe_r45_original_gateway_r850.py",
+      "sha": "0e1e1d633e90788e172c5a96033d7fa0d90fe6fc",
+      "sha256": "70e43fb9ee9a50ce88f4cc519c4757c986072aeebebed319055ff410849d161f",
+      "bytes": 3629
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/r45-compatibility-source-pins-r850.json",
+      "sha": "4f66056ecacc8a3c836894efc54f0db44705f7bf",
+      "sha256": "1847dd0722f381ec8d5fc10f75326eacb467777ca24977eef803d8913dfea7dc",
+      "bytes": 1504
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/r45_file_fixture_builder_r851.py",
+      "sha": "efadde5d9cebeb28a5dd1c96baff7665e2a7813e",
+      "sha256": "570dca2d41bc63df8be5abc18aa65f49904ce46960360adae3c80084a08a541c",
+      "bytes": 2567
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/r45_original_backend_health_r849.py",
+      "sha": "78095de2bef602a4a23b8e9fe4e9c0e23a96c01e",
+      "sha256": "f5f66930a5827e0111e81739b563258fae75cd4e3c55342b79796bc2059f7232",
+      "bytes": 1908
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/record_component_bootstrap_r846.py",
+      "sha": "be2ced537c9ce55f5e4981b566684b5d5ed3061b",
+      "sha256": "325cfa25d60d6b8e505b5d4153966cc53df7ff7e8fdcf8e5858f6f9c20f879e7",
+      "bytes": 20664
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/record_public_iis_readonly_r857.py",
+      "sha": "653969ab8496a46460b641dafb8c3fa881b8a906",
+      "sha256": "1f989b2e7d83c0b0913c07b9c70e0064c7307a1d6b815a6514a2bee45b3377da",
+      "bytes": 8049
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/record_public_r45_delivery_r864.py",
+      "sha": "242033f3daa8337c5654a3e18c199fb5a3717b74",
+      "sha256": "af1c251d7984c0e902a851a447ab46bde1a41f86e55647d4540e39d7ac093a19",
+      "bytes": 13587
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/record_r45_ready_stage_r855.py",
+      "sha": "a26a4bdfb6e12ccd3154572c3d825b30d9c67eac",
+      "sha256": "c998a33d73b14c139a9a8f6d3a51252c38e16b028d18260684bf29b1545be23f",
+      "bytes": 17679
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_authenticated_installer_full_build_r818.py",
+      "sha": "724fe71819b0f25faf30794ebbc4085b72d78237",
+      "sha256": "c67aab92143bf27541a9dd60020c2eb92abe2c2c57c4c3ecdcb8859d10de58d9",
+      "bytes": 11920
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_authenticated_installer_map_r828.py",
+      "sha": "62e30bcc05a362eee3d8f8e235b4522173b4fb58",
+      "sha256": "7a41a53924e7bac2a343f88e89a0c05d62a411f5db82e64c976c2a5695001ecd",
+      "bytes": 11912
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_canonical_bootstrap_build_r835.py",
+      "sha": "0fe6b85df4c4e5728512d351cb970dcc669ace31",
+      "sha256": "a659411c83a9c14696f3c7217aad2a8013925a0e1053a98bf30763c14dd0eef9",
+      "bytes": 11879
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_canonical_bootstrap_full_r839.py",
+      "sha": "3ecf4d9f17b9f99c04f930305cc77c8ef28b35b7",
+      "sha256": "ac3895ed059021e4837e8ae2474022d52cead7e6943bfe3e18e24e3944e772a3",
+      "bytes": 18304
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_canonical_compatible_build_r841.py",
+      "sha": "3a65a0fc8911d697a68f7e60aa26a1052de15f84",
+      "sha256": "decd6e9d58e763c9ccd660e214a83abc811c608ea1eab1b6233df95e470d7d29",
+      "bytes": 11912
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_canonical_compatible_full_r845.py",
+      "sha": "c8b216f27ab012deed7443ea22c1a5c4038f16db",
+      "sha256": "1339e386f9a46562bdfb09b2526bd082e905b6ade5ac1d208132d35fa3905f16",
+      "bytes": 18307
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_component_bootstrap_full_r822.py",
+      "sha": "3440fcfec521d0f35f2122881ad4ddf4fff6cebb",
+      "sha256": "a7f6415010ce864f12924edb3c4ed4a56b0489061e585eb5b88dfcf0a4b17b0e",
+      "bytes": 18320
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_component_bootstrap_full_r825.py",
+      "sha": "2b88718f0501aada2c31728cc473159ac56845ac",
+      "sha256": "16d7733b57689ffeaa686d8400856d0d1759abac36b6355cfa90770ac8ba0e2e",
+      "bytes": 18320
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_grouped_component_full_r833.py",
+      "sha": "245d755d1f397662acc019bfba634cef4d36aea2",
+      "sha256": "5ab2ea7cad0d14ede08c9ad9b3fc15e3223b5ce83303149ca706ac53538c6848",
+      "bytes": 18298
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_grouped_installer_full_build_r829.py",
+      "sha": "6ffa7f3b6954e338702d22e0ec67708139c7ed13",
+      "sha256": "616b374f144cfd10fd39e2ef064837df47a6393ce91604803930623afcca46a4",
+      "bytes": 11908
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_lazy_layout_full_build_r815.py",
+      "sha": "c715ba7ab7812cc855d6706fdc9944c41c710713",
+      "sha256": "d1e9cf038abf8daf75f782c5e5135a2bcc178ce70f996efb0055393fe1d2cdc3",
+      "bytes": 11789
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_public_browser_r863.py",
+      "sha": "caeb439f8c901439d7640ae473ae4ba9f46438c8",
+      "sha256": "059e4dddb773d7523664440afbf7ca784b2120a522ea3a24fc89ed53fa41ec2e",
+      "bytes": 3075
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_r45_original_backend_r850.py",
+      "sha": "87d74a646a2c8b3e1807c1cb951093610da59a25",
+      "sha256": "185b8ada5906dcd26286ed2e1fe0754fb52f9303388f159323fca7129308ba38",
+      "bytes": 17089
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/run_workplace_style_delivery_r563.py",
+      "sha": "392f730559110a1db48dccbc9abec613993b1f56",
+      "sha256": "4d475ba0c120358368e4589a7e3b0059f6022446593af72b99423dd61dac12a1",
+      "bytes": 1536
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_authenticated_installer_artifact_r823.mjs",
+      "sha": "a7d613b823595224edc62954153f6a72fc1e12d6",
+      "sha256": "4faef7bd6837feedcf4aa281896b3835878844c98f1d9db2e3bbd750e7a4cb32",
+      "bytes": 4933
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_authenticated_installer_browser_r822.mjs",
+      "sha": "eecd8999eea0c58922a45d2ca576776a6e8cc908",
+      "sha256": "a67c21cafe9effe0dff7b9ec866711838700e316075aa6ba7d5dfa72d3c2ffaf",
+      "bytes": 20416
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_authenticated_installer_browser_r825.mjs",
+      "sha": "292e5b0c1427fc95cdccdd591fd6d8737ce1e34a",
+      "sha256": "0c66ca7db2dad70c31842eac5ee937cf2dc065a6ee7cf02ec790f8e82c2e153e",
+      "bytes": 20932
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_canonical_artifact_r837.mjs",
+      "sha": "28ea48a4328e7cf9472e145890d1ccc67befab61",
+      "sha256": "80db0377e50a5f8ad8492564b828cb5643e52cda588588227e1d3c90cfa0d971",
+      "bytes": 5057
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_canonical_bootstrap_browser_r839.mjs",
+      "sha": "578743a9642f86cd72edc0d34da04134bf0c11f2",
+      "sha256": "ee7d977140d5de89a9ed9f459a5c412a4118673e6d54348c7e30a9862886cafb",
+      "bytes": 21311
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_canonical_compatible_artifact_r843.mjs",
+      "sha": "4d9612f50a4c92d660c8abed3d26c6e06968a1f1",
+      "sha256": "665f5bf1fca7259283adc1d22c465a9efc152f341631c9440284c98c31877953",
+      "bytes": 5080
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_canonical_compatible_browser_r845.mjs",
+      "sha": "4b0b8a52ee490f44c19c43dc03fa0eacc2971fd4",
+      "sha256": "d550fa03d8314be75451e864110caf866036f599fff9397e59b7e8b0dc34edea",
+      "bytes": 22598
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_grouped_installer_artifact_r832.mjs",
+      "sha": "f5de5b26cd8898463f47124cbcec79cb7a4e225f",
+      "sha256": "fe2ce1030c759549f9247c0cafce06be3b937dc65e3c4999e11c83195b08488e",
+      "bytes": 4933
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_grouped_installer_browser_r833.mjs",
+      "sha": "3babc24e4fef04ed651ae6153b063644f36e78c6",
+      "sha256": "043e4ff17e883d5e12f00d8826db06b231b037a437ba7608e4f21f41ca078f14",
+      "bytes": 20920
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_mapper_chart_bundle_files_r572.py",
+      "sha": "d57fa09ef2186be5d3de6ac56341c788edda4d93",
+      "sha256": "f0ceb781fa3e1d22cd48a54445775461c19604b6191dbaaf809011dbc98b147b",
+      "bytes": 10471
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_mapper_chart_transport_r574.py",
+      "sha": "9522333955b700805ba25ddec2aa7dbee3e191c2",
+      "sha256": "8f24c439ee7fbf0845ab9da96655d6fdcdc1460bf93c15581286b1eaf256cd4e",
+      "bytes": 6759
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_original_bootstrap_transport_r854.py",
+      "sha": "548d02a5385a981cf98493b8a71a6a80375ea5c5",
+      "sha256": "11215cdd3193533f51bf1b2d2490bd477019ff378868b9944af7d22a13a201ce",
+      "bytes": 7719
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_public_r45_static_r862.py",
+      "sha": "a285a6b501cb4003482a1323e3c9b003f0cece8d",
+      "sha256": "36ed6ae3119eb38a327efbe59f888f8be3f90e31e82635f066dbffc0b299d6e9",
+      "bytes": 3549
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_r45_bundle_files_r852.py",
+      "sha": "7969a822b584b1cd77acbb378efa29f8c215d952",
+      "sha256": "68df2259534e10d4ec7da5b588b1ffe9598f4de94d20dd5c11f559f28b0c1078",
+      "bytes": 11144
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_r45_original_backend_browser_r850.mjs",
+      "sha": "d7630c8db9d17ec3800c3c77cf5f4f6eebcbea89",
+      "sha256": "ca1d9c01a94b28ada2b071b5bc550d8feb5c6b53b26cb2a33ea06f2578ac32e1",
+      "bytes": 22598
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_workplace_style_delivery_r562.mjs",
+      "sha": "83a59de57b9d0b371740c4c44c76250ab5e30f11",
+      "sha256": "e4236f749daeb439625b6eda35874f2ce6cd9dd0a7d69c524105f69c7f8a926f",
+      "bytes": 13059
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_workplace_style_transport_r565.py",
+      "sha": "5e4c7d1dd98a3bb4783c6077496c91540822c790",
+      "sha256": "b4e8ac4e513a96a8fe16c183bd484a573b9d8aef2465be1fadc130af1ba28300",
+      "bytes": 7212
+    },
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "path": "tools/verify_workplace_style_transport_r566.py",
+      "sha": "3793b48ceff3483ac5881e68d4a53438fb35af51",
+      "sha256": "94f0e9383b8c62dd64b415d9bcd0470737b99c462c99a27a6f9cd1c02d42eef4",
+      "bytes": 7421
+    },
+    {
+      "repository": "wangjiankang0531/-XNBYEngine",
+      "path": "docs/project/R44图表Mapper固定候选进展_20261104.md",
+      "sha": "76c9b4263e0d436f7e1de64ace96070bdf204d23",
+      "sha256": "e746d70055bbbaf46083f73ad243952afa5fe5fae58bef385553e5d9ec3afe24",
+      "bytes": 2238
+    },
+    {
+      "repository": "wangjiankang0531/-XNBYEngine",
+      "path": "docs/project/R45公网加载实际交付与三维协调_20261104.md",
+      "sha": "adaeb19e6ce8e957c379c6a36e19f77d994e2831",
+      "sha256": "552d736958fc8cb80a4b76d20bdedae4a127b641ddd7605bbbe1910751478c5b",
+      "bytes": 1231
+    },
+    {
+      "repository": "wangjiankang0531/-XNBYEngine",
+      "path": "docs/project/R45原后端加载兼容固定候选进展_20261104.md",
+      "sha": "688ed0efb0f13a5377612b91ea6c02a45dcc7eb1",
+      "sha256": "3f084e0252da9cb9d3e17c42fdb9ec5a5e3121bcf99eb175fe87b895d981641a",
+      "bytes": 1545
+    },
+    {
+      "repository": "wangjiankang0531/-XNBYEngine",
+      "path": "docs/project/公网IIS只读复核与加载未验收_20261104.md",
+      "sha": "0dbb1895557677b2020f25733d6dc42ef41f0967",
+      "sha256": "36fa7adfc497ff4b8b634b0acf1bb66c3c9fc49e0989cf0d3d090286236c1f75",
+      "bytes": 668
+    }
+  ],
+  "priorReadFailure": {
+    "path": "tools/build_grouped_installer_full_r829.mjs",
+    "kind": "connector-read-failed-during-batch",
+    "fixedBytesChanged": false,
+    "subsequentSameImmutableBlobReadPassed": true
+  },
+  "repositories": [
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "branch": "review/workplace-r19-verified-partial-20261031",
+      "parent": "1f936ec0ac6cbd7574a7f5b49b3115b5ccdb48fa",
+      "baseTree": "d1e2b6880e336c18d3cd139035ba39cc5bd22f91",
+      "baseFiles": 2555,
+      "tree": "f23bf44750ad8a22c23ceeea2ae6718d8e94124b",
+      "fullFiles": 2704,
+      "commit": "aa64ec6a208db3cbe9209dfed3c1967451c1cab4",
+      "solePublicParentVerified": true,
+      "branchesBefore": [
+        {
+          "name": "main",
+          "sha": "b9525b8e0949c26a4a247aa91940acfb2706a7ab"
+        },
+        {
+          "name": "review/emergency-modules-r16-20261029",
+          "sha": "3beecebc601295ffba99c58670f3bf176949887c"
+        },
+        {
+          "name": "review/native-web-preview-20261027",
+          "sha": "e8043474c4adeddb3de10e3a2c8812d18c1c9add"
+        },
+        {
+          "name": "review/tester-feedback-home-r18-20261031",
+          "sha": "64cf94275cb27e31733f6fd501c5b241d2ecb14a"
+        },
+        {
+          "name": "review/workplace-r19-verified-partial-20261031",
+          "sha": "1f936ec0ac6cbd7574a7f5b49b3115b5ccdb48fa"
+        },
+        {
+          "name": "review/wwwroot-migration-r17d-20261030",
+          "sha": "7b4b6ed868cb97fbc8c6772a6804c848c7d814b6"
+        }
+      ]
+    },
+    {
+      "repository": "wangjiankang0531/-XNBYEngine",
+      "branch": "review/workplace-r19-verified-progress-20261031",
+      "parent": "22ff2cad89d05678b90d41601ba7d4323990f7d6",
+      "baseTree": "9d2f49db8ff923f9db3242b17f6f0cfad7b609a4",
+      "baseFiles": 695,
+      "tree": "5b87405f98576a01a6f8eaafde660836b9b6da80",
+      "fullFiles": 699,
+      "commit": "49a6536d527716445e7179903f6f21109fc51f8f",
+      "solePublicParentVerified": true,
+      "branchesBefore": [
+        {
+          "name": "main",
+          "sha": "8966e32b370a10b1e8f5d4fba512f42f439c2451"
+        },
+        {
+          "name": "review/emergency-module-progress-20261029",
+          "sha": "9d25c2386005f604d7ade9b10fce589b597389dd"
+        },
+        {
+          "name": "review/project-scope-20261029",
+          "sha": "aaefb2e5aacc539e82cef91ec960aac8fb6692b6"
+        },
+        {
+          "name": "review/tester-feedback-home-progress-20261031",
+          "sha": "bba46b38b3c52351bdf6d97f4d9f33f936a05522"
+        },
+        {
+          "name": "review/workplace-r19-verified-progress-20261031",
+          "sha": "22ff2cad89d05678b90d41601ba7d4323990f7d6"
+        },
+        {
+          "name": "review/wwwroot-migration-progress-20261030",
+          "sha": "ace8b1714cffeeaf7f3dec440c61849ee0cc7af1"
+        }
+      ]
+    }
+  ],
+  "privateAncestorsSent": false,
+  "mainOrOtherBranchesTargeted": false,
+  "serverOrDesktopChanged": false,
+  "finalRefs": [
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "branch": "review/workplace-r19-verified-partial-20261031",
+      "commit": "aa64ec6a208db3cbe9209dfed3c1967451c1cab4",
+      "expectedParent": "1f936ec0ac6cbd7574a7f5b49b3115b5ccdb48fa",
+      "force": false,
+      "branchReadbackMatched": true,
+      "mainAndOtherBranchesUnchanged": true,
+      "branchesAfter": [
+        {
+          "name": "main",
+          "sha": "b9525b8e0949c26a4a247aa91940acfb2706a7ab"
+        },
+        {
+          "name": "review/emergency-modules-r16-20261029",
+          "sha": "3beecebc601295ffba99c58670f3bf176949887c"
+        },
+        {
+          "name": "review/native-web-preview-20261027",
+          "sha": "e8043474c4adeddb3de10e3a2c8812d18c1c9add"
+        },
+        {
+          "name": "review/tester-feedback-home-r18-20261031",
+          "sha": "64cf94275cb27e31733f6fd501c5b241d2ecb14a"
+        },
+        {
+          "name": "review/workplace-r19-verified-partial-20261031",
+          "sha": "aa64ec6a208db3cbe9209dfed3c1967451c1cab4"
+        },
+        {
+          "name": "review/wwwroot-migration-r17d-20261030",
+          "sha": "7b4b6ed868cb97fbc8c6772a6804c848c7d814b6"
+        }
+      ]
+    },
+    {
+      "repository": "wangjiankang0531/-XNBYEngine",
+      "branch": "review/workplace-r19-verified-progress-20261031",
+      "commit": "49a6536d527716445e7179903f6f21109fc51f8f",
+      "expectedParent": "22ff2cad89d05678b90d41601ba7d4323990f7d6",
+      "force": false,
+      "branchReadbackMatched": true,
+      "mainAndOtherBranchesUnchanged": true,
+      "branchesAfter": [
+        {
+          "name": "main",
+          "sha": "8966e32b370a10b1e8f5d4fba512f42f439c2451"
+        },
+        {
+          "name": "review/emergency-module-progress-20261029",
+          "sha": "9d25c2386005f604d7ade9b10fce589b597389dd"
+        },
+        {
+          "name": "review/project-scope-20261029",
+          "sha": "aaefb2e5aacc539e82cef91ec960aac8fb6692b6"
+        },
+        {
+          "name": "review/tester-feedback-home-progress-20261031",
+          "sha": "bba46b38b3c52351bdf6d97f4d9f33f936a05522"
+        },
+        {
+          "name": "review/workplace-r19-verified-progress-20261031",
+          "sha": "49a6536d527716445e7179903f6f21109fc51f8f"
+        },
+        {
+          "name": "review/wwwroot-migration-progress-20261030",
+          "sha": "ace8b1714cffeeaf7f3dec440c61849ee0cc7af1"
+        }
+      ]
+    }
+  ],
+  "allPublicRefsReadBackMatched": true,
+  "allMainAndOtherBranchesUnchanged": true
+}

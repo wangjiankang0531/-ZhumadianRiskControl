@@ -1,0 +1,85 @@
+{
+  "revision": "R47-home-transfer-and-factory-supervision",
+  "targetFTP": "/Zhumadian/Zhumadian_Home_Supervision_20261104_R47/",
+  "targetApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "files": {
+    "Check_Only_Home_Supervision_R47.cmd": {
+      "bytes": 138,
+      "sha256": "b2c6010071064ef79b8d947506693b803bfd719a7608f44277cce6fb3848a437"
+    },
+    "Deploy_Home_Supervision_R47.cmd": {
+      "bytes": 126,
+      "sha256": "1b0459906a067ef6a7fef3d96be31fea02f04c78c4666611a720aa4d5c2bc6e2"
+    },
+    "deploy_home_supervision_r47.py": {
+      "bytes": 18299,
+      "sha256": "208737d331892940a4eec3035108a5686b9b7843d699b4ee0c519d1cda30b817"
+    },
+    "original_public_test_base_r46.py": {
+      "bytes": 241433,
+      "sha256": "83244ea13218416b062285c44c01e925b95249243b3691543d6475e69b461251"
+    },
+    "r47_update_runtime.py": {
+      "bytes": 11998,
+      "sha256": "5ade6da03f3a1d7d483806154286829d123c4ae4bc70090a67911f0df8b78af0"
+    },
+    "Recover_This_Home_Supervision_R47.cmd": {
+      "bytes": 147,
+      "sha256": "5fc5154e9593f591bd7a7e7c215462b890df798678f991b4eb883abf88a47165"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Home_Supervision_20261104_R47.zip": {
+      "bytes": 27564908,
+      "sha256": "b327eb51c563253cdbf082cf76a7049dea18acaed5d458edb39dcfeda74751ff"
+    }
+  },
+  "acceptedExactBases": {
+    "3b1251784fba66726f8ab4060138a2de78add753d7d06d731d5afa2f3a517bbd": {
+      "label": "r45",
+      "updateId": "20261104-r47-home-supervision-from-r45",
+      "manifestSHA256": "c3e57c57e77a672da41df51e4e9e6feb506ca5086d5a0c969c94bef705b36e12",
+      "oldUpdaterSHA256": "d5af4267715b5b4fdcd740c27cdadf3742d5dfc5a8f3f7d06cc84b6ddac0c9df"
+    }
+  },
+  "newReleaseSHA256": "5e3ec6c0e63f4987bc412752357ba47ea17bc0b77aa7782f13cbf7b9416c439c",
+  "newPayloadManifestSHA256": "b9823998c372290442645cdff3c5c27e204912f7a622d1da7ce67ff77114c0ce",
+  "newUpdaterSHA256": "5ade6da03f3a1d7d483806154286829d123c4ae4bc70090a67911f0df8b78af0",
+  "frozenCoreSHA256": "83244ea13218416b062285c44c01e925b95249243b3691543d6475e69b461251",
+  "writePaths": [
+    "frontend/security_pc/assets/css/xnby-home-transfer-162b8ebe4004d78f.css",
+    "frontend/security_pc/assets/webp/home-background-415f7103fab4437c.webp",
+    "frontend/security_pc/assets/woff2/YouSheBiaoTiHei-7af84bf1c97ae44e.woff2",
+    "frontend/security_pc/index.html",
+    "payload-manifest.json",
+    "payload/business/run-template/own-supervision-pdf.jar",
+    "release-manifest.json",
+    "tools/original_public_test_base_r46.py",
+    "tools/original_public_test_update.py",
+    "tools/original_supervision_release_support.py",
+    "tools/serve_original_server_release.py"
+  ],
+  "writes": 11,
+  "removedFiles": 0,
+  "archiveMembers": 21,
+  "maximumExtractionPathCharacters": 202,
+  "oldOriginalReadinessReports": 11,
+  "newReadinessReportsIncludingSupervision": 12,
+  "exactProductionUpdaterAndCoreFullLifecyclePassed": true,
+  "normalOriginalSDKUIAssertionsIncludingRepeats": 19,
+  "existingTwoPDFsExactlyReopened": true,
+  "newBusinessWritesOrApprovalsInFinalProbe": 0,
+  "normalAndFourthWriteFileRecoveryPassed": true,
+  "fileNegativeCases": 11,
+  "transportVerificationStillPending": true,
+  "originalJarAuthDataPrivateConfigurationUploadsIISAndOtherSitesRetained": true,
+  "staticHomeAssetsPixelsICCAndCompleteGlyphsRetained": true,
+  "originalLedgerSupervisionButtonUIStillPending": true,
+  "publicHTTPSIISRealRoleAndNewGenerationStillPending": true,
+  "limitedResultReadbackFile": "r47-scoped-result.json",
+  "publicDeployed": false,
+  "newPublicGitIncluded": false,
+  "fullCloneReady": false
+}

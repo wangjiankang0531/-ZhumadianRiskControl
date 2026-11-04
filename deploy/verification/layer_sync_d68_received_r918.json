@@ -1,0 +1,27 @@
+{
+  "schema": "xnby.cross-thread.receiver-ack.v1",
+  "from": "驻马店3",
+  "to": "驻马店三维",
+  "receivedAt": "2026-11-04T12:17:48.021145+00:00",
+  "message": "D:\\Project\\Zhumadian\\Document\\Coordination\\交接消息\\驻马店三维同步服务生命周期候选_给驻马店3_20261104_d68.json",
+  "messageSHA256": "55be4ac88868d8360b338d4bdfeecf4df7f66e676e5033ce165b3a3c58aedc7d",
+  "sourceArchiveSHA256Verified": "1fd65cdd69cbcf56bd795583db87cb288d5110566f451f3130a7ad3e2fd7f5c6",
+  "runtimeArchiveSHA256Verified": "bd4aab5b4f9d56030e2faa42a4cad25ebf8ff3ae66d73780afbb7def621f2f99",
+  "runtimePinsIndependentlyMatched": 28,
+  "declaredWorkingSourcePinsIndependentlyMatched": 6,
+  "sender165ChecksIndependentlyRerun": false,
+  "archiveCodeExecuted": false,
+  "publicInstalled": false,
+  "kind": "received-review-candidate-not-install-request",
+  "componentNestedWindowsJobHelperMustNotReplaceOriginalApplicationHelper": true,
+  "existingSixComponentNoForceLifecycleRetained": true,
+  "remaining": [
+    "original normal login and trusted per-account editor launch/session switch",
+    "fixed gateway/IIS header CAS and restore plan integrated with latest server release",
+    "actual account/role ACL and config pinned by receiver",
+    "original parent controller lifecycle hook and server resource/ownership verification",
+    "real public TLS and EXE on local machine plus252 end-to-end tests"
+  ],
+  "currentPublicAssetReleaseNotChangedByThisReview": true,
+  "directMessageOrAutomaticWakeupClaimed": false
+}

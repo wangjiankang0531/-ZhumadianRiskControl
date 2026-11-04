@@ -1,0 +1,139 @@
+{
+  "schema": "xnby.layer-sync.receiver-review.v1",
+  "passed": true,
+  "handoffSHA256": "516a2ecf33a9a31afb47ef7274d3171da7bda8fee957bb2aaf9f7012401e97d3",
+  "profileSHA256": "e564f203c562fbf8587e49603472829b270f1f90fc4481956e50b52146aec2c4",
+  "sourceFiles": 18,
+  "sourceBytes": 144891,
+  "inputs": [
+    {
+      "source": "services/__init__.py",
+      "target": "services/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "services/common.py",
+      "target": "services/common.py",
+      "bytes": 2110,
+      "sha256": "dc1c008aeb78c4a30e74a6091164868b2dfa98bd42d9fc49d0298b07d914cc34"
+    },
+    {
+      "source": "tools/experimental_source/layer_cloud_sync_20261104/candidate/services/data.py",
+      "target": "services/data.py",
+      "bytes": 23753,
+      "sha256": "2f9fbcff76cc87e7165aa9c7b9f1d4b323b3f17c4a7aca8e24ec00b3d87aecb9"
+    },
+    {
+      "source": "services/database.py",
+      "target": "services/database.py",
+      "bytes": 7746,
+      "sha256": "71e592579887237b86abc455e36c8b6c4c2cd48c07eb78cca10eb0c3b07defd5"
+    },
+    {
+      "source": "services/focus.py",
+      "target": "services/focus.py",
+      "bytes": 11558,
+      "sha256": "e250c27a23cc1b24964133e6efafe4a4d7327995e7cf5a1619cba0473171354a"
+    },
+    {
+      "source": "services/focus_materials.py",
+      "target": "services/focus_materials.py",
+      "bytes": 7009,
+      "sha256": "cb4a2913243f14d309f8d9b762c14846b124a7d52f456c6bc00f68fde0616f6d"
+    },
+    {
+      "source": "services/label_anchor.py",
+      "target": "services/label_anchor.py",
+      "bytes": 3686,
+      "sha256": "dfab3aafba311769f597ad9550965448f46593bc4a8b7e089aa0e070c8d7d3ed"
+    },
+    {
+      "source": "services/label_bindings.py",
+      "target": "services/label_bindings.py",
+      "bytes": 2036,
+      "sha256": "8e8184439ffbe85a79ad2db6c3325144853b6ef37ed97a838a68f0309b67faec"
+    },
+    {
+      "source": "services/layer_sync_bridge.py",
+      "target": "services/layer_sync_bridge.py",
+      "bytes": 19149,
+      "sha256": "02ae62729385deb7f4f5d46a1227c82f249f8ff80e6fd8c014050029704928ab"
+    },
+    {
+      "source": "services/layer_sync_client.py",
+      "target": "services/layer_sync_client.py",
+      "bytes": 22262,
+      "sha256": "ba2e1c4f60374ac054ae8d4cc36bff4f3f927387ec6a1e9bc74a88ded4c53b76"
+    },
+    {
+      "source": "services/layer_sync_server.py",
+      "target": "services/layer_sync_server.py",
+      "bytes": 10146,
+      "sha256": "998b9d3f0a3a87ef64af13c9bee5af21026b7db2aeaadb2c2d30c95a5c5cfee9"
+    },
+    {
+      "source": "services/layer_sync_state.py",
+      "target": "services/layer_sync_state.py",
+      "bytes": 9420,
+      "sha256": "9d06801f82c5f466ab0e941262ff9636601f5cccdc59c0aecb82b7886d82dcd8"
+    },
+    {
+      "source": "services/layer_sync_transport.py",
+      "target": "services/layer_sync_transport.py",
+      "bytes": 3227,
+      "sha256": "a5764588944ad1d2eba6c6aa5fbadd45b4814ae638e05aa86c4d2ce35ba0e775"
+    },
+    {
+      "source": "services/layers.py",
+      "target": "services/layers.py",
+      "bytes": 3372,
+      "sha256": "36e4eb7263dd0e779a3fe0b22ff56b60049fc3e100b1f6d52592a74a2af88064"
+    },
+    {
+      "source": "shared/spatial_types.json",
+      "target": "shared/spatial_types.json",
+      "bytes": 4227,
+      "sha256": "7ec9c322fbe94ff693434c480bfb0344ea09f72026c71877aa96d1b6f5c1d411"
+    },
+    {
+      "source": "tools/landscape_layer_validation.py",
+      "target": "tools/landscape_layer_validation.py",
+      "bytes": 6744,
+      "sha256": "eee78f4fb83db521f062dfaca8726d763a8c08b16a8c45af981065b2fe8820d8"
+    },
+    {
+      "source": "tools/serve_layer_sync.py",
+      "target": "tools/serve_layer_sync.py",
+      "bytes": 4669,
+      "sha256": "c662229422bfaf1a5f34babbc2f189e89c0072a362a6cee30126f5cf9bf0bb8a"
+    },
+    {
+      "source": "tools/serve_layer_sync_client.py",
+      "target": "tools/serve_layer_sync_client.py",
+      "bytes": 3777,
+      "sha256": "826a184d13f163bf53d34f0739bb8c360bf80ae78b1deff8033dfa578ae02a3d"
+    }
+  ],
+  "runtimeOrigins": {
+    "services.layer_sync_server": "services/layer_sync_server.py",
+    "services.layer_sync_transport": "services/layer_sync_transport.py",
+    "services.layer_sync_state": "services/layer_sync_state.py",
+    "services.layers": "services/layers.py",
+    "services.data": "services/data.py",
+    "tools.landscape_layer_validation": "tools/landscape_layer_validation.py"
+  },
+  "testsRun": 11,
+  "failures": 0,
+  "errors": 0,
+  "scope": "Pinned original candidate HTTP handler/storage/client; synthetic local platform auth and local HTTP TLS factory substitute",
+  "sourceAndProfileUnchanged": true,
+  "desktopUsed": false,
+  "publicReadOrWrite": false,
+  "nativeBuiltOrRun": false,
+  "realOriginalAuthenticationVerified": false,
+  "realHTTPSVerified": false,
+  "twoRealMachinesVerified": false,
+  "readyForPublicDeployment": false,
+  "recipient": "驻马店3"
+}

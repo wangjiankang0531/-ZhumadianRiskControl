@@ -1,0 +1,250 @@
+{
+  "schema": "xnby.home-transfer-candidate.v1",
+  "recordedAt": "2026-11-04T19:21:35.844271+08:00",
+  "previousGoalTurnClassification": "progress",
+  "previousTurnEvidence": "normal task feedback chain independently accepted and public authenticated Network observations changed next action",
+  "publicMeasurement": {
+    "schema": "xnby.public-authenticated-manual-network-observations.v1",
+    "source": "observed native Computer Use screenshots of local user Chrome; no HAR/response/cookie export",
+    "browserZoomPercent": 90,
+    "devToolsDocked": true,
+    "networkThrottling": "No throttling",
+    "singleSamplePerCondition": true,
+    "homepageCacheDisabled": {
+      "requestsFinishSeconds": 12.95,
+      "DOMContentLoadedSeconds": 1.93,
+      "loadEventSeconds": 1.93,
+      "transferredApproxMB": 8.0,
+      "backgroundDisplayedKB": 4864,
+      "backgroundSeconds": 9.84,
+      "fontDisplayedKB": 1419,
+      "fontSeconds": 5.5
+    },
+    "homepageCacheEnabled": {
+      "requestsFinishSeconds": 5.67,
+      "DOMContentLoadedSeconds": 2.61,
+      "loadEventSeconds": 2.61,
+      "transferredApproxMB": 1.6,
+      "mainScriptAndMostImagesHitMemoryCache": true,
+      "fontDisplayedKB": 1416,
+      "fontSeconds": 2.42
+    },
+    "emergencyHomeExistingCache": {
+      "requestsFinishSeconds": 1.62,
+      "DOMContentLoadedMs": 772,
+      "loadEventMs": 787,
+      "currentUserMs": 423,
+      "mainScriptsHitDiskCache": true,
+      "favicon404Observed": true
+    },
+    "eventListFirstEntry": {
+      "listAPISeconds": 1.28,
+      "dictionaryAPIsMs": [
+        368,
+        364,
+        364
+      ],
+      "smallChunkObservedRangeMs": [
+        677,
+        1130
+      ],
+      "businessListReadOnly": true
+    },
+    "responsePageNotAcceptedBecauseComputerUseURLConfidenceStop": true,
+    "desktopReturned": true,
+    "cacheEnabledLeftForNormalBrowsing": true,
+    "DOMLoadNotEquivalentToInteractiveOrAllRequestsFinished": true,
+    "productionBusinessWrites": 0,
+    "rawUserNameBusinessRowsHeadersOrTokensRetained": false
+  },
+  "candidate": {
+    "schema": "xnby.lossless-navigation-assets.v1",
+    "passed": true,
+    "candidateOnly": true,
+    "publicDeployed": false,
+    "image": {
+      "sourceBytes": 4854984,
+      "outputBytes": 2591292,
+      "width": 3840,
+      "height": 2160,
+      "rgbaPixelsIdentical": true,
+      "originalICCProfilePreserved": true,
+      "sourceSHA256": "9d7a98c2a0b1a9e6faa1fc512db4b8e0261f321b2f5dd28e05f6ddb6973a582b",
+      "outputSHA256": "415f7103fab4437c13faeca1d33461c49cee62a3671e6ee290a3bb18e301fb97"
+    },
+    "font": {
+      "sourceBytes": 1414784,
+      "outputBytes": 745328,
+      "sourceSHA256": "dab883d69fb713233ea5d9aff8d1f27ccc2b71e249143edf6ea08367784c5dba",
+      "outputSHA256": "7af84bf1c97ae44e868e87303b6fcf485e7aa76cad58852ffaeb4c6c24e2d87b",
+      "allOriginalCharactersRetained": true,
+      "originalGlyphOrderRetained": true,
+      "exactTablesExceptHeadChecksumAndRequiredBit11": [
+        "GSUB",
+        "OS/2",
+        "cmap",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "WOFF2Specification": "https://www.w3.org/TR/WOFF2/#font_data"
+    },
+    "changes": [
+      "one stylesheet link added to original HTML",
+      "complete WOFF2 font with swap",
+      "exact-pixel WebP background"
+    ],
+    "originalJavaScriptCSSMenuAndAuthenticationUnmodified": true,
+    "oldAssetsRetainedForOtherReferences": true,
+    "browserOriginalCompiledApplicationAndOriginalSDKAccepted": false,
+    "publicIISCacheMIMEOrTimingAccepted": false,
+    "files": {
+      "assets/webp/home-background-415f7103fab4437c.webp": {
+        "bytes": 2591292,
+        "sha256": "415f7103fab4437c13faeca1d33461c49cee62a3671e6ee290a3bb18e301fb97"
+      },
+      "assets/woff2/YouSheBiaoTiHei-7af84bf1c97ae44e.woff2": {
+        "bytes": 745328,
+        "sha256": "7af84bf1c97ae44e868e87303b6fcf485e7aa76cad58852ffaeb4c6c24e2d87b"
+      },
+      "assets/css/xnby-home-transfer-162b8ebe4004d78f.css": {
+        "bytes": 381,
+        "sha256": "162b8ebe4004d78febc02d070c40734d9b1d0de66629d8aa6dfc83f63bd7797f"
+      },
+      "index.html": {
+        "bytes": 2737,
+        "sha256": "730062a12cd7b52e4297302cbaaf3ed6756fa259e37297129ce8620a005aa562"
+      }
+    },
+    "fullCloneReady": false
+  },
+  "gatewayAndRender": {
+    "passed": true,
+    "browserPassed": true,
+    "failure": null,
+    "terminals": {
+      "browser": {
+        "exitCode": 0,
+        "actualJobDescendantsZero": true,
+        "budget": {
+          "limitFlags": 512,
+          "jobCommitLimitBytes": 1073741824,
+          "reportedPeakJobMemoryBytes": 435470336,
+          "reportedPeakProcessMemoryBytes": 108662784,
+          "activeProcesses": 0,
+          "totalProcesses": 14,
+          "terminateOnCloseOrBreakawayEnabled": false
+        },
+        "forceTerminationUsed": false
+      },
+      "nginx": {
+        "exitCode": 0,
+        "actualJobDescendantsZero": true,
+        "budget": {
+          "limitFlags": 512,
+          "jobCommitLimitBytes": 536870912,
+          "reportedPeakJobMemoryBytes": 24707072,
+          "reportedPeakProcessMemoryBytes": 7553024,
+          "activeProcesses": 0,
+          "totalProcesses": 5,
+          "terminateOnCloseOrBreakawayEnabled": false
+        },
+        "forceTerminationUsed": false
+      }
+    },
+    "normalOwnNginxQuitRequested": true,
+    "actualR45BrandingCodeSHA256": "a8ba77817ab0fd3f1e45d06605204c27f2840f27aedb392f6590a91a9c3def4c",
+    "actualNginxSHA256": "c321bdc2a6eccdaad3c702e4da37e2f7bbfa4ffb3cabb9e70c586f5a5e95da44",
+    "mockDOMWithOriginalCompiledCSS": true,
+    "originalSDKOrSixComponentLifecycleAccepted": false,
+    "publicOrDesktopTouched": false,
+    "renderComparisons": [
+      {
+        "width": 1366,
+        "height": 768,
+        "differentChannels": 0,
+        "allPixelsIdentical": true
+      },
+      {
+        "width": 1920,
+        "height": 1080,
+        "differentChannels": 0,
+        "allPixelsIdentical": true
+      },
+      {
+        "width": 3840,
+        "height": 2160,
+        "differentChannels": 0,
+        "allPixelsIdentical": true
+      }
+    ]
+  },
+  "failuresPreserved": [
+    {
+      "stage": "R894",
+      "finding": "Initial font verifier incorrectly required the mandatory WOFF2 head flag to be byte-identical; exact bit11/checksum normalization now checked against W3C."
+    },
+    {
+      "stage": "R895/R899",
+      "finding": "Image decoded RGBA matched but original ICC metadata had been dropped; browser colors differed. Final candidate retains original ICC and EXIF."
+    },
+    {
+      "stage": "R896",
+      "finding": "Nginx preflight refused missing owned logs/temp parents before server launch."
+    },
+    {
+      "stage": "R897/R898",
+      "finding": "Probe read an existing but empty PID file too early; normal -s quit later succeeded, fresh process references zero. Original Job handles were no longer held; no actual-Job-zero claim for these two recovery runs."
+    },
+    {
+      "stage": "R899",
+      "finding": "Fetch interception altered cache behavior and FontFaceSet.load explicitly fetched an unused old face; original candidate acceptance rejected."
+    },
+    {
+      "stage": "R900",
+      "finding": "Overbroad test-only DNS rule refused loopback navigation; browser/Nginx exited normally."
+    },
+    {
+      "stage": "R901",
+      "finding": "FontFaceSet.check covered an unused overlapping original face; test now observes the loaded face actually used by layout."
+    }
+  ],
+  "fourFileCandidateOnly": true,
+  "candidateFiles": {
+    "assets/webp/home-background-415f7103fab4437c.webp": {
+      "bytes": 2591292,
+      "sha256": "415f7103fab4437c13faeca1d33461c49cee62a3671e6ee290a3bb18e301fb97"
+    },
+    "assets/woff2/YouSheBiaoTiHei-7af84bf1c97ae44e.woff2": {
+      "bytes": 745328,
+      "sha256": "7af84bf1c97ae44e868e87303b6fcf485e7aa76cad58852ffaeb4c6c24e2d87b"
+    },
+    "assets/css/xnby-home-transfer-162b8ebe4004d78f.css": {
+      "bytes": 381,
+      "sha256": "162b8ebe4004d78febc02d070c40734d9b1d0de66629d8aa6dfc83f63bd7797f"
+    },
+    "index.html": {
+      "bytes": 2737,
+      "sha256": "730062a12cd7b52e4297302cbaaf3ed6756fa259e37297129ce8620a005aa562"
+    }
+  },
+  "payloadLogicalBytes": 3339738,
+  "fullOriginalApplicationAndSDKCandidateAcceptance": false,
+  "fullReleaseManifestAndSparseTransportPrepared": false,
+  "publicDeployed": false,
+  "publicGitPushed": false,
+  "lastKnownPublicRelease": "R45",
+  "actualPublicOwnerAndReleaseMustBeRefreshedBeforeNextDeployment": true,
+  "sourceReviewPins": {
+    "build_home_transfer_assets_r894.py": "a71b980043b3fcdd027dde8c0fc0f263c910c77af162833cfa977e93cdaa7d73",
+    "verify_lossless_home_assets_r896.mjs": "8388662262be20bf4dfb299c77c06bae2b9f3b7dbd9f85c9f26cb5d6c68a0b46",
+    "run_home_asset_gateway_r896.py": "d1354a905701b0076140f00b6aa46a5556808e810ccd84843429cabb95014abf",
+    "record_home_transfer_candidate_r903.py": "d9ed70417e23904482ba1171913d19a507aef566d3407447b6dc2ba4b5ab0b89"
+  },
+  "fullCloneReady": false
+}

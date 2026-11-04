@@ -1,0 +1,493 @@
+{
+  "schema": "xnby.original-feedback.checkpoint.v1",
+  "recordedAt": "2026-11-04T18:36:41.315620+08:00",
+  "R880TaskSaveRequests": 0,
+  "R880CallbackStageCommittedAndVerified": true,
+  "R880CodeConfigurationPointerRestored": true,
+  "R883ProbeRefusedOldFixtureBeforeBrowser": true,
+  "R884ProbeInspectedBeforeFirstPickerResponse": true,
+  "R885CompletedReadOnlyDiagnostic": true,
+  "fullSpacedNameMatchesDOMQueryDirectAndGateway": true,
+  "broadQueryPageOneAbsenceDoesNotProveDataMissing": true,
+  "queryDiagnostics": [
+    {
+      "sample": "full-spaced-name",
+      "domValueMatches": true,
+      "domValueLength": 18,
+      "query": {
+        "endpoint": "/zhumadian/api/serv/eventInfo/getPage",
+        "method": "GET",
+        "confirmedFilterMatched": true,
+        "eventNameEqualsExpected": true,
+        "eventNameSHA256": "6d2e209325efdc1673c4352b99fe9b193a4f6bc09b8caadeba87dff2cace9d7b",
+        "eventNameLength": 18,
+        "eventContentEmpty": true,
+        "page": "1",
+        "size": "10",
+        "httpStatus": 200,
+        "businessCode": 0,
+        "exactOwnedEventPresent": true
+      },
+      "direct": {
+        "httpStatus": 200,
+        "businessCode": 0,
+        "ownEventPresent": true,
+        "rows": 1
+      },
+      "gateway": {
+        "httpStatus": 200,
+        "businessCode": 0,
+        "ownEventPresent": true,
+        "rows": 1
+      }
+    },
+    {
+      "sample": "Own",
+      "domValueMatches": true,
+      "domValueLength": 3,
+      "query": {
+        "endpoint": "/zhumadian/api/serv/eventInfo/getPage",
+        "method": "GET",
+        "confirmedFilterMatched": true,
+        "eventNameEqualsExpected": false,
+        "eventNameSHA256": "81b34dba3d5d07dde5b4ea9205bb5cd71c8718959c661b34e342736fbfbaecaf",
+        "eventNameLength": 3,
+        "eventContentEmpty": true,
+        "page": "1",
+        "size": "10",
+        "httpStatus": 200,
+        "businessCode": 0,
+        "exactOwnedEventPresent": false
+      },
+      "direct": {
+        "httpStatus": 200,
+        "businessCode": 0,
+        "ownEventPresent": false,
+        "rows": 10
+      },
+      "gateway": {
+        "httpStatus": 200,
+        "businessCode": 0,
+        "ownEventPresent": false,
+        "rows": 10
+      }
+    },
+    {
+      "sample": "workflow",
+      "domValueMatches": true,
+      "domValueLength": 8,
+      "query": {
+        "endpoint": "/zhumadian/api/serv/eventInfo/getPage",
+        "method": "GET",
+        "confirmedFilterMatched": true,
+        "eventNameEqualsExpected": false,
+        "eventNameSHA256": "da7f739f627198465eeab537a6f7a435dc4a0c332f9e4a8462293eb3f4ab7ee0",
+        "eventNameLength": 8,
+        "eventContentEmpty": true,
+        "page": "1",
+        "size": "10",
+        "httpStatus": 200,
+        "businessCode": 0,
+        "exactOwnedEventPresent": false
+      },
+      "direct": {
+        "httpStatus": 200,
+        "businessCode": 0,
+        "ownEventPresent": false,
+        "rows": 10
+      },
+      "gateway": {
+        "httpStatus": 200,
+        "businessCode": 0,
+        "ownEventPresent": false,
+        "rows": 10
+      }
+    },
+    {
+      "sample": "empty",
+      "domValueMatches": true,
+      "domValueLength": 0,
+      "query": {
+        "endpoint": "/zhumadian/api/serv/eventInfo/getPage",
+        "method": "GET",
+        "confirmedFilterMatched": true,
+        "eventNameEqualsExpected": false,
+        "eventNameSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "eventNameLength": 0,
+        "eventContentEmpty": true,
+        "page": "1",
+        "size": "10",
+        "httpStatus": 200,
+        "businessCode": 0,
+        "exactOwnedEventPresent": false
+      },
+      "direct": {
+        "httpStatus": 200,
+        "businessCode": 0,
+        "ownEventPresent": false,
+        "rows": 10
+      },
+      "gateway": {
+        "httpStatus": 200,
+        "businessCode": 0,
+        "ownEventPresent": false,
+        "rows": 10
+      }
+    }
+  ],
+  "encodingVariants": [
+    {
+      "encoding": "percent20",
+      "direct": {
+        "httpStatus": 200,
+        "businessCode": 0,
+        "ownEventPresent": true,
+        "rows": 1
+      },
+      "gateway": {
+        "httpStatus": 200,
+        "businessCode": 0,
+        "ownEventPresent": true,
+        "rows": 1
+      }
+    },
+    {
+      "encoding": "plus",
+      "direct": {
+        "httpStatus": 200,
+        "businessCode": 0,
+        "ownEventPresent": true,
+        "rows": 1
+      },
+      "gateway": {
+        "httpStatus": 502,
+        "nonJSON": true,
+        "ownEventPresent": null,
+        "rows": null
+      }
+    }
+  ],
+  "R885BusinessNativeMemoryFailureAndConditionalRecovery": {
+    "schema": "xnby.owned-event-picker.recovery.v1",
+    "passed": true,
+    "failedRunOwnerAndReadyReceiptMatched": true,
+    "allOriginalPIDsAndOwnedReferencesAbsent": true,
+    "terminalObservations": [
+      {
+        "oldPIDsStillLive": 0,
+        "ownedGReferences": 0
+      },
+      {
+        "oldPIDsStillLive": 0,
+        "ownedGReferences": 0
+      },
+      {
+        "oldPIDsStillLive": 0,
+        "ownedGReferences": 0
+      }
+    ],
+    "observationCacheMaximumSeconds": 2,
+    "originalExitCodes": {
+      "store": 0,
+      "mysql": 0,
+      "redis": 0,
+      "platform": 0,
+      "business": 1,
+      "gateway": 0
+    },
+    "normalSixComponentExitClaimed": false,
+    "businessNativeAllocationFailureObserved": true,
+    "failedAllocationBytes": 32744,
+    "hsErrorSHA256": "1bc928ff687b66ab60ff3052e8c6efb1e376388d45e66b8321638cbf211ae4c4",
+    "receiptSHA256": "b6acece7bfabbe3f68ab323b0bda00868931c1e3df53ed93c4e3adc71c772a73",
+    "codeRestored": true,
+    "originalCurrentPointerRestored": true,
+    "privateConfigurationAndInstallationIdentityUnchanged": true,
+    "databaseDataRestoredReplacedOrWritten": false,
+    "servicesRestarted": false,
+    "forceTerminationUsed": false,
+    "publicOrDesktopTouched": false,
+    "fullCloneReady": false
+  },
+  "R887CreatedExactlyOneOriginalTask": true,
+  "R887FeedbackUpdateRequests": 0,
+  "R887CodeConfigurationPointerRestored": true,
+  "R887ReadonlyFieldWasSelectedByProbeNotProductFailureProven": true,
+  "lastVerifiedCallbackBeforeR889": "work/original-manager-full-lifecycle-r609/feedback-r880/normal-restart",
+  "lastVerifiedCallbackBeforeR889JournalSHA256": "234781eb7e322f9395bd0533f87acd0bd0440a5964bba71a1e20c2a533825bbc",
+  "R889ObservedControllerPIDs": [
+    26724,
+    45944
+  ],
+  "R889ExecSession": 90110,
+  "R889WasLiveWhenObserved": true,
+  "R889FirstFeedbackAndManagerApprovalStagePassed": true,
+  "R889NormalRestartStillPending": true,
+  "R889FullChainAcceptanceNotClaimed": true,
+  "R889RestoreOrCleanupBeforeActualTerminalForbidden": true,
+  "threeDSharedReplyActuallyReadAndItsTwoReceivedHashesMatched": true,
+  "threeDReplySHA256": "6d7eb432769c0dd1859ed1c826177cfe8d8288c5606ddcd78546036af0618036",
+  "publicEmergencyAuthenticatedHomeObserved": true,
+  "publicAuthenticatedNetworkTimingCollected": false,
+  "computerUseEndedBecauseBrowserURLCouldNotBeDeterminedReliably": true,
+  "desktopReturned": true,
+  "newPublicDeploymentOrPush": false,
+  "fullCloneReady": false,
+  "sourceReviewFiles": [
+    {
+      "target": "tools/experimental_source/feedback_r880/callback_plan_r880.py",
+      "bytes": 7010,
+      "sha256": "75f5e1bea1a56762aaf207596b24f3945607ee923fef7bd01e69ef3c53156d66"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r880/create_task_browser_r880.mjs",
+      "bytes": 20816,
+      "sha256": "e422f9e3b5abbb12082f4e8feedcf31a28e2c2b7b5558e610f24e88be672ba91"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r880/feedback_browser_r880.mjs",
+      "bytes": 24440,
+      "sha256": "4df08a3d4c2a91224f9af0ac9757979b47fb7ca2ac6043a1e39aa1a76e460f06"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r880/feedback_health_r880.py",
+      "bytes": 1208,
+      "sha256": "c77ebc6ae633ef21959ee33bb4015417fdc58fa4a2f7b701584753a3eef3d6c7"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r880/feedback_probe_r880.py",
+      "bytes": 10767,
+      "sha256": "aa5a5ea1087c41146057fbd3a1ad655c3ffb55d0d9aa576ded6798e148034d5f"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r880/normal_manager_browser_r880.mjs",
+      "bytes": 18059,
+      "sha256": "2d74226a28dc87869900c3249ebe4275f647a986838b0ac650e50569b55bb52c"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r880/OwnedCallbackProvisioningJournalR658.java",
+      "bytes": 9000,
+      "sha256": "d5015402e459eae95d3dbed0b1880af0474d000665f97951ae8ab14d25aa9750"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r880/OwnManagerBusinessReadbackR783.java",
+      "bytes": 13014,
+      "sha256": "7d5d4846c4b09f33bd97cccbd93290dd3b3e822f72836ddfec98db5c5a981992"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r880/OwnOriginalCallbackRuntimeR770.java",
+      "bytes": 16303,
+      "sha256": "323e524dfc5da12bad52d9552674cf2782d1651a41ee33b4aa9a187a64fc80ea"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r880/OwnOriginalManagerDirectoryR609.java",
+      "bytes": 10050,
+      "sha256": "c227cda493b85c159a7ce9104ee35b11c5d6538cc79e2fc179bc06dfaa7e91d1"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r880/run_callbacks_r880.py",
+      "bytes": 6588,
+      "sha256": "c247af1335ada415691232cec70af14d00b61ac60c3acb5ef04f6a6f9116579b"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r880/run_feedback_full_r880.py",
+      "bytes": 18393,
+      "sha256": "b9befe21a626f8b9ad0a35861d7e1a032c07d20f5167e30fc869c30b2fefa952"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r887/callback_plan_r880.py",
+      "bytes": 7010,
+      "sha256": "75f5e1bea1a56762aaf207596b24f3945607ee923fef7bd01e69ef3c53156d66"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r887/create_task_browser_r880.mjs",
+      "bytes": 21431,
+      "sha256": "903ff831509a95572000af1fba8d02ce6459d44c49de91027eda8aa26adcc782"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r887/feedback_browser_r880.mjs",
+      "bytes": 24440,
+      "sha256": "4df08a3d4c2a91224f9af0ac9757979b47fb7ca2ac6043a1e39aa1a76e460f06"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r887/feedback_health_r880.py",
+      "bytes": 1208,
+      "sha256": "c77ebc6ae633ef21959ee33bb4015417fdc58fa4a2f7b701584753a3eef3d6c7"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r887/feedback_probe_r880.py",
+      "bytes": 10792,
+      "sha256": "49718a0ded64a765424f3c07f44009cd214cfe41cb3132dac1904076a51f5084"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r887/normal_manager_browser_r880.mjs",
+      "bytes": 18059,
+      "sha256": "2d74226a28dc87869900c3249ebe4275f647a986838b0ac650e50569b55bb52c"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r887/OwnedCallbackProvisioningJournalR658.java",
+      "bytes": 9000,
+      "sha256": "d5015402e459eae95d3dbed0b1880af0474d000665f97951ae8ab14d25aa9750"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r887/OwnManagerBusinessReadbackR783.java",
+      "bytes": 13014,
+      "sha256": "ec48ebf4156d1ac79e0d2a20bccdefa6475d303bd093fcfaa4a7b289b04e7479"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r887/OwnOriginalCallbackRuntimeR770.java",
+      "bytes": 16303,
+      "sha256": "323e524dfc5da12bad52d9552674cf2782d1651a41ee33b4aa9a187a64fc80ea"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r887/OwnOriginalManagerDirectoryR609.java",
+      "bytes": 10062,
+      "sha256": "1097e80bcf9cf8e4497a5c41bb7b779e98d516a41677f3dc988d897b1b033c1d"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r887/run_callbacks_r880.py",
+      "bytes": 6588,
+      "sha256": "c247af1335ada415691232cec70af14d00b61ac60c3acb5ef04f6a6f9116579b"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r887/run_feedback_resume_r887.py",
+      "bytes": 18567,
+      "sha256": "aa0abc1393f32e2baa7620aacc9624f470e0e45a358075e2d3c4e16b48a664a8"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r889/callback_plan_r880.py",
+      "bytes": 7274,
+      "sha256": "f75870bbbcab2a901e866a2ea3c264f9cfc6c3a59b227b92da7a0d3ce7232e7a"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r889/create_task_browser_r880.mjs",
+      "bytes": 21431,
+      "sha256": "903ff831509a95572000af1fba8d02ce6459d44c49de91027eda8aa26adcc782"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r889/feedback_browser_r880.mjs",
+      "bytes": 24747,
+      "sha256": "63ab9e901c24e109a423280a8d354e6ff7f918cd917624bea9a118825abdeba0"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r889/feedback_health_r880.py",
+      "bytes": 1208,
+      "sha256": "c77ebc6ae633ef21959ee33bb4015417fdc58fa4a2f7b701584753a3eef3d6c7"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r889/feedback_probe_r880.py",
+      "bytes": 10847,
+      "sha256": "953fd4881a959a5526a6f641db2af8d5c8f6387954d3906cd8b10d12e8484ec9"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r889/normal_manager_browser_r880.mjs",
+      "bytes": 18059,
+      "sha256": "9a4f5eacc8ea15323ec487f5479f1d55d8527eb10f016835c6b93d511d04ad3f"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r889/OwnedCallbackProvisioningJournalR658.java",
+      "bytes": 9309,
+      "sha256": "71ef7048a9c0f2525a26345be1cf949bb5117eb6461720c2c2ceaef30bc60fe4"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r889/OwnManagerBusinessReadbackR783.java",
+      "bytes": 13014,
+      "sha256": "2ad73529a576fcb61a7164908c08ba3a758be3f5c024f6562dd709e766c549a2"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r889/OwnOriginalCallbackRuntimeR770.java",
+      "bytes": 16323,
+      "sha256": "e72f4075f6ad41279f91eb992fa973b75ee8ae25cfe26150031d2f71b4776d1e"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r889/OwnOriginalManagerDirectoryR609.java",
+      "bytes": 10062,
+      "sha256": "1097e80bcf9cf8e4497a5c41bb7b779e98d516a41677f3dc988d897b1b033c1d"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r889/run_callbacks_r880.py",
+      "bytes": 6608,
+      "sha256": "ddc53634c59234a2b9b20cf5fc2e2d53b447188ecdf5c9029dbafbb3625ad611"
+    },
+    {
+      "target": "tools/experimental_source/feedback_r889/run_existing_task_feedback_r889.py",
+      "bytes": 18900,
+      "sha256": "7972f58f7d1f0b0238debb2fa940d08c721a750a52d76f599bb1f3f7d9053c37"
+    },
+    {
+      "target": "tools/experimental_source/event_picker_r885/event_picker_browser_r885.mjs",
+      "bytes": 21185,
+      "sha256": "b4b4edabfed240c8bc14118b7e150aa9c7046c19bc3b97814fe1cdd2ffe0f9c1"
+    },
+    {
+      "target": "tools/experimental_source/event_picker_r885/event_picker_probe_r885.py",
+      "bytes": 5087,
+      "sha256": "06b4ce838001662da7f24b7dd9c8a7d208712382aa8fe00f9a0c03c8f35d3b38"
+    },
+    {
+      "target": "tools/experimental_source/event_picker_r885/run_event_picker_full_r885.py",
+      "bytes": 17177,
+      "sha256": "a82775ccc45dcd32a46767769dec98748145ba9626c62fb8aa5648c3652af72b"
+    },
+    {
+      "target": "tools/prepare_feedback_runtime_r880.py",
+      "bytes": 13866,
+      "sha256": "59841cc709c7ddb98c3dbfcde98fdee1ce2fd0afdfa538cedd22c467f81b0f92"
+    },
+    {
+      "target": "tools/prepare_feedback_browser_r880.py",
+      "bytes": 10360,
+      "sha256": "afa322788ee1098a632267ddf735abc56cdebb9f7d315d055dd22e888983070c"
+    },
+    {
+      "target": "tools/prepare_feedback_probe_r880.py",
+      "bytes": 5788,
+      "sha256": "3b5c414ec16e3c51789f5063786ae6829a437f4bcc38b78d7e436f04f89ea77d"
+    },
+    {
+      "target": "tools/check_feedback_sources_r881.py",
+      "bytes": 2611,
+      "sha256": "b99213617582c9cef702ff0cd2ea4cebb6d85b204066e48880d58fa77c463fd7"
+    },
+    {
+      "target": "tools/prepare_event_picker_diagnostic_r883.py",
+      "bytes": 9656,
+      "sha256": "2946eb3b1a0f9a0b56a9e0bd0a6b18565aaa59f9757d209a6e6309dce6f0ada1"
+    },
+    {
+      "target": "tools/prepare_event_picker_retry_r884.py",
+      "bytes": 2513,
+      "sha256": "fe61afd920cb71ac7d3cd1f5ad7cade9ec1909960230d5f5441f1dbdcac661c5"
+    },
+    {
+      "target": "tools/prepare_event_picker_observation_r885.py",
+      "bytes": 3696,
+      "sha256": "6d77a76b4650eff8145ecd021b0debb205649220778dfaf75670fd9daac63e63"
+    },
+    {
+      "target": "tools/recover_event_picker_r886.py",
+      "bytes": 5595,
+      "sha256": "674fb1aade4635f1a5f26ee6aebb8ec9e5ca44c1dad7dacd7f45845be3c2b770"
+    },
+    {
+      "target": "tools/prepare_feedback_resume_r887.py",
+      "bytes": 7125,
+      "sha256": "11b2f623d5c4aa2cad4b78e261032861cda1d78e9d5c30d749a770ba39a52dde"
+    },
+    {
+      "target": "tools/prepare_existing_task_feedback_r889.py",
+      "bytes": 10306,
+      "sha256": "e002636da81de88d0530aa46ab2a23b716f7337c85c467baff7ea3efe2837912"
+    },
+    {
+      "target": "tools/check_feedback_sources_r889.py",
+      "bytes": 2653,
+      "sha256": "0b72a9a4367ec3a2821d23123d74d0a5900b42d580beaa67bad89f2ea000c199"
+    },
+    {
+      "target": "tools/record_feedback_checkpoint_r890.py",
+      "bytes": 12413,
+      "sha256": "51fd8e82b75cbb5f34408cea2accdb7f3b4ec3b71bde4596267b790268d0c2cf"
+    }
+  ]
+}

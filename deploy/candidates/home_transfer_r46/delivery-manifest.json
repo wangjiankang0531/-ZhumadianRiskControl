@@ -1,0 +1,92 @@
+{
+  "revision": "R46-lossless-home-background-and-complete-font",
+  "targetFTP": "/Zhumadian/Zhumadian_Home_Transfer_20261104_R46/",
+  "targetApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "files": {
+    "Check_Only_Home_Transfer_R46.cmd": {
+      "bytes": 135,
+      "sha256": "62edf2a7e20d8e726332b1bcde1715f94705294e7ed5d8d84c93ddb1fd75c4f8"
+    },
+    "Deploy_Home_Transfer_R46.cmd": {
+      "bytes": 123,
+      "sha256": "9d7c3d3777ece4c98aab5d4c0ff9255e875626b2a93924a0518b501cd731e9bb"
+    },
+    "deploy_home_transfer_r46.py": {
+      "bytes": 16948,
+      "sha256": "97971788009b753fc3108dad2d324179acab2ac28ea9aa8038bd45d594279d4d"
+    },
+    "r46_update_runtime.py": {
+      "bytes": 241433,
+      "sha256": "83244ea13218416b062285c44c01e925b95249243b3691543d6475e69b461251"
+    },
+    "Recover_This_Home_Transfer_R46.cmd": {
+      "bytes": 144,
+      "sha256": "df9c5f67613f966a0920c6e5ff895e0ff545f4506318b6ce0a7221b6104b7c76"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Home_Transfer_20261104_R46.zip": {
+      "bytes": 3752549,
+      "sha256": "4b08365e367655df98bb57f967c1946b846da3c58aa624dbb95cf8410cfe1e6e"
+    }
+  },
+  "acceptedExactBases": {
+    "3b1251784fba66726f8ab4060138a2de78add753d7d06d731d5afa2f3a517bbd": {
+      "label": "r45",
+      "updateId": "20261104-r46-home-lossless-from-r45",
+      "manifestSHA256": "387e7f3d425b99b90561332e7a13a9546f1bdb11c8792babdaa60fdcf4c60388",
+      "oldUpdaterSHA256": "d5af4267715b5b4fdcd740c27cdadf3742d5dfc5a8f3f7d06cc84b6ddac0c9df"
+    }
+  },
+  "newReleaseSHA256": "ff7c7f248d36ea252e1ebb3da00e74b30df4d8fdbd6cdb0e77571946ba77a690",
+  "newPayloadManifestSHA256": "6c7aa48d7432fa30bc88ce36453c9e1e50df0021d316bdb2cb36964593cd1ac1",
+  "newUpdaterSHA256": "83244ea13218416b062285c44c01e925b95249243b3691543d6475e69b461251",
+  "writes": 7,
+  "removedFiles": 0,
+  "writePaths": [
+    "frontend/security_pc/assets/css/xnby-home-transfer-162b8ebe4004d78f.css",
+    "frontend/security_pc/assets/webp/home-background-415f7103fab4437c.webp",
+    "frontend/security_pc/assets/woff2/YouSheBiaoTiHei-7af84bf1c97ae44e.woff2",
+    "frontend/security_pc/index.html",
+    "payload-manifest.json",
+    "release-manifest.json",
+    "tools/original_public_test_update.py"
+  ],
+  "oldAndNewOriginalReadinessReports": 11,
+  "runtimeChangedExistingFunctions": [
+    "load_bundle"
+  ],
+  "runtimeAddedContractFunction": "r46_home_bundle_contract",
+  "runtimeUnchangedFunctionBodies": 80,
+  "wrapperChangedFunctionsAfterVersionLabelNormalization": [
+    "validate_static_response",
+    "verify_static_gateway_and_iis",
+    "select_installed_base",
+    "validate_archive"
+  ],
+  "originalStopStartHealthRecoveryAuthMapperPoolBodiesRetained": true,
+  "normalOriginalSDKUIAssertionsIncludingRepeatedStages": 18,
+  "actualGatewayChecksFromFullApp": 10,
+  "staticDOMRenderAllPixelsEqualAtThreeResolutions": true,
+  "sourceAssetsBackgroundPixelsICCEXIFAndAll7194FontGlyphsRetained": true,
+  "sourceImagesAndFontRetainedForOtherReferences": true,
+  "normalAndFourthWriteRecoveryPassed": true,
+  "negativeFileCases": 14,
+  "archiveMembers": 9,
+  "maximumExtractionPathCharacters": 193,
+  "serverGatewayAndIISTLSChecksExpected": 22,
+  "transportVerificationStillPending": true,
+  "remaining": [
+    "actual server baseline and three-dimensional route rediscovery",
+    "public HTTPS asset identity and MIME/cache",
+    "normal-login cold/warm public experience",
+    "favicon 404 and module/API latency",
+    "all actual Nangang business templates"
+  ],
+  "limitedResultReadbackFile": "r46-scoped-result.json",
+  "publicDeployed": false,
+  "newPublicGitIncluded": false,
+  "fullCloneReady": false
+}

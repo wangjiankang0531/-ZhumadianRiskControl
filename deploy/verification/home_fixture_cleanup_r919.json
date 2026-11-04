@@ -1,0 +1,13 @@
+{
+  "schema": "xnby.home-r46.code-fixture-cleanup.v1",
+  "removedRoot": "D:\\Project\\Zhumadian\\work\\hf915",
+  "fileCount": 15607,
+  "logicalBytesIncludingSharedHardlinks": 1418890883.0,
+  "physicalBytesFreedClaimed": false,
+  "activeFixtureProcesses": 0,
+  "reparseEntries": 0,
+  "restoredProgramHashesPreviouslyVerified": true,
+  "originalSourceFilesDatabaseAssetsUploadsAndCandidatesRetained": true,
+  "serverOrDesktopTouched": false,
+  "passed": true
+}

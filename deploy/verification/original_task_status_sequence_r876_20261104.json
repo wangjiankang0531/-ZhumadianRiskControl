@@ -1,0 +1,125 @@
+{
+  "schema": "xnby.original-task.status-sequence.v1",
+  "passed": true,
+  "actualUICases": 15,
+  "APIsMocked": false,
+  "originalNonadminLogin": true,
+  "samePreviouslyUIApprovedOwnedTaskAndInstance": true,
+  "normalRestartReopen": true,
+  "approvedTaskStatusOneHidesDisposal": true,
+  "completedDetailIsReadonly": true,
+  "feedbackEvaluationAndDisposalTimeRemainEmpty": true,
+  "originalApprovalOpinionAndNativeFieldPreserved": true,
+  "feedbackSubmitOrApprovalPerformed": false,
+  "callbackRebindingPerformed": false,
+  "fullFeedbackBeforeApprovalChainAccepted": false,
+  "realNangangTemplatesAccepted": false,
+  "sourceInputs": {
+    "Reference\\02安全风险管控平台\\代码及开发环境搭建移交资料\\源码包\\敏捷应急管理前台代码\\agile-emergency-response-dev\\src\\views\\emergencyResponse\\taskSend\\index.vue": "6d936d9e050a421133e9dc006832460ad3b29a53062dc4510a39ab1e471bd52c",
+    "Reference\\02安全风险管控平台\\代码及开发环境搭建移交资料\\源码包\\后端代码\\后端源码-maven\\cloud-endanger\\src\\main\\java\\com\\iemp\\endanger\\server\\emergencyResponse\\service\\impl\\EventTaskServiceImpl.java": "b93e2162c3975d5cbe3de25353f67e39c93276c33a6c0d9d59c1100728e612c3"
+  },
+  "cases": [
+    {
+      "case": "anonymous-login-renders-without-full-component-installer",
+      "passed": true
+    },
+    {
+      "case": "normal-original-compiled-nonadmin-login",
+      "passed": true
+    },
+    {
+      "case": "all-original-global-components-registered-before-authenticated-home",
+      "passed": true
+    },
+    {
+      "case": "canonical-static-urls-avoid-unversioned-preload-alias",
+      "passed": true
+    },
+    {
+      "case": "original-business-list-and-registered-form-components",
+      "route": "/emergencyResponse/response",
+      "passed": true,
+      "navigationMs": 653
+    },
+    {
+      "case": "original-business-list-and-registered-form-components",
+      "route": "/emergencyResponse/taskSend",
+      "passed": true,
+      "navigationMs": 651
+    },
+    {
+      "case": "original-approved-status-one-hides-disposal-without-forcing-route-or-changing-status",
+      "passed": true
+    },
+    {
+      "case": "original-approved-task-detail-keeps-same-instance-and-readonly-feedback-fields",
+      "passed": true,
+      "feedbackPreviouslyEmpty": true,
+      "evaluationPreviouslyEmpty": true,
+      "disposeTimePreviouslyEmpty": true
+    },
+    {
+      "case": "real-native-initiator-card-opens-same-completed-instance",
+      "passed": true
+    },
+    {
+      "case": "original-null-absent-normalization-keeps-same-database-and-display-value",
+      "passed": true,
+      "originalFieldType": "absent",
+      "reopenedFieldType": "null"
+    },
+    {
+      "case": "real-sdk-detail-instance-and-readonly-form-rendered",
+      "passed": true
+    },
+    {
+      "case": "real-sdk-detail-instance-and-readonly-form-rendered",
+      "passed": true
+    },
+    {
+      "case": "full-page-refresh-retains-native-original-readonly-value",
+      "passed": true
+    },
+    {
+      "case": "normal-relogin-completed-detail-opinion-and-no-approval",
+      "passed": true
+    },
+    {
+      "case": "normal-header-logout-returns-to-business-login-not-static-base",
+      "passed": true
+    }
+  ],
+  "terminals": [
+    {
+      "jobMemoryBudget": {
+        "limitFlags": 512,
+        "jobCommitLimitBytes": 3221225472,
+        "reportedPeakJobMemoryBytes": 3082694656,
+        "reportedPeakProcessMemoryBytes": 1211133952,
+        "activeProcesses": 0,
+        "totalProcesses": 21,
+        "terminateOnCloseOrBreakawayEnabled": false
+      },
+      "phase": "normal-restart",
+      "controllerExitCode": 0,
+      "allOwnedChildrenExited": true,
+      "actualJobDescendantsZero": true,
+      "normalOwnedShutdown": true,
+      "exitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      },
+      "forceTerminationUsed": false
+    }
+  ],
+  "codePrivateConfigurationAndCurrentPointerRestored": true,
+  "freshCIMOwnedGReferences": 0,
+  "publicOrDesktopTouched": false,
+  "newNativeBuiltOrRun": false,
+  "fullCloneReady": false,
+  "priorR874Refusal": "Probe expected an older restoration-proof field; failed before attempt allocation, code replacement or service start; new R875 uses actual privateConfigurationUnchanged field"
+}

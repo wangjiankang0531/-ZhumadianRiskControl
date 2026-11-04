@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "normal-original-validator",
+      "passed": true,
+      "identityQueries": 1
+    },
+    {
+      "case": "one-timeout-reobserves-same-handle",
+      "passed": true,
+      "identityQueries": 2
+    },
+    {
+      "case": "two-timeouts-reobserves-same-handle",
+      "passed": true,
+      "identityQueries": 3
+    },
+    {
+      "case": "third-timeout-stops-without-success",
+      "passed": true,
+      "identityQueries": 3
+    },
+    {
+      "case": "original-identity-refusal-not-retried",
+      "passed": true,
+      "identityQueries": 1
+    },
+    {
+      "case": "pointer-drift-refuses-retry",
+      "passed": true,
+      "identityQueries": 1
+    },
+    {
+      "case": "original-handle-exited-refuses-retry",
+      "passed": true,
+      "identityQueries": 1
+    },
+    {
+      "case": "drift-during-success-refused",
+      "passed": true,
+      "identityQueries": 1
+    }
+  ],
+  "testHarnessOnly": true,
+  "originalIdentityValidatorNotPatched": true,
+  "processesOrNetworkOrDatabaseUsed": false
+}

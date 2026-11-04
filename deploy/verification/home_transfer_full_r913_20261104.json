@@ -1,0 +1,335 @@
+{
+  "schema": "xnby.home-transfer.original-sdk-acceptance.v1",
+  "recordedAt": "2026-11-04T19:58:54.271435+08:00",
+  "passed": true,
+  "sameFourFrontendCandidateFilesAsR903": true,
+  "completeProgramSources": 15589,
+  "actualOriginalCompiledApplicationAndSDK": true,
+  "APIsMocked": false,
+  "UIAssertionsIncludingRepeatedLoginAndDetailChecks": [
+    {
+      "case": "anonymous-login-renders-without-full-component-installer",
+      "passed": true
+    },
+    {
+      "case": "normal-original-compiled-nonadmin-login",
+      "passed": true
+    },
+    {
+      "case": "all-original-global-components-registered-before-authenticated-home",
+      "passed": true
+    },
+    {
+      "case": "canonical-static-urls-avoid-unversioned-preload-alias",
+      "passed": true
+    },
+    {
+      "case": "original-business-list-and-registered-form-components",
+      "route": "/emergencyResponse/response",
+      "passed": true,
+      "navigationMs": 610
+    },
+    {
+      "case": "original-business-list-and-registered-form-components",
+      "route": "/emergencyResponse/taskSend",
+      "passed": true,
+      "navigationMs": 599
+    },
+    {
+      "case": "real-native-initiator-card-opens-same-completed-instance",
+      "passed": true
+    },
+    {
+      "case": "original-null-absent-normalization-keeps-same-database-and-display-value",
+      "passed": true,
+      "originalFieldType": "absent",
+      "reopenedFieldType": "null"
+    },
+    {
+      "case": "real-sdk-detail-instance-and-readonly-form-rendered",
+      "passed": true
+    },
+    {
+      "case": "real-sdk-detail-instance-and-readonly-form-rendered",
+      "passed": true
+    },
+    {
+      "case": "full-page-refresh-retains-native-original-readonly-value",
+      "passed": true
+    },
+    {
+      "case": "normal-relogin-completed-detail-opinion-and-no-approval",
+      "passed": true
+    },
+    {
+      "case": "normal-header-logout-returns-to-business-login-not-static-base",
+      "passed": true
+    },
+    {
+      "case": "original-security-normal-nonadmin-login",
+      "passed": true
+    },
+    {
+      "case": "original-home-async-menu-response-renders-eight-owned-entries",
+      "passed": true
+    },
+    {
+      "case": "original-security-home-cards-title-and-new-background-render",
+      "passed": true
+    },
+    {
+      "case": "original-security-home-refresh-uses-woff2-webp-without-old-large-assets",
+      "passed": true
+    },
+    {
+      "case": "original-security-header-logout-preserves-original-business-login",
+      "passed": true
+    }
+  ],
+  "assertionCount": 18,
+  "actualGatewayGzipAndDecodedChecks": 10,
+  "normalOriginalNonadminLoginBothPortals": true,
+  "eightAsyncNavigationEntriesRendered": true,
+  "newHomeResourcesRequestedWithoutOldLargeFiles": true,
+  "businessCRUDOrApprovalOrCallbackRebindingIssued": false,
+  "originalAuthenticationSigningAndAuthorizationCodeRetained": true,
+  "fixtureMetadataPreparation": {
+    "onlyExistingOwnedSyntheticG": true,
+    "homeSystemWasAbsent": true,
+    "metadataRowsInsertedOnce": 33,
+    "tables": [
+      "base_system",
+      "base_module",
+      "base_authorize"
+    ],
+    "existingUserAndRoleTablesUntouched": true,
+    "allOtherExistingMetadataDigestsMatchedDuringPreparation": true,
+    "latestReadbackWasReadOnly": true,
+    "latestReadbackRows": 33,
+    "seedNotRepeated": true,
+    "journalSHA256": "0ef4df36821e5b6eb94e2e7df005956f9629ad783ab1113a1f4be1daca8eb48d"
+  },
+  "runHistory": [
+    {
+      "stage": "R906",
+      "aggregatePassed": false,
+      "normalSixComponentExitAndCodeConfigurationPointerRestored": true,
+      "failure": {
+        "phase": "normal-original-model-setup-normal-restart",
+        "type": "AssertionError"
+      },
+      "browserCaseCount": 15
+    },
+    {
+      "stage": "R910",
+      "aggregatePassed": false,
+      "normalSixComponentExitAndCodeConfigurationPointerRestored": true,
+      "failure": {
+        "phase": "normal-original-model-setup-normal-restart",
+        "type": "AssertionError"
+      },
+      "browserCaseCount": 14
+    },
+    {
+      "stage": "R912",
+      "aggregatePassed": true,
+      "normalSixComponentExitAndCodeConfigurationPointerRestored": true,
+      "failure": null,
+      "browserCaseCount": 18
+    }
+  ],
+  "finalSixComponentAndBrowserJobsNormallyExited": true,
+  "independentRestoredCodeConfigurationAndPointerReadback": true,
+  "ownedCleanup": [
+    {
+      "path": "work/hf906/code-transaction/before",
+      "files": 711,
+      "logicalBytes": 16020048
+    },
+    {
+      "path": "work/home-browser-r906/chrome-profile",
+      "files": 365,
+      "logicalBytes": 21393096
+    },
+    {
+      "path": "work/hf910/code-transaction/before",
+      "files": 711,
+      "logicalBytes": 16020048
+    },
+    {
+      "path": "work/home-browser-r910/chrome-profile",
+      "files": 343,
+      "logicalBytes": 21122135
+    },
+    {
+      "path": "work/hf912/code-transaction/before",
+      "files": 711,
+      "logicalBytes": 16020048
+    },
+    {
+      "path": "work/home-browser-r912/chrome-profile",
+      "files": 366,
+      "logicalBytes": 23667941
+    }
+  ],
+  "observedFreeSpaceDeltaNotExclusiveAttribution": 118677504,
+  "threeDDevelopmentD67ReceivedArchiveAndTwelvePinsVerified": true,
+  "threeDPackageExecutedOrInstalled": false,
+  "publicInstalled": false,
+  "publicTransportAndRecoveryNotYetPrepared": true,
+  "publicAuthenticatedTimingAfterThisCandidateStillPending": true,
+  "interceptedFullAppProbeIsNotCacheOrPerformanceBenchmark": true,
+  "sourceReviewFiles": [
+    {
+      "target": "tools/experimental_source/home_full_r905/home-transfer-full-result-r906.json",
+      "bytes": 1891,
+      "sha256": "04b0a2e95c8c2d2daff7a38a39c53b62b494933a1f9966871be0712a4d5cbb4d"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r905/home-transfer-source-pins-r906.json",
+      "bytes": 1634,
+      "sha256": "04160fe7029328c5e3a5a9f4e66712cb7ab6cacc5a3c695b420d259cfcf7f7f0"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r905/home_transfer_gateway_r906.py",
+      "bytes": 3608,
+      "sha256": "1b36df0f5cdf5d83461a73398fa42bb543edb64a68ac99c997c991ba564087c8"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r905/home_transfer_health_r906.py",
+      "bytes": 2056,
+      "sha256": "822a53bb857b4dc2e2d7b278fd38b4082adb7fe63491d59aa3520c9c7356b5b0"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r905/home_transfer_probe_r906.py",
+      "bytes": 5632,
+      "sha256": "e385dfa0e124b527ebeb761a51f3e496c591b1269da85ff29d6747fda27d2310"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r905/run_home_transfer_full_r906.py",
+      "bytes": 17025,
+      "sha256": "9fe98654fa7c8b4800b640da4169ec140bb268b5dd4cd9d73192aa804a845ae1"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r905/verify_home_transfer_browser_r906.mjs",
+      "bytes": 26589,
+      "sha256": "7faf43754e2494b30ba933a05660e11152541d47abbdf51904046102647e2b3a"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r909/fixture-compile-proof.json",
+      "bytes": 614,
+      "sha256": "a97122760bde7252f9e6f70d65ce039ea98ccd9d6dc845c9afdbc861e711fc5c"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r909/home-transfer-full-result-r910.json",
+      "bytes": 1891,
+      "sha256": "d5e1cac02fde24a09526d77bfb632a77530498475937227d741443d35f42bbc0"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r909/home-transfer-source-pins-r910.json",
+      "bytes": 2129,
+      "sha256": "b1ad8c363b3bb017f464c8ac23cfdc5441a999ace966873780134cadc99aa8d9"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r909/home_transfer_gateway_r906.py",
+      "bytes": 3608,
+      "sha256": "e967563da58191af17d6cd78c3b8df0f81d52761ea9bf8029ea0c630cd31a145"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r909/home_transfer_health_r906.py",
+      "bytes": 2056,
+      "sha256": "7bdbd01ec94271791d28da54651131bea18797b5cd1d0f871ff89956fe5d4c29"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r909/home_transfer_probe_r906.py",
+      "bytes": 7850,
+      "sha256": "2cbad741ca9cd800dbbcd4d9c8bfa94de0c44e621dd2461c49447876d55948c6"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r909/run_home_transfer_full_r906.py",
+      "bytes": 17022,
+      "sha256": "aa66900c29ba2e2471f77de1d0d38df438389f719c443f022984ee807c0656fa"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r909/verify_home_transfer_browser_r906.mjs",
+      "bytes": 26728,
+      "sha256": "0410e77623504203a886cfc916b406838595846fcb7482a8b41e9dba03d050e2"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r912/fixture-compile-proof.json",
+      "bytes": 614,
+      "sha256": "06da652273b272cd5aa64556aa13e5215ef48640fc196ef40ca001ebc114baa2"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r912/home-transfer-full-result-r912.json",
+      "bytes": 2325,
+      "sha256": "5926d69e518b5bb661786fb90f8078055a5ed032669c09f087ba18dd0d36eea8"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r912/home-transfer-source-pins-r912.json",
+      "bytes": 2235,
+      "sha256": "82f905862bddfa1c6cfad3b01a1f8aa3a7d7f0c0bc5a19ab7e6b91c51caea816"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r912/home_transfer_gateway_r906.py",
+      "bytes": 3608,
+      "sha256": "56b32e29811c9d6aa5a9947e763ddd924e6011c692670e5a9079052492639bc5"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r912/home_transfer_health_r906.py",
+      "bytes": 2056,
+      "sha256": "08efe70d5acfa3f23b7a8aed837540419b065088bff17672e0b4d69cc7230896"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r912/home_transfer_probe_r906.py",
+      "bytes": 8069,
+      "sha256": "a1cd61f306a1921defc6a616e5f0a620e3eb4b4981e72dadc5ca047c1faa81b7"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r912/OwnHomeNavigationReadbackR912.java",
+      "bytes": 8954,
+      "sha256": "e64c793e9891a9806097d709610984d00652237192fac364789eb7a95459d034"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r912/run_home_transfer_full_r906.py",
+      "bytes": 17022,
+      "sha256": "b1e2f51b3ead4e5229c43d8b3d4a642d0a08723ef36427bf4de31c31de38f51c"
+    },
+    {
+      "target": "tools/experimental_source/home_full_r912/verify_home_transfer_browser_r906.mjs",
+      "bytes": 26912,
+      "sha256": "4b16525a35c24160a985a7a2db168cec42493d348837db1c4bc6acb461d66234"
+    },
+    {
+      "target": "tools/prepare_home_full_candidate_r905.py",
+      "bytes": 8793,
+      "sha256": "6cc847d2121ea7ce9cf61c69695c9c815a61a6b6aca49527f90d7b4b5a745771"
+    },
+    {
+      "target": "tools/prepare_home_browser_r906.py",
+      "bytes": 6045,
+      "sha256": "ad92d0f8a0110d21eceb0cb55bd1b6420fba83c3534a8ecb3313cedd8ac0f69b"
+    },
+    {
+      "target": "tools/OwnHomeNavigationFixtureR909.java",
+      "bytes": 9664,
+      "sha256": "32d2d25458b2637f53a945bd128c7d996989b1f051352c239a56f93c35c961d7"
+    },
+    {
+      "target": "tools/prepare_home_fixture_retry_r909.py",
+      "bytes": 7893,
+      "sha256": "00b934286811c02bcae2b762d6cec5e578ff44e8d5a7341a3ed860fe9331215e"
+    },
+    {
+      "target": "tools/prepare_home_async_retry_r912.py",
+      "bytes": 8820,
+      "sha256": "01150820846371400f01f8773a42310635d26e5248b0c2274a19629ffbdd186d"
+    },
+    {
+      "target": "tools/record_home_full_acceptance_r913.py",
+      "bytes": 15703,
+      "sha256": "e2faf1736a00f49db2995ee205158954acb0fd698b3571747bc692c464283762"
+    }
+  ],
+  "fullCloneReady": false
+}

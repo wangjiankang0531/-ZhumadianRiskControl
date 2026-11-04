@@ -1,0 +1,46 @@
+{
+  "schema": "xnby.r47.owned-test-cleanup.v1",
+  "passed": true,
+  "actualProcessReferences": 0,
+  "targets": [
+    {
+      "relative": "work\\sv921\\code-transaction\\before",
+      "files": 711,
+      "logicalBytes": 16020048.0
+    },
+    {
+      "relative": "work\\sv925\\code-transaction\\before",
+      "files": 711,
+      "logicalBytes": 16020048.0
+    },
+    {
+      "relative": "work\\sv927\\code-transaction\\before",
+      "files": 711,
+      "logicalBytes": 16020048.0
+    },
+    {
+      "relative": "work\\sv931\\code-transaction\\before",
+      "files": 711,
+      "logicalBytes": 16020048.0
+    },
+    {
+      "relative": "work\\sv929",
+      "files": 15621,
+      "logicalBytes": 1445253525.0
+    },
+    {
+      "relative": "work\\current-supervision-browser-r927\\chrome-profile",
+      "files": 366,
+      "logicalBytes": 23669594.0
+    },
+    {
+      "relative": "work\\exact-supervision-browser-r931\\chrome-profile",
+      "files": 366,
+      "logicalBytes": 23668114.0
+    }
+  ],
+  "logicalIncludesSharedHardlinks": true,
+  "physicalBytesFreedClaimed": false,
+  "sourceCandidatesManifestsJournalsLogsDatabaseUploadsAssetsAndThreeDimensionalDataRetained": true,
+  "publicOrDesktopTouched": false
+}
