@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "files": 8,
+  "bytes": 2333477,
+  "everyFileByteForByteAndSHA256Matched": true,
+  "manifestSHA256": "1c89579f0155c64ea7660114b7135371f726d5da2e10bfb356fe6abd687c9876",
+  "remoteDestination": "/Zhumadian/Zhumadian_Original_Bootstrap_20261104_R45/",
+  "method": "authorized WinSCP upload and independent binary download",
+  "serviceStoppedOrDeploymentSubmitted": false
+}

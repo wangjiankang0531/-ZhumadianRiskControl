@@ -1,0 +1,47 @@
+{
+  "prepared": true,
+  "runtimeSource": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\original_public_test_update_r44_mapper_chart_r570.py",
+  "runtimeSHA256": "cbca17bbb2e98dfda77aed44719641447ef68b8ef18f85a6426d9d120f7d593e",
+  "runtimeBytes": 234692,
+  "parentR42SHA256": "5e63e0f3e1f7d1064b5ae1276bfee56d51ce58b0e0ea64f59e30238c1c2d8b30",
+  "changedFunctions": [
+    "r38_unified_bundle_contract"
+  ],
+  "unchangedFunctions": 80,
+  "exactStyleRows": {
+    "frontend/security_pc/index.html": {
+      "bytes": 2591,
+      "sha256": "27b3a64cbac2189bc7ff39e7b797ce46b8afefc92e739ea6ba9b119c016bd296"
+    },
+    "frontend/security_pc/assets/css/xnby-workplace-period-736f7b07dd2c.css": {
+      "bytes": 1915,
+      "sha256": "736f7b07dd2cebca59b613be97ac0288bde3ca01b54416d7a680f0ce97da68a3"
+    }
+  },
+  "styleContract": {
+    "revision": "scoped-chart-period-header-and-content-spacing-v1",
+    "files": {
+      "frontend/security_pc/index.html": {
+        "bytes": 2591,
+        "sha256": "27b3a64cbac2189bc7ff39e7b797ce46b8afefc92e739ea6ba9b119c016bd296"
+      },
+      "frontend/security_pc/assets/css/xnby-workplace-period-736f7b07dd2c.css": {
+        "bytes": 1915,
+        "sha256": "736f7b07dd2cebca59b613be97ac0288bde3ca01b54416d7a680f0ce97da68a3"
+      }
+    },
+    "scopeIds": [
+      "data-v-0c8e02ef",
+      "data-v-7ffd414d"
+    ],
+    "onlyScopedLayoutAndOneHTMLLink": true,
+    "originalScriptsAPIsAndDateQueriesRetained": true,
+    "originalHashNamedAssetsNotOverwritten": true,
+    "publicLayoutAcceptedByStartup": false
+  },
+  "originalMapperEquivalenceFixRetained": true,
+  "lifecycleRestoreHealthAndAuthFunctionASTRetained": true,
+  "supervisionModuleOrOnlineFormCandidateIncluded": false,
+  "publicUploadedOrDeployed": false,
+  "fullCloneReady": false
+}

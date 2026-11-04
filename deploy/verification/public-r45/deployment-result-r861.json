@@ -1,0 +1,15 @@
+{
+  "credentialsSessionsBusinessRowsRuntimeUUIDOrRawLogsIncluded": false,
+  "datasourceCount": 3,
+  "externalHTTPSAndLoggedInTimingAccepted": false,
+  "fullCloneReady": false,
+  "mysqlMaxConnections": 38,
+  "newReleaseSHA256": "3b1251784fba66726f8ab4060138a2de78add753d7d06d731d5afa2f3a517bbd",
+  "oldReleaseSHA256": "daaf0be2b1cb17eab4640b7388901a0f00c1b920cfe2260c4d060234230fb853",
+  "phase": "deploy-complete",
+  "schema": "xnby.r45.scoped-deployment-result.v1",
+  "selectedBase": "r36",
+  "serverLocalGatewayAndIISTLSStaticPassed": true,
+  "updateId": "20261104-r45-original-bootstrap-from-r36",
+  "updaterSHA256": "d5af4267715b5b4fdcd740c27cdadf3742d5dfc5a8f3f7d06cc84b6ddac0c9df"
+}

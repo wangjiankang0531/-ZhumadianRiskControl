@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "removed": [
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\original-backend-full-r850\\code-transaction\\before",
+      "files": 711,
+      "logicalBytes": 16020048,
+      "sharedProgramLogicalBytes": 0
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\bootstrap-browser-r850\\chrome-profile",
+      "files": 352,
+      "logicalBytes": 16310080,
+      "sharedProgramLogicalBytes": 0
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\r45-code-file-fixtures-r852",
+      "files": 32714,
+      "logicalBytes": 2876915839,
+      "sharedProgramLogicalBytes": 2817969518
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\v45-r854",
+      "files": 396,
+      "logicalBytes": 16704100,
+      "sharedProgramLogicalBytes": 0
+    }
+  ],
+  "observedVolumeFreeDeltaBytes": 123588608,
+  "logicalHardlinkBytesNotClaimedAsPhysicalReclaimed": true,
+  "volumeDeltaNotExclusive": true,
+  "codeAndPointerRestoredAndActualProcessesExitedBeforeRemoval": true,
+  "dataModelsCallbacksUploadsGISAndSourcePreserved": true,
+  "fixedDeliveryAndFinalFullFrontendAndVariantSourcesRetained": true
+}

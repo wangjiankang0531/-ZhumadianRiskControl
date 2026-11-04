@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "publicR45Deployed": true,
+  "exactOldBase": "R36",
+  "fixedManifestSHA256": "1c89579f0155c64ea7660114b7135371f726d5da2e10bfb356fe6abd687c9876",
+  "newReleaseSHA256": "3b1251784fba66726f8ab4060138a2de78add753d7d06d731d5afa2f3a517bbd",
+  "serverGatewayAndIISTLSChecks": 16,
+  "actualExternalStaticHTTPSChecks": 12,
+  "actualAnonymousColdWarmNavigations": 4,
+  "publicNormalAuthenticatedUserTimingAccepted": false,
+  "nativeChromeApprovalTimedOutAndDesktopInputStopped": true,
+  "desktopReturnedToUser": true,
+  "preDeploySpatialSyncRouteStatus": 404,
+  "spatialSyncDeploymentOrNewRouteAddedByThisStage": false,
+  "serverOldVersionDeletionPerformed": false,
+  "publicGitPushed": false,
+  "fullCloneReady": false
+}

@@ -1,0 +1,152 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "status": 200,
+      "wireBytes": 819234,
+      "decodedBytes": 2624898,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "channel": "gateway",
+      "resource": "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js"
+    },
+    {
+      "status": 200,
+      "wireBytes": 126860,
+      "decodedBytes": 869689,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "channel": "gateway",
+      "resource": "/zhumadian/branding-20261025/assets/css/index-ClWHaJx5.css"
+    },
+    {
+      "status": 200,
+      "wireBytes": 496,
+      "decodedBytes": 1915,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "channel": "gateway",
+      "resource": "/zhumadian/branding-20261025/assets/css/xnby-workplace-period-736f7b07dd2c.css"
+    },
+    {
+      "status": 200,
+      "wireBytes": 431938,
+      "decodedBytes": 1320116,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "channel": "gateway",
+      "resource": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-C_ZP3Pto.js"
+    },
+    {
+      "status": 200,
+      "wireBytes": 126154,
+      "decodedBytes": 867418,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "channel": "gateway",
+      "resource": "/zhumadian/emergency/branding-20261025/assets/css/index-CRXrVYsv.css"
+    },
+    {
+      "status": 200,
+      "wireBytes": 2624898,
+      "decodedBytes": 2624898,
+      "gzip": false,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "channel": "gateway",
+      "explicitGzipZero": true
+    },
+    {
+      "channel": "gateway",
+      "resource": "/zhumadian/home",
+      "status": 200,
+      "htmlNoStoreVerified": true
+    },
+    {
+      "channel": "gateway",
+      "resource": "/zhumadian/emergency/home/index",
+      "status": 200,
+      "htmlNoStoreVerified": true
+    },
+    {
+      "status": 200,
+      "wireBytes": 819234,
+      "decodedBytes": 2624898,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "channel": "iis-tls",
+      "resource": "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js"
+    },
+    {
+      "status": 200,
+      "wireBytes": 126860,
+      "decodedBytes": 869689,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "channel": "iis-tls",
+      "resource": "/zhumadian/branding-20261025/assets/css/index-ClWHaJx5.css"
+    },
+    {
+      "status": 200,
+      "wireBytes": 496,
+      "decodedBytes": 1915,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "channel": "iis-tls",
+      "resource": "/zhumadian/branding-20261025/assets/css/xnby-workplace-period-736f7b07dd2c.css"
+    },
+    {
+      "status": 200,
+      "wireBytes": 431938,
+      "decodedBytes": 1320116,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "channel": "iis-tls",
+      "resource": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-C_ZP3Pto.js"
+    },
+    {
+      "status": 200,
+      "wireBytes": 126154,
+      "decodedBytes": 867418,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "channel": "iis-tls",
+      "resource": "/zhumadian/emergency/branding-20261025/assets/css/index-CRXrVYsv.css"
+    },
+    {
+      "status": 200,
+      "wireBytes": 2624898,
+      "decodedBytes": 2624898,
+      "gzip": false,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "channel": "iis-tls",
+      "explicitGzipZero": true
+    },
+    {
+      "channel": "iis-tls",
+      "resource": "/zhumadian/home",
+      "status": 200,
+      "htmlNoStoreVerified": true
+    },
+    {
+      "channel": "iis-tls",
+      "resource": "/zhumadian/emergency/home/index",
+      "status": 200,
+      "htmlNoStoreVerified": true
+    }
+  ],
+  "realGatewayAndLocalIISTLS": true,
+  "businessRecordsOrCredentialsRead": false,
+  "publicExternalOrAuthenticatedTimingAccepted": false
+}

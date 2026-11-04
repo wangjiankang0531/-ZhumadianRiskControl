@@ -1,0 +1,122 @@
+{
+  "completed": true,
+  "measuredAtUTC": "2026-11-04T07:31:30.982101+00:00",
+  "rows": [
+    {
+      "label": "home-html",
+      "repeatedRequest": false,
+      "path": "/zhumadian/home",
+      "httpStatus": 200,
+      "ttfbSeconds": 1.8549,
+      "totalSeconds": 1.9409,
+      "wireBytes": 2531,
+      "decodedBytes": 2531,
+      "decodedSHA256": "44aeb5464375f0fc643cd4dc50eb33fbd07cf3092b73afc027ddac22e0578f4a",
+      "headers": {
+        "Content-Type": "text/html",
+        "Content-Encoding": null,
+        "Cache-Control": "no-store",
+        "ETag": null,
+        "Vary": null
+      }
+    },
+    {
+      "label": "home-js",
+      "repeatedRequest": false,
+      "path": "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js",
+      "httpStatus": 200,
+      "ttfbSeconds": 0.0617,
+      "totalSeconds": 2.7493,
+      "wireBytes": 2624898,
+      "decodedBytes": 2624898,
+      "decodedSHA256": "3fda69730a678c07a2c83117eae03796f9fd3ef5d34a5928cc578a8c957806df",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Content-Encoding": null,
+        "Cache-Control": "no-store",
+        "ETag": null,
+        "Vary": null
+      }
+    },
+    {
+      "label": "home-js",
+      "repeatedRequest": true,
+      "path": "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js",
+      "httpStatus": 200,
+      "ttfbSeconds": 0.0637,
+      "totalSeconds": 3.7952,
+      "wireBytes": 2624898,
+      "decodedBytes": 2624898,
+      "decodedSHA256": "3fda69730a678c07a2c83117eae03796f9fd3ef5d34a5928cc578a8c957806df",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Content-Encoding": null,
+        "Cache-Control": "no-store",
+        "ETag": null,
+        "Vary": null
+      }
+    },
+    {
+      "label": "emergency-html",
+      "repeatedRequest": false,
+      "path": "/zhumadian/emergency/home/index",
+      "httpStatus": 200,
+      "ttfbSeconds": 0.0778,
+      "totalSeconds": 0.0779,
+      "wireBytes": 2439,
+      "decodedBytes": 2439,
+      "decodedSHA256": "4d6d8c6655edf3c45d9c11b3a4f5088e3e00bc9b723432a85ea0f5868f981ab1",
+      "headers": {
+        "Content-Type": "text/html",
+        "Content-Encoding": null,
+        "Cache-Control": "no-store",
+        "ETag": null,
+        "Vary": null
+      }
+    },
+    {
+      "label": "emergency-js",
+      "repeatedRequest": false,
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-DxxdT4hP.js",
+      "httpStatus": 200,
+      "ttfbSeconds": 0.0806,
+      "totalSeconds": 6.086,
+      "wireBytes": 2575860,
+      "decodedBytes": 2575860,
+      "decodedSHA256": "e1c5e14941272c38aef081cfa93b92887238c10937cce76e03d19a0b05ea3be9",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Content-Encoding": null,
+        "Cache-Control": "no-store",
+        "ETag": null,
+        "Vary": null
+      }
+    },
+    {
+      "label": "emergency-js",
+      "repeatedRequest": true,
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-DxxdT4hP.js",
+      "httpStatus": 200,
+      "ttfbSeconds": 0.0903,
+      "totalSeconds": 6.3914,
+      "wireBytes": 2575860,
+      "decodedBytes": 2575860,
+      "decodedSHA256": "e1c5e14941272c38aef081cfa93b92887238c10937cce76e03d19a0b05ea3be9",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Content-Encoding": null,
+        "Cache-Control": "no-store",
+        "ETag": null,
+        "Vary": null
+      }
+    }
+  ],
+  "anonymousOnly": true,
+  "requests": 6,
+  "browserCacheMeasured": false,
+  "authenticatedPagesOrBusinessAPIsMeasured": false,
+  "cookieOrAuthorizationSent": false,
+  "requestCacheControlSent": false,
+  "desktopUsed": false,
+  "publicChanged": false
+}

@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "case": "r36-closed-199-members-extract-all-196-pins",
+      "passed": true
+    },
+    {
+      "case": "r36-existing-stage-rejected",
+      "passed": true
+    },
+    {
+      "case": "r37-closed-199-members-extract-all-196-pins",
+      "passed": true
+    },
+    {
+      "case": "r37-existing-stage-rejected",
+      "passed": true
+    },
+    {
+      "case": "new-css-byte-drift",
+      "passed": true
+    },
+    {
+      "case": "html-link-byte-drift",
+      "passed": true
+    },
+    {
+      "case": "new-css-missing",
+      "passed": true
+    },
+    {
+      "case": "new-css-duplicate",
+      "passed": true
+    },
+    {
+      "case": "extra-private-member",
+      "passed": true
+    },
+    {
+      "case": "extra-parent-path",
+      "passed": true
+    },
+    {
+      "case": "real-candidate-css-gzip-and-identity-bytes",
+      "passed": true
+    },
+    {
+      "case": "css-corrupt-http-body",
+      "passed": true
+    },
+    {
+      "case": "css-http-cache-wrong",
+      "passed": true
+    },
+    {
+      "case": "css-http-vary-missing",
+      "passed": true
+    },
+    {
+      "case": "css-http-503",
+      "passed": true
+    },
+    {
+      "case": "real-compiled-emergency-JS-or-CSS-gzip-identity-js/wf-index-C_ZP3Pto.js",
+      "passed": true
+    },
+    {
+      "case": "real-compiled-emergency-JS-or-CSS-gzip-identity-css/index-CRXrVYsv.css",
+      "passed": true
+    }
+  ],
+  "transportFiles": 8,
+  "transportBytes": 2333477,
+  "fixedManifestSHA256": "1c89579f0155c64ea7660114b7135371f726d5da2e10bfb356fe6abd687c9876",
+  "twoActualClosedArchiveExtractionsAndAllFilePinsPassed": true,
+  "staticResponseTestsUseActualCSSBytesNotArbitraryMarker": true,
+  "allPriorSecurityStaticRowsRetainedAndEmergencyRowsUpdated": true,
+  "otherWrapperFunctionASTRetainedAgainstR44": true,
+  "maximumPublicExtractionCharacters": 237,
+  "publicOrDatabaseServicesOrDesktopTouched": false,
+  "actualIISHTTPSStillPending": true,
+  "originalBackendLifecycleAnd13UIPassedSeparately": true,
+  "fullCloneReady": false
+}

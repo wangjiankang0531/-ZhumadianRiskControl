@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "lateModuleCount": 926,
+  "sourceLateChunkCount": 37,
+  "groupedChunks": 1,
+  "earlyModulesMoved": false,
+  "onlyExplicitManualChunks": true
+}

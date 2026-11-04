@@ -1,0 +1,80 @@
+{
+  "revision": "R45-original-online-forms-canonical-authenticated-bootstrap-and-retained-R44",
+  "targetFTP": "/Zhumadian/Zhumadian_Original_Bootstrap_20261104_R45/",
+  "targetApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "files": {
+    "Check_Only_Original_Bootstrap_R45.cmd": {
+      "bytes": 140,
+      "sha256": "d89f4c7752bbb415a8e8ed966661403d0e60be7d8cc9225310b16526ecf3325f"
+    },
+    "Deploy_Original_Bootstrap_R45.cmd": {
+      "bytes": 128,
+      "sha256": "5c3e82c4d078b7f9915747df43da9cba95ba511d1b8329512d0b2c9b27e509a7"
+    },
+    "deploy_original_bootstrap_r45.py": {
+      "bytes": 16128,
+      "sha256": "6dbaaeb40efed99acc5e12d41b0728bc1bbf11ccf458b54813843aec663fcc9d"
+    },
+    "r45_update_runtime.py": {
+      "bytes": 237007,
+      "sha256": "d5af4267715b5b4fdcd740c27cdadf3742d5dfc5a8f3f7d06cc84b6ddac0c9df"
+    },
+    "Recover_This_Original_Bootstrap_R45.cmd": {
+      "bytes": 149,
+      "sha256": "5a5dcdb9dd1c3e06e46515c27e5bd30833976252ba0ac9729c5a0ddc23839e1e"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Original_Bootstrap_20261104_R45.zip": {
+      "bytes": 2076198,
+      "sha256": "a309e661cd4b46525faa0f54e20c14efcfe7944d78cb0325f0cb3d226acd6389"
+    }
+  },
+  "acceptedExactBases": {
+    "daaf0be2b1cb17eab4640b7388901a0f00c1b920cfe2260c4d060234230fb853": {
+      "label": "r36",
+      "updateId": "20261104-r45-original-bootstrap-from-r36",
+      "manifestSHA256": "4366043e640634b72b2fb8f59c53335012bf5bff8c75f4a3bd8563829e002d84",
+      "oldUpdaterSHA256": "67545498b3f823e03394ecebdbf9aed12a64c719cca16b7a56a13abb66b49eca"
+    },
+    "909b64aa1315b8764b169c9874b8f52f903268b59c67adbf7b3799e85e29448c": {
+      "label": "r37",
+      "updateId": "20261104-r45-original-bootstrap-from-r37",
+      "manifestSHA256": "8718fca7fcad4ce225c71a45e9c34f513d1447880ac22396a76a0b596669e98b",
+      "oldUpdaterSHA256": "52daac9f348be6622592920240794a1ba701d46683fa6b7c3e0cb34da47fcf62"
+    }
+  },
+  "eachExtractedBundleAcceptsOneExactBase": true,
+  "bothVariantsUseOneSharedFinalPayload": true,
+  "newReleaseSHA256": "3b1251784fba66726f8ab4060138a2de78add753d7d06d731d5afa2f3a517bbd",
+  "newPayloadManifestSHA256": "8df6a57a9dfec2c8c5ff65964db66b27b752a73cc026241576222bd4bcfc58bb",
+  "newUpdaterSHA256": "d5af4267715b5b4fdcd740c27cdadf3742d5dfc5a8f3f7d06cc84b6ddac0c9df",
+  "writes": 196,
+  "removedFiles": 181,
+  "oldReadinessReports": 11,
+  "newOriginalReadinessReports": 11,
+  "runtimeChangedFunctionsAgainstR44": [
+    "r38_unified_bundle_contract"
+  ],
+  "runtimeUnchangedFunctionsAgainstR44": 80,
+  "wrapperChangedFunctionsAgainstR44": [
+    "validate_archive"
+  ],
+  "originalStopStartRestoreAuthHealthBodiesRetained": true,
+  "retainedR44MapperStaticPerformanceAndWorkplaceStyles": true,
+  "completeCompiledFrontendFiles": 344,
+  "normalOriginalBackendLifecyclePassed": true,
+  "normalOriginalBackendActualUICases": 13,
+  "actualGatewayStaticRequestsChecked": 10,
+  "originalBackendWithoutNewSupervisionModuleValidated": true,
+  "actualCoreFileNormalAndFourthWriteRecoveryPassedForBothBases": true,
+  "originalJarAuthenticationHistoryPrivateConfigurationDatabaseUploadsAndOtherSitesRetained": true,
+  "publicIISHTTPSRealRolesColdWarmAndFullNangangAcceptanceStillPending": true,
+  "maximumExtractionPathCharacters": 237,
+  "limitedResultReadbackFile": "r45-scoped-result.json",
+  "publicDeployed": false,
+  "newPublicGitIncluded": false,
+  "fullCloneReady": false
+}

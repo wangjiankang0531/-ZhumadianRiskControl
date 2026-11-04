@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "case": "r36-closed-193-members-extract-all-190-pins",
+      "passed": true
+    },
+    {
+      "case": "r36-existing-stage-rejected",
+      "passed": true
+    },
+    {
+      "case": "r37-closed-193-members-extract-all-190-pins",
+      "passed": true
+    },
+    {
+      "case": "r37-existing-stage-rejected",
+      "passed": true
+    },
+    {
+      "case": "new-css-byte-drift",
+      "passed": true
+    },
+    {
+      "case": "html-link-byte-drift",
+      "passed": true
+    },
+    {
+      "case": "new-css-missing",
+      "passed": true
+    },
+    {
+      "case": "new-css-duplicate",
+      "passed": true
+    },
+    {
+      "case": "extra-private-member",
+      "passed": true
+    },
+    {
+      "case": "extra-parent-path",
+      "passed": true
+    },
+    {
+      "case": "real-candidate-css-gzip-and-identity-bytes",
+      "passed": true
+    },
+    {
+      "case": "css-corrupt-http-body",
+      "passed": true
+    },
+    {
+      "case": "css-http-cache-wrong",
+      "passed": true
+    },
+    {
+      "case": "css-http-vary-missing",
+      "passed": true
+    },
+    {
+      "case": "css-http-503",
+      "passed": true
+    }
+  ],
+  "transportFiles": 8,
+  "transportBytes": 2169237,
+  "fixedManifestSHA256": "9a9db792a32e46437763c111badecebb6e4a6a1efe047cae98b05c26f370e9bf",
+  "twoActualClosedArchiveExtractionsAndAllFilePinsPassed": true,
+  "staticResponseTestsUseActualCSSBytesNotArbitraryMarker": true,
+  "allPriorStaticExpectedRowsRetained": true,
+  "otherWrapperFunctionASTRetainedAgainstR42": true,
+  "maximumPublicExtractionCharacters": 237,
+  "publicOrDatabaseServicesOrDesktopTouched": false,
+  "actualIISHTTPSAndR44LifecycleStillPending": true,
+  "fullCloneReady": false
+}

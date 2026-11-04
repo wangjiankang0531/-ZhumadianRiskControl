@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "compiledFiles": 344,
+  "javascriptParsed": 180,
+  "cssChecked": 104,
+  "htmlChecked": 1,
+  "localReferencesChecked": 1773,
+  "externalReferencesNotFetched": 1,
+  "computedRuntimeImportsNotStaticallyProven": 0,
+  "wholeCompiledArtifactUsed": true,
+  "originalAPIOrNormalUserWorkflowOrBrowserOrPublicAccepted": false
+}

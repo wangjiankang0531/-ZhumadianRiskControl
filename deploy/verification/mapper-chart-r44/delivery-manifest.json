@@ -1,0 +1,88 @@
+{
+  "revision": "R44-exact-mapper-equivalence-and-scoped-workplace-period-layout",
+  "targetFTP": "/Zhumadian/Zhumadian_Mapper_Chart_20261104_R44/",
+  "targetApplication": "C:/inetpub/wwwroot/Zhumadian/Application",
+  "files": {
+    "Check_Only_Mapper_Chart_R44.cmd": {
+      "bytes": 134,
+      "sha256": "106b3cf0ccc8f9f8fef3150cdda087db1abb98aa6e3c438843003da3363da3fd"
+    },
+    "Deploy_Mapper_Chart_R44.cmd": {
+      "bytes": 122,
+      "sha256": "cc7323f79e0fd702a5be7360b55920c9eea2af7af50e751f8bbf9a9a8b85f53d"
+    },
+    "deploy_mapper_chart_r44.py": {
+      "bytes": 16110,
+      "sha256": "765bdafc9a8c2560b729ce153020c6522976feabcc09b29de567221b45809472"
+    },
+    "r44_update_runtime.py": {
+      "bytes": 234692,
+      "sha256": "cbca17bbb2e98dfda77aed44719641447ef68b8ef18f85a6426d9d120f7d593e"
+    },
+    "Recover_This_Mapper_Chart_R44.cmd": {
+      "bytes": 143,
+      "sha256": "058df89fc638b43688a4d4e316e3ebcb3ab8f0d08c7ebd38b2ae94873ec60b42"
+    },
+    "web.config": {
+      "bytes": 202,
+      "sha256": "22013fec240c04fc2a73a6274220772c3cbcf5b00fb71df75557e0e75baedd20"
+    },
+    "Zhumadian_Mapper_Chart_20261104_R44.zip": {
+      "bytes": 1913994,
+      "sha256": "b2c24200ef607e43c29a5f951973b5ad135f2d8d65968f0bf56e5fb480e4d85a"
+    }
+  },
+  "acceptedExactBases": {
+    "daaf0be2b1cb17eab4640b7388901a0f00c1b920cfe2260c4d060234230fb853": {
+      "label": "r36",
+      "updateId": "20261104-r44-mapper-chart-from-r36",
+      "manifestSHA256": "1de7d5c6857574a6904a8a2f31b76ee83a922e0eb9062a21e11cc4e5b98bb569",
+      "oldUpdaterSHA256": "67545498b3f823e03394ecebdbf9aed12a64c719cca16b7a56a13abb66b49eca"
+    },
+    "909b64aa1315b8764b169c9874b8f52f903268b59c67adbf7b3799e85e29448c": {
+      "label": "r37",
+      "updateId": "20261104-r44-mapper-chart-from-r37",
+      "manifestSHA256": "931e4d9bf88faaf8c237bdcde6fec7359759c6c6254c479ab6602f565fa9bf58",
+      "oldUpdaterSHA256": "52daac9f348be6622592920240794a1ba701d46683fa6b7c3e0cb34da47fcf62"
+    }
+  },
+  "eachExtractedBundleAcceptsOneExactBase": true,
+  "bothVariantsUseOneSharedFinalPayload": true,
+  "newReleaseSHA256": "81778ecb4cb464a8e19e1d8cfd546426946ea1b310c8b26b44225be0fe9f416a",
+  "newPayloadManifestSHA256": "41eb36632e0e477b1441fe713e7247ae32269c0fe22ec528df384d9baee1816f",
+  "newUpdaterSHA256": "cbca17bbb2e98dfda77aed44719641447ef68b8ef18f85a6426d9d120f7d593e",
+  "writes": 190,
+  "removedFiles": 178,
+  "oldReadinessReports": 11,
+  "newOriginalReadinessReports": 11,
+  "additionalPlanRuntimeByteCheck": true,
+  "styleOnlyDeltaOverR42Bytes": 4506,
+  "newStyleStaticResponseIncludedInGatewayAndIISTLSChecks": true,
+  "runtimeChangedFunctionsAgainstR42": [
+    "r38_unified_bundle_contract"
+  ],
+  "runtimeUnchangedFunctionsAgainstR42": 80,
+  "wrapperChangedFunctionsAgainstR42": [
+    "verify_static_gateway_and_iis",
+    "validate_archive"
+  ],
+  "originalStopStartRestoreAuthHealthBodiesRetained": true,
+  "R42OriginalMapperResolverProofRetained": true,
+  "onlyTwoExactMapperPatternsAcceptedNoConfigurationRewrite": true,
+  "R44TwoBaseActualCoreFileAndFourthWriteRecoveryPassed": true,
+  "R44SixComponentLifecycleNotRepeated": true,
+  "sameBackendAsPreviouslyVerifiedR41LifecycleButNotFreshR44Acceptance": true,
+  "styleComponentScenarios": 21,
+  "styleFilterInteractions": 16,
+  "styleActualNginxTransportChecks": 10,
+  "originalReportedOverlapNotReproducedInLocalBaseline": true,
+  "publicLayoutAndIISHTTPSAcceptancePending": true,
+  "supervisionPDFModuleAndUnbuiltOnlineFormCandidateIncluded": false,
+  "originalJarAuthHistoryDatabasePrivateConfigurationUploadsAndOtherSitesRetained": true,
+  "iisProxySourceFromR42IncludedMappingsRetained": true,
+  "maximumExtractionPathCharacters": 237,
+  "limitedResultReadbackFile": "r44-scoped-result.json",
+  "publicDeployed": false,
+  "newPublicGitIncluded": false,
+  "fullCloneReady": false
+}

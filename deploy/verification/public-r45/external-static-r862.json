@@ -1,0 +1,223 @@
+{
+  "passed": true,
+  "measuredAtUTC": "2026-11-04T08:14:23.693804+00:00",
+  "rows": [
+    {
+      "status": 200,
+      "wireBytes": 819234,
+      "decodedBytes": 2624898,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "path": "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js",
+      "ttfbSeconds": 0.0922,
+      "totalSeconds": 0.7121,
+      "headers": {
+        "content-type": "application/javascript",
+        "content-encoding": "gzip",
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": null,
+        "vary": "Accept-Encoding"
+      },
+      "decodedSHA256": "3fda69730a678c07a2c83117eae03796f9fd3ef5d34a5928cc578a8c957806df"
+    },
+    {
+      "status": 200,
+      "wireBytes": 2624898,
+      "decodedBytes": 2624898,
+      "gzip": false,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "path": "/zhumadian/branding-20261025/assets/js/index-DOC7mNwT.js",
+      "ttfbSeconds": 0.0798,
+      "totalSeconds": 3.1749,
+      "headers": {
+        "content-type": "application/javascript",
+        "content-encoding": null,
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": null,
+        "vary": "Accept-Encoding"
+      },
+      "decodedSHA256": "3fda69730a678c07a2c83117eae03796f9fd3ef5d34a5928cc578a8c957806df"
+    },
+    {
+      "status": 200,
+      "wireBytes": 126860,
+      "decodedBytes": 869689,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "path": "/zhumadian/branding-20261025/assets/css/index-ClWHaJx5.css",
+      "ttfbSeconds": 0.0807,
+      "totalSeconds": 0.1734,
+      "headers": {
+        "content-type": "text/css",
+        "content-encoding": "gzip",
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": null,
+        "vary": "Accept-Encoding"
+      },
+      "decodedSHA256": "4672b6a197d7ab95683739a1dd1677b19dd0c117815f4bcfdec4244de5cd1b66"
+    },
+    {
+      "status": 200,
+      "wireBytes": 869689,
+      "decodedBytes": 869689,
+      "gzip": false,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "path": "/zhumadian/branding-20261025/assets/css/index-ClWHaJx5.css",
+      "ttfbSeconds": 0.0626,
+      "totalSeconds": 1.3982,
+      "headers": {
+        "content-type": "text/css",
+        "content-encoding": null,
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": null,
+        "vary": "Accept-Encoding"
+      },
+      "decodedSHA256": "4672b6a197d7ab95683739a1dd1677b19dd0c117815f4bcfdec4244de5cd1b66"
+    },
+    {
+      "status": 200,
+      "wireBytes": 496,
+      "decodedBytes": 1915,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "path": "/zhumadian/branding-20261025/assets/css/xnby-workplace-period-736f7b07dd2c.css",
+      "ttfbSeconds": 0.0612,
+      "totalSeconds": 0.0616,
+      "headers": {
+        "content-type": "text/css",
+        "content-encoding": "gzip",
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": null,
+        "vary": "Accept-Encoding"
+      },
+      "decodedSHA256": "736f7b07dd2cebca59b613be97ac0288bde3ca01b54416d7a680f0ce97da68a3"
+    },
+    {
+      "status": 200,
+      "wireBytes": 1915,
+      "decodedBytes": 1915,
+      "gzip": false,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "path": "/zhumadian/branding-20261025/assets/css/xnby-workplace-period-736f7b07dd2c.css",
+      "ttfbSeconds": 0.0654,
+      "totalSeconds": 0.0655,
+      "headers": {
+        "content-type": "text/css",
+        "content-encoding": null,
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": null,
+        "vary": "Accept-Encoding"
+      },
+      "decodedSHA256": "736f7b07dd2cebca59b613be97ac0288bde3ca01b54416d7a680f0ce97da68a3"
+    },
+    {
+      "status": 200,
+      "wireBytes": 431938,
+      "decodedBytes": 1320116,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-C_ZP3Pto.js",
+      "ttfbSeconds": 0.0793,
+      "totalSeconds": 0.4534,
+      "headers": {
+        "content-type": "application/javascript",
+        "content-encoding": "gzip",
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": null,
+        "vary": "Accept-Encoding"
+      },
+      "decodedSHA256": "8a7dc8a8e80dae2c8001d39676e33749c28bfa49b99f80379f2be94e9302a11f"
+    },
+    {
+      "status": 200,
+      "wireBytes": 1320116,
+      "decodedBytes": 1320116,
+      "gzip": false,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "path": "/zhumadian/emergency/branding-20261025/assets/js/wf-index-C_ZP3Pto.js",
+      "ttfbSeconds": 0.0641,
+      "totalSeconds": 1.8172,
+      "headers": {
+        "content-type": "application/javascript",
+        "content-encoding": null,
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": null,
+        "vary": "Accept-Encoding"
+      },
+      "decodedSHA256": "8a7dc8a8e80dae2c8001d39676e33749c28bfa49b99f80379f2be94e9302a11f"
+    },
+    {
+      "status": 200,
+      "wireBytes": 126154,
+      "decodedBytes": 867418,
+      "gzip": true,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "path": "/zhumadian/emergency/branding-20261025/assets/css/index-CRXrVYsv.css",
+      "ttfbSeconds": 0.1067,
+      "totalSeconds": 0.2319,
+      "headers": {
+        "content-type": "text/css",
+        "content-encoding": "gzip",
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": null,
+        "vary": "Accept-Encoding"
+      },
+      "decodedSHA256": "4b34f117d0aaf505554964a852715bd15f8bcc2533abce3856ef8c1ae18380fb"
+    },
+    {
+      "status": 200,
+      "wireBytes": 867418,
+      "decodedBytes": 867418,
+      "gzip": false,
+      "hashCacheVerified": true,
+      "decodedContentMatched": true,
+      "path": "/zhumadian/emergency/branding-20261025/assets/css/index-CRXrVYsv.css",
+      "ttfbSeconds": 0.0788,
+      "totalSeconds": 1.2295,
+      "headers": {
+        "content-type": "text/css",
+        "content-encoding": null,
+        "cache-control": "public, max-age=31536000, immutable",
+        "etag": null,
+        "vary": "Accept-Encoding"
+      },
+      "decodedSHA256": "4b34f117d0aaf505554964a852715bd15f8bcc2533abce3856ef8c1ae18380fb"
+    },
+    {
+      "path": "/zhumadian/home",
+      "status": 200,
+      "htmlNoStoreVerified": true,
+      "currentR45ReferenceVerified": true,
+      "wireBytes": 2686,
+      "ttfbSeconds": 0.0644,
+      "totalSeconds": 0.0645
+    },
+    {
+      "path": "/zhumadian/emergency/home/index",
+      "status": 200,
+      "htmlNoStoreVerified": true,
+      "currentR45ReferenceVerified": true,
+      "wireBytes": 2453,
+      "ttfbSeconds": 0.0674,
+      "totalSeconds": 0.0676
+    }
+  ],
+  "actualExternalHTTPS": true,
+  "certificateHostnameVerified": "www.joinlinksmart.com",
+  "connectionAddress": "101.201.65.94",
+  "DNSBypassedButTLSNotBypassed": true,
+  "onlyAnonymousStaticGETs": true,
+  "cookieOrAuthorizationSent": false,
+  "businessAPIsOrRowsRead": false,
+  "authenticatedUserExperienceOrBrowserWarmCacheAcceptanceClaimed": false,
+  "publicMutation": false
+}

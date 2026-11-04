@@ -1,0 +1,27 @@
+{
+  "fullCloneReady": false,
+  "lifecycleAndPublicAcceptanceStillPending": true,
+  "onlyR42PlusTwoStyleFilesAndExactUpdaterMetadata": true,
+  "prepared": true,
+  "runtimeSHA256": "cbca17bbb2e98dfda77aed44719641447ef68b8ef18f85a6426d9d120f7d593e",
+  "sameFinalApplicationAcrossBases": true,
+  "servicesStartedOrPublicTouched": false,
+  "variants": {
+    "r36": {
+      "bundle": "D:\\Project\\Zhumadian\\work\\mapper-chart-bundles-r571\\r36\\bundle",
+      "manifestSHA256": "1de7d5c6857574a6904a8a2f31b76ee83a922e0eb9062a21e11cc4e5b98bb569",
+      "newReleaseSHA256": "81778ecb4cb464a8e19e1d8cfd546426946ea1b310c8b26b44225be0fe9f416a",
+      "payloadLogicalBytes": 7211792,
+      "removedFrontendPaths": 178,
+      "writes": 190
+    },
+    "r37": {
+      "bundle": "D:\\Project\\Zhumadian\\work\\mapper-chart-bundles-r571\\r37\\bundle",
+      "manifestSHA256": "931e4d9bf88faaf8c237bdcde6fec7359759c6c6254c479ab6602f565fa9bf58",
+      "newReleaseSHA256": "81778ecb4cb464a8e19e1d8cfd546426946ea1b310c8b26b44225be0fe9f416a",
+      "payloadLogicalBytes": 7211792,
+      "removedFrontendPaths": 178,
+      "writes": 190
+    }
+  }
+}

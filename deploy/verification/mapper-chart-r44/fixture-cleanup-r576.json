@@ -1,0 +1,24 @@
+{
+    "passed":  true,
+    "roots":  [
+                  {
+                      "path":  "D:\\Project\\Zhumadian\\work\\mapper-chart-file-fixtures-r572",
+                      "files":  32690,
+                      "logicalBytes":  2871207803,
+                      "activeReferences":  0,
+                      "reparsePoints":  0
+                  },
+                  {
+                      "path":  "D:\\Project\\Zhumadian\\work\\v44-r574",
+                      "files":  384,
+                      "logicalBytes":  14566700,
+                      "activeReferences":  0,
+                      "reparsePoints":  0
+                  }
+              ],
+    "observedDiskFreeDeltaBytes":  74121216,
+    "logicalSharedBytesAreNotClaimedAsPhysicalReclaimed":  true,
+    "processAndReparsePreflightPassed":  true,
+    "servicesStarted":  false,
+    "dataAssetsSourcesAndPreparedBundlesPreserved":  true
+}

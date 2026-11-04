@@ -1,0 +1,16 @@
+{
+  "passedComponentAndLocalNginx": true,
+  "componentScenarios": 21,
+  "candidateLoadOrders": 2,
+  "filterInteractions": 16,
+  "actualNginxChecks": 10,
+  "cssDecodedBytes": 1915,
+  "cssGzipBytes": 496,
+  "normalBrowserNginxAndActualDescendantsZero": true,
+  "originalOverlapNotReproducedInLocalBaseline": true,
+  "narrowOriginalPieLabelsStillEllipsized": true,
+  "actualPublicIISHTTPSAndNormalRoleLayoutPending": true,
+  "normalRoleSupervisionHTTPNotAccepted": true,
+  "publicDeployed": false,
+  "fullCloneReady": false
+}

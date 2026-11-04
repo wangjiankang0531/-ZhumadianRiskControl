@@ -1,0 +1,31 @@
+{
+  "observedAtLocal": "2026-11-04T15:34:28.036486+08:00",
+  "userAuthorizedReadOnlyHandoff": true,
+  "method": "native Computer Use @oai/sky returned unique public RDP window",
+  "applicationPath": "C:/inetpub/wwwroot/Zhumadian/Application/iis",
+  "handler": {
+    "name": "XnbyOriginalProject",
+    "path": "*",
+    "type": "XnbyReferenceProxy",
+    "enabled": true,
+    "local": true
+  },
+  "staticCompressionCheckboxChecked": true,
+  "dynamicCompressionCheckboxDisabled": true,
+  "dynamicCompressionMissingComponentWarningVisible": true,
+  "customHeadersVisible": [
+    {
+      "name": "X-Powered-By",
+      "value": "ASP.NET",
+      "inherited": true
+    }
+  ],
+  "keepAliveChecked": true,
+  "expireWebContentChecked": false,
+  "basicSettingsAndCommonHeadersDialogsCancelled": true,
+  "configurationApplied": false,
+  "publicDeployOrStopStartOrBusinessWrite": false,
+  "desktopReturnedToUser": true,
+  "exactServerReleaseOrProxyFileSHARead": false,
+  "uniqueRootCauseClaimed": false
+}

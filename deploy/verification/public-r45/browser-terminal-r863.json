@@ -1,0 +1,19 @@
+{
+  "driverExitCode": 0,
+  "actualJobDescendantsZero": true,
+  "gateReleased": true,
+  "failureType": null,
+  "budgetMetricsBeforeClose": {
+    "limitFlags": 512,
+    "jobCommitLimitBytes": 1073741824,
+    "reportedPeakJobMemoryBytes": 451788800,
+    "reportedPeakProcessMemoryBytes": 147210240,
+    "activeProcesses": 0,
+    "totalProcesses": 14,
+    "terminateOnCloseOrBreakawayEnabled": false
+  },
+  "publicWritePerformed": false,
+  "desktopOperated": false,
+  "userBrowserProfileUsed": false,
+  "forceTerminationUsed": false
+}

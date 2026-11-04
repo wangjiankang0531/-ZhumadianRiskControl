@@ -1,0 +1,67 @@
+{
+  "allFixtureTamperingUsedAtomicReplacementNotHardlinkInPlaceWrites": true,
+  "fullCloneReady": false,
+  "negativeCases": [
+    {
+      "case": "r36-stylesheet-bytes-drift",
+      "rejected": true
+    },
+    {
+      "case": "r36-extra-private-path-even-with-valid-manifest-hash",
+      "rejected": true
+    },
+    {
+      "case": "r36-wrong-target",
+      "rejected": true
+    },
+    {
+      "case": "r36-wrong-manifest-pin",
+      "rejected": true
+    },
+    {
+      "case": "r37-stylesheet-bytes-drift",
+      "rejected": true
+    },
+    {
+      "case": "r37-extra-private-path-even-with-valid-manifest-hash",
+      "rejected": true
+    },
+    {
+      "case": "r37-wrong-target",
+      "rejected": true
+    },
+    {
+      "case": "r37-wrong-manifest-pin",
+      "rejected": true
+    }
+  ],
+  "onlyOneBundleContractFunctionChangedFromR42": true,
+  "passed": true,
+  "physicalOriginalSourceFilesNeverOverwritten": true,
+  "readonlySourceAttributesPreservedByIndependentCopies": true,
+  "servicesNetworkDatabasesGISOrPublicTouched": false,
+  "variants": {
+    "r36": {
+      "actualRuntimeOrPublicAcceptance": false,
+      "candidatePoolAndMapperBeforeStopPreflightPassed": true,
+      "combinedWrites": 190,
+      "fullBaseCodeHashesAndPrivateConfigurationPreserved": true,
+      "installedProgramOrControlFiles": 15579,
+      "normalAndFourthFaultActualCoreFileRecoveryPassed": true,
+      "oldFrontendRemovals": 178,
+      "originalCoreApplyStopAndRestoreFunctionASTUnmodified": true,
+      "passed": true
+    },
+    "r37": {
+      "actualRuntimeOrPublicAcceptance": false,
+      "candidatePoolAndMapperBeforeStopPreflightPassed": true,
+      "combinedWrites": 190,
+      "fullBaseCodeHashesAndPrivateConfigurationPreserved": true,
+      "installedProgramOrControlFiles": 15579,
+      "normalAndFourthFaultActualCoreFileRecoveryPassed": true,
+      "oldFrontendRemovals": 178,
+      "originalCoreApplyStopAndRestoreFunctionASTUnmodified": true,
+      "passed": true
+    }
+  }
+}

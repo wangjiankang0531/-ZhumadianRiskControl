@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "removed": [
+    {
+      "scope": "r822-restored-same-sha-before",
+      "files": 710,
+      "logicalBytes": 16017129
+    },
+    {
+      "scope": "r825-restored-same-sha-before",
+      "files": 710,
+      "logicalBytes": 16017129
+    },
+    {
+      "scope": "r833-restored-same-sha-before",
+      "files": 710,
+      "logicalBytes": 16017129
+    },
+    {
+      "scope": "r839-restored-same-sha-before",
+      "files": 711,
+      "logicalBytes": 16020048
+    },
+    {
+      "scope": "r845-restored-same-sha-before",
+      "files": 711,
+      "logicalBytes": 16020048
+    },
+    {
+      "scope": "r822-normally-closed-browser-profile",
+      "files": 388,
+      "logicalBytes": 16342354
+    },
+    {
+      "scope": "r825-normally-closed-browser-profile",
+      "files": 398,
+      "logicalBytes": 17136045
+    },
+    {
+      "scope": "r833-normally-closed-browser-profile",
+      "files": 356,
+      "logicalBytes": 17253362
+    },
+    {
+      "scope": "r839-normally-closed-browser-profile",
+      "files": 352,
+      "logicalBytes": 16296366
+    },
+    {
+      "scope": "r845-normally-closed-browser-profile",
+      "files": 352,
+      "logicalBytes": 16309927
+    },
+    {
+      "scope": "r815-retired-rebuildable-compiled-output",
+      "files": 362,
+      "logicalBytes": 7380942
+    },
+    {
+      "scope": "r818-retired-rebuildable-compiled-output",
+      "files": 392,
+      "logicalBytes": 7520676
+    },
+    {
+      "scope": "r828-retired-rebuildable-compiled-output",
+      "files": 392,
+      "logicalBytes": 7520676
+    },
+    {
+      "scope": "r829-retired-rebuildable-compiled-output",
+      "files": 344,
+      "logicalBytes": 7493795
+    },
+    {
+      "scope": "r835-retired-rebuildable-compiled-output",
+      "files": 344,
+      "logicalBytes": 7494147
+    }
+  ],
+  "allActualOwnProcessesExitedBeforeCleanup": true,
+  "observedVolumeFreeDeltaBytes": 211443712,
+  "volumeDeltaNotExclusive": true,
+  "businessDataModelsCallbacksUploadsGISRemoved": false,
+  "finalR841OutputAndR828ModuleMappingRetained": true
+}

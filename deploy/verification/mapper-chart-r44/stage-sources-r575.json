@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "sources": {
+    "prepare_mapper_chart_candidate_r570.py": {
+      "bytes": 4289,
+      "sha256": "2d6ce003899b1297eec60f2bf8d726b8c690703ac7b0998e82b7edfa3c99b4fa"
+    },
+    "original_public_test_update_r44_mapper_chart_r570.py": {
+      "bytes": 234692,
+      "sha256": "cbca17bbb2e98dfda77aed44719641447ef68b8ef18f85a6426d9d120f7d593e"
+    },
+    "build_mapper_chart_bundles_r571.py": {
+      "bytes": 5020,
+      "sha256": "578c1c5acbbb2d170a32e229dbc02178dc18a3aeece2eab9550cd4f5f91f48a2"
+    },
+    "verify_mapper_chart_bundle_files_r572.py": {
+      "bytes": 10471,
+      "sha256": "f0ceb781fa3e1d22cd48a54445775461c19604b6191dbaaf809011dbc98b147b"
+    },
+    "build_mapper_chart_delivery_r573.py": {
+      "bytes": 7972,
+      "sha256": "3555750ceeec36d0c7e1c0f6ebd57c81ec194ef1d3afc2fb94ed17b4d06f9954"
+    },
+    "verify_mapper_chart_transport_r574.py": {
+      "bytes": 6759,
+      "sha256": "8f24c439ee7fbf0845ab9da96655d6fdcdc1460bf93c15581286b1eaf256cd4e"
+    }
+  },
+  "publicUploadedOrGitPushed": false,
+  "fullCloneReady": false
+}
