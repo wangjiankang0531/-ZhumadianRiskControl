@@ -1,0 +1,39 @@
+{
+  "revision": "R1034-approved-195-source-sync",
+  "manifestSHA256": "692f9bc1eae3bae499451b1400edddc15ce5586f0830dc93078403e229487a0f",
+  "files": 195,
+  "bytes": 2665940,
+  "all195BlobBytesReadBackMatched": true,
+  "closedTreesOnlyApprovedPathsChanged": true,
+  "solePublicParentsVerified": true,
+  "targets": [
+    {
+      "repository": "wangjiankang0531/-ZhumadianRiskControl",
+      "branch": "review/workplace-r19-verified-partial-20261031",
+      "commit": "4645404702428e83ffc7bd5f34c57273108cd94e",
+      "parent": "ec15c2c72448d3f31d0ea4aa2f014570cef7c6cf",
+      "tree": "bb31928fd3850f6c6d79f794de77890b7a5c3a6f",
+      "approvedFiles": 191,
+      "soleParentVerified": true,
+      "exactChangedPathsVerified": true,
+      "finalRefReadBack": true
+    },
+    {
+      "repository": "wangjiankang0531/-XNBYEngine",
+      "branch": "review/workplace-r19-verified-progress-20261031",
+      "commit": "0d1e6662cef927d124c2f468ef352dc6e4ced528",
+      "parent": "09c9f860bc4e41c399b16d648965140d2b0fa3d7",
+      "tree": "51588c932407ec9bb167c29fb91a39b12a5e9d8d",
+      "approvedFiles": 4,
+      "soleParentVerified": true,
+      "exactChangedPathsVerified": true,
+      "finalRefReadBack": true
+    }
+  ],
+  "newBranchesCreated": false,
+  "privateAncestorsSent": false,
+  "mainOrOtherBranchesTargeted": false,
+  "snapshotR48NotUploadedOrDeployed": true,
+  "publicSourceSyncComplete": true,
+  "serverDeploymentClaimed": false
+}

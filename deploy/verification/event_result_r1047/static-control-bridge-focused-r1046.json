@@ -1,0 +1,237 @@
+{
+  "passed": true,
+  "focusedChecks": 55,
+  "checks": [
+    {
+      "case": "exact-original-public-failure-reproduced",
+      "passed": true
+    },
+    {
+      "case": "complete-24-control-map-accepted-with-candidate-self-pin",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:deploy/iis_original/App_Code/XnbyReferenceProxy.cs",
+      "passed": true
+    },
+    {
+      "case": "control-removed:deploy/iis_original/App_Code/XnbyReferenceProxy.cs",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:deploy/iis_original/web.config.template",
+      "passed": true
+    },
+    {
+      "case": "control-removed:deploy/iis_original/web.config.template",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:iis/App_Code/XnbyReferenceProxy.cs",
+      "passed": true
+    },
+    {
+      "case": "control-removed:iis/App_Code/XnbyReferenceProxy.cs",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:iis/Global.asax",
+      "passed": true
+    },
+    {
+      "case": "control-removed:iis/Global.asax",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/install_original_server_ingress.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/install_original_server_ingress.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_callback_overlay.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_callback_overlay.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_header_branding.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_header_branding.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_iis_cutover.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_iis_cutover.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_native_history_release_support.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_native_history_release_support.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_object_store_runtime.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_object_store_runtime.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_platform_async_release_support.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_platform_async_release_support.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_platform_files.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_platform_files.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_project_branding.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_project_branding.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_public_test_base_r46.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_public_test_base_r46.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_public_test_update.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_public_test_update.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_server_release_parameters.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_server_release_parameters.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_server_windows_job.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_server_windows_job.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/original_supervision_release_support.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/original_supervision_release_support.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/portable_original_admin_frontend.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/portable_original_admin_frontend.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/prepare_original_frontend_gateway.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/prepare_original_frontend_gateway.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/readonly_original_static_archive.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/readonly_original_static_archive.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/reference_flat_runtime.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/reference_flat_runtime.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:tools/serve_original_server_release.py",
+      "passed": true
+    },
+    {
+      "case": "control-removed:tools/serve_original_server_release.py",
+      "passed": true
+    },
+    {
+      "case": "control-byte-drift:web.config",
+      "passed": true
+    },
+    {
+      "case": "control-removed:web.config",
+      "passed": true
+    },
+    {
+      "case": "extra-unapproved-control",
+      "passed": true
+    },
+    {
+      "case": "static-descriptor-missing",
+      "passed": true
+    },
+    {
+      "case": "static-descriptor-drift",
+      "passed": true
+    },
+    {
+      "case": "supervision-descriptor-drift",
+      "passed": true
+    },
+    {
+      "case": "release-event-feature-drift",
+      "passed": true
+    }
+  ],
+  "candidateRuntimeSHA256": "81cc5e3d27062002bc18b142b577530ac940800b9e75dbc7c268f74d246a3211",
+  "originalRuntimeSHA256": "43d3096f73f766e6500da330868d63ba13a869b9e075cfa0092e27ee511ecfa7",
+  "frozenCoreUnchanged": true,
+  "all24ControlPinsExactNotSubset": true,
+  "staticBridgeUsedBothBeforeShutdownAndAfterReplacement": true,
+  "normalStopApplyAndRecoveryFunctionBodiesRetained": true,
+  "actualApplyUpdateSixComponentLifecycleTestPerformed": false,
+  "serverFilesChanged": false,
+  "publicDeploymentPerformed": false,
+  "fixedR48PackageChanged": false,
+  "fullCloneReady": false
+}

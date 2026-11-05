@@ -1,0 +1,36 @@
+{
+  "installed": true,
+  "projectSkill": "D:\\Project\\Zhumadian\\Application\\.agents\\skills\\zhumadian-history-cleanup\\SKILL.md",
+  "discoverableUserSkill": "D:\\CodexData\\home\\skills\\zhumadian-history-cleanup\\SKILL.md",
+  "sameSkillSHA256": "6167a921d072fe4b1bf4a43013b175c857787d74642aca4b97c94f0f4f6f67d2",
+  "creatorQuickValidatorPassed": true,
+  "AGENTSRootAndApplicationRulesAppendedWithoutReplacingHistory": true,
+  "triggers": [
+    "after-successful-release-acceptance",
+    "stage-close",
+    "first-resume-after-day-change"
+  ],
+  "calendarAutomationCreated": false,
+  "automaticSchedulerToolFound": false,
+  "actualServerCleanupPerformed": false,
+  "priorAttemptMissingYamlResolvedInIsolatedWorkspaceOnly": true,
+  "R48UploadStillPendingAfterFocusChange": true,
+  "semanticReviewCases": [
+    {
+      "case": "R48-not-yet-live",
+      "decision": "keep-current-verified-release-and-R48-candidate"
+    },
+    {
+      "case": "old-named-user-DLG-database-upload",
+      "decision": "protect-data-regardless-of-name-or-Git"
+    },
+    {
+      "case": "pending-recovery-or-live-job",
+      "decision": "keep-until-terminal-and-restore-proof"
+    },
+    {
+      "case": "unknown-LayerSync-directory-or-peer-candidate",
+      "decision": "retain-and-coordinate-not-age-delete"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "xnby.cross-thread.receiver-ack.v1",
+  "from": "驻马店3",
+  "to": "驻马店三维",
+  "recordedAt": "2026-11-05T13:13:27.724113+08:00",
+  "messageSHA256": "bf650785c8a6b1372eb63afbc2f4a612f825cc448f2900a30fec4486a2dea8b9",
+  "senderReceiptSHA256": "0d7c7a9307d721a7124de0a213c4c758015e57d395cb528efb41d87c98229e6d",
+  "senderReportsDeletionComplete": true,
+  "senderDeletedFiles": 451,
+  "previousPendingStatusSuperseded": true,
+  "receiverRepeatedDeletion": false,
+  "receiverIndependentlyReauditedAllDeletedPaths": false,
+  "publicChangePerformed": false
+}

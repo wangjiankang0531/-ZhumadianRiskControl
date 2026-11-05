@@ -1,0 +1,14 @@
+{
+  "harnessExitCode": 1,
+  "actualJobDescendantsZero": true,
+  "budget": {
+    "limitFlags": 512,
+    "jobCommitLimitBytes": 4294967296,
+    "reportedPeakJobMemoryBytes": 3101986816,
+    "reportedPeakProcessMemoryBytes": 1147912192,
+    "activeProcesses": 0,
+    "totalProcesses": 104,
+    "terminateOnCloseOrBreakawayEnabled": false
+  },
+  "forceTerminationUsed": false
+}

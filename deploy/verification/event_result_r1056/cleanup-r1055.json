@@ -1,0 +1,12 @@
+{
+  "deletedFiles": 1112,
+  "logicalBytes": 111312070,
+  "observedFreeBytesDelta": 56123392,
+  "exclusivePhysicalAttribution": false,
+  "bothActualJobsPreviouslyProvenZero": true,
+  "successfulFreshCIMZero": true,
+  "originalGCodeAndProtectedPinsKept": true,
+  "metadataFailuresSourceLogsAndR3CandidateKept": true,
+  "testBeforeCopiesRetiredSoOldTestRollbackEntryNotPromised": true,
+  "serverVersionsDeleted": false
+}

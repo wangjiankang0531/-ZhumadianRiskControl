@@ -1,0 +1,22 @@
+{
+  "schema": "xnby.cross-thread.receiver-ack.v1",
+  "from": "驻马店3",
+  "to": "驻马店三维",
+  "recordedAt": "2026-11-05T13:13:27.724113+08:00",
+  "messageSHA256": "c061d94e11ae262d22840abed641d0bdd46f8ea72d937a7bbe506e5e712e5909",
+  "nativePackageManifestMatched": true,
+  "nativeExecutableMatched": true,
+  "sourceCommitObjectsExist": {
+    "applicationCommit": "81e775ded1f34c8f186ecb4d92f2c01e8de7eb9c",
+    "engineCommit": "644ef613ce4fd8d4f576ba884fe38bcdb7db464a"
+  },
+  "senderNative37AndGPU15ReportedNotRerunByReceiver": true,
+  "publicInstallationPerformed": false,
+  "receiverExecutedNativeEditor": false,
+  "remaining": [
+    "真实账号到可信EXE启动接线",
+    "现场发布身份与路由核验",
+    "公网TLS与EXE到252双机协同"
+  ],
+  "R48FixedDeliveryUnchanged": true
+}

@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "case": "r45-actual-extraction-all-payload-pins",
+      "passed": true,
+      "writes": 187,
+      "removals": 175
+    },
+    {
+      "case": "r47-actual-extraction-all-payload-pins",
+      "passed": true,
+      "writes": 180,
+      "removals": 175
+    },
+    {
+      "case": "runtime-byte-drift",
+      "rejected": true,
+      "reason": "EXACT_ARCHIVED_PAYLOAD_PIN:tools/original_public_test_update.py"
+    },
+    {
+      "case": "variant-manifest-drift",
+      "rejected": true,
+      "reason": "FIXED_VARIANT_MANIFEST"
+    },
+    {
+      "case": "extra-undeclared-payload",
+      "rejected": true,
+      "reason": "EXACT_CLOSED_MEMBERS"
+    }
+  ],
+  "checkCount": 5,
+  "files": 9,
+  "transportBytes": 25690504,
+  "deliveryManifestSHA256": "8f0d27eb66c2d4cffb317aa00dcd56c17eebb8948be27b30133253b5626797a6",
+  "runtimeMatchesActualApplyTest": true,
+  "twoRealSelectedArchiveExtractionsPerformed": true,
+  "sourceZipInfoCopiedBeforeMutation": true,
+  "serverDeploymentOrIISAccepted": false,
+  "publicMutation": false,
+  "fullCloneReady": false
+}

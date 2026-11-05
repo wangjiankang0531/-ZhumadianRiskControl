@@ -1,0 +1,12 @@
+{
+  "GCodeOrDataChanged": false,
+  "baseCodeMutations": 719,
+  "fullCloneReady": false,
+  "oldSourcesActuallyHashRead": 15585,
+  "prepared": true,
+  "preparedPlanSHA256": "8e72519fc20fd85a2e628f65f9b6468fd6b56a2ded770bf29f983f406c51c933",
+  "publicChanged": false,
+  "realApplyUpdateAccepted": false,
+  "scenarioCount": 2,
+  "servicesStarted": false
+}

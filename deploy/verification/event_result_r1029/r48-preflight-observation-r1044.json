@@ -1,0 +1,32 @@
+{
+  "schema": "xnby.r48.user-screenshot-preflight-observation.v1",
+  "recordedAt": "2026-11-05T13:13:27.724113+08:00",
+  "manifestSHA256": "ad07cf7a88b15ec93c003a52ac34a652297ab2c18dbae15985f975bf56a56f1a",
+  "transportFiles": 9,
+  "transportBytes": 25678280,
+  "allLocalDeliveryPinsRechecked": true,
+  "screenshotSHA256": "13efdd7ba3f0c174eb0dab1edc3917f708e3c3f0457bf080e86772a562612037",
+  "peerMessageSHA256": "c061d94e11ae262d22840abed641d0bdd46f8ea72d937a7bbe506e5e712e5909",
+  "nativePackageManifestMatched": true,
+  "nativeExecutableMatched": true,
+  "nativeRelativePath": "bin/xnby_zmd_editor.exe",
+  "launcherSeparatelyMatchedManifest": true,
+  "initialRootLauncherMistakenForNativeAssertionFailedBeforeAnyWrites": true,
+  "peerCommitsExistLocally": {
+    "applicationCommit": "81e775ded1f34c8f186ecb4d92f2c01e8de7eb9c",
+    "engineCommit": "644ef613ce4fd8d4f576ba884fe38bcdb7db464a"
+  },
+  "evidenceKind": "user-provided screenshot; visually reviewed in conversation",
+  "serverWindowTitle": "101.201.65.94 - 远程桌面连接",
+  "selectedBase": "R45",
+  "observedFinalMarker": "R48_PREFLIGHT_PASSED_EXACT_BASE_RUNTIME_AND_CLOSED_FILES_NO_SERVICE_CHANGED",
+  "returnedToCommandPrompt": true,
+  "serverPreflightFinalResultReceived": true,
+  "serverScopedJSONReadbackPerformed": false,
+  "serverDeploymentPerformedOrClaimed": false,
+  "manualDeployRequestedOnce": true,
+  "publicHTTPSAndLoggedInUIAccepted": false,
+  "serverVersionsDeleted": false,
+  "desktopInputsThisStage": false,
+  "fullCloneReady": false
+}

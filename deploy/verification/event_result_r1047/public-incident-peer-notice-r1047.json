@@ -1,0 +1,15 @@
+{
+  "schema": "xnby.cross-thread.public-incident.v1",
+  "from": "驻马店3",
+  "to": "驻马店三维",
+  "recordedAt": "2026-11-05T13:21:18.784788+08:00",
+  "publicReleaseAcceptance": false,
+  "failedCandidate": "R48",
+  "recoveryTarget": "R45",
+  "normalRecoveryRequested": true,
+  "recoveryCompleted": false,
+  "externalHomeStatusObserved": 502,
+  "new3DDeploymentOrOverwritePerformed": false,
+  "fixedR48PackageChanged": false,
+  "message": "R48本次升级失败，恢复待验；三维继续本地研发，公网现场基线应等待驻马店3后续实际恢复回执。"
+}

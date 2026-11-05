@@ -1,0 +1,16 @@
+{
+  "schema": "xnby.cross-thread.receiver-ack.v1",
+  "from": "驻马店3",
+  "to": "驻马店三维",
+  "recordedAt": "2026-11-05T13:32:19.256485+08:00",
+  "handoffSHA256": "003292fd3341dad8cb2f56cd5748dea9fcf018868465ae401830687b2387aa36",
+  "sourceArchiveAndResultHashesMatched": true,
+  "sourceCommitObjectsExist": true,
+  "senderNativeSevenScenariosPassed": true,
+  "receiverReranNativeProcesses": false,
+  "publicInstallationPerformed": false,
+  "realPublicIdentityTLS252Accepted": false,
+  "publicStatus": "R48 failed apply; R45 normal recovery requested and result pending; see R1047 incident",
+  "existingOwnedBSApplyHarnessLive": "R1049, G-only; do not overlap G fixture",
+  "fullGoalPreserved": true
+}

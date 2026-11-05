@@ -1,0 +1,21 @@
+{
+  "bytes": 25690504,
+  "deliveryManifestSHA256": "8f0d27eb66c2d4cffb317aa00dcd56c17eebb8948be27b30133253b5626797a6",
+  "exactCandidateRuntimeExercisedByActualApplyTest": true,
+  "files": 9,
+  "frontendBusinessAndDataBytesUnchangedFromFixedR48": true,
+  "fullCloneReady": false,
+  "newReleaseSHA256": "161ccba60e2258e2a65be5467c5583b2f2fa69b9f8a9febe1e7381ca296de5f9",
+  "onlyFiveArchiveMembersChanged": [
+    "payload/payload-manifest.json",
+    "payload/release-manifest.json",
+    "payload/tools/original_public_test_update.py",
+    "variants/r45/update-manifest.json",
+    "variants/r47/update-manifest.json"
+  ],
+  "prepared": true,
+  "realIISPublicTLSAndUserUIAcceptance": false,
+  "runtimeSHA256": "81cc5e3d27062002bc18b142b577530ac940800b9e75dbc7c268f74d246a3211",
+  "transportWrapperAllFunctionASTsRetained": true,
+  "uploadedOrDeployed": false
+}

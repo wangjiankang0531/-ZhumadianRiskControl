@@ -1,0 +1,26 @@
+{
+  "observedAt": "2026-11-05T13:22:02.968697+08:00",
+  "rows": [
+    {
+      "path": "/zhumadian/home",
+      "status": 502,
+      "bytes": 30,
+      "htmlNoStore": false,
+      "containsR48EmergencyEntry": false,
+      "ttfbSeconds": 2.0716,
+      "totalSeconds": 2.0717
+    },
+    {
+      "path": "/zhumadian/emergency/home/index",
+      "status": 502,
+      "bytes": 30,
+      "htmlNoStore": false,
+      "containsR48EmergencyEntry": false,
+      "ttfbSeconds": 2.072,
+      "totalSeconds": 2.0721
+    }
+  ],
+  "onlyAnonymousStaticGETs": true,
+  "recoveryCommandResultReceived": false,
+  "serverMutation": false
+}

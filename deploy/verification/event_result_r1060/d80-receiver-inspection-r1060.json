@@ -1,0 +1,37 @@
+{
+  "R1047IncidentAcknowledgedBySender": true,
+  "candidateManifestSHA256Matched": true,
+  "currentNativeProductKeptBySender": true,
+  "handoffSHA256": "47f396d11444a6e4bfd9d8ca457a26423dad1e0debb3155b1fd41806dd5898d0",
+  "receiverExecutedNativeOrLogin": false,
+  "receiverInstalledPublic": false,
+  "senderSyntheticIdentityAndLocalHTTPNotRealPublicTLS252": true,
+  "sourceDeltaAndRuntimeArchivePinsMatched": true,
+  "sourceDeltaGitBlobsMatched": [
+    {
+      "bytes": 8565,
+      "path": "tools/tests/native/native_normal_login_chain_20261105.py",
+      "sha256": "d0239efdba5f9a3c53bb47399d40da22d989c524d7b908c09fb021ca54caab4b"
+    },
+    {
+      "bytes": 6829,
+      "path": "deploy/recipes/native_cloud_delivery_20261105.py",
+      "sha256": "de6186af73379f918989b88aa745d1bd08f0fa5ce665512d7a1b7b8faeaac6c9"
+    },
+    {
+      "bytes": 4429,
+      "path": "deploy/source_profiles/native_login_portable_20261105.json",
+      "sha256": "674d944896fe47c22ef8e8cd514f655edb381895d6910d35a03faec5f7c09ab4"
+    },
+    {
+      "bytes": 3911,
+      "path": "deploy/handbook/native_login_portable_20261105.html",
+      "sha256": "51c2578d1b5194beeee0972eb863e52dea6d848d606745cf6bfc9aa796a2a1af"
+    },
+    {
+      "bytes": 2172,
+      "path": "deploy/verification/native_login_portable_20261105.json",
+      "sha256": "07f14d0b842b1d4931516d8143ba6089a7d170f109e329a1541110bdaefbe26e"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "failure": null,
+  "checks": [
+    {
+      "case": "actual-old-six-components-ready",
+      "passed": true
+    },
+    {
+      "case": "real-old-stop-replace-static-failure-before-new-start",
+      "passed": true
+    },
+    {
+      "case": "real-recover-pending-restores-and-starts-old-code",
+      "passed": true
+    },
+    {
+      "case": "real-repaired-stop-replace-static-check-start-health-and-anonymous-http",
+      "passed": true
+    },
+    {
+      "case": "real-successful-update-rollback-and-old-six-components-ready",
+      "passed": true
+    }
+  ],
+  "terminals": [
+    {
+      "controllerPID": 8912,
+      "controllerExitCode": 0,
+      "normalOwnedShutdown": true,
+      "allSixChildrenExitedZero": true,
+      "forceTerminationUsed": false
+    },
+    {
+      "controllerPID": 39220,
+      "controllerExitCode": 0,
+      "normalOwnedShutdown": true,
+      "allSixChildrenExitedZero": true,
+      "forceTerminationUsed": false
+    },
+    {
+      "controllerPID": 18148,
+      "controllerExitCode": 0,
+      "normalOwnedShutdown": true,
+      "allSixChildrenExitedZero": true,
+      "forceTerminationUsed": false
+    },
+    {
+      "controllerPID": 40204,
+      "controllerExitCode": 0,
+      "normalOwnedShutdown": true,
+      "allSixChildrenExitedZero": true,
+      "forceTerminationUsed": false
+    },
+    {
+      "controllerPID": 47936,
+      "controllerExitCode": 0,
+      "normalOwnedShutdown": true,
+      "allSixChildrenExitedZero": true,
+      "forceTerminationUsed": false
+    }
+  ],
+  "initialHarnessKeyErrorRetained": true,
+  "continuedFromExactSuccessfullyAppliedNormallyStoppedCandidate": true,
+  "applyUpdateNotRepeated": true,
+  "actualApplyUpdateBodyAndCodeMutationsUsed": true,
+  "originalFailureAndRecoverPendingActuallyRun": true,
+  "repairedApplyAndRollbackActuallyRun": true,
+  "realIISOrPublicTLSAccepted": false,
+  "ingressBinding": "R1049 actual loopback HTTP, not IIS/TLS",
+  "normalAuthenticatedUIAccepted": false,
+  "newBusinessRowsSubmitted": false,
+  "codeRestored": true,
+  "pointerRestored": true,
+  "metadataRestored": true,
+  "protectedConfigurationAndInstallationPinsKept": true,
+  "successfulCIMOwnedGReferences": 0,
+  "allOwnedControllerHandlesTerminal": true,
+  "publicChanged": false,
+  "fullCloneReady": false
+}
