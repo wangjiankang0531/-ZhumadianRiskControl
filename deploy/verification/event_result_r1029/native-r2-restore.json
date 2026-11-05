@@ -1,0 +1,18 @@
+{
+  "APIsMocked": false,
+  "R1NativeUIFunctionalProofRetainedButNotCountedAsFreshR2CRUD": true,
+  "actualJobDescendantsZero": true,
+  "actualR2NormalSixComponentLifecycles": 1,
+  "actualR2UnmockedPoolMapperInitializerAndFilePreflights": 2,
+  "actualSparseServiceUpdateIISTLSOrPublicAcceptance": false,
+  "at": "2026-11-05T09:58:49.391652+08:00",
+  "controllerAndAllSixExit0BeforeJobClose": true,
+  "currentOriginalCodeAndCachePreimagesMatched": 1427,
+  "currentScopedElevatedCIMSucceededAndReferencesZero": true,
+  "fullCloneReady": false,
+  "newBusinessWrites": 0,
+  "normalNonadminOriginalUIReadOnlyChecks": 8,
+  "originalPrivateConfigurationInstallationAndDurablePointerRestored": true,
+  "passed": true,
+  "samePreviouslyDeletedRepairValidationRecordNotRecreated": true
+}

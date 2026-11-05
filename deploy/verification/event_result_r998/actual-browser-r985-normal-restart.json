@@ -1,0 +1,158 @@
+{
+  "passed": false,
+  "phase": "normal-restart",
+  "stage": "second-tab-original-delete-cancel",
+  "type": "OWN_EVENT_UI_TIMEOUT",
+  "cases": [
+    {
+      "case": "normal-nonadmin-original-login",
+      "passed": true
+    },
+    {
+      "case": "normal-six-component-restart-retains-same-event-edit",
+      "passed": true
+    },
+    {
+      "case": "first-tab-unsaved-input-entered",
+      "passed": true
+    }
+  ],
+  "requests": [
+    {
+      "path": "/zhumadian/api/jnpf/oauth/ImageCode/4/0.18611105911093317",
+      "method": "GET",
+      "status": 200,
+      "nonJSON": true
+    },
+    {
+      "path": "/zhumadian/api/jnpf/oauth/Login",
+      "method": "POST",
+      "status": 200,
+      "code": 200,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/jnpf/oauth/CurrentUser",
+      "method": "GET",
+      "status": 200,
+      "code": 200,
+      "booleanResult": null,
+      "normalOwnUserMatched": true
+    },
+    {
+      "path": "/zhumadian/api/jnpf/system/DictionaryData/getInfo",
+      "method": "GET",
+      "status": 200,
+      "code": 200,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/jnpf/system/DictionaryData/getInfo",
+      "method": "GET",
+      "status": 200,
+      "code": 200,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/jnpf/system/DictionaryData/getInfo",
+      "method": "GET",
+      "status": 200,
+      "code": 200,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/serv/eventInfo/getPage",
+      "method": "GET",
+      "status": 200,
+      "code": 0,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/jnpf/oauth/CurrentUser",
+      "method": "GET",
+      "status": 200,
+      "code": 200,
+      "booleanResult": null,
+      "normalOwnUserMatched": true
+    },
+    {
+      "path": "/zhumadian/api/jnpf/system/DictionaryData/getInfo",
+      "method": "GET",
+      "status": 200,
+      "code": 200,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/jnpf/system/DictionaryData/getInfo",
+      "method": "GET",
+      "status": 200,
+      "code": 200,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/jnpf/system/DictionaryData/getInfo",
+      "method": "GET",
+      "status": 200,
+      "code": 200,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/serv/eventInfo/getPage",
+      "method": "GET",
+      "status": 200,
+      "code": 0,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/serv/eventInfo/getPage",
+      "method": "GET",
+      "status": 200,
+      "code": 0,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/jnpf/system/DictionaryData/getInfo",
+      "method": "GET",
+      "status": 200,
+      "code": 200,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/jnpf/system/DictionaryData/getInfo",
+      "method": "GET",
+      "status": 200,
+      "code": 200,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/jnpf/system/DictionaryData/getInfo",
+      "method": "GET",
+      "status": 200,
+      "code": 200,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/serv/eventInfo/getById",
+      "method": "GET",
+      "status": 200,
+      "code": 0,
+      "booleanResult": null
+    },
+    {
+      "path": "/zhumadian/api/jnpf/oauth/ImageCode/4/0.7492818964423591",
+      "method": "GET",
+      "status": 200,
+      "nonJSON": true
+    },
+    {
+      "path": "/zhumadian/api/jnpf/file/Image/userAvatar/",
+      "method": "GET",
+      "status": 200,
+      "nonJSON": true
+    }
+  ],
+  "exceptions": [],
+  "eventCreatesObserved": 0,
+  "APIsMocked": false,
+  "fullCloneReady": false
+}

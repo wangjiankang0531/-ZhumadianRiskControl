@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "attempts": [
+    {
+      "attempt": 979,
+      "passed": false,
+      "lifecycleCount": 1,
+      "normalAllSixAndControllerExit0ActualJob0": true,
+      "firstPhaseEventCreates": 0,
+      "maxControllerPrivateCommitBytes": 2936074240
+    },
+    {
+      "attempt": 982,
+      "passed": false,
+      "lifecycleCount": 1,
+      "normalAllSixAndControllerExit0ActualJob0": true,
+      "firstPhaseEventCreates": 0,
+      "maxControllerPrivateCommitBytes": 3101446144
+    },
+    {
+      "attempt": 985,
+      "passed": false,
+      "lifecycleCount": 2,
+      "normalAllSixAndControllerExit0ActualJob0": true,
+      "firstPhaseEventCreates": 1,
+      "maxControllerPrivateCommitBytes": 3312140288
+    },
+    {
+      "attempt": 990,
+      "passed": false,
+      "lifecycleCount": 1,
+      "normalAllSixAndControllerExit0ActualJob0": true,
+      "firstPhaseEventCreates": 0,
+      "maxControllerPrivateCommitBytes": 3248218112
+    }
+  ],
+  "originalCodeAndCachePathsMatched": 1427,
+  "originalConfigurationInstallationAndThreeDurablePointerPreimagesMatched": true,
+  "actualOwnGProcessReferences": 0,
+  "forceTerminationUsed": false,
+  "dataOrRecordsResetClonedOrReplaced": false,
+  "publicOrDesktopTouched": false,
+  "nativeEventCRUDProductAcceptance": false,
+  "fullCloneReady": false,
+  "singleExistingEventNoRecreationAcrossAllAttempts": true
+}

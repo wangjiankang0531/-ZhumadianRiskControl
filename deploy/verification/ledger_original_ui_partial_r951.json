@@ -1,0 +1,69 @@
+{
+  "at": "2026-11-04T22:14:51.585391+08:00",
+  "attempts": [
+    {
+      "revision": 941,
+      "passed": false,
+      "failedStage": "normal-security-login-to-original-ledger",
+      "type": "OWN_LEDGER_OBSERVATION_TIMEOUT",
+      "cases": [],
+      "generationRequests": 0,
+      "normalSixComponentAndBrowserExitVerified": true,
+      "codePrivateConfigurationAndPointerRestored": true
+    },
+    {
+      "revision": 946,
+      "passed": false,
+      "failedStage": "fresh-original-ledger-navigation",
+      "type": "OWN_LEDGER_OBSERVATION_TIMEOUT",
+      "cases": [],
+      "generationRequests": 0,
+      "normalSixComponentAndBrowserExitVerified": true,
+      "codePrivateConfigurationAndPointerRestored": true
+    },
+    {
+      "revision": 948,
+      "passed": false,
+      "failedStage": "original-pdf-download-button",
+      "type": "OWN_LEDGER_OBSERVATION_TIMEOUT",
+      "cases": [
+        {
+          "case": "original-security-normal-nonadmin-login-and-native-ledger-route",
+          "passed": true
+        },
+        {
+          "case": "normal-native-record-found-by-original-search",
+          "passed": true
+        },
+        {
+          "case": "cancel-original-supervision-dialog-causes-no-generation",
+          "passed": true
+        },
+        {
+          "case": "original-ledger-button-confirms-once-and-becomes-disabled-after-success",
+          "passed": true
+        },
+        {
+          "case": "original-detail-link-opens-drawer-and-renders-real-PDF-canvas-without-auth-injection",
+          "passed": true
+        }
+      ],
+      "generationRequests": 1,
+      "normalSixComponentAndBrowserExitVerified": true,
+      "codePrivateConfigurationAndPointerRestored": true
+    }
+  ],
+  "routeCause": "own synthetic fixture duplicated existing root path; original converter skips second whole branch",
+  "actualCompiledRouteConversionReproduced": true,
+  "onlyOneOwnMetadataPathCorrected": true,
+  "originalAuthRouterAndProductUnchanged": true,
+  "actualNormalNativeLedgerButtonGeneratedOnce": true,
+  "cancelGeneratedNothing": true,
+  "actualDetailPDFCanvasRendered": true,
+  "originalDownloadDOMClickTimedOutAndCauseStillUnderTest": true,
+  "nextR950ReusesOnlySameRecordAndPDFReadOnly": true,
+  "nextR950TerminalOrPassedNotYetClaimed": true,
+  "publicR47PreflightResultStillNotReceived": true,
+  "publicOrDesktopUsed": false,
+  "fullCloneReady": false
+}

@@ -1,0 +1,12 @@
+{
+  "passed": false,
+  "phase": "first-start",
+  "stage": "normal-original-login",
+  "type": "OWN_UI_EVALUATION",
+  "cases": [],
+  "requests": [],
+  "exceptions": [],
+  "eventCreatesObserved": 0,
+  "APIsMocked": false,
+  "fullCloneReady": false
+}

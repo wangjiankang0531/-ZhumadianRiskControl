@@ -1,0 +1,14 @@
+{
+  "noServerInstallationOrGitPush": true,
+  "otherThreadRealtimeNotificationClaimed": false,
+  "sharedAcknowledgementsWritten": [
+    {
+      "path": "D:\\Project\\Zhumadian\\Document\\Coordination\\交接消息\\驻马店3已读D75协同候选_20261105_r1017.json",
+      "sha256": "2ecd89bca857ba0f67b954efc3d142263f9289527c9d02ee0abe45a454b9ffcd"
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\Document\\Coordination\\交接消息\\驻马店3已读D76协同候选_20261105_r1017.json",
+      "sha256": "eb19ee0f722bcfa62d64dce65d901072b9faf8165c2e6dde0f8962571e79b22b"
+    }
+  ]
+}

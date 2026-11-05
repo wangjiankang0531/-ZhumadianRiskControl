@@ -1,0 +1,75 @@
+{
+  "actualApplyUpdateServiceIISOrTLSLifecycleExecuted": false,
+  "cases": [
+    {
+      "actualBackupReplaceRestoreFunctionsUnmodified": true,
+      "allCodePreimagesRestored": true,
+      "base": "r45",
+      "changedAndRetiredPaths": 362,
+      "mode": "normal",
+      "passed": true
+    },
+    {
+      "actualBackupReplaceRestoreFunctionsUnmodified": true,
+      "allCodePreimagesRestored": true,
+      "base": "r45",
+      "changedAndRetiredPaths": 362,
+      "mode": "fourth-write-fault",
+      "passed": true
+    },
+    {
+      "actualBackupReplaceRestoreFunctionsUnmodified": true,
+      "allCodePreimagesRestored": true,
+      "base": "r45",
+      "changedAndRetiredPaths": 362,
+      "mode": "concurrent-edit-refused",
+      "passed": true
+    },
+    {
+      "actualBackupReplaceRestoreFunctionsUnmodified": true,
+      "allCodePreimagesRestored": true,
+      "base": "r45",
+      "changedAndRetiredPaths": 362,
+      "mode": "backup-drift-refused",
+      "passed": true
+    },
+    {
+      "actualBackupReplaceRestoreFunctionsUnmodified": true,
+      "allCodePreimagesRestored": true,
+      "base": "r47",
+      "changedAndRetiredPaths": 355,
+      "mode": "normal",
+      "passed": true
+    },
+    {
+      "actualBackupReplaceRestoreFunctionsUnmodified": true,
+      "allCodePreimagesRestored": true,
+      "base": "r47",
+      "changedAndRetiredPaths": 355,
+      "mode": "fourth-write-fault",
+      "passed": true
+    },
+    {
+      "actualBackupReplaceRestoreFunctionsUnmodified": true,
+      "allCodePreimagesRestored": true,
+      "base": "r47",
+      "changedAndRetiredPaths": 355,
+      "mode": "concurrent-edit-refused",
+      "passed": true
+    },
+    {
+      "actualBackupReplaceRestoreFunctionsUnmodified": true,
+      "allCodePreimagesRestored": true,
+      "base": "r47",
+      "changedAndRetiredPaths": 355,
+      "mode": "backup-drift-refused",
+      "passed": true
+    }
+  ],
+  "checks": 8,
+  "fullCloneReady": false,
+  "onlyOwnedProgramFixtureTargetAndSyntheticPrivateMetadataBindingsAdapted": true,
+  "passed": true,
+  "realBusinessDatabaseUploadsCredentialsGISAndUserDataNotCopiedOrChanged": true,
+  "realFileReadersHashBackupReplaceAndRestoreFunctionsNotMocked": true
+}

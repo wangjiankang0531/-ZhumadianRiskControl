@@ -1,0 +1,134 @@
+{
+  "passed": false,
+  "failure": {
+    "phase": "normal-original-model-setup-normal-restart",
+    "type": "AssertionError"
+  },
+  "actualTwoSixComponentLifecycles": true,
+  "health": [
+    {
+      "phase": "first-start",
+      "exactR47UpdaterAndCoreUsed": true,
+      "originalReleaseHealthRetained": true,
+      "supervisionReadinessRequired": true,
+      "onlySixOwnLoopbackNotificationSettingsChanged": true,
+      "publicIISOrTLSAccepted": false
+    },
+    {
+      "phase": "normal-restart",
+      "exactR47UpdaterAndCoreUsed": true,
+      "originalReleaseHealthRetained": true,
+      "supervisionReadinessRequired": true,
+      "onlySixOwnLoopbackNotificationSettingsChanged": true,
+      "publicIISOrTLSAccepted": false
+    }
+  ],
+  "terminals": [
+    {
+      "jobMemoryBudget": {
+        "limitFlags": 512,
+        "jobCommitLimitBytes": 4294967296,
+        "reportedPeakJobMemoryBytes": 3312140288,
+        "reportedPeakProcessMemoryBytes": 1201410048,
+        "activeProcesses": 0,
+        "totalProcesses": 21,
+        "terminateOnCloseOrBreakawayEnabled": false
+      },
+      "phase": "first-start",
+      "controllerExitCode": 0,
+      "allOwnedChildrenExited": true,
+      "actualJobDescendantsZero": true,
+      "normalOwnedShutdown": true,
+      "exitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      },
+      "forceTerminationUsed": false
+    },
+    {
+      "jobMemoryBudget": {
+        "limitFlags": 512,
+        "jobCommitLimitBytes": 4294967296,
+        "reportedPeakJobMemoryBytes": 3100471296,
+        "reportedPeakProcessMemoryBytes": 1197719552,
+        "activeProcesses": 0,
+        "totalProcesses": 21,
+        "terminateOnCloseOrBreakawayEnabled": false
+      },
+      "phase": "normal-restart",
+      "controllerExitCode": 0,
+      "allOwnedChildrenExited": true,
+      "actualJobDescendantsZero": true,
+      "normalOwnedShutdown": true,
+      "exitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      },
+      "forceTerminationUsed": false
+    }
+  ],
+  "codeRestored": true,
+  "privateConfigurationRestored": true,
+  "onlySixOwnReceiverURLsChanged": true,
+  "actualLoopbackDeliveryReceipts": 0,
+  "realExternalDeliveryAccepted": false,
+  "originalCurrentPointerRestored": true,
+  "originalPrivateConfigurationAndInstallationIdentityRestored": true,
+  "dataDirectoriesNeverClonedOrReplaced": true,
+  "actualOriginalEventCRUDAndNormalRestart": false,
+  "businessChecks": [
+    {
+      "passed": true,
+      "phase": "first-start",
+      "cases": [
+        {
+          "case": "normal-nonadmin-original-login",
+          "passed": true
+        },
+        {
+          "case": "new-own-event-name-not-reused",
+          "passed": true
+        },
+        {
+          "case": "one-native-event-created-with-original-defaults-and-map-coordinate",
+          "passed": true
+        },
+        {
+          "case": "original-update-returns-true",
+          "passed": true
+        },
+        {
+          "case": "full-editor-refresh-retains-successful-edit",
+          "passed": true
+        },
+        {
+          "case": "no-original-compiled-UI-uncaught-exceptions",
+          "passed": true
+        }
+      ],
+      "eventCreatesObserved": 1,
+      "APIsMocked": false,
+      "allMutationsThroughNormalOriginalUI": true,
+      "normalBrowserAndActualDescendantsExited": true,
+      "fullCloneReady": false
+    }
+  ],
+  "normalOriginalEventCRUDAndRestartAccepted": false,
+  "actualIISTLSOrPublicAccepted": false,
+  "maxActualBackupAtomicPathCharacters": 203,
+  "boundedControllerPrivateCommitBytes": 4294967296,
+  "startupPhysicalAndCommitRequirementBytes": 7516192768,
+  "completeCompiledOnlineFrontendUsed": true,
+  "durablePointerBeforeSnapshotUsed": true,
+  "exactRunOwnerReceiptSelectionUsed": true,
+  "desktopUsed": false,
+  "fullCloneReady": false
+}

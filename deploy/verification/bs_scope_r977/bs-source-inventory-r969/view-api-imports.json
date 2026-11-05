@@ -1,0 +1,5182 @@
+[
+  {
+    "portal": "security",
+    "view": "views/antiTerrorismLedger/index.vue",
+    "apiModule": "@/api/antiTerrorismLedger",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/antiTerrorismLedger/index.vue",
+    "apiModule": "@/api/antiTerrorismLedger",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/antiTerrorismLedger/index.vue",
+    "apiModule": "@/api/antiTerrorismLedger",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/antiTerrorismLedger/index.vue",
+    "apiModule": "@/api/antiTerrorismLedger",
+    "exported": "getEmergencyPlan",
+    "localBinding": "getEmergencyPlan",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/antiTerrorismLedger/info/addOrEdit.vue",
+    "apiModule": "@/api/antiTerrorismLedger",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/antiTerrorismLedger/info/addOrEdit.vue",
+    "apiModule": "@/api/antiTerrorismLedger",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/antiTerrorismLedger/info/addOrEdit.vue",
+    "apiModule": "@/api/antiTerrorismLedger",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/antiTerrorismLedger/info/addOrEdit.vue",
+    "apiModule": "@/api/antiTerrorismLedger",
+    "exported": "getEmergencyPlan",
+    "localBinding": "getEmergencyPlan",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/antiTerrorismLedger/info/detail.vue",
+    "apiModule": "@/api/antiTerrorismLedger",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/antiTerrorismLedger/info/detail.vue",
+    "apiModule": "@/api/antiTerrorismLedger",
+    "exported": "getEmergencyPlan",
+    "localBinding": "getEmergencyPlan",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/dashboard/analysis/components/hot-search.vue",
+    "apiModule": "@/api/dashboard/analysis",
+    "exported": "getWordCloudList",
+    "localBinding": "getWordCloudList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/dashboard/analysis/components/sale-card.vue",
+    "apiModule": "@/api/dashboard/analysis",
+    "exported": "getSaleroomList",
+    "localBinding": "getSaleroomList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/dashboard/analysis/components/sale-card.vue",
+    "apiModule": "@/api/dashboard/analysis/model",
+    "exported": "SaleroomData",
+    "localBinding": "SaleroomData",
+    "scriptReferenceCount": 2,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/dashboard/analysis/components/statistics-card.vue",
+    "apiModule": "@/api/dashboard/analysis",
+    "exported": "getPayNumList",
+    "localBinding": "getPayNumList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/dashboard/analysis/components/visit-hour.vue",
+    "apiModule": "@/api/dashboard/analysis",
+    "exported": "getVisitHourList",
+    "localBinding": "getVisitHourList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/dashboard/monitor/components/browser-card.vue",
+    "apiModule": "@/api/dashboard/monitor",
+    "exported": "getBrowserCountList",
+    "localBinding": "getBrowserCountList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/dashboard/monitor/components/map-card.vue",
+    "apiModule": "@/api/dashboard/monitor",
+    "exported": "getChinaMapData",
+    "localBinding": "getChinaMapData",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/dashboard/monitor/components/map-card.vue",
+    "apiModule": "@/api/dashboard/monitor",
+    "exported": "getUserCountList",
+    "localBinding": "getUserCountList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/dashboard/monitor/components/map-card.vue",
+    "apiModule": "@/api/dashboard/monitor/model",
+    "exported": "UserCount",
+    "localBinding": "UserCount",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/atmosphericPollutants/index.vue",
+    "apiModule": "@/api/ep/atmosphericPollutants",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/atmosphericPollutants/index.vue",
+    "apiModule": "@/api/ep/atmosphericPollutants",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/atmosphericPollutants/index.vue",
+    "apiModule": "@/api/ep/atmosphericPollutants",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/atmosphericPollutants/index.vue",
+    "apiModule": "@/api/ep/atmosphericPollutants",
+    "exported": "downloadTemplate",
+    "localBinding": "downloadTemplate",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/atmosphericPollutants/index.vue",
+    "apiModule": "@/api/ep/atmosphericPollutants",
+    "exported": "importExcel",
+    "localBinding": "importExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/atmosphericPollutants/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/atmosphericPollutants",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/atmosphericPollutants/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/atmosphericPollutants",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/atmosphericPollutants/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/atmosphericPollutants",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/atmosphericPollutants/info/detail.vue",
+    "apiModule": "@/api/ep/atmosphericPollutants",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/detectingAlarms/index.vue",
+    "apiModule": "@/api/ep/detectingAlarms",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/detectingAlarms/index.vue",
+    "apiModule": "@/api/ep/detectingAlarms",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/detectingAlarms/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/detectingAlarms",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/detectingAlarms/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/detectingAlarms",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/detectingAlarms/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/detectingAlarms",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/detectingAlarms/info/detail.vue",
+    "apiModule": "@/api/ep/detectingAlarms",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/environmentReport/index.vue",
+    "apiModule": "@/api/ep/environmentReport",
+    "exported": "getAnalysis1",
+    "localBinding": "getAnalysis1",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/environmentReport/index.vue",
+    "apiModule": "@/api/ep/environmentReport",
+    "exported": "getAnalysis2",
+    "localBinding": "getAnalysis2",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/environmentReport/index.vue",
+    "apiModule": "@/api/ep/environmentReport",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/environmentReport/index.vue",
+    "apiModule": "@/api/ep/environmentReport",
+    "exported": "getAnalysis3",
+    "localBinding": "getAnalysis3",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/groundwaterPollutants/index.vue",
+    "apiModule": "@/api/ep/groundwaterPollutants",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/groundwaterPollutants/index.vue",
+    "apiModule": "@/api/ep/groundwaterPollutants",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/groundwaterPollutants/index.vue",
+    "apiModule": "@/api/ep/groundwaterPollutants",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/groundwaterPollutants/index.vue",
+    "apiModule": "@/api/ep/groundwaterPollutants",
+    "exported": "downloadTemplate",
+    "localBinding": "downloadTemplate",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/groundwaterPollutants/index.vue",
+    "apiModule": "@/api/ep/groundwaterPollutants",
+    "exported": "importExcel",
+    "localBinding": "importExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/groundwaterPollutants/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/groundwaterPollutants",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/groundwaterPollutants/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/groundwaterPollutants",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/groundwaterPollutants/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/groundwaterPollutants",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/groundwaterPollutants/info/detail.vue",
+    "apiModule": "@/api/ep/groundwaterPollutants",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/soilPollutants/index.vue",
+    "apiModule": "@/api/ep/soilPollutants",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/soilPollutants/index.vue",
+    "apiModule": "@/api/ep/soilPollutants",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/soilPollutants/index.vue",
+    "apiModule": "@/api/ep/soilPollutants",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/soilPollutants/index.vue",
+    "apiModule": "@/api/ep/soilPollutants",
+    "exported": "downloadTemplate",
+    "localBinding": "downloadTemplate",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/soilPollutants/index.vue",
+    "apiModule": "@/api/ep/soilPollutants",
+    "exported": "importExcel",
+    "localBinding": "importExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/soilPollutants/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/soilPollutants",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/soilPollutants/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/soilPollutants",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/soilPollutants/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/soilPollutants",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/soilPollutants/info/detail.vue",
+    "apiModule": "@/api/ep/soilPollutants",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/waterPollutants/index.vue",
+    "apiModule": "@/api/ep/waterPollutants",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/waterPollutants/index.vue",
+    "apiModule": "@/api/ep/waterPollutants",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/waterPollutants/index.vue",
+    "apiModule": "@/api/ep/waterPollutants",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/waterPollutants/index.vue",
+    "apiModule": "@/api/ep/waterPollutants",
+    "exported": "downloadTemplate",
+    "localBinding": "downloadTemplate",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/waterPollutants/index.vue",
+    "apiModule": "@/api/ep/waterPollutants",
+    "exported": "importExcel",
+    "localBinding": "importExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/waterPollutants/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/waterPollutants",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/waterPollutants/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/waterPollutants",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/waterPollutants/info/addOrEdit.vue",
+    "apiModule": "@/api/ep/waterPollutants",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/ep/waterPollutants/info/detail.vue",
+    "apiModule": "@/api/ep/waterPollutants",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentAlarm/index.vue",
+    "apiModule": "@/api/equipment/equipmentAlarm",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentAlarm/index.vue",
+    "apiModule": "@/api/equipment/equipmentAlarm",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentAlarm/info/addOrEdit.vue",
+    "apiModule": "@/api/equipment/equipmentAlarm",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentAlarm/info/addOrEdit.vue",
+    "apiModule": "@/api/equipment/equipmentAlarm",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentAlarm/info/addOrEdit.vue",
+    "apiModule": "@/api/equipment/equipmentAlarm",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentAlarm/info/detail.vue",
+    "apiModule": "@/api/equipment/equipmentAlarm",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentMonitoring/index.vue",
+    "apiModule": "@/api/equipment/equipmentMonitoring",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentMonitoring/index.vue",
+    "apiModule": "@/api/equipment/equipmentMonitoring",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentMonitoring/index.vue",
+    "apiModule": "@/api/equipment/equipmentMonitoring",
+    "exported": "getEquipmentType",
+    "localBinding": "getEquipmentType",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentMonitoring/info/addOrEdit.vue",
+    "apiModule": "@/api/equipment/equipmentMonitoring",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentMonitoring/info/addOrEdit.vue",
+    "apiModule": "@/api/equipment/equipmentMonitoring",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentMonitoring/info/addOrEdit.vue",
+    "apiModule": "@/api/equipment/equipmentMonitoring",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/equipmentMonitoring/info/detail.vue",
+    "apiModule": "@/api/equipment/equipmentMonitoring",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/meteorologicalData/index.vue",
+    "apiModule": "@/api/equipment/meteorologicalData",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/equipment/tempHumData/index.vue",
+    "apiModule": "@/api/equipment/tempHumData",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkInventory/components/List/InspectionDialog.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkItems",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkInventory/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkInventory",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkInventory/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkInventory",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkInventory/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkInventory",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkInventory/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkInventory",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkInventory/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkInventory",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkInventory/info/detail.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkInventory",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkItems/components/InspectionStandardDialog.vue",
+    "apiModule": "@/api/safetyBasic/inspectionStandard",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkItems/components/RiskListDialog.vue",
+    "apiModule": "@/api/hiddenInvestigate/riskAnalysisUnit",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkItems/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkItems",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkItems/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkItems",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkItems/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkItems",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkItems/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkItems",
+    "exported": "downloadTemplate",
+    "localBinding": "downloadTemplate",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkItems/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkItems",
+    "exported": "importExcel",
+    "localBinding": "importExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkItems/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkItems",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkItems/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkItems",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkItems/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkItems",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkItems/info/detail.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkItems",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkPlans/components/List/InspectionDialog.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkItems",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkPlans/components/List/TroubleshootDialog.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkInventory",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkPlans/components/List/TroubleshootDialog.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkInventory",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkPlans/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkPlans/index",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkPlans/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkPlans/index",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkPlans/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkPlans",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkPlans/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkPlans",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkPlans/info/addOrEdit.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkPlans/info/detail.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/checkPlans/info/detail.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkPlans",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hazardInvestigation/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkPlans",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hazardInvestigation/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkPlans",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hazardInvestigation/info/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/hazardInvestigation",
+    "exported": "details",
+    "localBinding": "details",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hazardInvestigation/info/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/hazardInvestigation",
+    "exported": "submit",
+    "localBinding": "submit",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hazardInvestigation/info/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/hazardInvestigation",
+    "exported": "rowSave",
+    "localBinding": "rowSave",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hazardInvestigation/info/index.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Distribution/components/dialog.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "distribution",
+    "localBinding": "distribution",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Distribution/components/dialog.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Distribution/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Distribution/info/distribution.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Distribution/info/distribution.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "distribution",
+    "localBinding": "distribution",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Distribution/info/distribution.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Distribution/info/distributionDetail.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Distribution/info/distributionEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Distribution/info/distributionEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Rectification/formData.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "hiddenDangerDetails",
+    "localBinding": "hiddenDangerDetails",
+    "scriptReferenceCount": 2,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Rectification/formData.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "correctHidden",
+    "localBinding": "correctHidden",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Rectification/formData.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "updateHidden",
+    "localBinding": "updateHidden",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Rectification/formData.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "getByCheckHiddenDangerId",
+    "localBinding": "getByCheckHiddenDangerId",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Rectification/formData.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Rectification/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "getPageList",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Rectification/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "withdraw",
+    "localBinding": "withdraw",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Rectification/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "supervise",
+    "localBinding": "supervise",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/hiddenHandle/components/Reexamine/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "getPageList",
+    "localBinding": "getPageList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/perilLedger/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/perilLedger",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/perilLedger/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/perilLedger",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/perilLedger/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/perilLedger",
+    "exported": "sendMessage",
+    "localBinding": "sendMessage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/perilLedger/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/perilLedger",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/perilLedger/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "supervise",
+    "localBinding": "supervise",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/perilLedger/index.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "getDockLogList",
+    "localBinding": "getDockLogList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/perilLedger/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/perilLedger",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/perilLedger/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/perilLedger",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/perilLedger/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/perilLedger",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/perilLedger/info/addOrEdit.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getUserListByDepartmentId",
+    "localBinding": "getUserListByDepartmentId",
+    "scriptReferenceCount": 2,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/perilLedger/info/detail.vue",
+    "apiModule": "@/api/hiddenInvestigate/perilLedger",
+    "exported": "getVoById",
+    "localBinding": "getVoById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/perilLedger/info/detail.vue",
+    "apiModule": "@/api/hiddenInvestigate/hiddenHandle",
+    "exported": "getByCheckHiddenDangerId",
+    "localBinding": "getByCheckHiddenDangerId",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/riskAnalysisUnit/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/riskAnalysisUnit",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/riskAnalysisUnit/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/riskAnalysisUnit",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/riskAnalysisUnit/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/riskAnalysisUnit",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/riskAnalysisUnit/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/riskAnalysisUnit",
+    "exported": "downloadTemplate",
+    "localBinding": "downloadTemplate",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/riskAnalysisUnit/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/riskAnalysisUnit",
+    "exported": "importExcel",
+    "localBinding": "importExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/riskAnalysisUnit/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/riskAnalysisUnit",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/riskAnalysisUnit/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/riskAnalysisUnit",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/riskAnalysisUnit/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/riskAnalysisUnit",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/riskAnalysisUnit/info/addOrEdit.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/riskAnalysisUnit/info/detail.vue",
+    "apiModule": "@/api/hiddenInvestigate/riskAnalysisUnit",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/safetyInspectionRecords/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/safetyInspectionRecords",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/safetyInspectionRecords/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/safetyInspectionRecords",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/safetyInspectionRecords/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/safetyInspectionRecords",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/safetyInspectionRecords/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/safetyInspectionRecords",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/safetyInspectionRecords/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/safetyInspectionRecords",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/safetyInspectionRecords/info/detail.vue",
+    "apiModule": "@/api/hiddenInvestigate/safetyInspectionRecords",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/safetyInspectionRecords/userSelect.vue",
+    "apiModule": "@/api/workFlow/user",
+    "exported": "getImUserSelector",
+    "localBinding": "getImUserSelector",
+    "scriptReferenceCount": 2,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/safetyInspectionRecords/userSelect.vue",
+    "apiModule": "@/api/workFlow/user",
+    "exported": "getOrganization",
+    "localBinding": "getOrganization",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/safetyInspectionRecords/userSelect.vue",
+    "apiModule": "@/api/workFlow/user",
+    "exported": "getSubordinates",
+    "localBinding": "getSubordinates",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/specialTask/components/List1/InfoDialog.vue",
+    "apiModule": "@/api/hiddenInvestigate/specialTask",
+    "exported": "getCheckItemById",
+    "localBinding": "getCheckItemById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/specialTask/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/specialTask",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/specialTask/info/detail.vue",
+    "apiModule": "@/api/hiddenInvestigate/specialTask",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/components/List/InspectionDialog.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkItems",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/components/List/TroubleshootDialog.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkInventory",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/components/List/TroubleshootDialog.vue",
+    "apiModule": "@/api/hiddenInvestigate/checkInventory",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/timingCheckPlans/index",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/index.vue",
+    "apiModule": "@/api/hiddenInvestigate/timingCheckPlans/index",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/timingCheckPlans",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/timingCheckPlans",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/timingCheckPlans",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/info/addOrEdit.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/info/addOrEdit.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getUserListByDepartmentId",
+    "localBinding": "getUserListByDepartmentId",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/info/addOrEdit.vue",
+    "apiModule": "@/api/hiddenInvestigate/specialTask",
+    "exported": "translate",
+    "localBinding": "translate",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/info/detail.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/hiddenInvestigate/timingCheckPlans/info/detail.vue",
+    "apiModule": "@/api/hiddenInvestigate/timingCheckPlans",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/home/index.vue",
+    "apiModule": "@/api/layout",
+    "exported": "getUserInfo",
+    "localBinding": "getUserInfo",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/inspectionPoint/index.vue",
+    "apiModule": "@/api/intelligentInspection/inspectionPoint",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/inspectionPoint/index.vue",
+    "apiModule": "@/api/intelligentInspection/inspectionPoint",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/inspectionPoint/index.vue",
+    "apiModule": "@/api/intelligentInspection/inspectionPoint",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/inspectionPoint/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/inspectionPoint",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/inspectionPoint/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/inspectionPoint",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/inspectionPoint/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/inspectionPoint",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/inspectionPoint/info/detail.vue",
+    "apiModule": "@/api/intelligentInspection/inspectionPoint",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/ledger/index.vue",
+    "apiModule": "@/api/intelligentInspection/ledger",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/ledger/index.vue",
+    "apiModule": "@/api/intelligentInspection/ledger",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/ledger/index.vue",
+    "apiModule": "@/api/intelligentInspection/ledger",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/ledger/index.vue",
+    "apiModule": "@/api/intelligentInspection/ledger",
+    "exported": "transferToHazard",
+    "localBinding": "transferToHazard",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/ledger/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/ledger",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/ledger/info/components/CheckPointDialog.vue",
+    "apiModule": "@/api/intelligentInspection/inspectionPoint",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/ledger/info/components/CheckTaskDialog.vue",
+    "apiModule": "@/api/intelligentInspection/task",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/ledger/info/components/DistributeDialog.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getUserListByDepartmentId",
+    "localBinding": "getUserListByDepartmentId",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/ledger/info/detail.vue",
+    "apiModule": "@/api/intelligentInspection/ledger",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/ledger/info/dispose.vue",
+    "apiModule": "@/api/intelligentInspection/ledger",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 2,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/ledger/info/dispose.vue",
+    "apiModule": "@/api/intelligentInspection/ledger",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/personnel/index.vue",
+    "apiModule": "@/api/intelligentInspection/personnel",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/personnel/index.vue",
+    "apiModule": "@/api/intelligentInspection/personnel",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/personnel/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/personnel",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/personnel/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/personnel",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/personnel/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/personnel",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/personnel/info/addOrEdit.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/personnel/info/detail.vue",
+    "apiModule": "@/api/intelligentInspection/personnel",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/responsibility/components/CheckUserDialog.vue",
+    "apiModule": "@/api/intelligentInspection/responsibility",
+    "exported": "postPerson",
+    "localBinding": "postPerson",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/responsibility/components/CheckUserDialog.vue",
+    "apiModule": "@/api/intelligentInspection/personnel",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/responsibility/components/PostDutyDialog.vue",
+    "apiModule": "@/api/intelligentInspection/responsibility",
+    "exported": "postDuty",
+    "localBinding": "postDuty",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/responsibility/components/TreeFilter.vue",
+    "apiModule": "@/api/intelligentInspection/responsibility",
+    "exported": "post",
+    "localBinding": "post",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/responsibility/index.vue",
+    "apiModule": "@/api/intelligentInspection/responsibility",
+    "exported": "postDuty",
+    "localBinding": "postDuty",
+    "scriptReferenceCount": 2,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/responsibility/index.vue",
+    "apiModule": "@/api/intelligentInspection/responsibility",
+    "exported": "postPerson",
+    "localBinding": "postPerson",
+    "scriptReferenceCount": 2,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/routing/index.vue",
+    "apiModule": "@/api/intelligentInspection/routing",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/routing/index.vue",
+    "apiModule": "@/api/intelligentInspection/routing",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/routing/index.vue",
+    "apiModule": "@/api/intelligentInspection/routing",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/routing/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/routing",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/routing/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/routing",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/routing/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/routing",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/routing/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/inspectionPoint",
+    "exported": "getAll",
+    "localBinding": "getAll",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/routing/info/detail.vue",
+    "apiModule": "@/api/intelligentInspection/routing",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/components/DataItem/index.vue",
+    "apiModule": "@/api/intelligentInspection/task",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/components/List/CheckRouteDialog.vue",
+    "apiModule": "@/api/intelligentInspection/routing",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/components/List/index.vue",
+    "apiModule": "@/api/intelligentInspection/routing",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/components/List/PointLineMapDialog.vue",
+    "apiModule": "@/api/intelligentInspection/inspectionPoint",
+    "exported": "getAll",
+    "localBinding": "getAll",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/index.vue",
+    "apiModule": "@/api/intelligentInspection/task",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/index.vue",
+    "apiModule": "@/api/intelligentInspection/task",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/task",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/task",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/task",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/info/addOrEdit.vue",
+    "apiModule": "@/api//intelligentInspection/teamsGroups",
+    "exported": "getPage",
+    "localBinding": "getTeamsPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/info/addOrEdit.vue",
+    "apiModule": "@/api//intelligentInspection/personnel",
+    "exported": "getPage",
+    "localBinding": "getPersonPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/info/detail.vue",
+    "apiModule": "@/api/intelligentInspection/task",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/info/detail.vue",
+    "apiModule": "@/api//intelligentInspection/teamsGroups",
+    "exported": "getPage",
+    "localBinding": "getTeamsPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/task/info/detail.vue",
+    "apiModule": "@/api//intelligentInspection/personnel",
+    "exported": "getPage",
+    "localBinding": "getPersonPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/teamsGroups/components/CheckPerson/index.vue",
+    "apiModule": "@/api/intelligentInspection/personnel",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/teamsGroups/components/CheckPerson/TreeFilter.vue",
+    "apiModule": "@/api/intelligentInspection/personnel",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/teamsGroups/index.vue",
+    "apiModule": "@/api/intelligentInspection/teamsGroups",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/teamsGroups/index.vue",
+    "apiModule": "@/api/intelligentInspection/teamsGroups",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/teamsGroups/index.vue",
+    "apiModule": "@/api/intelligentInspection/teamsGroups",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/teamsGroups/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/teamsGroups",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/teamsGroups/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/teamsGroups",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/teamsGroups/info/addOrEdit.vue",
+    "apiModule": "@/api/intelligentInspection/teamsGroups",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/teamsGroups/info/addOrEdit.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/intelligentInspection/teamsGroups/info/detail.vue",
+    "apiModule": "@/api/intelligentInspection/teamsGroups",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/login/index.vue",
+    "apiModule": "@/api/login",
+    "exported": "login",
+    "localBinding": "login",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/hazardSource/index.vue",
+    "apiModule": "@/api/majorHazard",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/hazardSource/index.vue",
+    "apiModule": "@/api/majorHazard",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/hazardSource/index.vue",
+    "apiModule": "@/api/majorHazard",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/hazardSource/info/addOrEdit.vue",
+    "apiModule": "@/api/majorHazard",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/hazardSource/info/addOrEdit.vue",
+    "apiModule": "@/api/majorHazard",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/hazardSource/info/addOrEdit.vue",
+    "apiModule": "@/api/majorHazard",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/hazardSource/info/addOrEdit.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/hazardSource/info/detail.vue",
+    "apiModule": "@/api/majorHazard",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/statistics/index.vue",
+    "apiModule": "@/api/majorHazard",
+    "exported": "getAnalysis1",
+    "localBinding": "getAnalysis1",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/statistics/index.vue",
+    "apiModule": "@/api/majorHazard",
+    "exported": "getAnalysis2",
+    "localBinding": "getAnalysis2",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/statistics/index.vue",
+    "apiModule": "@/api/majorHazard",
+    "exported": "getAnalysis3",
+    "localBinding": "getAnalysis3",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/statistics/index.vue",
+    "apiModule": "@/api/majorHazard",
+    "exported": "getAnalysis4",
+    "localBinding": "getAnalysis4",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/majorHazard/statistics/index.vue",
+    "apiModule": "@/api/majorHazard",
+    "exported": "getAnalysis5",
+    "localBinding": "getAnalysis5",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/blacklist/index.vue",
+    "apiModule": "@/api/safetyBasic/blacklist",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/employeeTrainingInfo/components/List1/FormDialog.vue",
+    "apiModule": "@/api/work/workUserExtend",
+    "exported": "getPage",
+    "localBinding": "getWorkUserPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/employeeTrainingInfo/index.vue",
+    "apiModule": "@/api/safetyBasic/employeeTrainingInfo",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/employeeTrainingInfo/index.vue",
+    "apiModule": "@/api/safetyBasic/employeeTrainingInfo",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/employeeTrainingInfo/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/employeeTrainingInfo",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/employeeTrainingInfo/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/employeeTrainingInfo",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/employeeTrainingInfo/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/employeeTrainingInfo",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/employeeTrainingInfo/info/detail.vue",
+    "apiModule": "@/api/safetyBasic/employeeTrainingInfo",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/packBasicInfo/index.vue",
+    "apiModule": "@/api/safetyBasic/packBasicInfo",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/packBasicInfo/index.vue",
+    "apiModule": "@/api/safetyBasic/packBasicInfo",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/packBasicInfo/index.vue",
+    "apiModule": "@/api/safetyBasic/packBasicInfo",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/packBasicInfo/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/packBasicInfo",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/packBasicInfo/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/packBasicInfo",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/packBasicInfo/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/packBasicInfo",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/packBasicInfo/info/detail.vue",
+    "apiModule": "@/api/safetyBasic/packBasicInfo",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/components/index.vue",
+    "apiModule": "@/api/safetyBasic/parkSafetyManagementSystem",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/components/index.vue",
+    "apiModule": "@/api/safetyBasic/parkSafetyManagementSystem",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/components/index.vue",
+    "apiModule": "@/api/safetyBasic/parkSafetyManagementSystem",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/components/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/parkSafetyManagementSystem",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/components/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/parkSafetyManagementSystem",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/components/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/parkSafetyManagementSystem",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/components/info/detail.vue",
+    "apiModule": "@/api/safetyBasic/parkSafetyManagementSystem",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/inspectionStandard/index.vue",
+    "apiModule": "@/api/safetyBasic/inspectionStandard",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/inspectionStandard/index.vue",
+    "apiModule": "@/api/safetyBasic/inspectionStandard",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/inspectionStandard/index.vue",
+    "apiModule": "@/api/safetyBasic/inspectionStandard",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/inspectionStandard/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/inspectionStandard",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/inspectionStandard/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/inspectionStandard",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/inspectionStandard/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/inspectionStandard",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/parkSafety/inspectionStandard/info/detail.vue",
+    "apiModule": "@/api/safetyBasic/inspectionStandard",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/safetyManageFile/components/Upload.vue",
+    "apiModule": "@/api/upload",
+    "exported": "uploadFile",
+    "localBinding": "uploadFile",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/safetyManageFile/index.vue",
+    "apiModule": "@/api/safetyBasic/safetyManageFile",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/safetyManageFile/index.vue",
+    "apiModule": "@/api/safetyBasic/safetyManageFile",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/safetyManageFile/index.vue",
+    "apiModule": "@/api/safetyBasic/safetyManageFile",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/thirdPartyUnitInfo/components/Person/index.vue",
+    "apiModule": "@/api/safetyBasic/blacklist",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/thirdPartyUnitInfo/index.vue",
+    "apiModule": "@/api/safetyBasic/thirdPartyUnitInfo",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/thirdPartyUnitInfo/index.vue",
+    "apiModule": "@/api/safetyBasic/thirdPartyUnitInfo",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/thirdPartyUnitInfo/index.vue",
+    "apiModule": "@/api/safetyBasic/thirdPartyUnitInfo",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/thirdPartyUnitInfo/index.vue",
+    "apiModule": "@/api/safetyBasic/blacklist",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/thirdPartyUnitInfo/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/thirdPartyUnitInfo",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/thirdPartyUnitInfo/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/thirdPartyUnitInfo",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/thirdPartyUnitInfo/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/thirdPartyUnitInfo",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/thirdPartyUnitInfo/info/detail.vue",
+    "apiModule": "@/api/safetyBasic/thirdPartyUnitInfo",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/trainingAssessmentInfo/components/List1/FormDialog.vue",
+    "apiModule": "@/api/work/workUserExtend",
+    "exported": "getPage",
+    "localBinding": "getWorkUserPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/trainingAssessmentInfo/index.vue",
+    "apiModule": "@/api/safetyBasic/trainingAssessmentInfo",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/trainingAssessmentInfo/index.vue",
+    "apiModule": "@/api/safetyBasic/trainingAssessmentInfo",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/trainingAssessmentInfo/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/trainingAssessmentInfo",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/trainingAssessmentInfo/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/trainingAssessmentInfo",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/trainingAssessmentInfo/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/trainingAssessmentInfo",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyBasic/trainingAssessmentInfo/info/detail.vue",
+    "apiModule": "@/api/safetyBasic/trainingAssessmentInfo",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/ccbRiskAssessment/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyCommit/ccbRiskAssessment",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/ccbRiskAssessment/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyCommit/ccbRiskAssessment",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/ccbRiskAssessment/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyCommit/ccbRiskAssessment",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/ccbRiskAssessment/info/detail.vue",
+    "apiModule": "@/api/safetyCommit/ccbRiskAssessment",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/ccbRiskAssessment/tabs/Tab1/index.vue",
+    "apiModule": "@/api/safetyCommit/ccbRiskAssessment",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/ccbRiskAssessment/tabs/Tab1/index.vue",
+    "apiModule": "@/api/safetyCommit/ccbRiskAssessment",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/ccbRiskAssessment/tabs/Tab2/index.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/ccbRiskAssessment/tabs/Tab2/index.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/components/fxyp/addOrEdit.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/components/fxyp/addOrEdit.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/components/fxyp/addOrEdit.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/components/fxyp/detail.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/corporateLevel/info/addOrEdit.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/corporateLevel/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/corporateLevel/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/corporateLevel/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/corporateLevel/info/detail.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/corporateLevel/info/index.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/corporateLevel/tabs/Tab1/index.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/corporateLevel/tabs/Tab1/index.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/corporateLevel/tabs/Tab1/index.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/corporateLevel/tabs/Tab1/index.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/corporateLevel/tabs/Tab2/index.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/corporateLevel/tabs/Tab2/index.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/tccRiskAssessment/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyCommit/tccRiskAssessment",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/tccRiskAssessment/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyCommit/tccRiskAssessment",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/tccRiskAssessment/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyCommit/tccRiskAssessment",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/tccRiskAssessment/info/detail.vue",
+    "apiModule": "@/api/safetyCommit/tccRiskAssessment",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/tccRiskAssessment/tabs/Tab1/index.vue",
+    "apiModule": "@/api/safetyCommit/tccRiskAssessment",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/tccRiskAssessment/tabs/Tab1/index.vue",
+    "apiModule": "@/api/safetyCommit/tccRiskAssessment",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/tccRiskAssessment/tabs/Tab2/index.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/tccRiskAssessment/tabs/Tab2/index.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/zhbRiskAssessment/index.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/safetyCommit/zhbRiskAssessment/index.vue",
+    "apiModule": "@/api/safetyCommit/corporateLevel",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/user/message/components/message-letter.vue",
+    "apiModule": "@/api/example",
+    "exported": "pageLetters",
+    "localBinding": "pageLetters",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/user/message/components/message-letter.vue",
+    "apiModule": "@/api/example/model",
+    "exported": "Message",
+    "localBinding": "Message",
+    "scriptReferenceCount": 3,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/user/message/components/message-notice.vue",
+    "apiModule": "@/api/example",
+    "exported": "pageNotices",
+    "localBinding": "pageNotices",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/user/message/components/message-notice.vue",
+    "apiModule": "@/api/example/model",
+    "exported": "Message",
+    "localBinding": "Message",
+    "scriptReferenceCount": 3,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/user/message/components/message-todo.vue",
+    "apiModule": "@/api/example",
+    "exported": "pageTodos",
+    "localBinding": "pageTodos",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/user/message/components/message-todo.vue",
+    "apiModule": "@/api/example/model",
+    "exported": "Message",
+    "localBinding": "Message",
+    "scriptReferenceCount": 3,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/user/message/index.vue",
+    "apiModule": "@/api/example",
+    "exported": "getUnReadNum",
+    "localBinding": "getUnReadNum",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/user/profile/components/user-account.vue",
+    "apiModule": "@/api/system/user/model",
+    "exported": "User",
+    "localBinding": "User",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/user/profile/index.vue",
+    "apiModule": "@/api/system/user/model",
+    "exported": "User",
+    "localBinding": "User",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/specialWork/index.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/specialWork/index.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/specialWork/index.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "sendMessageHd",
+    "localBinding": "sendMessageHd",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/specialWork/index.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "sendMessagePz",
+    "localBinding": "sendMessagePz",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/specialWork/index.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "getDockLogList",
+    "localBinding": "getDockLogList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/specialWork/index.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "getById",
+    "localBinding": "getPrint",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/specialWork/index.vue",
+    "apiModule": "@/api/safetyBasic/thirdPartyUnitInfo",
+    "exported": "getCertificateNo",
+    "localBinding": "getCertificateNo",
+    "scriptReferenceCount": 2,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/specialWork/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "getById",
+    "localBinding": "getWorkReservationById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/specialWork/info/detail.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/specialWork/info/detail.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "getByFlowId",
+    "localBinding": "getByFlowId",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/specialWork/info/edit.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/specialWork/info/edit.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workProgramme/index.vue",
+    "apiModule": "@/api/work/workProgramme",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workProgramme/index.vue",
+    "apiModule": "@/api/work/workProgramme",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workProgramme/info/addOrEdit.vue",
+    "apiModule": "@/api/work/workProgramme",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workProgramme/info/addOrEdit.vue",
+    "apiModule": "@/api/work/workProgramme",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workProgramme/info/addOrEdit.vue",
+    "apiModule": "@/api/work/workProgramme",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workProgramme/info/detail.vue",
+    "apiModule": "@/api/work/workProgramme",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/components/personList.vue",
+    "apiModule": "@/api/work/workUserExtend",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/components/workNameList.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/components/workProgrammeList.vue",
+    "apiModule": "@/api/work/workProgramme",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 2,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "setProcessByWorkId",
+    "localBinding": "setProcessByWorkId",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/index.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "getById",
+    "localBinding": "getPrint",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/index.vue",
+    "apiModule": "@/api/safetyBasic/thirdPartyUnitInfo",
+    "exported": "getCertificateNo",
+    "localBinding": "getCertificateNo",
+    "scriptReferenceCount": 2,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/info/addOrEdit.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/info/addOrEdit.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/info/addOrEdit.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/info/detail.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/info/JobType/dhzy/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "checkWorkNo",
+    "localBinding": "checkWorkNo",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/info/JobType/dlzy/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "checkWorkNo",
+    "localBinding": "checkWorkNo",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/info/JobType/dtzy/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "checkWorkNo",
+    "localBinding": "checkWorkNo",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/info/JobType/dzzy/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "checkWorkNo",
+    "localBinding": "checkWorkNo",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/info/JobType/gczy/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "checkWorkNo",
+    "localBinding": "checkWorkNo",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/info/JobType/lsydzy/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "checkWorkNo",
+    "localBinding": "checkWorkNo",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/info/JobType/mbcdzy/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "checkWorkNo",
+    "localBinding": "checkWorkNo",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workReservationBase/info/JobType/sxkjzy/index.vue",
+    "apiModule": "@/api/work/workReservationBase",
+    "exported": "checkWorkNo",
+    "localBinding": "checkWorkNo",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workUserExtend/index.vue",
+    "apiModule": "@/api/work/workUserExtend",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workUserExtend/index.vue",
+    "apiModule": "@/api/work/workUserExtend",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workUserExtend/index.vue",
+    "apiModule": "@/api/work/workUserExtend",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workUserExtend/info/addOrEdit.vue",
+    "apiModule": "@/api/work/workUserExtend",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workUserExtend/info/addOrEdit.vue",
+    "apiModule": "@/api/work/workUserExtend",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workUserExtend/info/addOrEdit.vue",
+    "apiModule": "@/api/work/workUserExtend",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workUserExtend/info/addOrEdit.vue",
+    "apiModule": "@/api/safetyBasic/thirdPartyUnitInfo",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/work/workUserExtend/info/detail.vue",
+    "apiModule": "@/api/work/workUserExtend",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workflow/statistics/index.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "getAnalysis1",
+    "localBinding": "getAnalysis1",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workflow/statistics/index.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "getAnalysis2",
+    "localBinding": "getAnalysis2",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workflow/statistics/index.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "getAnalysis3",
+    "localBinding": "getAnalysis3",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workflow/statistics/index.vue",
+    "apiModule": "@/api/work/specialWork",
+    "exported": "getAnalysis4",
+    "localBinding": "getAnalysis4",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workplace/components/Analysis/Chart1.vue",
+    "apiModule": "@/api/workplace/index",
+    "exported": "getAnalysis1",
+    "localBinding": "getAnalysis1",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workplace/components/Analysis/Chart2.vue",
+    "apiModule": "@/api/workplace/index",
+    "exported": "getAnalysis2",
+    "localBinding": "getAnalysis2",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workplace/components/Analysis/Chart3.vue",
+    "apiModule": "@/api/workplace/index",
+    "exported": "getAnalysis3",
+    "localBinding": "getAnalysis3",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workplace/components/Analysis/Chart4.vue",
+    "apiModule": "@/api/workplace/index",
+    "exported": "getAnalysis4",
+    "localBinding": "getAnalysis4",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workplace/components/Statistics/index.vue",
+    "apiModule": "@/api/workplace/index",
+    "exported": "getStatistics1",
+    "localBinding": "getStatistics1",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workplace/components/Statistics/index.vue",
+    "apiModule": "@/api/workplace/index",
+    "exported": "getStatistics2",
+    "localBinding": "getStatistics2",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workplace/components/Statistics/index.vue",
+    "apiModule": "@/api/workplace/index",
+    "exported": "getStatistics3",
+    "localBinding": "getStatistics3",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workplace/components/Statistics/index.vue",
+    "apiModule": "@/api/workplace/index",
+    "exported": "getStatistics4",
+    "localBinding": "getStatistics4",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workplace/components/TaskList/index.vue",
+    "apiModule": "@/api/intelligentInspection/task",
+    "exported": "getTaskList",
+    "localBinding": "getTaskList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workplace/components/Todo/index.vue",
+    "apiModule": "@/api/workFlow",
+    "exported": "flowLaunch",
+    "localBinding": "flowLaunch",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workplace/components/Todo/index.vue",
+    "apiModule": "@/api/workFlow",
+    "exported": "flowBefore1",
+    "localBinding": "flowBefore1",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "security",
+    "view": "views/workplace/components/Todo/index.vue",
+    "apiModule": "@/api/workFlow",
+    "exported": "flowBefore2",
+    "localBinding": "flowBefore2",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dashboard/analysis/components/hot-search.vue",
+    "apiModule": "@/api/dashboard/analysis",
+    "exported": "getWordCloudList",
+    "localBinding": "getWordCloudList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dashboard/analysis/components/sale-card.vue",
+    "apiModule": "@/api/dashboard/analysis",
+    "exported": "getSaleroomList",
+    "localBinding": "getSaleroomList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dashboard/analysis/components/sale-card.vue",
+    "apiModule": "@/api/dashboard/analysis/model",
+    "exported": "SaleroomData",
+    "localBinding": "SaleroomData",
+    "scriptReferenceCount": 2,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dashboard/analysis/components/statistics-card.vue",
+    "apiModule": "@/api/dashboard/analysis",
+    "exported": "getPayNumList",
+    "localBinding": "getPayNumList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dashboard/analysis/components/visit-hour.vue",
+    "apiModule": "@/api/dashboard/analysis",
+    "exported": "getVisitHourList",
+    "localBinding": "getVisitHourList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dashboard/monitor/components/browser-card.vue",
+    "apiModule": "@/api/dashboard/monitor",
+    "exported": "getBrowserCountList",
+    "localBinding": "getBrowserCountList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dashboard/monitor/components/map-card.vue",
+    "apiModule": "@/api/dashboard/monitor",
+    "exported": "getChinaMapData",
+    "localBinding": "getChinaMapData",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dashboard/monitor/components/map-card.vue",
+    "apiModule": "@/api/dashboard/monitor",
+    "exported": "getUserCountList",
+    "localBinding": "getUserCountList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dashboard/monitor/components/map-card.vue",
+    "apiModule": "@/api/dashboard/monitor/model",
+    "exported": "UserCount",
+    "localBinding": "UserCount",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyLog/components/eventList.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyLog/index.vue",
+    "apiModule": "@/api/dutyManage/dutyLog",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyLog/index.vue",
+    "apiModule": "@/api/dutyManage/dutyLog",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyLog/index.vue",
+    "apiModule": "@/api/dutyManage/dutyLog",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyLog/info/addOrEdit.vue",
+    "apiModule": "@/api/dutyManage/dutyLog",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyLog/info/addOrEdit.vue",
+    "apiModule": "@/api/dutyManage/dutyLog",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyLog/info/addOrEdit.vue",
+    "apiModule": "@/api/dutyManage/dutyLog",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyLog/info/addOrEdit.vue",
+    "apiModule": "@/api/dutyManage/dutyPersonnel",
+    "exported": "getPersonList",
+    "localBinding": "getPersonList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyLog/info/detail.vue",
+    "apiModule": "@/api/dutyManage/dutyLog",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyPersonnel/index.vue",
+    "apiModule": "@/api/dutyManage/dutyPersonnel",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyPersonnel/index.vue",
+    "apiModule": "@/api/dutyManage/dutyPersonnel",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyPersonnel/info/addOrEdit.vue",
+    "apiModule": "@/api/dutyManage/dutyPersonnel",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyPersonnel/info/addOrEdit.vue",
+    "apiModule": "@/api/dutyManage/dutyPersonnel",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyPersonnel/info/addOrEdit.vue",
+    "apiModule": "@/api/dutyManage/dutyPersonnel",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyPersonnel/info/addOrEdit.vue",
+    "apiModule": "@/api/system/org",
+    "exported": "getDepartmentIdByUserList",
+    "localBinding": "getDepartmentIdByUserList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutyPersonnel/info/detail.vue",
+    "apiModule": "@/api/dutyManage/dutyPersonnel",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutySchedule/index.vue",
+    "apiModule": "@/api/dutyManage/dutySchedule",
+    "exported": "getList",
+    "localBinding": "getList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutySchedule/index.vue",
+    "apiModule": "@/api/dutyManage/dutyPersonnel",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutySchedule/info/addOrEdit.vue",
+    "apiModule": "@/api/dutyManage/dutySchedule",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutySchedule/info/addOrEdit.vue",
+    "apiModule": "@/api/dutyManage/dutySchedule",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutySchedule/info/addOrEdit.vue",
+    "apiModule": "@/api/dutyManage/dutySchedule",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutySchedule/info/addOrEdit.vue",
+    "apiModule": "@/api/dutyManage/dutySchedule",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutySchedule/info/addOrEdit.vue",
+    "apiModule": "@/api/dutyManage/dutyPersonnel",
+    "exported": "getList",
+    "localBinding": "getList",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/dutyManage/dutySchedule/info/personList.vue",
+    "apiModule": "@/api/dutyManage/dutyPersonnel",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/components/CheckPerson/index.vue",
+    "apiModule": "@/api/emergencyPlans/exercise",
+    "exported": "getUserListByDepartmentId",
+    "localBinding": "getUserListByDepartmentId",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/components/CheckPerson/TreeFilter.vue",
+    "apiModule": "@/api/emergencyPlans/exercise",
+    "exported": "getUserListByDepartmentId",
+    "localBinding": "getUserListByDepartmentId",
+    "scriptReferenceCount": 2,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/components/exerciseDetailDialog.vue",
+    "apiModule": "@/api/emergencyPlans/exercise",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/components/exerciseDetailDialog.vue",
+    "apiModule": "@/api/emergencyPlans/exercise",
+    "exported": "getUserListByDepartmentId",
+    "localBinding": "getUserListByDepartmentId",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/components/exerciseDialog.vue",
+    "apiModule": "@/api/emergencyPlans/exercise",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/components/expertsList.vue",
+    "apiModule": "@/api/emergencyResources/emergencyExperts",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/components/goodsList.vue",
+    "apiModule": "@/api/emergencyResources/materials",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/components/teamsList.vue",
+    "apiModule": "@/api/emergencyResources/firstAidTeams",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/index.vue",
+    "apiModule": "@/api/emergencyPlans/structured",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/index.vue",
+    "apiModule": "@/api/emergencyPlans/structured",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyPlans/structured",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyPlans/structured",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyPlans/structured",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/info/detail.vue",
+    "apiModule": "@/api/emergencyPlans/structured",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/info/exerciseList.vue",
+    "apiModule": "@/api/emergencyPlans/exercise",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyPlans/structured/info/exerciseList.vue",
+    "apiModule": "@/api/emergencyPlans/exercise",
+    "exported": "getUserListByDepartmentId",
+    "localBinding": "getUserListByDepartmentId",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/emergencyExperts/index.vue",
+    "apiModule": "@/api/emergencyResources/emergencyExperts",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/emergencyExperts/index.vue",
+    "apiModule": "@/api/emergencyResources/emergencyExperts",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/emergencyExperts/index.vue",
+    "apiModule": "@/api/emergencyResources/emergencyExperts",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/emergencyExperts/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResources/emergencyExperts/index",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/emergencyExperts/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResources/emergencyExperts/index",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/emergencyExperts/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResources/emergencyExperts/index",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/emergencyExperts/info/detail.vue",
+    "apiModule": "@/api/emergencyResources/emergencyExperts/index",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/firstAidTeams/index.vue",
+    "apiModule": "@/api/emergencyResources/firstAidTeams",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/firstAidTeams/index.vue",
+    "apiModule": "@/api/emergencyResources/firstAidTeams",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/firstAidTeams/index.vue",
+    "apiModule": "@/api/emergencyResources/firstAidTeams",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/firstAidTeams/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResources/firstAidTeams",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/firstAidTeams/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResources/firstAidTeams",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/firstAidTeams/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResources/firstAidTeams",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/firstAidTeams/info/detail.vue",
+    "apiModule": "@/api/emergencyResources/firstAidTeams",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/materials/index.vue",
+    "apiModule": "@/api/emergencyResources/materials",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/materials/index.vue",
+    "apiModule": "@/api/emergencyResources/materials",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/materials/index.vue",
+    "apiModule": "@/api/emergencyResources/materials",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/materials/index.vue",
+    "apiModule": "@/api/emergencyResources/materials",
+    "exported": "downloadTemplate",
+    "localBinding": "downloadTemplate",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/materials/index.vue",
+    "apiModule": "@/api/emergencyResources/materials",
+    "exported": "importExcel",
+    "localBinding": "importExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/materials/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResources/materials",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/materials/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResources/materials",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/materials/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResources/materials",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResources/materials/info/detail.vue",
+    "apiModule": "@/api/emergencyResources/materials",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/disposal/index.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/disposal/index.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "closeRecord",
+    "localBinding": "closeRecord",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/disposal/index.vue",
+    "apiModule": "@/api/emergencyResponse/disposal",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/response/index.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/response/index.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/response/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/response/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/response/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/response/info/detail.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/response/info/detail.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/response/info/detail.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "removeDisposeById",
+    "localBinding": "removeDisposeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/response/info/detail.vue",
+    "apiModule": "@/api/emergencyPlans/structured",
+    "exported": "getPage",
+    "localBinding": "getEmergencyPlan",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/response/info/detail.vue",
+    "apiModule": "@/api/emergencyResponse/disposal",
+    "exported": "getListByEventId",
+    "localBinding": "getListByEventId",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/response/info/list.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/taskSend/index.vue",
+    "apiModule": "@/api/emergencyResponse/taskSend",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 0,
+    "scriptReferenced": false,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/taskSend/index.vue",
+    "apiModule": "@/api/emergencyResponse/taskSend",
+    "exported": "removeById",
+    "localBinding": "removeById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/taskSend/index.vue",
+    "apiModule": "@/api/emergencyResponse/taskSend",
+    "exported": "exportExcel",
+    "localBinding": "exportExcel",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/taskSend/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResponse/taskSend",
+    "exported": "save",
+    "localBinding": "save",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/taskSend/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResponse/taskSend",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/taskSend/info/addOrEdit.vue",
+    "apiModule": "@/api/emergencyResponse/taskSend",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/taskSend/info/detail.vue",
+    "apiModule": "@/api/emergencyResponse/taskSend",
+    "exported": "updateById",
+    "localBinding": "updateById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/taskSend/info/detail.vue",
+    "apiModule": "@/api/emergencyResponse/taskSend",
+    "exported": "getById",
+    "localBinding": "getById",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/emergencyResponse/taskSend/info/list.vue",
+    "apiModule": "@/api/emergencyResponse/response",
+    "exported": "getPage",
+    "localBinding": "getPage",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/login/index.vue",
+    "apiModule": "@/api/login",
+    "exported": "login",
+    "localBinding": "login",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/user/message/components/message-letter.vue",
+    "apiModule": "@/api/example",
+    "exported": "pageLetters",
+    "localBinding": "pageLetters",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/user/message/components/message-letter.vue",
+    "apiModule": "@/api/example/model",
+    "exported": "Message",
+    "localBinding": "Message",
+    "scriptReferenceCount": 3,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/user/message/components/message-notice.vue",
+    "apiModule": "@/api/example",
+    "exported": "pageNotices",
+    "localBinding": "pageNotices",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/user/message/components/message-notice.vue",
+    "apiModule": "@/api/example/model",
+    "exported": "Message",
+    "localBinding": "Message",
+    "scriptReferenceCount": 3,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/user/message/components/message-todo.vue",
+    "apiModule": "@/api/example",
+    "exported": "pageTodos",
+    "localBinding": "pageTodos",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/user/message/components/message-todo.vue",
+    "apiModule": "@/api/example/model",
+    "exported": "Message",
+    "localBinding": "Message",
+    "scriptReferenceCount": 3,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/user/message/index.vue",
+    "apiModule": "@/api/example",
+    "exported": "getUnReadNum",
+    "localBinding": "getUnReadNum",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/user/profile/components/user-account.vue",
+    "apiModule": "@/api/system/user/model",
+    "exported": "User",
+    "localBinding": "User",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  },
+  {
+    "portal": "emergency",
+    "view": "views/user/profile/index.vue",
+    "apiModule": "@/api/system/user/model",
+    "exported": "User",
+    "localBinding": "User",
+    "scriptReferenceCount": 1,
+    "scriptReferenced": true,
+    "sourceImportDoesNotProveVisibleButtonOrRuntimeEnabled": true
+  }
+]

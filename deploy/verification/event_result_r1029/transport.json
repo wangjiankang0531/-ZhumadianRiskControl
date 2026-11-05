@@ -1,0 +1,73 @@
+{
+  "cases": [
+    {
+      "case": "r45-real-archive-and-extraction",
+      "completedR1027RealExtractionReusedAndAllBytesReverified": true,
+      "passed": true,
+      "writes": 187
+    },
+    {
+      "case": "r47-real-archive-and-extraction",
+      "completedR1027RealExtractionReusedAndAllBytesReverified": true,
+      "passed": true,
+      "writes": 180
+    },
+    {
+      "actualZipSHA256": "2c5fe7979bcdd62c2336ab0177b811f495b0bcdd426bf4f25aa7a4d5a86ecd76",
+      "case": "case-collision",
+      "passed": true,
+      "refused": "CLOSED_TRANSPORT_BOUNDS"
+    },
+    {
+      "actualZipSHA256": "818083912c736a3eabad550cd72b9103bbfda141599ff62fd6b74a2432ee167f",
+      "case": "path-traversal",
+      "passed": true,
+      "refused": "EXACT_RELATIVE_MEMBER"
+    },
+    {
+      "actualZipSHA256": "07444aa996e262f7e2ae82ec4e0adf1be5ee61b3c053f161261d00229d09fc95",
+      "case": "symlink",
+      "passed": true,
+      "refused": "REGULAR_UNENCRYPTED_MEMBERS"
+    },
+    {
+      "actualZipSHA256": "d99cd838dffc8828712f105a60ce298065e25cb71d7a83e360d8e8cf7e4ea101",
+      "case": "manifest-tamper",
+      "passed": true,
+      "refused": "FIXED_VARIANT_MANIFEST"
+    },
+    {
+      "actualZipSHA256": "80e34d9273f59962ad187a9169cfebd78531a98906eb6d3e319210cd8c9e2d44",
+      "case": "unknown-member",
+      "passed": true,
+      "refused": "EXACT_CLOSED_MEMBERS"
+    },
+    {
+      "actualZipSHA256": "0db550119b6b38911f01e43decb7cf03b025d967670dbec84f159a3865ca69d2",
+      "case": "event-payload-tamper",
+      "passed": true,
+      "refused": "EXACT_ARCHIVED_PAYLOAD_PIN:frontend/emergency_pc/assets/js/wf-addOrEdit.vue_vue_type_script_setup_true_lang-o_9ZsphF.js"
+    },
+    {
+      "actualZipSHA256": "803195e1f2a38ecedb58c3d8c478cdc100e2d33584eae26cb60314e7eef242f7",
+      "case": "deny-config-tamper",
+      "passed": true,
+      "refused": "EXACT_STAGE_HTTP_DENY_CONFIG"
+    }
+  ],
+  "changedFunctions": [
+    "extract_selected_archive",
+    "select_installed_base",
+    "validate_archive"
+  ],
+  "checks": 9,
+  "deliveryManifestSHA256": "ad07cf7a88b15ec93c003a52ac34a652297ab2c18dbae15985f975bf56a56f1a",
+  "fixedTransportFiles": 9,
+  "fullCloneReady": false,
+  "noFileIOOrValidationMocks": true,
+  "normalActualServerLifecycleAndIISTLSNotExecuted": true,
+  "passed": true,
+  "realArchiveAndExtractionBytePinsVerified": true,
+  "transportMainRecoveryAndStaticHTTPFunctionASTsRetainedFromR47": true,
+  "uploadedOrDeployed": false
+}

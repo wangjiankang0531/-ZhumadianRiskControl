@@ -1,0 +1,89 @@
+{
+  "passed": true,
+  "checkedLiteralOrTemplateEvaluationExpressions": 20,
+  "rows": [
+    {
+      "line": 36,
+      "passed": true
+    },
+    {
+      "line": 37,
+      "passed": true
+    },
+    {
+      "line": 38,
+      "passed": true
+    },
+    {
+      "line": 41,
+      "passed": true
+    },
+    {
+      "line": 44,
+      "passed": true
+    },
+    {
+      "line": 45,
+      "passed": true
+    },
+    {
+      "line": 46,
+      "passed": true
+    },
+    {
+      "line": 48,
+      "passed": true
+    },
+    {
+      "line": 51,
+      "passed": true
+    },
+    {
+      "line": 51,
+      "passed": true
+    },
+    {
+      "line": 52,
+      "passed": true
+    },
+    {
+      "line": 63,
+      "passed": true
+    },
+    {
+      "line": 69,
+      "passed": true
+    },
+    {
+      "line": 70,
+      "passed": true
+    },
+    {
+      "line": 76,
+      "passed": true
+    },
+    {
+      "line": 76,
+      "passed": true
+    },
+    {
+      "line": 77,
+      "passed": true
+    },
+    {
+      "line": 78,
+      "passed": true
+    },
+    {
+      "line": 78,
+      "passed": true
+    },
+    {
+      "line": 81,
+      "passed": true
+    }
+  ],
+  "sourceCodeExecuted": false,
+  "templateSpansUseSyntheticParsePlaceholders": true,
+  "notRuntimeUIAcceptance": true
+}

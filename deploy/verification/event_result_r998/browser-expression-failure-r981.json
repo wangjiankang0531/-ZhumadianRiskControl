@@ -1,0 +1,111 @@
+{
+  "passed": false,
+  "checkedLiteralOrTemplateEvaluationExpressions": 25,
+  "rows": [
+    {
+      "line": 36,
+      "passed": true
+    },
+    {
+      "line": 37,
+      "passed": true
+    },
+    {
+      "line": 38,
+      "passed": true
+    },
+    {
+      "line": 39,
+      "passed": true
+    },
+    {
+      "line": 40,
+      "passed": true
+    },
+    {
+      "line": 41,
+      "passed": true
+    },
+    {
+      "line": 43,
+      "passed": true
+    },
+    {
+      "line": 46,
+      "passed": true
+    },
+    {
+      "line": 46,
+      "passed": true
+    },
+    {
+      "line": 47,
+      "passed": true
+    },
+    {
+      "line": 54,
+      "passed": true
+    },
+    {
+      "line": 55,
+      "passed": false,
+      "type": "SyntaxError",
+      "message": "Unexpected end of input"
+    },
+    {
+      "line": 59,
+      "passed": true
+    },
+    {
+      "line": 60,
+      "passed": true
+    },
+    {
+      "line": 62,
+      "passed": true
+    },
+    {
+      "line": 63,
+      "passed": true
+    },
+    {
+      "line": 63,
+      "passed": true
+    },
+    {
+      "line": 65,
+      "passed": true
+    },
+    {
+      "line": 65,
+      "passed": true
+    },
+    {
+      "line": 74,
+      "passed": true
+    },
+    {
+      "line": 74,
+      "passed": true
+    },
+    {
+      "line": 75,
+      "passed": true
+    },
+    {
+      "line": 76,
+      "passed": true
+    },
+    {
+      "line": 76,
+      "passed": true
+    },
+    {
+      "line": 79,
+      "passed": true
+    }
+  ],
+  "sourceCodeExecuted": false,
+  "templateSpansUseSyntheticParsePlaceholders": true,
+  "notRuntimeUIAcceptance": true
+}

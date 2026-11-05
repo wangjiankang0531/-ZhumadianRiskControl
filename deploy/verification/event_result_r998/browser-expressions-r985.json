@@ -1,0 +1,113 @@
+{
+  "passed": true,
+  "checkedLiteralOrTemplateEvaluationExpressions": 26,
+  "rows": [
+    {
+      "line": 36,
+      "passed": true
+    },
+    {
+      "line": 37,
+      "passed": true
+    },
+    {
+      "line": 38,
+      "passed": true
+    },
+    {
+      "line": 41,
+      "passed": true
+    },
+    {
+      "line": 44,
+      "passed": true
+    },
+    {
+      "line": 45,
+      "passed": true
+    },
+    {
+      "line": 46,
+      "passed": true
+    },
+    {
+      "line": 48,
+      "passed": true
+    },
+    {
+      "line": 51,
+      "passed": true
+    },
+    {
+      "line": 51,
+      "passed": true
+    },
+    {
+      "line": 52,
+      "passed": true
+    },
+    {
+      "line": 59,
+      "passed": true
+    },
+    {
+      "line": 60,
+      "passed": true
+    },
+    {
+      "line": 64,
+      "passed": true
+    },
+    {
+      "line": 65,
+      "passed": true
+    },
+    {
+      "line": 67,
+      "passed": true
+    },
+    {
+      "line": 68,
+      "passed": true
+    },
+    {
+      "line": 68,
+      "passed": true
+    },
+    {
+      "line": 70,
+      "passed": true
+    },
+    {
+      "line": 70,
+      "passed": true
+    },
+    {
+      "line": 79,
+      "passed": true
+    },
+    {
+      "line": 79,
+      "passed": true
+    },
+    {
+      "line": 80,
+      "passed": true
+    },
+    {
+      "line": 81,
+      "passed": true
+    },
+    {
+      "line": 81,
+      "passed": true
+    },
+    {
+      "line": 84,
+      "passed": true
+    }
+  ],
+  "sourceCodeExecuted": false,
+  "templateSpansUseSyntheticParsePlaceholders": true,
+  "notRuntimeUIAcceptance": true
+}

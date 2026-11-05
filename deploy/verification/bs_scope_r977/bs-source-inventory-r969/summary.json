@@ -1,0 +1,38 @@
+{
+  "schema": "xnby.bs.original-source-request-inventory.v1",
+  "passed": true,
+  "projects": [
+    "security",
+    "emergency"
+  ],
+  "logicalInformationSystems": 1,
+  "sourceFiles": 539,
+  "apiCallSites": 539,
+  "resolvedTransportGroups": 483,
+  "unresolvedCallSites": 1,
+  "crossPortalSharedTransportGroups": 31,
+  "focusedEmergencyResponseTransportGroups": 17,
+  "wrapperHTTPMethodsVerifiedFromActualCode": {
+    "security": {
+      "get": "GET",
+      "post": "POST",
+      "put": "PUT",
+      "delete": "DELETE",
+      "download": "GET"
+    },
+    "emergency": {
+      "get": "GET",
+      "post": "POST",
+      "put": "PUT",
+      "delete": "DELETE",
+      "download": "GET"
+    }
+  },
+  "apiExportsAndEndpointsNotAtomicFunctionOrCompletionDenominator": true,
+  "GETMayHaveBusinessSideEffects": true,
+  "visibleMenusRolesStateTransitionsAndRuntimeAcceptanceRequireSeparateEvidence": true,
+  "originalInformationReportButtonCommentedOutAndExcludedFromCompiledTemplate": true,
+  "overallCompletionPercent": null,
+  "servicesDatabaseBusinessOrDesktopUsed": false,
+  "fullCloneReady": false
+}

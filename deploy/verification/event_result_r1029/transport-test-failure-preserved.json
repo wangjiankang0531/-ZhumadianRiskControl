@@ -1,0 +1,6 @@
+{
+  "bytes": 256,
+  "cause": "test writer reused mutable ZipInfo objects",
+  "previousExecutionTerminalExit": 1,
+  "sha256": "222d90cdeee1866bc4b2819fdf16f1fb1e490ed9efdd838d07866eceb5d2e7d7"
+}

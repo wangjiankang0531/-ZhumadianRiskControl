@@ -1,0 +1,291 @@
+[
+  {
+    "key": "GET /serv/eventDisposalRecord/getListByEventId",
+    "httpMethod": "GET",
+    "urlPattern": "/serv/eventDisposalRecord/getListByEventId",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/disposal/index.ts",
+        "callable": "getListByEventId",
+        "line": 11
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "GET /serv/eventDisposalRecord/removeById",
+    "httpMethod": "GET",
+    "urlPattern": "/serv/eventDisposalRecord/removeById",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/response/index.ts",
+        "callable": "removeDisposeById",
+        "line": 46
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "GET /serv/eventInfo/closeRecord",
+    "httpMethod": "GET",
+    "urlPattern": "/serv/eventInfo/closeRecord",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/response/index.ts",
+        "callable": "closeRecord",
+        "line": 41
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "GET /serv/eventInfo/export",
+    "httpMethod": "GET",
+    "urlPattern": "/serv/eventInfo/export",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/response/index.ts",
+        "callable": "exportExcel",
+        "line": 31
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "GET /serv/eventInfo/getById",
+    "httpMethod": "GET",
+    "urlPattern": "/serv/eventInfo/getById",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/response/index.ts",
+        "callable": "getById",
+        "line": 21
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "GET /serv/eventInfo/getPage",
+    "httpMethod": "GET",
+    "urlPattern": "/serv/eventInfo/getPage",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/response/index.ts",
+        "callable": "getPage",
+        "line": 6
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "GET /serv/eventInfo/removeById",
+    "httpMethod": "GET",
+    "urlPattern": "/serv/eventInfo/removeById",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/response/index.ts",
+        "callable": "removeById",
+        "line": 26
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "GET /serv/eventReport/submit",
+    "httpMethod": "GET",
+    "urlPattern": "/serv/eventReport/submit",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/response/index.ts",
+        "callable": "report",
+        "line": 36
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "GET /serv/eventTask/export",
+    "httpMethod": "GET",
+    "urlPattern": "/serv/eventTask/export",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/taskSend/index.ts",
+        "callable": "exportExcel",
+        "line": 33
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "GET /serv/eventTask/getById",
+    "httpMethod": "GET",
+    "urlPattern": "/serv/eventTask/getById",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/taskSend/index.ts",
+        "callable": "getById",
+        "line": 23
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "GET /serv/eventTask/getPage",
+    "httpMethod": "GET",
+    "urlPattern": "/serv/eventTask/getPage",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/taskSend/index.ts",
+        "callable": "getPage",
+        "line": 8
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "GET /serv/eventTask/removeById",
+    "httpMethod": "GET",
+    "urlPattern": "/serv/eventTask/removeById",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/taskSend/index.ts",
+        "callable": "removeById",
+        "line": 28
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "POST /serv/eventDisposalRecord/save",
+    "httpMethod": "POST",
+    "urlPattern": "/serv/eventDisposalRecord/save",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/disposal/index.ts",
+        "callable": "save",
+        "line": 6
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "POST /serv/eventInfo/save",
+    "httpMethod": "POST",
+    "urlPattern": "/serv/eventInfo/save",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/response/index.ts",
+        "callable": "save",
+        "line": 11
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "POST /serv/eventInfo/updateById",
+    "httpMethod": "POST",
+    "urlPattern": "/serv/eventInfo/updateById",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/response/index.ts",
+        "callable": "updateById",
+        "line": 16
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "POST /serv/eventTask/save",
+    "httpMethod": "POST",
+    "urlPattern": "/serv/eventTask/save",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/taskSend/index.ts",
+        "callable": "save",
+        "line": 13
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  },
+  {
+    "key": "POST /serv/eventTask/updateById",
+    "httpMethod": "POST",
+    "urlPattern": "/serv/eventTask/updateById",
+    "sourceAliases": [
+      {
+        "portal": "emergency",
+        "file": "api/emergencyResponse/taskSend/index.ts",
+        "callable": "updateById",
+        "line": 18
+      }
+    ],
+    "portals": [
+      "emergency"
+    ],
+    "sameEndpointDoesNotProveSameParameterPermissionAndStateContract": true
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "actualBrowserAnimatedDrawerInputAndDownload": true,
+  "actualFetchInterceptionEnabled": true,
+  "actualCompletedDownloadEvents": 1,
+  "singleClickAndRequest": true,
+  "bytes": 31,
+  "sha256": "97d496d804532246a04c8ce61146d7d395ad4d3044a620eefbde16283105f301",
+  "publicBusinessOrDesktopUsed": false,
+  "chromeExitCode": 0,
+  "normalBrowserClosed": true,
+  "forceTerminationUsed": false
+}

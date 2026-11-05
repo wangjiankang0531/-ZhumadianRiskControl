@@ -1,0 +1,31 @@
+{
+  "at": "2026-11-05T00:09:28.648274+08:00",
+  "passedAsDefectReproductionAndActualFullBuild": true,
+  "actualNormalUIEditAndRestartPassedBeforeFix": true,
+  "actualNormalUIDeleteCancelAndConfirmPassedBeforeFix": true,
+  "actualBackendFalseButUIShowedSuccessConfirmed": true,
+  "allActualPreFixAttemptsFourAndNormalLifecyclesFive": true,
+  "oneOwnEventCreatedEditedAndDeletedNoRecreationOrResurrection": true,
+  "onlyOneSourceDifferenceFromActualCurrentR841Build": "src/views/emergencyResponse/response/info/addOrEdit.vue",
+  "sourceDifferenceCountAgainstOlderR418": 8,
+  "legacyStartupLogCompleteSourceDiffsHardcoded7NotUsedAsEvidence": true,
+  "actualFullBuildExit0Job0AndElevenOverlaysRestored": true,
+  "maximumActualBuildPrivateCommitBytes": 2592169984,
+  "actual344CompiledFilesIndependentlyRehashed": true,
+  "compiledEventGuardNoticeChunks": [
+    {
+      "path": "assets/js/wf-addOrEdit.vue_vue_type_script_setup_true_lang-o_9ZsphF.js",
+      "sha256": "47ada989e96d44a59f3952ab87ab0828a7f959d60c8a95739d26fb80ee1b3420",
+      "bytes": 3609
+    }
+  ],
+  "oldGCodeConfigAndPointersRestoredAndZeroOwnReferences": true,
+  "temporaryDirectoriesActuallyRemoved": 9,
+  "cleanupLogicalBytesNotAttributedAsPhysical": 146094750,
+  "fixedR47PackageModified": false,
+  "postFixNativeUIAndRuntimeAcceptancePassed": false,
+  "nextCandidateMustUpdateFrontendAndUpdaterContractsWithoutWeakeningGuards": true,
+  "publicR47FinalPreflightResultReceived": false,
+  "publicDeploymentOrNewGitPushPerformed": false,
+  "fullCloneReady": false
+}

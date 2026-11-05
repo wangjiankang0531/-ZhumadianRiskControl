@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "allSixAttemptCodeAndPrivateConfigurationAndPointersRestored": true,
+  "currentCodePathsIndependentlyMatchedBefore": 1427,
+  "durablePointerBeforeImagesMatched": 6,
+  "actualNormalControllerLifecycles": 7,
+  "finalTwoNormalBrowserDownloadsExactlyMatchSameGeneratedPDF": true,
+  "finalTwoMetadataReadbacksWereReadOnly": true,
+  "newPublicOrDesktopWrites": false,
+  "fullCloneReady": false
+}

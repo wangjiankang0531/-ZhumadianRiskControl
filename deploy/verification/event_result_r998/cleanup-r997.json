@@ -1,0 +1,19 @@
+﻿{
+    "phase":  "completed",
+    "removed":  [
+                    "D:\\Project\\Zhumadian\\work\\ev979\\code-transaction\\before",
+                    "D:\\Project\\Zhumadian\\work\\ev979\\browser\\first-start\\chrome-profile",
+                    "D:\\Project\\Zhumadian\\work\\ev982\\code-transaction\\before",
+                    "D:\\Project\\Zhumadian\\work\\ev982\\browser\\first-start\\chrome-profile",
+                    "D:\\Project\\Zhumadian\\work\\ev985\\code-transaction\\before",
+                    "D:\\Project\\Zhumadian\\work\\ev985\\browser\\first-start\\chrome-profile",
+                    "D:\\Project\\Zhumadian\\work\\ev985\\browser\\normal-restart\\chrome-profile",
+                    "D:\\Project\\Zhumadian\\work\\ev990\\code-transaction\\before",
+                    "D:\\Project\\Zhumadian\\work\\ev990\\browser\\normal-restart\\chrome-profile"
+                ],
+    "directories":  9,
+    "logicalBytes":  146094750,
+    "observedDriveFreeDelta":  152215552,
+    "physicalAttributionClaimed":  false,
+    "businessDataPreserved":  true
+}

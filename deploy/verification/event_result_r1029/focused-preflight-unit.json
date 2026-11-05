@@ -1,0 +1,24 @@
+{
+  "actualNestedFunctionExtractedFromEachSource": true,
+  "blockedR1008NotExecutedOrRelocated": true,
+  "cases": [
+    "R1-retained-module-incorrectly-selected-stage-reproduced",
+    "R2-retained-module-uses-installed-app",
+    "R2-transported-module-uses-stage",
+    "R2-refuses-RETAINED_BOUNDED_POOL_PREFLIGHT_REQUIRED",
+    "R2-refuses-CONFIGURATION_CHANGED_DURING_SUPERVISION_PREFLIGHT",
+    "R2-refuses-INITIALIZER_REFUSED",
+    "R2-refuses-MODULE_PIN_MISMATCH",
+    "R2-refuses-BUSINESS_PIN_MISMATCH",
+    "R2-undeclared-release-retains-original-preflight-result"
+  ],
+  "checks": 9,
+  "notPhysicalFileValidationOrSixComponentLifecycle": true,
+  "passed": true,
+  "poolFileHelperAndReleaseIOExplicitlyStubbed": true,
+  "projectGitPublicOrUserDataWritten": false,
+  "sourcePins": {
+    "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\r48-retained-preflight-r2-r1013\\source\\original_public_test_update.py": "43d3096f73f766e6500da330868d63ba13a869b9e075cfa0092e27ee511ecfa7",
+    "D:\\Project\\Zhumadian\\Document\\Deployment\\event_result_runtime_r1000_20261105\\source\\original_public_test_update.py": "88787437c7b9d073d49f8ccb014f1d8fffd99fe11b5c9163b56a6124d3440715"
+  }
+}

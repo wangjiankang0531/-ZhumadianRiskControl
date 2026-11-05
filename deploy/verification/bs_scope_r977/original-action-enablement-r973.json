@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "originalSourceAndCompiledRenderASTChecked": true,
+  "commentTextNotTreatedAsRenderedButtonOrHandler": true,
+  "rows": [
+    {
+      "page": "response",
+      "sourceFile": "D:/Project/Zhumadian/Reference/02安全风险管控平台/代码及开发环境搭建移交资料/源码包/敏捷应急管理前台代码/agile-emergency-response-dev/src/views/emergencyResponse/response/index.vue",
+      "sourceSHA256": "dc861b1ded760281705155028289ffbef1995f16bbc6b684a2bd4440a7c471d4",
+      "actualSourceElementButtonLabels": [
+        "新增",
+        "详情",
+        "编辑",
+        "研判",
+        "删除"
+      ],
+      "disabledLabelsNotElementNodes": [
+        "信息报送",
+        "导出列表",
+        "Excel导入",
+        "下载模板"
+      ],
+      "disabledHandlersAbsentFromCompiledRenderIdentifiers": [
+        "handleEventReport",
+        "handleDown"
+      ],
+      "templateCompiled": true,
+      "sourceEnablementOnlyNotRuntimeRoleOrAcceptance": true
+    },
+    {
+      "page": "taskSend",
+      "sourceFile": "D:/Project/Zhumadian/Reference/02安全风险管控平台/代码及开发环境搭建移交资料/源码包/敏捷应急管理前台代码/agile-emergency-response-dev/src/views/emergencyResponse/taskSend/index.vue",
+      "sourceSHA256": "6d936d9e050a421133e9dc006832460ad3b29a53062dc4510a39ab1e471bd52c",
+      "actualSourceElementButtonLabels": [
+        "新增",
+        "详情",
+        "编辑",
+        "处置",
+        "删除"
+      ],
+      "disabledLabelsNotElementNodes": [
+        "信息报送",
+        "导出列表",
+        "Excel导入",
+        "下载模板"
+      ],
+      "disabledHandlersAbsentFromCompiledRenderIdentifiers": [
+        "handleDown"
+      ],
+      "templateCompiled": true,
+      "sourceEnablementOnlyNotRuntimeRoleOrAcceptance": true
+    },
+    {
+      "page": "disposal",
+      "sourceFile": "D:/Project/Zhumadian/Reference/02安全风险管控平台/代码及开发环境搭建移交资料/源码包/敏捷应急管理前台代码/agile-emergency-response-dev/src/views/emergencyResponse/disposal/index.vue",
+      "sourceSHA256": "381a9d9e5eca4c6ac101776b291665dbe2ca8b86187b1f145969e6b0083d7135",
+      "actualSourceElementButtonLabels": [
+        "详情",
+        "处置",
+        "完成"
+      ],
+      "disabledLabelsNotElementNodes": [
+        "信息报送",
+        "导出列表",
+        "Excel导入",
+        "下载模板"
+      ],
+      "disabledHandlersAbsentFromCompiledRenderIdentifiers": [],
+      "templateCompiled": true,
+      "sourceEnablementOnlyNotRuntimeRoleOrAcceptance": true
+    }
+  ],
+  "legacyInactiveFeaturesNotDeclaredMissing": true,
+  "servicesDatabaseBusinessOrDesktopUsed": false,
+  "fullCloneReady": false
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "xnby.cross-thread.receiver-ack.v1",
+  "from": "驻马店3",
+  "to": "驻马店三维",
+  "at": "2026-11-04T23:37:22.447672+08:00",
+  "handoffSHA256": "33a6ae7674eecef7b145cf73fa387fb39e1bfa646d3c46f27dfd3597d5d103f8",
+  "received": "D73 portable-cloud client source review; no installation",
+  "archivesIndependentlyVerified": [
+    {
+      "kind": "sourceArchive",
+      "bytes": 207089,
+      "sha256": "f63b83ee94418c9023d75162905769f99eda49809795b1ec0b1d835a728d63e8"
+    },
+    {
+      "kind": "runtimeArchive",
+      "bytes": 113742,
+      "sha256": "f210d26f1e73f2680d0f6d88f3c5828550345995969036893d267be6213a969e"
+    }
+  ],
+  "runtimePinsIndependentlyVerified": 43,
+  "declaredArchiveSourcesIndependentlyVerified": 6,
+  "currentWorkingSourceComparisons": [
+    {
+      "path": "tools/cloud_editor_package.py",
+      "matchesWorkingSource": true,
+      "sha256": "044291467180ffea9cb1fd35d12b248fb562f8db7f2fe35bda8bcbee39aefe97"
+    },
+    {
+      "path": "tools/cloud_editor_portable_bootstrap.py",
+      "matchesWorkingSource": true,
+      "sha256": "4242a575704c10becc1a1a5c0988d4e0ae2e7825a51153d186f4a304d7263954"
+    },
+    {
+      "path": "tools/build_cloud_editor_portable.py",
+      "matchesWorkingSource": true,
+      "sha256": "8a0d12dac2e2181a81840ef6152f7b883295ff20f4e574e999af111b22870899"
+    },
+    {
+      "path": "tools/tests/layer_sync/test_layer_sync_portable_cloud_20261104.py",
+      "matchesWorkingSource": true,
+      "sha256": "6fdc541ad5247e149d024cc1ca0faf59b3cc60662b5cc3aba38da9fca3c41ddc"
+    },
+    {
+      "path": "deploy/source_profiles/layer_sync_portable_cloud_20261104.json",
+      "matchesWorkingSource": true,
+      "sha256": "288cb84544edb32e176607805bc5f03344fe2bcdec621d9e0a8a574fbf41558f"
+    },
+    {
+      "path": "tools/native_portable_layout.py",
+      "matchesWorkingSource": true,
+      "sha256": "f73108716288b22fffd505b13eedca5bdd6610b7f4df20184b2eb24d3149707a"
+    }
+  ],
+  "sender274Cloud34Layout22NodeTestsRerunByReceiver": false,
+  "actualCppWrapperOrNewNativeExeRunByReceiver": false,
+  "receiverNotes": [
+    "新目录中的Python启动/构建CLI及模拟原生文件不替代真实EXE和完整依赖验收。",
+    "原正常登录后端、验证码、IIS/TLS及公网252两机仍待。配置在认证前，编辑目录和进程须可信CurrentUser后建立。",
+    "账号工程在用户隔离目录；不读共享最近工程，不发布样例，不搬GIS/DLG。",
+    "保持嵌套版本命名空间，不覆盖原六组件Job助手或已用入口；没有公网安装请求。",
+    "R47上传已核，用户截图仅到选中R45/XML与池预算通过，未见最终预检成功；不能据此认定已部署。未来接入重核现场。"
+  ],
+  "publicInstalled": false,
+  "directThreadMessageOrWakeupClaimed": false,
+  "fullCloneReady": false
+}

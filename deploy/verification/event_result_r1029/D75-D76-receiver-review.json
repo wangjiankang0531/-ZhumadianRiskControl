@@ -1,0 +1,165 @@
+{
+  "D75toD76ChangedRuntimeEntries": [
+    "choice-contract.json",
+    "code/package-manifest.json",
+    "code/services/layer_sync_bridge.py",
+    "code/services/layer_sync_client.py",
+    "code/services/layer_sync_resolution.py",
+    "code/services/layer_sync_state.py",
+    "guide.html",
+    "merge-contract.json",
+    "source-identity.json"
+  ],
+  "at": "2026-11-05T09:30:01.591814+08:00",
+  "backendIngressAndNestedJobBytesVerifiedUnchangedBetweenCandidates": [
+    "code/services/layer_sync_server.py",
+    "code/services/database.py",
+    "code/services/layer_sync_transport.py",
+    "code/tools/serve_layer_sync.py",
+    "code/tools/layer_sync_ingress.py",
+    "code/tools/layer_sync_gateway_transaction.py",
+    "code/tools/original_server_windows_job.py"
+  ],
+  "choiceContract": {
+    "UIConnectedToNativeEXE": false,
+    "checkpoint": "read legacy v1/v2; capture genuine basis and comparison under v3; original account binding retained",
+    "choices": "exact complete current conflicting paths, one local/remote side per path; no silent defaults",
+    "comparePageMaxItems": 16,
+    "featureChoice": "whole feature including geometry/style/label/anchor/bindings and owner layer",
+    "fullValueReadSeparately": true,
+    "generationRequiredForCompareValueAndSelection": true,
+    "layerChoice": "header only when all three snapshots have this layer; otherwise whole created/deleted layer",
+    "legacyOrInitialWithoutBasis": "explicit whole-project review; never infer basis",
+    "localCapabilityHeader": "X-XNBY-Layer-Sync",
+    "localRoutes": {
+      "compare": "POST /v1/conflict/compare",
+      "receipt": "GET /v1/choice-receipts/{requestId}",
+      "select": "POST /v1/resolve-choices",
+      "value": "POST /v1/conflict/value"
+    },
+    "nestedDivergentEditorEdit": "reject unsaved second divergence and retain original conflict; original editor must keep/save its draft",
+    "oldFrozenServerPackagesChanged": false,
+    "orderChoice": "chosen branch order followed by surviving independent IDs absent there, in other branch order",
+    "previewBytesPerSide": 4096,
+    "publicInstalled": false,
+    "publicV2RouteDBAuthChanged": false,
+    "rollback": "old reader rejects v3; keep newer checkpoint and drafts, do not overwrite them with an earlier backup; use matching new helper or explicit reviewed export",
+    "rootLayerOrderExtension": "whole-project review to avoid legacy path ambiguity",
+    "schema": "xnby.layer-sync.conflict-choice-contract.v1",
+    "sharedMergeModuleChanged": true
+  },
+  "formalAcknowledgementPendingNormalProjectWriteApproval": true,
+  "formalSharedAcknowledgementWritten": false,
+  "fullCloneReady": false,
+  "meaning": "Exact archives, declared Git sources, syntax and delta reviewed; no functional runtime acceptance.",
+  "otherThreadRealtimeNotificationSent": false,
+  "passed": true,
+  "projectGitHeldViewerGISDLGOrBusinessDataModified": false,
+  "realPlatformLoginPublicTLSAnd252Acceptance": false,
+  "receipts": [
+    {
+      "archives": [
+        {
+          "bytes": 215287,
+          "kind": "sourceArchive",
+          "sha256": "b276f203e8f7b37999b55ca6d3f44843546caed401db7ab3de91458b00064de7"
+        },
+        {
+          "bytes": 111296,
+          "kind": "runtimeArchive",
+          "sha256": "f20658134b44ff70bd0dbb07a3ab09a9bc27ef9408a465edac0ecdfbe00f837d"
+        }
+      ],
+      "declaredArchiveSourcesAndExactGitBlobsVerified": [
+        {
+          "path": "tools/tests/layer_sync/test_layer_sync_feature_merge_20261105.py",
+          "sha256": "a322ae166b504f075e4420b10cd65d5da8f868a349dafc9b81ba3c040d5d1051"
+        },
+        {
+          "path": "tools/tests/layer_sync/feature_merge_worker_20261105.py",
+          "sha256": "08a2a21155c6a01b305922d21ed3091e607b1bd1b0f1c0f6cc8a3e660e7b2672"
+        },
+        {
+          "path": "deploy/source_profiles/layer_sync_feature_merge_20261105.json",
+          "sha256": "473b3f2edbbae41dff6acaa0ef5fd1f9ede7cdbdd51e5c5c331d23096da11afa"
+        },
+        {
+          "path": "services/layer_sync_state.py",
+          "sha256": "a9cd9ee0897ddb918c3cd64ae8ddd5f6dadaae77a56fbabb70361a3ee5d1e665"
+        },
+        {
+          "path": "tools/build_layer_sync_package.py",
+          "sha256": "3608dc646f16dc04796f84d53da0bab6d860d12d06e382c6242d6fcebcf84e76"
+        },
+        {
+          "path": "tools/test_layer_sync_suite.py",
+          "sha256": "fe2b3a3dfda9d831641ba1e5a8ee4bd9e578f0cc3cb2da38479633fcfec185ce"
+        }
+      ],
+      "handoff": "D75",
+      "messageSHA256": "723f62e599f03708199499a4569da55172c12aadeff6c8c921f09cecc82e5457",
+      "reviewCommit": "fe264aaccbfbc5aab19d67e6fda1658509bc514f",
+      "runtimeEntryPinsVerified": 42,
+      "senderTestsRerunByReceiver": false,
+      "sourceCommit": "57447c16a4fbee0c301d71d0f557e29854f6e237"
+    },
+    {
+      "archives": [
+        {
+          "bytes": 228626,
+          "kind": "sourceArchive",
+          "sha256": "623e7a1372ba4437ee449219244a105f345868ad67c10d23b8634a4d1fb73090"
+        },
+        {
+          "bytes": 114769,
+          "kind": "runtimeArchive",
+          "sha256": "091376c79b15b6491c7b451910eea441b297cb80c4eb660402eeefa0b499a171"
+        }
+      ],
+      "declaredArchiveSourcesAndExactGitBlobsVerified": [
+        {
+          "path": "services/layer_sync_resolution.py",
+          "sha256": "b987c4494f7c7e58070fb2af2852f0f781bff070fe81bcf60b026e93d67c7643"
+        },
+        {
+          "path": "tools/tests/layer_sync/test_layer_sync_conflict_choices_20261105.py",
+          "sha256": "9304ce1d331489e1093b63f5d9771eebb7e3d8697b4beaf1730518b0aa072932"
+        },
+        {
+          "path": "deploy/source_profiles/layer_sync_conflict_choices_20261105.json",
+          "sha256": "ca782234866c91e257e1617a528cf20ad90baa140f1066da9a7bad7812e88efb"
+        },
+        {
+          "path": "services/layer_sync_client.py",
+          "sha256": "ab07f434d11027c35a314c6f5d765e3e1aaecbd48fae2c826bc6d1d41f13ece5"
+        },
+        {
+          "path": "services/layer_sync_bridge.py",
+          "sha256": "77a4bfe663cc60b2bd663bfff27c94495dd265d8b1d56814db97c3809556f589"
+        },
+        {
+          "path": "services/layer_sync_state.py",
+          "sha256": "7f0e183b5bdaceb9d5ca158e87c8773a932342ff4c52668a56783b014f323f71"
+        },
+        {
+          "path": "tools/build_layer_sync_package.py",
+          "sha256": "b8902a335478da21bde20acfd04e6995aa3fd2061a27152eb0d15511619470ca"
+        },
+        {
+          "path": "tools/tests/layer_sync/feature_merge_worker_20261105.py",
+          "sha256": "3df78ed3443d8922f97b0eae050af8042153a27e979500f07589ba44523ef0a0"
+        }
+      ],
+      "handoff": "D76",
+      "messageSHA256": "ef20e87120337757201d0568983c6d721c9f30b73d6123e4938713d5f233dcd5",
+      "reviewCommit": "63101ec031d6ee127a0342f924264c3de3aebc08",
+      "runtimeEntryPinsVerified": 43,
+      "senderTestsRerunByReceiver": false,
+      "sourceCommit": "cb6220b301f451f98e22ceb13b7a714f6c82f5e8"
+    }
+  ],
+  "receiver": "驻马店3",
+  "schema": "xnby.receiver.read-only-candidate-review.v1",
+  "serverInstallRequestedOrPerformed": false,
+  "userConflictChoiceUIOrNewEXEProvided": false
+}

@@ -1,0 +1,59 @@
+{
+  "APIsMocked": false,
+  "R47UserLastScreenshotOnlyPartialPreflightFinalResultStillPending": true,
+  "R48MetadataUnitContract": {
+    "checks": 36,
+    "passed": true,
+    "programFileIOStubbedInThatUnitTest": true
+  },
+  "actualNormalSixComponentLifecycles": 3,
+  "allActualControllersAndComponentsExited0AndJobs0": true,
+  "approvalBlockedAction": {
+    "executed": false,
+    "expectedFixtureRootExists": false,
+    "mustNotBypassApprovalCheck": true,
+    "reason": "automatic approval review could not complete because usage limit was reached; not a safety determination",
+    "script": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\verify_r48_real_file_contract_r1008.py",
+    "scriptSHA256": "28776d71422565fccb76bfed1b974607339481887b4b233b08b2d4f83dfd096c"
+  },
+  "at": "2026-11-05T09:15:19.619301+08:00",
+  "currentOriginalConfigurationInstallationAndPointersMatched": true,
+  "currentProgramAndCachePreimageHashesMatched": 1427,
+  "firstStageInheritedRestartCaseLabelIsSameLiveEditorReadbackNotUsedAsRestartEvidence": true,
+  "fixedR47PackageChanged": false,
+  "fullCloneReady": false,
+  "fullRealFileVerifierPassed": false,
+  "globalCIMNotRepolledDuringApprovalOutage": true,
+  "goalStatus": "active",
+  "lastLocalCommits": {
+    "application": "ebc445bf4e3df416e81abc7ef7cd5a16cbc1dafd",
+    "engine": "ccd36aecd56b87b3a8a5f4012fa952de3011f6a1"
+  },
+  "newEventWritesInReadOnlyResume": 0,
+  "newProjectDocumentationAndLocalGitUpdateAfterR999NotPerformedDueApprovalOutage": true,
+  "nextAfterReviewAvailabilityRestored": [
+    "Run the exact R1008 real-file verifier once if its fixture root is absent; never replay unknown or live work.",
+    "Independently audit all new program/source links and successful runs; clean only verified own temporary directories.",
+    "Persist R1000-R1012 evidence and D74 receipt to project documentation and exact existing local branches.",
+    "Finish sparse update normal/fault recovery and transport package before any new public payload request."
+  ],
+  "normalCreateEditDeleteCancelConfirmAndFalseSaveInputRetentionPassed": true,
+  "normalRestartDeletedListNullAPIAndActualMissingDetailFormGuardPassed": true,
+  "oneNewRepairValidationEventAcrossBothAttempts": true,
+  "passedAsCompletedNativeUIAndReadOnlyRestoreAudit": true,
+  "pointerAudits": [
+    {
+      "attempt": 1004,
+      "originalPointerAndConfigurationHashMatched": true
+    },
+    {
+      "attempt": 1010,
+      "originalPointerAndConfigurationHashMatched": true
+    }
+  ],
+  "publicIISOrR48DeploymentPassed": false,
+  "rawCredentialValuesEmitted": false,
+  "readOnlyResumeBroadInheritedCRUDFieldNamesNotUsedAsStandaloneCRUDProof": true,
+  "selectedUIAssertionsIncludingRepeats": 24,
+  "sparsePublicApplyAndRecoveryValidated": false
+}

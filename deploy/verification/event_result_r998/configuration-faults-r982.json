@@ -1,0 +1,63 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "case": "only-six-loopback-URL-values-change-and-manifests-match",
+      "passed": true
+    },
+    {
+      "case": "invalid-port-True",
+      "passed": true
+    },
+    {
+      "case": "invalid-port-0",
+      "passed": true
+    },
+    {
+      "case": "invalid-port-80",
+      "passed": true
+    },
+    {
+      "case": "invalid-port-8767",
+      "passed": true
+    },
+    {
+      "case": "invalid-port-18891",
+      "passed": true
+    },
+    {
+      "case": "invalid-port-65536",
+      "passed": true
+    },
+    {
+      "case": "invalid-port-12346",
+      "passed": true
+    },
+    {
+      "case": "config-payload-pin-drift-refused",
+      "passed": true
+    },
+    {
+      "case": "actual-file-normal-or-write-0-fault-restores-three-exact-preimages",
+      "passed": true,
+      "exitProofCallbackIsSynthetic": true
+    },
+    {
+      "case": "actual-file-normal-or-write-1-fault-restores-three-exact-preimages",
+      "passed": true,
+      "exitProofCallbackIsSynthetic": true
+    },
+    {
+      "case": "actual-file-normal-or-write-2-fault-restores-three-exact-preimages",
+      "passed": true,
+      "exitProofCallbackIsSynthetic": true
+    },
+    {
+      "case": "actual-file-normal-or-write-3-fault-restores-three-exact-preimages",
+      "passed": true,
+      "exitProofCallbackIsSynthetic": true
+    }
+  ],
+  "actualOriginalGOrServicesTouched": false,
+  "processExitCallbacksAreExplicitTestDoubles": true
+}

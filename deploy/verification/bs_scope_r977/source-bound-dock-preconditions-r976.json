@@ -1,0 +1,48 @@
+{
+  "originalDockSourceSHA256": "49a072e20f43baa1718c54ac33901938ea04beae61a9de8ecfe8ffe9714658ee",
+  "sixFieldsDerivedFromActualSourceBindings": true,
+  "notificationFields": [
+    {
+      "configurationField": "riskReportUrl",
+      "classification": "loopback",
+      "rawValueTokenOrCredentialsPrinted": false,
+      "reboundToNewOwnedReceiverAndIdentityVerified": false
+    },
+    {
+      "configurationField": "safetyEmergencyUrl",
+      "classification": "loopback",
+      "rawValueTokenOrCredentialsPrinted": false,
+      "reboundToNewOwnedReceiverAndIdentityVerified": false
+    },
+    {
+      "configurationField": "workReportUrl",
+      "classification": "loopback",
+      "rawValueTokenOrCredentialsPrinted": false,
+      "reboundToNewOwnedReceiverAndIdentityVerified": false
+    },
+    {
+      "configurationField": "otherWorkReportUrl",
+      "classification": "loopback",
+      "rawValueTokenOrCredentialsPrinted": false,
+      "reboundToNewOwnedReceiverAndIdentityVerified": false
+    },
+    {
+      "configurationField": "otherRiskReportUrl",
+      "classification": "loopback",
+      "rawValueTokenOrCredentialsPrinted": false,
+      "reboundToNewOwnedReceiverAndIdentityVerified": false
+    },
+    {
+      "configurationField": "otherThirdUrl",
+      "classification": "loopback",
+      "rawValueTokenOrCredentialsPrinted": false,
+      "reboundToNewOwnedReceiverAndIdentityVerified": false
+    }
+  ],
+  "previousNameHeuristicEmptyResultWasNotEndpointAbsenceProof": true,
+  "readyForNewEventCreation": false,
+  "mustBindAllSixToNewOwnLoopbackReceiversBeforeAnyCreate": true,
+  "originalNetworkBoundaryMustNotBeRelaxed": true,
+  "doesNotProveRealExternalDockDelivery": true,
+  "businessPrivateConfigurationOrServicesWritten": false
+}

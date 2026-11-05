@@ -1,0 +1,111 @@
+{
+  "actualFileSHAAndReadFunctionsUnmodified": true,
+  "actualGenericAndNewContractFunctionsExecuted": true,
+  "bases": [
+    {
+      "base": "r45",
+      "programLinks": 15585,
+      "removedFrontendPaths": 175,
+      "sharedProgramLogicalBytesNotPhysicalAllocation": 1404290852,
+      "stageWrites": 187
+    },
+    {
+      "base": "r47",
+      "programLinks": 15591,
+      "removedFrontendPaths": 175,
+      "sharedProgramLogicalBytesNotPhysicalAllocation": 1427694310,
+      "stageWrites": 180
+    }
+  ],
+  "cases": [
+    {
+      "case": "r45-real-generic-and-R48-loader",
+      "fileCheckerReadAndSHAFunctionsMocked": false,
+      "ownedTargetAndSyntheticPrivateMetadataBindingsAdapted": true,
+      "passed": true,
+      "programsMaterializedAndHashRead": 15585,
+      "seconds": 73.014
+    },
+    {
+      "case": "r45-unknown-retained-program-drift",
+      "reason": "FILE_PIN_MISMATCH:frontend/security_pc/assets/css/Chart1-BMhJYYw6.css",
+      "rejected": true
+    },
+    {
+      "case": "r45-staged-program-drift",
+      "reason": "FILE_PIN_MISMATCH:frontend/emergency_pc/assets/js/wf-activities-card-CYXRFjTi.js",
+      "rejected": true
+    },
+    {
+      "case": "r45-unknown-manifest-key-with-valid-new-hash",
+      "reason": "EXACT_R48_PLAN_KEYS_REQUIRED",
+      "rejected": true
+    },
+    {
+      "case": "r45-unexpected-existing-new-path",
+      "reason": "NEW_PATH_ALREADY_EXISTS:frontend/emergency_pc/assets/js/wf-activities-card-CYXRFjTi.js",
+      "rejected": true
+    },
+    {
+      "case": "r45-wrong-target-before-files",
+      "reason": "EXACT_PUBLIC_TEST_UPDATE_REQUIRED",
+      "rejected": true
+    },
+    {
+      "case": "r45-restored-fixture-normal-recheck",
+      "passed": true
+    },
+    {
+      "case": "r47-real-generic-and-R48-loader",
+      "fileCheckerReadAndSHAFunctionsMocked": false,
+      "ownedTargetAndSyntheticPrivateMetadataBindingsAdapted": true,
+      "passed": true,
+      "programsMaterializedAndHashRead": 15591,
+      "seconds": 72.66
+    },
+    {
+      "case": "r47-unknown-retained-program-drift",
+      "reason": "FILE_PIN_MISMATCH:frontend/security_pc/assets/css/Chart1-BMhJYYw6.css",
+      "rejected": true
+    },
+    {
+      "case": "r47-staged-program-drift",
+      "reason": "FILE_PIN_MISMATCH:frontend/emergency_pc/assets/js/wf-activities-card-CYXRFjTi.js",
+      "rejected": true
+    },
+    {
+      "case": "r47-unknown-manifest-key-with-valid-new-hash",
+      "reason": "EXACT_R48_PLAN_KEYS_REQUIRED",
+      "rejected": true
+    },
+    {
+      "case": "r47-unexpected-existing-new-path",
+      "reason": "NEW_PATH_ALREADY_EXISTS:frontend/emergency_pc/assets/js/wf-activities-card-CYXRFjTi.js",
+      "rejected": true
+    },
+    {
+      "case": "r47-wrong-target-before-files",
+      "reason": "EXACT_PUBLIC_TEST_UPDATE_REQUIRED",
+      "rejected": true
+    },
+    {
+      "case": "r47-restored-fixture-normal-recheck",
+      "passed": true
+    }
+  ],
+  "checks": 14,
+  "fullCloneReady": false,
+  "injectedFixtureFileWritesUsedAtomicLinkBreakAndOriginalSourceSHAHeld": true,
+  "maximumFixturePathCharacters": 165,
+  "onlyOwnedTargetAndPrivateFixtureMetadataBindingsAdaptedInMemory": true,
+  "partialR1015InitialProgramFilesVerified": 2924,
+  "passed": true,
+  "productionSourceBytesAndOther81CoreFunctionsRetained": true,
+  "publicOrServicesTouched": false,
+  "realPrivateConfigurationAccountBusinessSeedGISOrUserDataNotCopied": true,
+  "sparseApplyLifecycleOrActualIISTLSExecuted": false,
+  "tinyFrontendTileLinkLimitFallback": {
+    "bytes": 6832685,
+    "files": 19247
+  }
+}

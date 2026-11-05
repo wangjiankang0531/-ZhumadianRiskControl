@@ -1,0 +1,24 @@
+{
+  "confirmedProductDefect": true,
+  "scope": "actual original R47 compiled frontend with owned synthetic normal user and original HTTP backend",
+  "normalCreateEditAndRestartAlreadyPassed": true,
+  "originalDeleteCancelAndConfirmPassed": true,
+  "deleteRequestsActuallyObserved": 1,
+  "backendReturnedFalseButFrontendShowedSuccessAndLeftEditor": true,
+  "inputRetentionRequirementFailed": true,
+  "sameOnlyFreshEventNotRecreated": true,
+  "compiledEventFormMissingExistingSourceGuard": {
+    "relativePath": "frontend/emergency_pc/assets/js/wf-addOrEdit.vue_vue_type_script_setup_true_lang-CMxMYSra.js",
+    "source": "D:\\Project\\Zhumadian\\work\\original-backend-bootstrap-r847\\r36\\bundle\\payload\\frontend\\emergency_pc\\assets\\js\\wf-addOrEdit.vue_vue_type_script_setup_true_lang-CMxMYSra.js",
+    "sha256": "907934801521d29cfe3b9fb24cad1a276aa239267735d4e56c70fde0a1c8daf5",
+    "eventCreationGuardNoticePresent": false,
+    "editSuccessMessagePresent": true,
+    "sourceBytes": 3146
+  },
+  "originalSourceFixToolExistsButNotInThisCompiledForm": true,
+  "allFourAttemptsFiveActualSixComponentLifecyclesNormalExitAndExactRestoreIndependentlyVerified": true,
+  "actualProductPatchBuiltOrAccepted": false,
+  "publicR47FixedPackageChanged": false,
+  "publicOrDesktopUsed": false,
+  "fullCloneReady": false
+}

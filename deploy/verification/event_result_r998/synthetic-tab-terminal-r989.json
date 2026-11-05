@@ -1,0 +1,14 @@
+{
+  "nodeExitCode": 0,
+  "actualJobDescendantsZero": true,
+  "budget": {
+    "limitFlags": 512,
+    "jobCommitLimitBytes": 1073741824,
+    "reportedPeakJobMemoryBytes": 344850432,
+    "reportedPeakProcessMemoryBytes": 62439424,
+    "activeProcesses": 0,
+    "totalProcesses": 15,
+    "terminateOnCloseOrBreakawayEnabled": false
+  },
+  "forceTerminationUsed": false
+}

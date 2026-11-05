@@ -1,0 +1,204 @@
+{
+  "files": [
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/run_ledger_lifecycle_r960.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\ledger_native_r960\\run_ledger_lifecycle_r960.py",
+      "bytes": 17657,
+      "sha256": "05af6838eb65eeabfae8ac74a2be5a198df9977343b653b147c32f04393d3690"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/home_transfer_health_r906.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\ledger_native_r960\\home_transfer_health_r906.py",
+      "bytes": 1821,
+      "sha256": "2c0533899e50853928bdf21cb126729bbdeeb2a084cd36d10af4047525ee25f3"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/home_transfer_probe_r906.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\ledger_native_r960\\home_transfer_probe_r906.py",
+      "bytes": 6227,
+      "sha256": "4e8795a4587791534488122ebd4b0d6033793739865fb83577fe8de97de5f751"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/verify_ledger_ui_r940.mjs",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\ledger_native_r960\\verify_ledger_ui_r940.mjs",
+      "bytes": 22315,
+      "sha256": "898eaf856fc23a614f515e4a2b25736a7712ebeb615fdad3f8c0932f8b35c2ed"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/stable_original_download_click_r954.mjs",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\ledger_native_r960\\stable_original_download_click_r954.mjs",
+      "bytes": 1605,
+      "sha256": "0e4fefe743eaf39ab84f2db8196617bb55da6d1bff53cb36f23e402d9d1819cd"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/owned_ready_observation_r924.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\ledger_native_r960\\owned_ready_observation_r924.py",
+      "bytes": 2177,
+      "sha256": "357c5ffab0249bb8038be89b4464fc1c2eff1ef6d43251ffdd174cae59e8ff57"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/OwnLedgerMetadataR940.java",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\ledger_native_r960\\OwnLedgerMetadataR940.java",
+      "bytes": 12731,
+      "sha256": "fadf365a323ece9fff62b1bf1bb364cd2399e24fa495e715982dff3ada20ed85"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/prepare_ledger_lifecycle_r940.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\prepare_ledger_lifecycle_r940.py",
+      "bytes": 6270,
+      "sha256": "ebeb245c44a8e7bb9eaafda6c8cd0800442a18ece6eeb38235eb89de12e95af5"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/prepare_ledger_resume_r946.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\prepare_ledger_resume_r946.py",
+      "bytes": 7912,
+      "sha256": "4cff4f39d5d13aef254d47e28f2a050ab7f58913a9d985ad1ee2859239324fb6"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/prepare_ledger_root_fix_r948.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\prepare_ledger_root_fix_r948.py",
+      "bytes": 8959,
+      "sha256": "f372e7369ed453952a039d0ad820bed3f4bfa112232c5e84a5fbc80694b82cdd"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/prepare_ledger_download_r950.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\prepare_ledger_download_r950.py",
+      "bytes": 7896,
+      "sha256": "7b58beba5d28596fa4625b1191681065157b23a48c3b7e172d37a5c1fd162d6e"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/prepare_ledger_stable_click_r952.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\prepare_ledger_stable_click_r952.py",
+      "bytes": 6328,
+      "sha256": "fc3cc158b4439e37e9fcd488b8186cead8a8a42bea099f3d0603f5191881d886"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/prepare_ledger_native_download_r960.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\prepare_ledger_native_download_r960.py",
+      "bytes": 5548,
+      "sha256": "2a313b94ed50ff04628fdb9c55efd24e64cc8e00fa97bf7ff792b7556c562fcb"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/prepare_download_variants_r956.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\prepare_download_variants_r956.py",
+      "bytes": 1508,
+      "sha256": "48861781a459f06b5584452d00e246edd7258ad0abbd50ed3918f2fd7806bb6e"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/prepare_download_native_path_r958.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\prepare_download_native_path_r958.py",
+      "bytes": 1057,
+      "sha256": "473d584f68613ffb0e476e111d6361a090de0b0f85c766faccfaa0d515a660a3"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/verify_ledger_restored_r962.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\verify_ledger_restored_r962.py",
+      "bytes": 3473,
+      "sha256": "da3a06482804701616f0570ee5b1435bb7b974825bfeb43312a1c0a4cba5454d"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/cleanup_ledger_tests_r963.ps1",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\cleanup_ledger_tests_r963.ps1",
+      "bytes": 5353,
+      "sha256": "5051c5f87453234bc64384caf55a7eeb39173571d078e720c494c77a61d83ef1"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/record_ledger_partial_r951.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\record_ledger_partial_r951.py",
+      "bytes": 4064,
+      "sha256": "f5550da2040097c63306b4e44355790c65c0e1623daf418e7d8ab3a9723e9560"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/receive_d71_r944.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\receive_d71_r944.py",
+      "bytes": 2669,
+      "sha256": "10da55aba578d1210ea8b00eceb1e51f9af3fe2db34c235592424c7861a5e726"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/test_stable_download_click_r954.mjs",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\test_stable_download_click_r954.mjs",
+      "bytes": 6030,
+      "sha256": "79413b4002413bb0562cbe0f769bc13416b0ad5b10131adacc5ab13085a4fe98"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/test_stable_download_click_r955.mjs",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\test_stable_download_click_r955.mjs",
+      "bytes": 6059,
+      "sha256": "ff2534a9dc7a220fdb31635b16de50df4d46d55a20b9f99f0c0161e3dcc75b7d"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/test_stable_download_click_r956.mjs",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\test_stable_download_click_r956.mjs",
+      "bytes": 6055,
+      "sha256": "078d6b50ae1f6c927664eea8f367e739b0618c8b2345cf5ec704f6efc164f909"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/test_stable_download_click_r957.mjs",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\test_stable_download_click_r957.mjs",
+      "bytes": 6044,
+      "sha256": "9a0736f45a4e0317c46e5c4c3385225dfd0d0e83d09fb7b6e7e6aa694d3a17b6"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/test_stable_download_click_r958.mjs",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\test_stable_download_click_r958.mjs",
+      "bytes": 6103,
+      "sha256": "8efa2ce8593364f4b14c2d7391667635e7cd1b173fe6e242433661e81d5aa566"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/run_stable_download_test_r954.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\run_stable_download_test_r954.py",
+      "bytes": 1451,
+      "sha256": "f2e0bbdc505144d55b77ef97b489f1d3e0063148a46e88637fe959ddf3151bd0"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/run_stable_download_test_r955.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\run_stable_download_test_r955.py",
+      "bytes": 1464,
+      "sha256": "803bf6a18804bb41d8be653b4bebea8a12a3112dde7dceec955623ad0cc33efa"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/run_stable_download_test_r956.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\run_stable_download_test_r956.py",
+      "bytes": 1449,
+      "sha256": "e3d5106e8a49adad8704df11befb47a31a9e1739b5cdc428c1dfb462b2094aef"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/run_stable_download_test_r957.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\run_stable_download_test_r957.py",
+      "bytes": 1449,
+      "sha256": "5e96dba18eb76233c32d2947f19df59a5f89980774986a2db769952cd9035b38"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/tools/run_stable_download_test_r958.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\run_stable_download_test_r958.py",
+      "bytes": 1449,
+      "sha256": "7b885b445432c21a17e5a5c85e6666e12b4907ddd700f8f645071f0d752c9c03"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/initial-r940/OwnLedgerMetadataR940.java",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\OwnLedgerMetadataR940.java",
+      "bytes": 11154,
+      "sha256": "2a06bac88883c1fae469d6d106592d9bddd325f2d39c463098167f0c073b1f9a"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/initial-r940/verify_ledger_ui_r940.mjs",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\verify_ledger_ui_r940.mjs",
+      "bytes": 20885,
+      "sha256": "5766dab3a144b0d8e8ed4e5939eca2cf082e1c0b50938158648956788fc8d3f3"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/initial-r940/ledger_probe_r940.py",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\ledger_probe_r940.py",
+      "bytes": 6242,
+      "sha256": "b030072f975ef520384f91e62f278553734930928ed9928d842084a082c8000e"
+    },
+    {
+      "path": "source-review/ledger-native-ui-r960/root-repair-r948/OwnLedgerMetadataR940.java",
+      "source": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\ledger_root_r948\\OwnLedgerMetadataR940.java",
+      "bytes": 12849,
+      "sha256": "6b5604722252e3a92185282261c175c383b1cab926c6bd33d69b7a942885c804"
+    }
+  ],
+  "allSourcesMatchActualExecutionOrNamedPreparationInput": true,
+  "classesJarsSDKArchivesPrivateRowsPasswordsAndRawLogsIncluded": false
+}

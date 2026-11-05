@@ -1,0 +1,80 @@
+{
+  "summary": {
+    "schema": "xnby.original-template-source-extended-inventory.v1",
+    "passed": true,
+    "physicalCommonDefinitionCandidates": 0,
+    "backendArchiveEntries": 1354,
+    "backendArchiveDefinitionCandidateEntries": 0,
+    "twoOpaqueBigScreenDBHeadersInspected": true,
+    "databaseSchemaOnlyWhereSQLite": true,
+    "documentKeywordCountsNotTemplateDefinitionProof": true,
+    "realNangangRuntimeDefinitionRecovered": false,
+    "original252RuntimeOrBusinessAccountSessionRowsRead": false,
+    "archivesOrOriginalProgramsExecuted": false,
+    "sourceFilesModified": false,
+    "sourceScopeIsLimitedNotProofNoOtherDefinitionExists": true,
+    "uninspectedMDBAnd3DModelArchivesAreOutsideThisBSWorkflowInventory": true,
+    "fullCloneReady": false
+  },
+  "physicalCandidates": [],
+  "backendArchiveCandidates": [],
+  "opaqueDBMetadata": [
+    {
+      "path": "03敏捷应急大屏\\大屏后台tjwhyq-svc\\tjwhyq-svc\\tjwhyq-base\\tjwhyq.db",
+      "bytes": 12288,
+      "sqliteHeader": true,
+      "schemaOnlyRead": true,
+      "businessAccountOrSessionRowsRead": false,
+      "tableCount": 1,
+      "workflowFormNamedTables": []
+    },
+    {
+      "path": "03敏捷应急大屏\\大屏后台tjwhyq-svc\\tjwhyq-svc\\tjwhyq-base\\test.db",
+      "bytes": 0,
+      "sqliteHeader": false,
+      "schemaOnlyRead": false,
+      "businessAccountOrSessionRowsRead": false
+    }
+  ],
+  "documentMetadata": [
+    {
+      "path": "02安全风险管控平台\\代码及开发环境搭建移交资料\\后台管理系统操作说明.docx",
+      "bytes": 7641428,
+      "sha256": "4dfea137b399660353210c8a47c5db7d7ec291cedbad5b3335c846a1cedbc0d5",
+      "documentXMLBytes": 71586,
+      "actualDefinitionJSONOrDeployedVersionExtracted": false,
+      "keywordCountsAvailable": true,
+      "workflowKeywordOccurrences": 9,
+      "templateKeywordOccurrences": 0,
+      "exportKeywordOccurrences": 0,
+      "onlyPerTextNodeKeywordCountsRetained": true,
+      "splitAcrossTextNodeKeywordsMayBeUndercounted": true
+    },
+    {
+      "path": "02安全风险管控平台\\代码及开发环境搭建移交资料\\后台代码结构数据库接口说明.docx",
+      "bytes": 5611846,
+      "sha256": "c8e8b60867bc813079bd0dab621f7c693a0a6c2bab4fed4ddbed6c96688f9591",
+      "documentXMLBytes": 63553684,
+      "actualDefinitionJSONOrDeployedVersionExtracted": false,
+      "keywordCountsAvailable": true,
+      "workflowKeywordOccurrences": 42,
+      "templateKeywordOccurrences": 40,
+      "exportKeywordOccurrences": 48,
+      "onlyPerTextNodeKeywordCountsRetained": true,
+      "splitAcrossTextNodeKeywordsMayBeUndercounted": true
+    },
+    {
+      "path": "02安全风险管控平台\\代码及开发环境搭建移交资料\\后台开发环境搭建手册.docx",
+      "bytes": 1026554,
+      "sha256": "3aa0f8da93bf1ed36f65e2138aa817a10e82a6223bcc3620a72120beb6d132d6",
+      "documentXMLBytes": 69943,
+      "actualDefinitionJSONOrDeployedVersionExtracted": false,
+      "keywordCountsAvailable": true,
+      "workflowKeywordOccurrences": 0,
+      "templateKeywordOccurrences": 0,
+      "exportKeywordOccurrences": 0,
+      "onlyPerTextNodeKeywordCountsRetained": true,
+      "splitAcrossTextNodeKeywordsMayBeUndercounted": true
+    }
+  ]
+}

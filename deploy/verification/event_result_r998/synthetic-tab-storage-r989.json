@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "directCDPNewTabHasIndependentSessionStorage": true,
+  "normalWindowOpenCopiesOpenerStorage": true,
+  "actualOpenerTargetMatched": true,
+  "onlySyntheticMarkerUsed": true,
+  "actualLoginTokenOrCredentialReadOrCopied": false,
+  "productAuthChanged": false,
+  "actualProductAcceptance": false,
+  "chromeExitCode": 0
+}

@@ -1,0 +1,79 @@
+{
+  "at": "2026-11-04T23:17:33.565925+08:00",
+  "passed": true,
+  "logicalInformationSystems": 1,
+  "overallCompletionPercent": null,
+  "fullCloneReady": false,
+  "original539SourceFilesAndRequestWrapperInventory": {
+    "schema": "xnby.bs.original-source-request-inventory.v1",
+    "passed": true,
+    "projects": [
+      "security",
+      "emergency"
+    ],
+    "logicalInformationSystems": 1,
+    "sourceFiles": 539,
+    "apiCallSites": 539,
+    "resolvedTransportGroups": 483,
+    "unresolvedCallSites": 1,
+    "crossPortalSharedTransportGroups": 31,
+    "focusedEmergencyResponseTransportGroups": 17,
+    "wrapperHTTPMethodsVerifiedFromActualCode": {
+      "security": {
+        "get": "GET",
+        "post": "POST",
+        "put": "PUT",
+        "delete": "DELETE",
+        "download": "GET"
+      },
+      "emergency": {
+        "get": "GET",
+        "post": "POST",
+        "put": "PUT",
+        "delete": "DELETE",
+        "download": "GET"
+      }
+    },
+    "apiExportsAndEndpointsNotAtomicFunctionOrCompletionDenominator": true,
+    "GETMayHaveBusinessSideEffects": true,
+    "visibleMenusRolesStateTransitionsAndRuntimeAcceptanceRequireSeparateEvidence": true,
+    "originalInformationReportButtonCommentedOutAndExcludedFromCompiledTemplate": true,
+    "overallCompletionPercent": null,
+    "servicesDatabaseBusinessOrDesktopUsed": false,
+    "fullCloneReady": false
+  },
+  "inventoryScope": "Recognized default request-wrapper calls only; not arbitrary fetch/HTTP, active roles, full contracts or an acceptance denominator.",
+  "oneUnresolvedURLIsInputDependentAttachmentDownloadNotMissingFeature": true,
+  "sameMethodPathCanHaveDistinctParameterRoleAndStateContracts": true,
+  "threeOriginalPagesInactiveButtonsExcludedByVueRenderAST": true,
+  "R918FreshEventChainTodoSupersededByActualR434Evidence": true,
+  "R434OriginalNangangTemplateOrPublicAcceptance": false,
+  "R965LedgerSingleGenerationPreviewDownloadAndRestartAlreadyPassedLocally": true,
+  "actualOriginalRuntimeTemplatesRecovered": false,
+  "limitedSourceInventoryNotProofNoTemplatesExistElsewhere": true,
+  "newEventCRUDNormalRoleCoverageRequiresReconciliationBeforeNewFixture": true,
+  "sixSourceDerivedDockURLsNotYetBoundToFreshOwnedReceivers": true,
+  "D72IndependentRuntimeArchivePins": 39,
+  "D72DeclaredSourcePins": 12,
+  "historicalEvidence": [
+    {
+      "path": "D:\\Project\\Zhumadian\\Document\\Deployment\\native_event_chain_r434_20261103\\verified-native-r434.json",
+      "sha256": "26727a6e5bee778e4b0055a2959af86bd9c23407f9b6be43f8acdd03810bdb6a"
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\Document\\Deployment\\ledger_original_ui_r940_20261104\\verified-ledger-r965.json",
+      "sha256": "89b2706420d495d70b4938d5699c00f9de1d1fb17d31a2fd79b89e515ab29926"
+    }
+  ],
+  "retainedAuditFailures": [
+    "R968 compiled comment text misclassified by first classifier; R969/R973 AST supersede it",
+    "R970 bounded XML size rejected; R971 explicit larger bounded stream succeeded",
+    "R975 field-name heuristic found no dock/socket names; R976 six actual @Value bindings supersede absence inference",
+    "Inline SQLite inspection quoting failed before opening; file-based read-only schema audit succeeded"
+  ],
+  "newServicesDatabaseBusinessDesktopServerOrPublicGitOperations": false,
+  "approvedR47FixedTransportManifestUnchanged": true,
+  "approved193PublicFilesAlreadySynced": true,
+  "serverR47PreflightOrDeployResultReceived": false,
+  "lastActuallyVerifiedPublicVersion": "R45"
+}
