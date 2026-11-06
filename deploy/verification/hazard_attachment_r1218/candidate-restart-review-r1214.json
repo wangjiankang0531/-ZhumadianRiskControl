@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "mode": "reopen",
+  "cases": [
+    {
+      "case": "normal original E login and exact existing diagnostic row",
+      "passed": true
+    },
+    {
+      "case": "normal restart retains exact valid row and attachment",
+      "passed": true
+    },
+    {
+      "case": "actual original uploaded PNG bytes remain readable",
+      "passed": true
+    }
+  ],
+  "writeResponses": [],
+  "writeCounts": {
+    "upload": 0,
+    "repair": 0,
+    "failedKeep": 0,
+    "retry": 0,
+    "failedRemove": 0
+  },
+  "blockedExternalFontReads": [
+    {
+      "path": "/wf/webfont/jWZHcEP2lzge/5AfKUTWZEo8W.woff2",
+      "method": "GET",
+      "requestBlocked": true
+    },
+    {
+      "path": "/wf/webfont/jWZHcEP2lzge/Dvhs41TtRdYF.woff",
+      "method": "GET",
+      "requestBlocked": true
+    }
+  ],
+  "attachmentCountAfter": 1,
+  "failedEditPreservedMainRow": true,
+  "attachmentAtomicityPreserved": true,
+  "normalRetryAccepted": true,
+  "actualOriginalMyForm": true,
+  "actualOriginalSDK": true,
+  "noSchemaChangeOrSQLBusinessWrite": true,
+  "noNewHazardCreate": true,
+  "tokenCookieOrStorageReadByProbe": false,
+  "noVueStateInjection": true,
+  "publicOrUserDesktopTouched": false,
+  "attachmentInsertFaultOrAllNangangAccepted": false,
+  "reviewCopyIsSanitizedProjection": true,
+  "rawOriginalRetainedOutsideGit": true
+}

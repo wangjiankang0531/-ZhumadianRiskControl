@@ -1,0 +1,89 @@
+{
+  "passed": true,
+  "mode": "mainflow",
+  "cases": [
+    {
+      "case": "normal original E login and exact existing diagnostic row",
+      "passed": true
+    },
+    {
+      "case": "repair same own record through original upload and valid edit",
+      "passed": true
+    },
+    {
+      "case": "failed edit retaining attachment keeps original server relation",
+      "passed": true
+    },
+    {
+      "case": "same original form corrects input and retries once successfully",
+      "passed": true
+    },
+    {
+      "case": "failed edit removing attachment draft preserves exact relation identity",
+      "passed": true
+    },
+    {
+      "case": "cancel and original detail retain last valid row and attachment",
+      "passed": true
+    },
+    {
+      "case": "actual original uploaded PNG bytes remain readable",
+      "passed": true
+    }
+  ],
+  "writeResponses": [
+    {
+      "kind": "repair",
+      "result": true
+    },
+    {
+      "kind": "failedKeep",
+      "status": 500,
+      "businessCode": 100000,
+      "failed": true
+    },
+    {
+      "kind": "retry",
+      "result": true
+    },
+    {
+      "kind": "failedRemove",
+      "status": 500,
+      "businessCode": 100000,
+      "failed": true
+    }
+  ],
+  "writeCounts": {
+    "upload": 1,
+    "repair": 1,
+    "failedKeep": 1,
+    "retry": 1,
+    "failedRemove": 1
+  },
+  "blockedExternalFontReads": [
+    {
+      "path": "/wf/webfont/jWZHcEP2lzge/5AfKUTWZEo8W.woff2",
+      "method": "GET",
+      "requestBlocked": true
+    },
+    {
+      "path": "/wf/webfont/jWZHcEP2lzge/Dvhs41TtRdYF.woff",
+      "method": "GET",
+      "requestBlocked": true
+    }
+  ],
+  "attachmentCountAfter": 1,
+  "failedEditPreservedMainRow": true,
+  "attachmentAtomicityPreserved": true,
+  "normalRetryAccepted": true,
+  "actualOriginalMyForm": true,
+  "actualOriginalSDK": true,
+  "noSchemaChangeOrSQLBusinessWrite": true,
+  "noNewHazardCreate": true,
+  "tokenCookieOrStorageReadByProbe": false,
+  "noVueStateInjection": true,
+  "publicOrUserDesktopTouched": false,
+  "attachmentInsertFaultOrAllNangangAccepted": false,
+  "reviewCopyIsSanitizedProjection": true,
+  "rawOriginalRetainedOutsideGit": true
+}

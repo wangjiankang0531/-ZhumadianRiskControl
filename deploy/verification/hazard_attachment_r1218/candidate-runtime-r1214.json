@@ -1,0 +1,121 @@
+{
+  "passed": true,
+  "failure": null,
+  "actualTwoSixComponentLifecycles": true,
+  "health": [
+    {
+      "phase": "mainflow",
+      "originalR45OtherBackendHealthPreserved": true,
+      "hazardSourceBackendReplaced": true,
+      "publicAccepted": false
+    },
+    {
+      "phase": "normal-restart",
+      "originalR45OtherBackendHealthPreserved": true,
+      "hazardSourceBackendReplaced": true,
+      "publicAccepted": false
+    }
+  ],
+  "terminals": [
+    {
+      "jobMemoryBudget": {
+        "limitFlags": 512,
+        "jobCommitLimitBytes": 4294967296,
+        "reportedPeakJobMemoryBytes": 3149434880,
+        "reportedPeakProcessMemoryBytes": 1201516544,
+        "activeProcesses": 0,
+        "totalProcesses": 21,
+        "terminateOnCloseOrBreakawayEnabled": false
+      },
+      "phase": "mainflow",
+      "controllerExitCode": 0,
+      "allOwnedChildrenExited": true,
+      "actualJobDescendantsZero": true,
+      "normalOwnedShutdown": true,
+      "exitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      },
+      "forceTerminationUsed": false
+    },
+    {
+      "jobMemoryBudget": {
+        "limitFlags": 512,
+        "jobCommitLimitBytes": 4294967296,
+        "reportedPeakJobMemoryBytes": 3073667072,
+        "reportedPeakProcessMemoryBytes": 1192050688,
+        "activeProcesses": 0,
+        "totalProcesses": 21,
+        "terminateOnCloseOrBreakawayEnabled": false
+      },
+      "phase": "normal-restart",
+      "controllerExitCode": 0,
+      "allOwnedChildrenExited": true,
+      "actualJobDescendantsZero": true,
+      "normalOwnedShutdown": true,
+      "exitCodes": {
+        "store": 0,
+        "mysql": 0,
+        "redis": 0,
+        "platform": 0,
+        "business": 0,
+        "gateway": 0
+      },
+      "forceTerminationUsed": false
+    }
+  ],
+  "codeRestored": true,
+  "privateConfigurationUnchanged": true,
+  "originalCurrentPointerRestored": true,
+  "originalPrivateConfigurationAndInstallationIdentityRestored": true,
+  "dataDirectoriesNeverClonedOrReplaced": true,
+  "actualOriginalHazardTransactionUIProbe": true,
+  "businessChecks": [
+    {
+      "passed": true,
+      "phase": "mainflow",
+      "scopedCandidateAcceptanceOnly": true,
+      "actualOriginalSDKAndOrdinaryUI": true,
+      "actualUICases": 7,
+      "sameExistingOwnRecordNoCreate": true,
+      "repairAndFailedKeepAndValidRetryAndFailedRemove": true,
+      "allPreExistingHazardAndBaseFileRowsFingerprintUnchanged": true,
+      "mainRowUnchangedByFailedEdit": true,
+      "attachmentRelationRetainedAfterFailedEdit": true,
+      "attachmentAtomicityDefectObserved": false,
+      "normalRestartReadsSameRecordAndRelation": false,
+      "metadataReprepared": false,
+      "publicAccepted": false
+    },
+    {
+      "passed": true,
+      "phase": "normal-restart",
+      "scopedCandidateAcceptanceOnly": true,
+      "actualOriginalSDKAndOrdinaryUI": true,
+      "actualUICases": 3,
+      "sameExistingOwnRecordNoCreate": true,
+      "repairAndFailedKeepAndValidRetryAndFailedRemove": false,
+      "allPreExistingHazardAndBaseFileRowsFingerprintUnchanged": true,
+      "mainRowUnchangedByFailedEdit": true,
+      "attachmentRelationRetainedAfterFailedEdit": true,
+      "attachmentAtomicityDefectObserved": false,
+      "normalRestartReadsSameRecordAndRelation": true,
+      "metadataReprepared": false,
+      "publicAccepted": false
+    }
+  ],
+  "normalLoginHazardTransactionUIProbeAccepted": true,
+  "actualIISTLSOrPublicAccepted": false,
+  "maxActualBackupAtomicPathCharacters": 204,
+  "boundedControllerPrivateCommitBytes": 4294967296,
+  "startupPhysicalAndCommitRequirementBytes": 8589934592,
+  "completeCompiledOnlineFrontendUsed": true,
+  "durablePointerBeforeSnapshotUsed": true,
+  "exactRunOwnerReceiptSelectionUsed": true,
+  "desktopUsed": false,
+  "fullCloneReady": false
+}

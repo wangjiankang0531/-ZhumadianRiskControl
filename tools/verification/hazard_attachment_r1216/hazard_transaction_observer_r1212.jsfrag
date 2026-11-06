@@ -1,0 +1,68 @@
+const ownCode='OWN_HA_'+w.nonce.slice(0,20),ownName='Own attachment '+w.nonce;
+const JP='D:/Project/Zhumadian/work/hazard-transaction-probe-r1212/hazard-attachment-flight.private.json';
+let ownId=w.ownId,armed='none',saveReturned=false,failedEditReturned=false,lastOwnList=[],lastOwnDetail=null,lastOwnFiles=[],uploadUrl=null,attachmentBefore=null,attachmentAfter=null;
+const fixturePath='D:/CodexData/home/visualizations/2026/10/28/01a1836e-e4ee-7fb0-be6f-b24f2e2672e4/tencent-feedback-20261031/hazard_transaction_r1212/own-attachment.png';
+const blockedExternalFontReads=[],currentSessions=new Set(),listBatches=[],writeResponses=[],mutations={upload:0,repair:0,failedKeep:0,retry:0,failedRemove:0};let flight;
+async function storeFlight(phase){flight={schema:'xnby.own-hazard-transaction-ui-flight.v1',nonce:w.nonce,sourceCode:ownCode,sourceName:ownName,ownId,uploadUrl,phase,requests:{...mutations}};const temp=JP+'.own.tmp';await fs.writeFile(temp,JSON.stringify(flight,null,2)+'\n',{flag:'wx'});await fs.rename(temp,JP);}
+async function initializeFlight(){
+ need(/^[0-9a-f]{32}$/.test(w.nonce)&&/^[0-9a-f]{32}$/.test(ownId)&&['mainflow','reopen'].includes(w.mode),'EXACT_NEW_ATTACHMENT_FLIGHT');
+ if(w.mode==='mainflow'){await fs.writeFile(JP,JSON.stringify({schema:'xnby.own-hazard-transaction-ui-flight.v1',nonce:w.nonce,sourceCode:ownCode,sourceName:ownName,ownId,uploadUrl:null,phase:'prepared',requests:{...mutations}},null,2)+'\n',{flag:'wx'});}
+ else{flight=JSON.parse(await fs.readFile(JP,'utf8'));need(flight.schema==='xnby.own-hazard-transaction-ui-flight.v1'&&flight.nonce===w.nonce&&flight.sourceCode===ownCode&&flight.sourceName===ownName&&flight.phase==='mainflow-completed'&&/^[0-9a-f]{32}$/.test(flight.ownId),'EXACT_COMPLETED_ATTACHMENT_FLIGHT_ONLY');ownId=flight.ownId;uploadUrl=flight.uploadUrl;need(JSON.stringify(flight.requests)===JSON.stringify({upload:1,repair:1,failedKeep:1,retry:1,failedRemove:1}),'EXACT_COMPLETED_NO_REPLAY');}
+}
+async function permitted(q){
+ const u=new URL(q.url);if(['data:','blob:'].includes(u.protocol))return true;if(u.origin!==w.base)return false;
+ if(u.pathname==='/zhumadian/api/jnpf/oauth/Login'&&q.method==='POST')return true;
+ if(!u.pathname.startsWith('/zhumadian/api/serv/'))return['GET','HEAD'].includes(q.method);
+ if(q.method==='GET'&&u.pathname==='/zhumadian/api/serv/hazardSource/getPage')return true;
+ if(q.method==='GET'&&u.pathname==='/zhumadian/api/serv/hazardSource/getById')return!!ownId&&u.searchParams.get('id')===ownId;
+ if(q.method==='GET'&&uploadUrl&&u.pathname==='/zhumadian/api/serv'+uploadUrl)return true;
+ if(w.mode!=='mainflow')return false;
+ if(q.method==='POST'&&u.pathname==='/zhumadian/api/serv/sys-file/upload'){
+  need(armed==='upload'&&mutations.upload===0&&q.hasPostData!==false,'ONE_TINY_OWN_FILE_UPLOAD');need(Object.entries(q.headers).some(([k,v])=>k.toLowerCase()==='content-type'&&v.startsWith('multipart/form-data;')),'ORIGINAL_MULTIPART_ONLY');mutations.upload++;await storeFlight('upload-issued-do-not-repeat');return true;
+ }
+ if(q.method!=='POST'||u.pathname!=='/zhumadian/api/serv/hazardSource/updateById')return false;
+ need(typeof q.postData==='string'&&q.postData.length<16384,'BOUNDED_OWN_EDIT');const b=JSON.parse(q.postData),h=b.hazardSource;
+ need(h&&h.id===ownId&&h.createdBy===w.expectedUserId&&h.sourceCode===ownCode&&h.sourceName===ownName&&h.location==='Own isolated zone'&&h.riskLevel==='四级'&&Number(h.criticalAmount)===1&&Number(h.currentAmount)===.25&&h.materialType==='Own material v2'&&Array.isArray(b.baseFileList),'EXACT_PREVIOUS_OWN_ROW_ONLY');
+ need(['repair','failedKeep','retry','failedRemove'].includes(armed)&&mutations[armed]===0,'EXACT_SINGLE_ATTEMPT_PER_PHASE');
+ if(armed==='failedRemove')need(h.status==='12345'&&b.baseFileList.length===0,'ONE_FINAL_FAILED_REMOVAL_DRAFT');
+ else{need(b.baseFileList.length===1&&uploadUrl&&b.baseFileList[0].fileUrl===uploadUrl&&b.baseFileList[0].fileName==='own-attachment.png'&&b.baseFileList[0].fileType==='国家安全生产监督管理总局令第40号','OWN_UPLOADED_SINGLE_LINK');need(h.status===(armed==='failedKeep'?'12345':armed==='retry'?'2':'1'),'EXACT_EXPECTED_STATUS');}
+ mutations[armed]++;await storeFlight(armed+'-issued-do-not-repeat');return true;
+
+}
+function observe(v){try{
+ if(v.method==='Fetch.requestPaused'){
+  const q=v.params.request,u=new URL(q.url),sid=v.sessionId;
+  if(u.origin!==w.base&&q.method==='GET'&&v.params.resourceType==='Font'&&/^\/wf\/webfont\/[^?]+\.woff2?$/.test(u.pathname)){blockedExternalFontReads.push({path:u.pathname,method:'GET',requestBlocked:true});send('Fetch.failRequest',{requestId:v.params.requestId,errorReason:'BlockedByClient'},sid).catch(()=>{});return;}
+  const p=permitted(q).then(ok=>{if(!ok){blocked.push({path:u.pathname,method:q.method});problem='UNEXPECTED_REQUEST_BLOCKED';}return send(ok?'Fetch.continueRequest':'Fetch.failRequest',{requestId:v.params.requestId,...ok?{}:{errorReason:'BlockedByClient'}},sid)}).catch(e=>{blocked.push({path:u.pathname,method:q.method});problem='ATTACHMENT_SCOPE_REFUSED';return send('Fetch.failRequest',{requestId:v.params.requestId,errorReason:'BlockedByClient'},sid).catch(()=>{})}).finally(()=>reads.delete(p));reads.add(p);return;
+ }
+ const key=v.sessionId+':'+v.params?.requestId;
+ if(v.method==='Network.requestWillBeSent'){
+  const q=v.params.request,u=new URL(q.url);if(u.origin!==w.base||!u.pathname.startsWith('/zhumadian/api/'))return;need(tracked.size<256,'BOUNDED_NETWORK');tracked.set(key,{path:u.pathname,method:q.method,sid:v.sessionId,requestId:v.params.requestId,filter:u.searchParams.get('sourceName')||''});
+ }else if(v.method==='Network.responseReceived'&&tracked.has(key))tracked.get(key).status=v.params.response.status;
+ else if(v.method==='Network.loadingFinished'&&tracked.has(key)){
+  const row=tracked.get(key);tracked.delete(key);http.push({path:row.path,method:row.method,status:row.status});
+  if(row.path.endsWith('/oauth/CurrentUser')||row.path.startsWith('/zhumadian/api/serv/hazardSource/')||row.path==='/zhumadian/api/serv/sys-file/upload'){
+   const p=send('Network.getResponseBody',{requestId:row.requestId},row.sid).then(r=>{
+    const body=JSON.parse(r.base64Encoded?Buffer.from(r.body,'base64').toString():r.body);
+    if(row.path.endsWith('/updateById')){need(['repair','failedKeep','retry','failedRemove'].includes(armed)&&mutations[armed]===1,'EXACT_RESPONSE_PHASE');if(armed.startsWith('failed')){need(row.status>=400||body.code!==0||body.data!==true,'ORIGINAL_SQL_FAILURE_REQUIRED');failedEditReturned=true;writeResponses.push({kind:armed,status:row.status,businessCode:body.code,failed:true});}else{need(row.status===200&&body.code===0&&body.data===true,'NORMAL_ORIGINAL_EDIT_TRUE');saveReturned=true;writeResponses.push({kind:armed,result:true});}return;}
+    need(row.status===200,'ORIGINAL_SUCCESS_HTTP_200');
+    if(row.path.endsWith('/oauth/CurrentUser')){need(body.code===200&&body.data?.userInfo?.userId===w.expectedUserId&&body.data.userInfo.isAdministrator===false,'NORMAL_NONADMIN_E_ONLY');currentSessions.add(row.sid);current=true;menu=hasMenu(body.data.menuList);return;}
+    need(body.code===0,'ORIGINAL_SUCCESS_BUSINESS_CODE');
+    if(row.path==='/zhumadian/api/serv/sys-file/upload'){need(/^\/sys-file\/[^/]+\/[a-zA-Z0-9_.-]+\.png$/.test(body.data?.url),'OWN_ORIGINAL_PNG_URL');uploadUrl=body.data.url;return;}
+    if(row.path.endsWith('/getPage')){need(Array.isArray(body.data?.records),'ORIGINAL_LIST');const own=body.data.records.filter(h=>h.sourceCode===ownCode||h.sourceName===ownName);need(own.length<=1&&own.every(h=>h.sourceCode===ownCode&&h.sourceName===ownName&&/^[0-9a-f]{32}$/.test(h.id)),'UNIQUE_OWN_ROW');if(own.length){if(ownId)need(ownId===own[0].id,'OWN_ID_STABLE');ownId=own[0].id;}lastOwnList=own;pageReads++;listBatches.push({filtered:row.filter===ownName});return;}
+    if(row.path.endsWith('/getById')){const h=body.data?.hazardSource;need(h&&h.id===ownId&&h.sourceCode===ownCode&&h.sourceName===ownName&&Array.isArray(body.data.baseFileList)&&body.data.baseFileList.length<=1,'ONLY_OWN_DETAIL');lastOwnDetail=h;lastOwnFiles=body.data.baseFileList;need(lastOwnFiles.every(f=>f.correlationId===ownId&&f.fileUrl===uploadUrl&&f.fileName==='own-attachment.png'),'ONLY_OWN_LINK');detailReads++;return;}
+    need(row.path.endsWith('/save')&&body.data===true,'ORIGINAL_CREATE_TRUE');saveReturned=true;writeResponses.push({path:row.path,result:true});
+   }).catch(e=>{problem=e.message}).finally(()=>reads.delete(p));reads.add(p);
+  }
+ }else if(v.method==='Runtime.exceptionThrown')exceptions.push({text:v.params.exceptionDetails?.text||'runtime exception'});
+}catch(e){problem=e.message;}}
+async function filteredOwnList(){const after=pageReads;await input('危险源名称',ownName);await clickLabel('搜索');await until(()=>pageReads>after&&listBatches.at(-1)?.filtered);}
+function ownRowExpr(){return`Array.from(document.querySelectorAll('.el-table__body tr')).find(e=>e.textContent.includes(${JSON.stringify(ownCode)})&&e.textContent.includes(${JSON.stringify(ownName)}))`;}
+async function clickOwnRow(label){await clickPoint(await hit(`Array.from((${ownRowExpr()})?.querySelectorAll('button')||[]).find(e=>e.textContent.trim()===${JSON.stringify(label)})`,'own row '+label));}
+
+async function popupFromNormalOpener(){
+ const opener=session,before=(await send('Target.getTargets',{},null)).targetInfos.map(t=>t.targetId);
+ const r=await send('Runtime.evaluate',{expression:"!!window.open('about:blank','ownHazardAtomicCheckR1212')",returnByValue:true,userGesture:true},opener);need(r.result.value===true,'NORMAL_BROWSER_OPENER_REQUIRED');let target;
+ await until(async()=>{target=(await send('Target.getTargets',{},null)).targetInfos.find(t=>!before.includes(t.targetId)&&t.openerId);return!!target});session=(await send('Target.attachToTarget',{targetId:target.targetId,flatten:true},null)).sessionId;
+ for(const name of ['Page','Runtime','Network'])await send(name+'.enable');await send('Fetch.enable',{patterns:[{urlPattern:'*',requestStage:'Request'}]});return {opener,popupTarget:target.targetId};
+}

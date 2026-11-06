@@ -1,0 +1,116 @@
+/** Complete original compiled app, original MyForm/validation/dictionaries/backend.
+ * This stage permits login plus GET reads only; all hazard mutations fail closed. */
+import fs from'node:fs/promises';import{spawn}from'node:child_process';import{createHash}from'node:crypto';
+let raw='';for await(const b of process.stdin){raw+=b;if(raw.length>8192)throw Error('BOUNDED_OWN_INPUT')}
+const w=JSON.parse(raw);raw='';const id=n=>'a531'+n.toString(16).padStart(28,'0');
+if(w.account!=='own_statistics_reader_e'||w.expectedUserId!==id(120002)||!w.credentialsSynthetic||!/^http:\/\/127\.0\.0\.1:\d{4,5}$/.test(w.base)||[8767,18891,18892].includes(+new URL(w.base).port))throw Error('OWN_NONADMIN_FORM_FIXTURE_ONLY');
+const O='D:/Project/Zhumadian/work/hazard-attachment-probe-r1207/ui-'+w.mode;await fs.mkdir(O);
+let chrome,ws,session,seq=0,stage='launch',problem=null,failure,current=false,menu=false,pageReads=0,detailReads=0;
+let interaction='none';const hitObservations=[];
+const pending=new Map(),tracked=new Map(),reads=new Set(),cases=[],http=[],dicts=new Set(),exceptions=[],blocked=[];
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function need(v,m){if(!v)throw Error(m)}
+function send(method,params={},sid=session){return new Promise((resolve,reject)=>{const key=++seq,t=setTimeout(()=>{pending.delete(key);reject(Error('CDP_TIMEOUT_'+method))},15000);pending.set(key,{resolve:v=>{clearTimeout(t);resolve(v)},reject:e=>{clearTimeout(t);reject(e)}});ws.send(JSON.stringify({id:key,method,params,...sid?{sessionId:sid}:{}}))})}
+async function evaluate(expression){const r=await send('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error('ORIGINAL_DOM_EVALUATION_FAILED');return r.result.value}
+async function until(fn,ms=45000){const end=Date.now()+ms;for(;;){if(await fn())return;if(problem)throw Error(problem);if(Date.now()>end)throw Error('OBSERVATION_TIMEOUT_'+stage);await sleep(60)}}
+function hasMenu(rows){return Array.isArray(rows)&&rows.some(x=>x.path==='/majorHazard/hazardSource'&&x.urlAddress==='/majorHazard/hazardSource'||hasMenu(x.children))}
+const ownCode='OWN_HA_'+w.nonce.slice(0,20),ownName='Own attachment '+w.nonce;
+const JP='D:/Project/Zhumadian/work/hazard-attachment-probe-r1207/hazard-attachment-flight.private.json';
+let ownId=null,armed='none',saveReturned=false,failedEditReturned=false,lastOwnList=[],lastOwnDetail=null,lastOwnFiles=[],uploadUrl=null,attachmentBefore=null,attachmentAfter=null;
+const fixturePath='D:/CodexData/home/visualizations/2026/10/28/01a1836e-e4ee-7fb0-be6f-b24f2e2672e4/tencent-feedback-20261031/hazard_attachment_r1207/own-attachment.png';
+const blockedExternalFontReads=[],currentSessions=new Set(),listBatches=[],writeResponses=[],mutations={upload:0,create:0,failedEdit:0};let flight;
+async function storeFlight(phase){flight={schema:'xnby.own-hazard-attachment-ui-flight.v1',nonce:w.nonce,sourceCode:ownCode,sourceName:ownName,ownId,uploadUrl,phase,requests:{...mutations}};const temp=JP+'.own.tmp';await fs.writeFile(temp,JSON.stringify(flight,null,2)+'\n',{flag:'wx'});await fs.rename(temp,JP);}
+async function initializeFlight(){
+ need(/^[0-9a-f]{32}$/.test(w.nonce)&&['mainflow','reopen'].includes(w.mode),'EXACT_NEW_ATTACHMENT_FLIGHT');
+ if(w.mode==='mainflow'){await fs.writeFile(JP,JSON.stringify({schema:'xnby.own-hazard-attachment-ui-flight.v1',nonce:w.nonce,sourceCode:ownCode,sourceName:ownName,ownId:null,uploadUrl:null,phase:'prepared',requests:{...mutations}},null,2)+'\n',{flag:'wx'});}
+ else{flight=JSON.parse(await fs.readFile(JP,'utf8'));need(flight.schema==='xnby.own-hazard-attachment-ui-flight.v1'&&flight.nonce===w.nonce&&flight.sourceCode===ownCode&&flight.sourceName===ownName&&flight.phase==='mainflow-completed'&&/^[0-9a-f]{32}$/.test(flight.ownId),'EXACT_COMPLETED_ATTACHMENT_FLIGHT_ONLY');ownId=flight.ownId;uploadUrl=flight.uploadUrl;need(JSON.stringify(flight.requests)===JSON.stringify({upload:1,create:1,failedEdit:1}),'EXACT_COMPLETED_NO_REPLAY');}
+}
+async function permitted(q){
+ const u=new URL(q.url);if(['data:','blob:'].includes(u.protocol))return true;if(u.origin!==w.base)return false;
+ if(u.pathname==='/zhumadian/api/jnpf/oauth/Login'&&q.method==='POST')return true;
+ if(!u.pathname.startsWith('/zhumadian/api/serv/'))return['GET','HEAD'].includes(q.method);
+ if(q.method==='GET'&&u.pathname==='/zhumadian/api/serv/hazardSource/getPage')return true;
+ if(q.method==='GET'&&u.pathname==='/zhumadian/api/serv/hazardSource/getById')return!!ownId&&u.searchParams.get('id')===ownId;
+ if(q.method==='GET'&&uploadUrl&&u.pathname==='/zhumadian/api/serv'+uploadUrl)return true;
+ if(w.mode!=='mainflow')return false;
+ if(q.method==='POST'&&u.pathname==='/zhumadian/api/serv/sys-file/upload'){
+  need(armed==='upload'&&mutations.upload===0&&q.hasPostData!==false,'ONE_TINY_OWN_FILE_UPLOAD');need(Object.entries(q.headers).some(([k,v])=>k.toLowerCase()==='content-type'&&v.startsWith('multipart/form-data;')),'ORIGINAL_MULTIPART_ONLY');mutations.upload++;await storeFlight('upload-issued-do-not-repeat');return true;
+ }
+ if(q.method!=='POST'||!['/zhumadian/api/serv/hazardSource/save','/zhumadian/api/serv/hazardSource/updateById'].includes(u.pathname))return false;
+ need(typeof q.postData==='string'&&q.postData.length<16384,'BOUNDED_OWN_WRITE');const b=JSON.parse(q.postData),h=b.hazardSource;
+ need(h&&h.sourceCode===ownCode&&h.sourceName===ownName&&h.location==='Own isolated zone'&&h.riskLevel==='四级'&&Number(h.criticalAmount)===1&&Number(h.currentAmount)===.25&&h.materialType==='Own material v1'&&Array.isArray(b.baseFileList),'EXACT_NEW_OWN_HAZARD_ONLY');
+ if(u.pathname.endsWith('/save')){need(armed==='create'&&!ownId&&!h.id&&mutations.create===0&&h.status==='1'&&b.baseFileList.length===1,'ONE_OWN_CREATE_WITH_SINGLE_LINK');const f=b.baseFileList[0];need(!!uploadUrl&&f.fileUrl===uploadUrl&&f.fileName==='own-attachment.png'&&f.fileType==='国家安全生产监督管理总局令第40号','ORIGINAL_OWN_UPLOAD_ASSOCIATION');mutations.create++;await storeFlight('create-issued-do-not-repeat');return true;}
+ need(armed==='failedEdit'&&mutations.failedEdit===0&&ownId&&h.id===ownId&&h.createdBy===w.expectedUserId&&h.status==='12345'&&b.baseFileList.length===0,'ONE_OVERLENGTH_STATUS_EDIT_ONLY_ON_NEW_OWN_ROW');mutations.failedEdit++;await storeFlight('failed-edit-issued-do-not-repeat');return true;
+}
+function observe(v){try{
+ if(v.method==='Fetch.requestPaused'){
+  const q=v.params.request,u=new URL(q.url),sid=v.sessionId;
+  if(u.origin!==w.base&&q.method==='GET'&&v.params.resourceType==='Font'&&/^\/wf\/webfont\/[^?]+\.woff2?$/.test(u.pathname)){blockedExternalFontReads.push({path:u.pathname,method:'GET',requestBlocked:true});send('Fetch.failRequest',{requestId:v.params.requestId,errorReason:'BlockedByClient'},sid).catch(()=>{});return;}
+  const p=permitted(q).then(ok=>{if(!ok){blocked.push({path:u.pathname,method:q.method});problem='UNEXPECTED_REQUEST_BLOCKED';}return send(ok?'Fetch.continueRequest':'Fetch.failRequest',{requestId:v.params.requestId,...ok?{}:{errorReason:'BlockedByClient'}},sid)}).catch(e=>{blocked.push({path:u.pathname,method:q.method});problem='ATTACHMENT_SCOPE_REFUSED';return send('Fetch.failRequest',{requestId:v.params.requestId,errorReason:'BlockedByClient'},sid).catch(()=>{})}).finally(()=>reads.delete(p));reads.add(p);return;
+ }
+ const key=v.sessionId+':'+v.params?.requestId;
+ if(v.method==='Network.requestWillBeSent'){
+  const q=v.params.request,u=new URL(q.url);if(u.origin!==w.base||!u.pathname.startsWith('/zhumadian/api/'))return;need(tracked.size<256,'BOUNDED_NETWORK');tracked.set(key,{path:u.pathname,method:q.method,sid:v.sessionId,requestId:v.params.requestId,filter:u.searchParams.get('sourceName')||''});
+ }else if(v.method==='Network.responseReceived'&&tracked.has(key))tracked.get(key).status=v.params.response.status;
+ else if(v.method==='Network.loadingFinished'&&tracked.has(key)){
+  const row=tracked.get(key);tracked.delete(key);http.push({path:row.path,method:row.method,status:row.status});
+  if(row.path.endsWith('/oauth/CurrentUser')||row.path.startsWith('/zhumadian/api/serv/hazardSource/')||row.path==='/zhumadian/api/serv/sys-file/upload'){
+   const p=send('Network.getResponseBody',{requestId:row.requestId},row.sid).then(r=>{
+    const body=JSON.parse(r.base64Encoded?Buffer.from(r.body,'base64').toString():r.body);
+    if(row.path.endsWith('/updateById')){need(mututionsExpected()&&(row.status>=400||body.code!==0||body.data!==true),'ORIGINAL_EDIT_MUST_FAIL_FOR_OVERLENGTH_STATUS');failedEditReturned=true;writeResponses.push({path:row.path,status:row.status,businessCode:body.code,failed:true});return;}
+    need(row.status===200,'ORIGINAL_SUCCESS_HTTP_200');
+    if(row.path.endsWith('/oauth/CurrentUser')){need(body.code===200&&body.data?.userInfo?.userId===w.expectedUserId&&body.data.userInfo.isAdministrator===false,'NORMAL_NONADMIN_E_ONLY');currentSessions.add(row.sid);current=true;menu=hasMenu(body.data.menuList);return;}
+    need(body.code===0,'ORIGINAL_SUCCESS_BUSINESS_CODE');
+    if(row.path==='/zhumadian/api/serv/sys-file/upload'){need(/^\/sys-file\/[^/]+\/[a-zA-Z0-9_.-]+\.png$/.test(body.data?.url),'OWN_ORIGINAL_PNG_URL');uploadUrl=body.data.url;return;}
+    if(row.path.endsWith('/getPage')){need(Array.isArray(body.data?.records),'ORIGINAL_LIST');const own=body.data.records.filter(h=>h.sourceCode===ownCode||h.sourceName===ownName);need(own.length<=1&&own.every(h=>h.sourceCode===ownCode&&h.sourceName===ownName&&/^[0-9a-f]{32}$/.test(h.id)),'UNIQUE_OWN_ROW');if(own.length){if(ownId)need(ownId===own[0].id,'OWN_ID_STABLE');ownId=own[0].id;}lastOwnList=own;pageReads++;listBatches.push({filtered:row.filter===ownName});return;}
+    if(row.path.endsWith('/getById')){const h=body.data?.hazardSource;need(h&&h.id===ownId&&h.sourceCode===ownCode&&h.sourceName===ownName&&Array.isArray(body.data.baseFileList)&&body.data.baseFileList.length<=1,'ONLY_OWN_DETAIL');lastOwnDetail=h;lastOwnFiles=body.data.baseFileList;need(lastOwnFiles.every(f=>f.correlationId===ownId&&f.fileUrl===uploadUrl&&f.fileName==='own-attachment.png'),'ONLY_OWN_LINK');detailReads++;return;}
+    need(row.path.endsWith('/save')&&body.data===true,'ORIGINAL_CREATE_TRUE');saveReturned=true;writeResponses.push({path:row.path,result:true});
+   }).catch(e=>{problem=e.message}).finally(()=>reads.delete(p));reads.add(p);
+  }
+ }else if(v.method==='Runtime.exceptionThrown')exceptions.push({text:v.params.exceptionDetails?.text||'runtime exception'});
+}catch(e){problem=e.message;}}
+function mututionsExpected(){return mutations.failedEdit===1&&armed==='failedEdit';}
+async function filteredOwnList(){const after=pageReads;await input('危险源名称',ownName);await clickLabel('搜索');await until(()=>pageReads>after&&listBatches.at(-1)?.filtered);}
+function ownRowExpr(){return`Array.from(document.querySelectorAll('.el-table__body tr')).find(e=>e.textContent.includes(${JSON.stringify(ownCode)})&&e.textContent.includes(${JSON.stringify(ownName)}))`;}
+async function clickOwnRow(label){await clickPoint(await hit(`Array.from((${ownRowExpr()})?.querySelectorAll('button')||[]).find(e=>e.textContent.trim()===${JSON.stringify(label)})`,'own row '+label));}
+
+async function clickPoint(p){need(p&&p.width>0&&p.height>0&&p.hit,'VISIBLE_REAL_HIT_TARGET');await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:p.x,y:p.y});await send('Input.dispatchMouseEvent',{type:'mousePressed',x:p.x,y:p.y,button:'left',clickCount:1});await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:p.x,y:p.y,button:'left',clickCount:1});}
+function pointCode(expr){return`(()=>{const e=${expr};if(!e)return null;const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,h=document.elementFromPoint(x,y);return{x,y,width:r.width,height:r.height,hit:!!h&&(e===h||e.contains(h))}})()`}
+async function hit(expr,label){interaction=label;await until(()=>evaluate(`!!(${expr})`),5000);await evaluate(`(${expr}).scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'})`);let p;await until(async()=>{p=await evaluate(pointCode(expr));return p?.hit&&p.width>0&&p.height>0},5000);hitObservations.push({label,realVisibleHitTarget:true});return p}
+async function clickLabel(label,selector='button'){const expr=`Array.from(document.querySelectorAll(${JSON.stringify(selector)})).find(e=>e.textContent.trim()===${JSON.stringify(label)}&&e.getBoundingClientRect().width>0&&getComputedStyle(e).visibility==='visible')`;await clickPoint(await hit(expr,'click '+label));}
+function fieldExpr(label){return`Array.from(document.querySelectorAll('.el-form-item')).find(e=>e.querySelector('.el-form-item__label')?.textContent.replace(/[：:*\\s]/g,'')===${JSON.stringify(label.replace(/[：:*s]/g,''))})`}
+async function input(label,value){const e=fieldExpr(label);await clickPoint(await hit(`(${e})?.querySelector('input')`,'input '+label));await send('Input.dispatchKeyEvent',{type:'keyDown',modifiers:2,key:'a',code:'KeyA',windowsVirtualKeyCode:65});await send('Input.dispatchKeyEvent',{type:'keyUp',key:'a',code:'KeyA',windowsVirtualKeyCode:65});await send('Input.insertText',{text:value});await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Tab',code:'Tab',windowsVirtualKeyCode:9});await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Tab',code:'Tab',windowsVirtualKeyCode:9});}
+async function choose(label,value){await clickPoint(await hit(`(${fieldExpr(label)})?.querySelector('.el-select')`,'select '+label));await until(()=>evaluate(`Array.from(document.querySelectorAll('.el-select-dropdown__item')).some(e=>e.textContent.trim()===${JSON.stringify(value)}&&e.getBoundingClientRect().width>0&&getComputedStyle(e).visibility==='visible')`));await clickLabel(value,'.el-select-dropdown__item');}
+async function errors(){return evaluate(`Array.from(document.querySelectorAll('.el-form-item__error')).filter(e=>e.getBoundingClientRect().height>0).length`)}
+function record(name){cases.push({case:name,passed:true})}
+try{
+ const log=await fs.open(O+'/chrome.private.log','wx');chrome=spawn('C:/Program Files/Google/Chrome/Application/chrome.exe',['--headless=new','--no-first-run','--no-default-browser-check','--no-proxy-server','--disable-background-networking','--disable-sync','--disable-gpu','--remote-debugging-port=0','--window-size=1500,1200','--user-data-dir='+O+'/profile','about:blank'],{windowsHide:true,stdio:['ignore','ignore',log.fd]});await log.close();
+ let active;await until(async()=>{try{active=(await fs.readFile(O+'/profile/DevToolsActivePort','utf8')).trim().split(/\r?\n/);return true}catch{return false}});ws=new WebSocket('ws://127.0.0.1:'+active[0]+active[1]);await new Promise((r,j)=>{ws.addEventListener('open',r,{once:true});ws.addEventListener('error',j,{once:true})});ws.addEventListener('message',e=>{const v=JSON.parse(e.data),p=pending.get(v.id);if(p){pending.delete(v.id);v.error?p.reject(Error('CDP_ERROR')):p.resolve(v.result)}else observe(v)});
+ const target=await send('Target.createTarget',{url:'about:blank'},null);session=(await send('Target.attachToTarget',{targetId:target.targetId,flatten:true},null)).sessionId;for(const n of ['Page','Runtime','Network'])await send(n+'.enable');await send('Fetch.enable',{patterns:[{urlPattern:'*',requestStage:'Request'}]});
+ await initializeFlight();
+ stage='normal original E login';await send('Page.navigate',{url:w.base+'/zhumadian/majorHazard/hazardSource'});
+ await until(()=>evaluate('document.querySelectorAll(".login-body input").length===3'));
+ await evaluate(`(()=>{const values=${JSON.stringify([w.account,w.password,'0000'])};document.querySelectorAll('.login-body input').forEach((e,i)=>{e.value=values[i];e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));});Array.from(document.querySelectorAll('.login-body button')).find(e=>e.textContent.trim()==='登录').click()})()`);
+ w.password='';await until(()=>currentSessions.has(session)&&pageReads>=1);need(menu,'OWN_GRANTED_HAZARD_MENU');record(stage);
+ if(w.mode==='mainflow'){
+  stage='actual original form and single PNG upload';await clickLabel('新增');await until(()=>evaluate(`document.querySelectorAll('.el-form-item').length>=18`));
+  await input('危险源编码',ownCode);await input('危险源名称',ownName);await choose('区域','Own isolated zone');await input('危险物质类型','Own material v1');await input('临界量（吨）','1');await input('当前存量（吨）','0.25');await input('状态','1');await choose('风险等级','四级');
+  await clickLabel('新增');await until(()=>evaluate(`Array.from(document.querySelectorAll('.el-dialog')).some(e=>e.getBoundingClientRect().width>0)`));await choose('附件类型','国家安全生产监督管理总局令第40号');
+  const doc=await send('DOM.getDocument',{depth:-1,pierce:true});const fileInput=await send('DOM.querySelector',{nodeId:doc.root.nodeId,selector:'.el-dialog input[type="file"]'});need(fileInput.nodeId>0,'ORIGINAL_FILE_INPUT');armed='upload';await send('DOM.setFileInputFiles',{nodeId:fileInput.nodeId,files:[fixturePath]});await until(()=>!!uploadUrl);armed='none';await until(()=>evaluate(`Array.from(document.querySelectorAll('.el-dialog .el-upload-list__item-name')).some(e=>e.textContent.includes('own-attachment.png'))`));await clickLabel('确定','.el-dialog button');await until(()=>evaluate(`Array.from(document.querySelectorAll('.el-table__body tr')).some(e=>e.textContent.includes('own-attachment.png'))`));record(stage);
+  stage='create one own hazard with original attachment association';armed='create';await clickLabel('提交');await until(()=>saveReturned&&lastOwnList.length===1&&!!ownId);armed='none';await storeFlight('created');await filteredOwnList();let previous=detailReads;await clickOwnRow('详情');await until(()=>detailReads>previous);need(lastOwnFiles.length===1&&lastOwnDetail.status==='1','ORIGINAL_SINGLE_LINK_BEFORE_FAILURE');attachmentBefore=JSON.parse(JSON.stringify(lastOwnFiles));record(stage);
+  stage='original uploaded PNG actual bytes';const bytes=await fs.readFile(fixturePath);const result=await evaluate(`fetch(${JSON.stringify(w.base+'/zhumadian/api/serv'+uploadUrl)}).then(async r=>({status:r.status,bytes:Array.from(new Uint8Array(await r.arrayBuffer()))}))`);need(result.status===200&&Buffer.from(result.bytes).equals(bytes),'ORIGINAL_UPLOAD_OBJECT_BYTES_EQUAL');await fs.writeFile(O+'/verified-png.json',JSON.stringify({passed:true,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex'),originalUploadAndRead:true}));record(stage);
+  await clickLabel('返回');await until(()=>evaluate(`location.pathname.endsWith('/hazardSource')`));await filteredOwnList();
+  stage='normal editor removes own link only in draft';previous=detailReads;await clickOwnRow('编辑');await until(()=>detailReads>previous&&lastOwnFiles.length===1);await until(()=>evaluate(`Array.from(document.querySelectorAll('button')).some(e=>e.textContent.trim()==='提交'&&!e.disabled)`));await input('状态','12345');
+  await clickPoint(await hit(`Array.from(document.querySelectorAll('.table-box.no-card .el-table__body tr')).find(e=>e.textContent.includes('own-attachment.png'))?.querySelector('button.el-button--danger')`,'remove own attachment draft'));await until(()=>evaluate(`Array.from(document.querySelectorAll('.el-popconfirm__action button')).some(e=>e.getBoundingClientRect().width>0&&e.classList.contains('el-button--primary'))`));await clickPoint(await hit(`Array.from(document.querySelectorAll('.el-popconfirm__action button.el-button--primary')).find(e=>e.getBoundingClientRect().width>0)`,'confirm own draft link removal'));await until(()=>evaluate(`!Array.from(document.querySelectorAll('.table-box.no-card .el-table__body tr')).some(e=>e.textContent.includes('own-attachment.png'))`));record(stage);
+  stage='one original SQL overlength failure keeps unsaved form';armed='failedEdit';await clickLabel('提交');await until(()=>failedEditReturned);armed='none';await until(()=>evaluate(`Array.from(document.querySelectorAll('.el-message--error')).some(e=>e.textContent.includes('保存未完成'))`));need(await evaluate(`location.pathname.endsWith('/hazardSource/edit')&&(${fieldExpr('状态')})?.querySelector('input')?.value==='12345'&&Array.from(document.querySelectorAll('button')).some(e=>e.textContent.trim()==='提交'&&!e.disabled)`),'FAILED_ORIGINAL_EDIT_KEEPS_INPUT');await storeFlight('failed-edit-returned');record(stage);
+  stage='read actual original relation after failed edit';await clickLabel('取消');await until(()=>evaluate(`location.pathname.endsWith('/hazardSource')`));await filteredOwnList();need(lastOwnList.length===1&&lastOwnList[0].status==='1','FAILED_EDIT_DID_NOT_CHANGE_MAIN_ROW');previous=detailReads;await clickOwnRow('详情');await until(()=>detailReads>previous);need(lastOwnDetail.status==='1','ORIGINAL_MAIN_ROW_UNCHANGED');attachmentAfter=JSON.parse(JSON.stringify(lastOwnFiles));record(stage);
+  need(JSON.stringify(mutations)===JSON.stringify({upload:1,create:1,failedEdit:1}),'EXACT_SINGLE_FLIGHT_COUNTS');await storeFlight('mainflow-completed');
+ }else{
+  stage='normal restart reads same own hazard and relation';await filteredOwnList();need(lastOwnList.length===1&&lastOwnList[0].status==='1','SAME_RECORD_AFTER_RESTART');const previous=detailReads;await clickOwnRow('详情');await until(()=>detailReads>previous);need(lastOwnDetail.status==='1','MAIN_ROW_PRESERVED');attachmentAfter=JSON.parse(JSON.stringify(lastOwnFiles));need(Object.values(mutations).every(v=>v===0),'RESTART_READONLY_NO_REPLAY');record(stage);
+ }
+ need(!problem&&exceptions.length===0&&blocked.length===0,'NO_UNEXPECTED_REQUEST_OR_RUNTIME_ERROR');need(http.filter(x=>x.path.endsWith('/oauth/Login')&&x.method==='POST').length===1,'NORMAL_SINGLE_LOGIN');
+ await fs.writeFile(O+'/result.json',JSON.stringify({passed:true,mode:w.mode,cases,writeResponses,writeCounts:mutations,blockedExternalFontReads,attachmentBefore,attachmentAfter,attachmentCountAfter:lastOwnFiles.length,failedEditPreservedMainRow:true,attachmentAtomicityPreserved:lastOwnFiles.length===1,actualOriginalMyForm:true,actualOriginalSDK:true,noSchemaChangeOrSQLBusinessWrite:true,tokenCookieOrStorageReadByProbe:false,noVueStateInjection:true,publicOrUserDesktopTouched:false,diagnosisNotProductAcceptance:true,ownRecordId:ownId},null,2));
+
+}catch(e){failure={stage,interaction,hitObservations,message:e.message,problem,cases,blocked,exceptionCount:exceptions.length,pageReads,detailReads,dictionaryKinds:dicts.size,ownFlightPhase:flight?.phase,writeCounts:mutations};await fs.writeFile(O+'/failure.json',JSON.stringify(failure,null,2));const shot=await send('Page.captureScreenshot',{format:'png'}).catch(()=>null);if(shot?.data&&shot.data.length<8000000)await fs.writeFile(O+'/failure.png',Buffer.from(shot.data,'base64'));}
+finally{w.password='';while(reads.size)await Promise.allSettled([...reads]);if(ws?.readyState===WebSocket.OPEN){try{await send('Browser.close',{},null)}catch{}ws.close()}if(chrome)await new Promise(r=>chrome.exitCode!==null?r():chrome.once('exit',r));await fs.writeFile(O+'/terminal.json',JSON.stringify({chromeExitCode:chrome?.exitCode,forceTerminationUsed:false}));}
+if(failure)throw Error('OWN_ORIGINAL_FORM_UI_FAILED_'+failure.stage);console.log(JSON.stringify({passed:true,mode:w.mode,cases:cases.length,businessWriteRequests:mutations.create+mutations.failedEdit+mutations.upload}));

@@ -1,0 +1,63 @@
+{
+  "passed": true,
+  "messageSHA256": "de447d1b78149331a087afdfacd4a63c6eaf825cbaa30e3b3c5cfede442f713b",
+  "senderCommit": "1b7c1eb1cdeb4b764bf86036bf7ba76ed088c93f",
+  "actualSourceBlobsMatched": [
+    {
+      "path": "web/src/landscape_editor_ui.js",
+      "bytes": 33882,
+      "sha256": "10118c2545643e90c91f8466284ad8070d227c248038dd9b4cfe568557e0725c",
+      "gitBlob": "d07207384fbc8b9896860fa73e8beaf93c134f3f"
+    },
+    {
+      "path": "web/src/cloud_editor_panel.js",
+      "bytes": 20403,
+      "sha256": "90aa20f5dcbac68306ece37faafc57411a6a8c5f9ed4f23ed759acff1c4055d3",
+      "gitBlob": "176d3d18e7c226ae13c73df6e92bbedd14748f51"
+    },
+    {
+      "path": "web/src/viewer.js",
+      "bytes": 198771,
+      "sha256": "b79e7ec992ac5d2f6873b2aa6910f931a01afd6c0e494842bb67280becc00536",
+      "gitBlob": "4a0650f08f95a5bf2037cf4f476a65da20e05a72"
+    },
+    {
+      "path": "web/scene_delivery_sources.json",
+      "bytes": 39703,
+      "sha256": "e11687d3a752b98411f45119cdd659297bcaee9cdc23442753b2757290304ecb",
+      "gitBlob": "e2108cff64e0e2478febfc7131b44cb476051b66"
+    },
+    {
+      "path": "web/layer_editor_delivery_manifest.json",
+      "bytes": 15799,
+      "sha256": "228674f714badb5e3a3eb0aa66617b1fb03fee54a2d824becc9c60f39b5cf980",
+      "gitBlob": "af43e40760d796badce665f66c20b5be9f25bcd9"
+    },
+    {
+      "path": "tools/tests/web/browser_cloud_draft_ui_20261106.mjs",
+      "bytes": 16892,
+      "sha256": "b058c7204e9148130de562f5af452245c171da76be0301e76442b7ed60a45b07",
+      "gitBlob": "20a51dea7de13a982b26a08b70f167ece752f391"
+    },
+    {
+      "path": "tools/tests/web/browser_cloud_draft_ui_regression_20261106.mjs",
+      "bytes": 16004,
+      "sha256": "48689dc085a5b94769f7aa393f3f5ef386694b3df91e49cc7d4403b590931223",
+      "gitBlob": "84788765076f755f66dca28b594728ebe7bfa19b"
+    },
+    {
+      "path": "deploy/handbook/browser_cloud_draft_ui_20261106.html",
+      "bytes": 5173,
+      "sha256": "a27613ee7bb4ac44ba43cc2471241e9f6a2cd5ff3b492ff9f816c46834418a67",
+      "gitBlob": "37d0f194c9f1cbe2631b8e93a238e162bb7a1123"
+    }
+  ],
+  "actualGitBlobsMatched": 8,
+  "senderRuntimeOrBrowserChecksIndependentlyReplayed": false,
+  "sourceOnlyReceiverReview": true,
+  "peerPreviewOrDataTouched": false,
+  "noSyntheticLoginOrFixtureDeployed": true,
+  "publicDeploymentRequested": false,
+  "realNormalHostLoginAndTLS252StillPending": true,
+  "sharedFileNotRealtimeCommunication": true
+}

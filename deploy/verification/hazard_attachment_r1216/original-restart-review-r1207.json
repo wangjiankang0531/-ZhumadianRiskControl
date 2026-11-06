@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "mode": "reopen",
+  "cases": [
+    {
+      "case": "normal original E login",
+      "passed": true
+    },
+    {
+      "case": "normal restart reads same own hazard and relation",
+      "passed": true
+    }
+  ],
+  "writeResponses": [],
+  "writeCounts": {
+    "upload": 0,
+    "create": 0,
+    "failedEdit": 0
+  },
+  "blockedExternalFontReads": [
+    {
+      "path": "/wf/webfont/jWZHcEP2lzge/5AfKUTWZEo8W.woff2",
+      "method": "GET",
+      "requestBlocked": true
+    },
+    {
+      "path": "/wf/webfont/jWZHcEP2lzge/Dvhs41TtRdYF.woff",
+      "method": "GET",
+      "requestBlocked": true
+    }
+  ],
+  "attachmentCountAfter": 0,
+  "failedEditPreservedMainRow": true,
+  "attachmentAtomicityPreserved": false,
+  "actualOriginalMyForm": true,
+  "actualOriginalSDK": true,
+  "noSchemaChangeOrSQLBusinessWrite": true,
+  "tokenCookieOrStorageReadByProbe": false,
+  "noVueStateInjection": true,
+  "publicOrUserDesktopTouched": false,
+  "diagnosisNotProductAcceptance": true,
+  "reviewCopyIsSanitizedProjection": true,
+  "rawOriginalRetainedOutsideGit": true
+}

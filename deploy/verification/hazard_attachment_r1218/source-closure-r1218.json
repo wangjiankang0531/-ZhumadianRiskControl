@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "actualFrozenExecutableInputsMatchArchivedBytes": true,
+  "files": [
+    {
+      "path": "tools/verification/hazard_attachment_r1216/hazard_transaction_r1214/hazard_health_r1214.py",
+      "sha256": "d44851769b8313af883de6ecd21119b4c76a3b9b8a1a7e06387e77c4e3dc4eff"
+    },
+    {
+      "path": "tools/verification/hazard_attachment_r1216/hazard_transaction_r1214/hazard_receiver_r1214.py",
+      "sha256": "4f2433085144abd73e4e0855a66be0fc496f2eedafb97d8c164979956666c415"
+    },
+    {
+      "path": "tools/verification/hazard_attachment_r1216/hazard_transaction_r1214/hazard_transaction_browser_r1214.mjs",
+      "sha256": "58d8253e0bced62b934688d6c3588808383c87e59075511c7966f0dd5ab66fe1"
+    },
+    {
+      "path": "tools/verification/hazard_attachment_r1216/hazard_transaction_r1214/hazard_transaction_probe_r1214.py",
+      "sha256": "50b40380034373c93f2bbcc4f0b569f33f0a21a6c1747de2ddcd313ae4b97ed2"
+    },
+    {
+      "path": "tools/verification/hazard_attachment_r1216/hazard_transaction_r1214/own-attachment.png",
+      "sha256": "96b088677f30b644f4dfe1d3f70b54c7e17bbd86590bda04b8eae339d4227912"
+    },
+    {
+      "path": "tools/verification/hazard_attachment_r1216/hazard_transaction_r1214/OwnHazardCrudReadR1214.java",
+      "sha256": "f38ebb4c5e5bad6bf5cbc877a80e4c07b798aa6beeb592b85c9f679c7c4f1e0c"
+    },
+    {
+      "path": "tools/verification/hazard_attachment_r1216/hazard_transaction_r1214/OwnHazardFormMetadataR1214.java",
+      "sha256": "016df6d22858e74f3d7efdeaa654d1f414129284b667de6478735e1b313031b2"
+    },
+    {
+      "path": "tools/verification/hazard_attachment_r1216/hazard_transaction_r1214/OwnHazardStatisticsMenuFixtureR1172.java",
+      "sha256": "8c87512ffeebb2f704f4b1bf72e2316a6ed22834096c4a085cadc69e0f6e2b83"
+    },
+    {
+      "path": "tools/verification/hazard_attachment_r1216/hazard_transaction_r1214/run_hazard_runtime_r1214.py",
+      "sha256": "7a1e15262c12c75eaa2a34a55a3a95dad939278f46b2320d9c4288eb6547e0ae"
+    }
+  ],
+  "runtimeGeneratedProofSeparatelyArchived": true,
+  "publicCleanCheckoutOneClickBuildClaimed": false
+}

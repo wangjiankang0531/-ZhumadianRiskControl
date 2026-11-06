@@ -1,0 +1,23 @@
+{
+  "schema": "xnby.hazard-source-attachment-transaction-candidate.v1",
+  "originalSourceSHA256": "72e814354db475e2c451e6379d4a0f8260dca0540d4e6a5e6ca60a73fc12f99c",
+  "candidateSourceSHA256": "7d43e4bd967c51efa8c980ba958cd103262bc65546803a79e0d3d7e848bfe35a",
+  "candidateClassSHA256": "e62f9ce7c38885f13406f8700fb952af64586fe496015c4d7a5dcaef12ea1cb3",
+  "candidateClassBytes": 9615,
+  "compiledWithOriginalBusinessArchiveAndDependencies": true,
+  "javaClassMajor": 61,
+  "methodsChanged": [
+    "save(HazardSourceVo)",
+    "updateById(HazardSourceVo)"
+  ],
+  "rollbackForExceptionOnBothMethods": true,
+  "updateFalsePrecedesEveryAttachmentMutation": true,
+  "databaseSchemaChanged": false,
+  "ReferenceOrOriginalJarChanged": false,
+  "actualOriginalServiceLifecycleAccepted": false,
+  "notificationAfterCommitOrAllNangangAccepted": false,
+  "publicInstalled": false,
+  "firstCompileSucceededButInspectionDecoderFailed": true,
+  "verificationUsesExplicitJavaUTF8Output": true,
+  "compileWasNotRepeated": true
+}

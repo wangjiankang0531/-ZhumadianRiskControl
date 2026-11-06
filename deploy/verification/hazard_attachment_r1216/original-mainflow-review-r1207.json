@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "mode": "mainflow",
+  "cases": [
+    {
+      "case": "normal original E login",
+      "passed": true
+    },
+    {
+      "case": "actual original form and single PNG upload",
+      "passed": true
+    },
+    {
+      "case": "create one own hazard with original attachment association",
+      "passed": true
+    },
+    {
+      "case": "original uploaded PNG actual bytes",
+      "passed": true
+    },
+    {
+      "case": "normal editor removes own link only in draft",
+      "passed": true
+    },
+    {
+      "case": "one original SQL overlength failure keeps unsaved form",
+      "passed": true
+    },
+    {
+      "case": "read actual original relation after failed edit",
+      "passed": true
+    }
+  ],
+  "writeResponses": [
+    {
+      "path": "/zhumadian/api/serv/hazardSource/save",
+      "result": true
+    },
+    {
+      "path": "/zhumadian/api/serv/hazardSource/updateById",
+      "status": 500,
+      "businessCode": 100000,
+      "failed": true
+    }
+  ],
+  "writeCounts": {
+    "upload": 1,
+    "create": 1,
+    "failedEdit": 1
+  },
+  "blockedExternalFontReads": [
+    {
+      "path": "/wf/webfont/jWZHcEP2lzge/5AfKUTWZEo8W.woff2",
+      "method": "GET",
+      "requestBlocked": true
+    },
+    {
+      "path": "/wf/webfont/jWZHcEP2lzge/Dvhs41TtRdYF.woff",
+      "method": "GET",
+      "requestBlocked": true
+    }
+  ],
+  "attachmentCountAfter": 0,
+  "failedEditPreservedMainRow": true,
+  "attachmentAtomicityPreserved": false,
+  "actualOriginalMyForm": true,
+  "actualOriginalSDK": true,
+  "noSchemaChangeOrSQLBusinessWrite": true,
+  "tokenCookieOrStorageReadByProbe": false,
+  "noVueStateInjection": true,
+  "publicOrUserDesktopTouched": false,
+  "diagnosisNotProductAcceptance": true,
+  "reviewCopyIsSanitizedProjection": true,
+  "rawOriginalRetainedOutsideGit": true
+}

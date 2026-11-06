@@ -1,0 +1,34 @@
+{
+  "completed": true,
+  "exactPaths": [
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ht1214\\code-transaction\\before",
+      "files": 712,
+      "logicalBytes": 16020723
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\hazard-transaction-probe-r1214\\classes",
+      "files": 3,
+      "logicalBytes": 56389
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\hazard-transaction-probe-r1214\\ui-mainflow\\profile",
+      "files": 321,
+      "logicalBytes": 13382743
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\hazard-transaction-probe-r1214\\ui-reopen\\profile",
+      "files": 337,
+      "logicalBytes": 9310342
+    }
+  ],
+  "files": 1373,
+  "logicalBytes": 38770197,
+  "freeBefore": 344094089216,
+  "freeAfter": 344134823936,
+  "freeDeltaNotExclusiveAttribution": true,
+  "allDataUploadsSourcesFailureEvidenceCandidateClassAndDistRetained": true,
+  "bothCompletedBusinessFlightsRetainedNeverReplay": true,
+  "oldRuntimeAttemptNotDirectlyReplayable": true,
+  "publicOrPeerPreviewCleanup": false
+}

@@ -1,0 +1,44 @@
+{
+  "completed": true,
+  "exactPaths": [
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\ha1207\\code-transaction\\before",
+      "files": 712,
+      "logicalBytes": 16020723
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\hazard-attachment-probe-r1207\\classes",
+      "files": 3,
+      "logicalBytes": 55758
+    },
+    {
+      "path": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\hazard_attachment_r1207\\compile-check",
+      "files": 3,
+      "logicalBytes": 55758
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\hazard-attachment-probe-r1207\\ui-mainflow\\profile",
+      "files": 339,
+      "logicalBytes": 10286307
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\hazard-attachment-probe-r1207\\ui-reopen\\profile",
+      "files": 337,
+      "logicalBytes": 9308797
+    },
+    {
+      "path": "D:\\CodexData\\home\\visualizations\\2026\\10\\28\\01a1836e-e4ee-7fb0-be6f-b24f2e2672e4\\tencent-feedback-20261031\\hazard_transaction_r1212\\compile-check",
+      "files": 3,
+      "logicalBytes": 56389
+    }
+  ],
+  "files": 1397,
+  "logicalBytes": 35783732,
+  "freeBefore": 344185839616,
+  "freeAfter": 344223612928,
+  "freeDeltaNotExclusiveAttribution": true,
+  "allDataUploadsSourceLogsAndLatestCompiledCandidateRetained": true,
+  "privateOriginalAndResumeFlightsRetained": true,
+  "oldOriginalAttemptNotDirectlyReplayable": true,
+  "publicFTPAndIISOrPeerPreviewCleanup": false
+}
