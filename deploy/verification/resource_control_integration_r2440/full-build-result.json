@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "completeSafetyFrontendFiles": 841,
+  "compiledBytes": 17835074,
+  "actualCompilerInputs": 3737,
+  "changedCompilerInputs": [
+    "src/views/home/index.vue",
+    "src/views/sceneEditor/client_resource_transport.js",
+    "src/views/sceneEditor/http_json.js",
+    "src/views/sceneEditor/index.vue",
+    "src/views/sceneEditor/project_scene_host.js",
+    "src/views/sceneEditor/resource_project_host.js",
+    "src/views/sceneEditor/scene_topic_navigation.js",
+    "src/views/sceneViewer/index.vue"
+  ],
+  "statisticsSourceSHA256": "fe4e5587ea2e3cf7865ad145c33cb4720dc3b9fc282155335ba61126fc028209",
+  "allPriorSafetyAdaptersAndAvatarRetained": true,
+  "sharedAndIsolatedSourcesRestored": true,
+  "actualFullBrowserOrOriginalBackendOrPublicAccepted": false,
+  "loopbackHostDevelopmentBuild": false,
+  "productionFrontendCompilerOutput": true,
+  "FineSourceEarlyHostIncluded": true,
+  "originalHomeCommandTargetsSameOriginSceneViewer": true,
+  "originalHomeUsesSameWindowRouter": true,
+  "noTokenStorageOrPermissionChanges": true,
+  "onlyHomeAndSevenResourceInputsChangedFromQualifiedR1815": true,
+  "sevenResourceCompilerSourcesRestored": true,
+  "formalViewEditLinksIncluded": true,
+  "localGISErrorMessagesIncluded": true,
+  "productionBrowserAndIISVerificationPending": true,
+  "publicDeployed": false
+}

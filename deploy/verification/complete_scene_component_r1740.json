@@ -1,0 +1,79 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "case": "actual-native-DOM-client-and-qualified-HTTP-complete-scene-create",
+      "passed": true
+    },
+    {
+      "case": "read-and-cancel-open-preserve-current-complete-scene",
+      "passed": true
+    },
+    {
+      "case": "confirmed-open-restores-complete-scene-through-native-dialog",
+      "passed": true
+    },
+    {
+      "case": "cancel-overwrite-does-not-POST-and-keeps-local-edit",
+      "passed": true
+    },
+    {
+      "case": "real-server-409-keeps-local-model-input-and-does-not-retry",
+      "passed": true
+    },
+    {
+      "case": "explicit-reread-and-open-adopts-new-remote-scene",
+      "passed": true
+    },
+    {
+      "case": "real-post-commit-connection-loss-readback-confirms-without-duplicate-POST",
+      "passed": true
+    },
+    {
+      "case": "different-readback-keeps-pending-snapshot-and-save-blocked",
+      "passed": true
+    },
+    {
+      "case": "session-retirement-clears-library-dialog-loaded-and-pending-scene-data",
+      "passed": true
+    }
+  ],
+  "actualNativeBrowserComponent": true,
+  "actualQualifiedOriginalACLAndHTTPRepository": true,
+  "syntheticIdentityAndLandscapeAdapterNotOriginalJavaOrFullWebGLHost": true,
+  "realPostCommitConnectionLossInjected": 2,
+  "scenePOSTRequests": 4,
+  "successfulScenePOSTs": 3,
+  "allHTTPThreadsJoined": true,
+  "normalBrowserTerminal": {
+    "normalBrowserClosed": true,
+    "exitCode": 0,
+    "signalCode": null,
+    "forceTerminationUsed": false
+  },
+  "productInputs": {
+    "inputs": {
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/business_source_configuration.js": "2b9381d89f2677c506c5e8bf9e9c9b93d6486259da2a9a51dbb79abc94db9353",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/label_anchor.js": "d460b323553ff1467d94886df0871447359faea59c381991f5b7b20982322969",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/png_icon.js": "8677f144b1a9e67244442e7a1122df745e75981c37f5e12bb86fb5c4d917fb8a",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/label_options.js": "6b3b1b126fa0fecbccb05cdc6d73c086ffec6e9886d3d77d3606dbdcc31fba0b",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/shared/spatial_types.json": "7ec9c322fbe94ff693434c480bfb0344ea09f72026c71877aa96d1b6f5c1d411",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/business_binding.js": "09e4f41760ce32077f5e0f126d2403345c668df5418e1b609d202c166859df58",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/business_source_snapshots.js": "6c5b472978f55b9b76003c0ff7ff47e47806195f8721b221c996f49fab659e75",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/business_records.js": "99ea1df48d352f7d5eb24ad758573715cc82e3a01afd5fb22677f3a6a2aef715",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/label_bindings.js": "13cc236e7a9947679e5ba01fd8fa9f64d92830e38b0e2b99aa879e776484d337",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/landscape_document.js": "ff387f08fa69cff9ee8db8c0a144e1722b0cd18e850bfa9fb579d5a7e341a04b",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/project_file_contract.js": "f2bddae3b20d52ac24f6bb525ec6988740e3f3ed388c3a0f74f8ae42b0e73ebb",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/scene_project.js": "acd00c7fb384233a5b39a042362454aae5b4d47ba1d7052c0d1f8863f0cb4adf",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/scene_file_contract.js": "10a6a54bc3943b389a8b80f5790ae1ba3a49f38d0d9a56cffb58d7eb7fcce5e4",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/scene_file_library_ui.js": "9b8423bfd0061cc9c1188180b25a453ddd41104be98c9925e56d92f661f7e883",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/http_json.js": "edd1a30b10b392afa950ba53b381c2fde26e3628344087d97cd3099ff8cc5962",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/project_account_identity.js": "52faf19ce058c8a9aef5bc99c06e133cb2c67c4f924ee7d6596d30d617f48c1b",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/cloud_layer_adoption.js": "8c3b95733bb218d065a3e9b17bb2eabdd25fb681bf5cc744598cd062f4e7720d",
+      "D:/Project/Zhumadian/work/scene-file-frontend-r1735/source/web/src/cloud_layer_client.js": "91a8a011d5b4300dd15109a7e658fca391b290d8436cc4e0d409d87416817acc",
+      "D:/CodexData/home/visualizations/2026/10/28/01a1836e-e4ee-7fb0-be6f-b24f2e2672e4/tencent-feedback-20261031/scene_library_component_r1740.js": "3be6ee39dee5391ff43962ef613e669b18ab854d92fc18c19599a526dd308bea"
+    },
+    "outputSHA256": "b5ac6f90bd4577dcddf266fc0faf7bc14bd7c5865efba44a7ffb7c259d6bd70d"
+  },
+  "publicUpdated": false
+}

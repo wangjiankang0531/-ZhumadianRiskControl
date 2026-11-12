@@ -1,0 +1,50 @@
+{
+  "inputs": [
+    {
+      "destination": "src/views/sceneViewer/index.vue",
+      "expectedOriginalBeforeSHA256": "e94479693d087377ac3b801fd09a46276dc73f9d18a7d49ed2b8c047950f7e62",
+      "newSHA256": "e083e98bb4f646baa49f516a7b5044fb6ba9ed945cb5c19efd83a0035fecac19",
+      "source": "portal/sceneViewer.vue"
+    },
+    {
+      "destination": "src/views/sceneEditor/index.vue",
+      "expectedOriginalBeforeSHA256": "e790bbbfbfc7c8e8bc881223d6f999d2728a9db9ae8370b21d0555753890affc",
+      "newSHA256": "6c1b0ea6f032567747030895c86629010de45de503b7a2b93fe8269cea6a3846",
+      "source": "portal/sceneEditor.vue"
+    },
+    {
+      "destination": "src/views/sceneEditor/project_scene_host.js",
+      "expectedOriginalBeforeSHA256": "f0b1ff84a58e7439f0bed823923d2a8d7fbe5aac0d3e173e3186eb82aa3aca6d",
+      "newSHA256": "a4fc03fcde3c8ed18cba9f60217616830f0475a404f152c5d341f982f668d46f",
+      "source": "web/src/project_scene_host.js"
+    },
+    {
+      "addOnlyOrIdentical": true,
+      "destination": "src/views/sceneEditor/http_json.js",
+      "newSHA256": "edd1a30b10b392afa950ba53b381c2fde26e3628344087d97cd3099ff8cc5962",
+      "source": "web/src/http_json.js"
+    },
+    {
+      "addOnlyOrIdentical": true,
+      "destination": "src/views/sceneEditor/resource_project_host.js",
+      "newSHA256": "c46e1ca6883312e6977af6c9d256f3c4e73fcbd3720413cac1fc5edb574d3a76",
+      "source": "web/src/resource_project_host.js"
+    },
+    {
+      "addOnlyOrIdentical": true,
+      "destination": "src/views/sceneEditor/client_resource_transport.js",
+      "newSHA256": "2717b1561aba141c19fefaf23b8f186bf9d359ba658468fa2ee10d7244c0f90b",
+      "source": "web/src/client_resource_transport.js"
+    },
+    {
+      "addOnlyOrIdentical": true,
+      "destination": "src/views/sceneEditor/scene_topic_navigation.js",
+      "newSHA256": "8fca8a63643744748d719540f884f3cac03616bdb2f86dc492b4c0b645c0af07",
+      "source": "web/src/scene_topic_navigation.js"
+    }
+  ],
+  "productionDevFlagMustRemainFalse": true,
+  "schema": "xnby.resource-workspace.compiler-map.v1",
+  "sevenCompilerInputsRequired": true,
+  "unknownBeforeSourceMustRefuse": true
+}

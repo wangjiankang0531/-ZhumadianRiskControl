@@ -1,0 +1,7 @@
+{
+  "baseSHA256": "6cb8eb625ab14f503c7b65c780f6f91b401ec6afa22f34f8d2d22047da406eb8",
+  "newSHA256": "cdfae1908c16f6724ea5d6582fc78c9b0ea68ea7e8cbeac6b782f1811d0a38a5",
+  "onlyAddedRejectForNonemptyGETHEAD": true,
+  "originalMethodBodyAuthGzipResponseHeadersUnchanged": true,
+  "R51NotModified": true
+}

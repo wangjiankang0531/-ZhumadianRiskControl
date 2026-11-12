@@ -1,0 +1,178 @@
+{
+  "protocolErrors": [
+    {
+      "method": "Runtime.evaluate",
+      "code": -32602,
+      "kind": "navigation-context",
+      "duringNavigation": true,
+      "messageSHA256": "9859a86c0eeb0fc0151989329c8d5db8e3ee582384c342ea48cf2aafe9d1014e"
+    }
+  ],
+  "passed": true,
+  "normalCompiledLogin": true,
+  "currentUserMatchedKnownSyntheticNonAdmin": true,
+  "actualNativeRoleIdsIsArray": true,
+  "originalGetTokenHostUsed": true,
+  "authorizationExportedToParent": false,
+  "captchaBranchTested": false,
+  "checks": [
+    {
+      "case": "normal-compiled-login-and-actual-native-currentuser-nonadmin-role-array",
+      "passed": true
+    },
+    {
+      "case": "D123-editor-opens-layer-edit-workspace-with-original-session",
+      "passed": true
+    },
+    {
+      "case": "actual-vue-editor-host-connects-through-original-getToken-without-token-export",
+      "passed": true
+    },
+    {
+      "case": "dedicated-scene-configuration-requires-original-project-authentication",
+      "passed": true
+    },
+    {
+      "case": "normal-Java-login-generated-config-runtime-and-loaded-index-identities-match",
+      "passed": true
+    },
+    {
+      "case": "original-browser-anonymous-model-and-base-source-and-range-denied",
+      "passed": true
+    },
+    {
+      "case": "normal-original-session-private-static-range-retains-exact-byte-serving",
+      "passed": true
+    },
+    {
+      "case": "optional-fine-source-denies-anonymous-from-real-original-browser",
+      "passed": true
+    },
+    {
+      "case": "existing-own-rich-DLG-read-without-replaying-prior-save",
+      "passed": true
+    },
+    {
+      "case": "normal-opener-readonly-view-host-uses-same-authorized-project",
+      "passed": true
+    },
+    {
+      "case": "D123-business-topic-navigation-keeps-original-auth-and-complete-project",
+      "passed": true
+    },
+    {
+      "case": "D123-return-to-layer-edit-keeps-session-and-three-geometry-tabs",
+      "passed": true
+    },
+    {
+      "case": "project-library-read-and-compare-does-not-replace-current-layers",
+      "passed": true
+    },
+    {
+      "case": "readonly-page-refresh-keeps-server-project-and-selected-PNG",
+      "passed": true
+    },
+    {
+      "case": "actual-existing-base-terrain-loaded-in-WebGL-editor-not-GPU-efficiency-acceptance",
+      "passed": true
+    },
+    {
+      "case": "D123-scene-workspace-loads-29-exact-readonly-model-entries-with-original-session",
+      "passed": true
+    },
+    {
+      "case": "D123-real-combined-GLB-reference-placement-keeps-session-and-DLG-revision-two",
+      "passed": true
+    },
+    {
+      "case": "D129-normal-duplicate-distinct-objects-share-verified-geometry-material-and-single-asset-budget",
+      "passed": true
+    },
+    {
+      "case": "D129-normal-rename-and-transform-affect-only-selected-instance",
+      "passed": true
+    },
+    {
+      "case": "D129-pending-input-rejects-instance-switch-and-retains-field-and-selection",
+      "passed": true
+    },
+    {
+      "case": "D129-normal-visibility-independent-between-instances",
+      "passed": true
+    },
+    {
+      "case": "D129-v2-state-roundtrip-keeps-instance-IDs-names-transforms-and-hidden-state-without-cloud-write",
+      "passed": true
+    },
+    {
+      "case": "D129-normal-delete-cancel-preserves-complete-scene",
+      "passed": true
+    },
+    {
+      "case": "D129-normal-delete-confirm-keeps-other-instance-and-live-asset",
+      "passed": true
+    },
+    {
+      "case": "D129-legacy-v1-state-restores-to-v2-with-original-height-and-unchanged-DLG-revision",
+      "passed": true
+    },
+    {
+      "case": "normal-original-eight-component-service-restart-reads-prior-confirmed-file-and-restores-model-lighting-DLG",
+      "passed": true
+    },
+    {
+      "case": "normal-original-restarted-service-and-new-page-read-the-identical-persisted-scene",
+      "passed": true
+    },
+    {
+      "case": "normal-original-readonly-restart-zero-scene-POSTs-and-zero-DLG-POSTs",
+      "passed": true
+    },
+    {
+      "case": "D123-layer-return-after-reference-query-keeps-original-cloud-and-project",
+      "passed": true
+    },
+    {
+      "case": "real-original-host-early-source-handshake-and-index-negotiation",
+      "passed": true
+    },
+    {
+      "case": "actual-near-source-WebGL-residency-and-visible-geometry-with-original-session",
+      "passed": true
+    },
+    {
+      "case": "normal-unsaved-model-leave-cancel-preserves-model-layers-and-authorized-source-session",
+      "passed": true
+    },
+    {
+      "case": "original-logout-detaches-prior-scene-and-returns-normal-login",
+      "passed": true
+    },
+    {
+      "case": "normal-account-switch-to-ungranted-user-retires-old-data-and-denies-project",
+      "passed": true
+    }
+  ],
+  "phase": "restart",
+  "normalOriginalBusinessOrAccountGrantWritten": false,
+  "publicOrDesktopTouched": false,
+  "actualBaseTerrainLoaded": true,
+  "actualD123ReferenceModelLoaded": true,
+  "modelPlacementPersistentInProject": true,
+  "modelPlacementPersistenceScope": "named complete scene file snapshot; live model sync not added",
+  "sourceUnitsVerified": false,
+  "nativeFineLODProviderAccepted": true,
+  "actualAuthorizedNearSourceWebGL": true,
+  "actualLogoutAndDeniedAccountSwitch": true,
+  "actualNormalUnsavedLeaveCancelled": true,
+  "actualOldSceneContextRejected": true,
+  "actualGeneratedDedicatedConfigAndRuntimeIdentity": true,
+  "actualDeniedAccountConfiguration403": true,
+  "actualAuthenticatedBaseAndModelAssets": true,
+  "actualAnonymousBaseModelAndRangeDenied": true,
+  "actualD129EightInstanceChecks": true,
+  "modelCloudPersistenceOrCASAdded": false,
+  "actualCompleteSceneFileLibraryAndRefresh": true,
+  "readOnlyExistingSceneAfterOriginalServiceRestart": true,
+  "actualTrustedSceneTopicClickBeforeUnsavedLeave": true
+}

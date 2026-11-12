@@ -1,0 +1,50 @@
+{
+  "schema": "xnby.client-resources.install.v1",
+  "version": "client-resources.20261112.2",
+  "files": {
+    "code/entry.py": {
+      "bytes": 6226,
+      "sha256": "9a75ca865254f759928a86f2f68cbff93838e45fd75974ba6ce0d5c539cd1a88"
+    },
+    "code/qualified_settings.py": {
+      "bytes": 3567,
+      "sha256": "be46757eafb08968dff548ff201a1334fb56bd9d22a0a2590d270862ac6559ed"
+    },
+    "code/registered_gis.py": {
+      "bytes": 14711,
+      "sha256": "542d11422bd89891a45ab9de7e318174fc19fa1a8645d2171861d64f78f9aef8"
+    },
+    "code/resource_agent.py": {
+      "bytes": 12571,
+      "sha256": "be3bfee8883ca90ae834276ac5599a032e8d9fa78a3f798a652a64c841b67b35"
+    },
+    "code/resource_grants.py": {
+      "bytes": 7283,
+      "sha256": "4e93a65b51061978cb3f81f8a324c5f9e5d8f91893d024bf3330254c3356169d"
+    },
+    "code/resource_http.py": {
+      "bytes": 7917,
+      "sha256": "57c432e0b2cd6ff3699465eed9ad992c566f671613a14b5e2951d095e36198d1"
+    },
+    "code/resource_reports.py": {
+      "bytes": 4313,
+      "sha256": "3b42c3ca066c42c0eb66a2823fb45da84af6f3e10e7751d4e5f44a365375178f"
+    },
+    "code/resource_service.py": {
+      "bytes": 13181,
+      "sha256": "a2ef73dc1eaaa78d370c8546f5bcd3411db742291fcd33fdb6401e4033288ef8"
+    },
+    "code/resource_settings.py": {
+      "bytes": 2132,
+      "sha256": "3d25b3fcd922699933d758afe8f764d00a521a66e3f9a7ec6d9cf5fcf4668979"
+    },
+    "code/verify_offline_gis.py": {
+      "bytes": 25056,
+      "sha256": "8b022362a40385134873ddd5c32c888a75be6e3203cf2213bab7699c774a99d6"
+    },
+    "registration.json": {
+      "bytes": 349,
+      "sha256": "467f1a4f3d2c115e26bd64c7909eb3a361f343e9ee4a3dfbab8b4a84519b43d5"
+    }
+  }
+}

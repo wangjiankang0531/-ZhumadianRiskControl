@@ -1,0 +1,83 @@
+{
+  "at": "2026-11-12T16:12:33.304129+08:00",
+  "passed": true,
+  "failure": null,
+  "checks": [
+    "public-root-HTTPS-200",
+    "public-html-references-R51-entry-not-R50-entry",
+    "public-entry-references-new-home",
+    "public-served-home-matches-actual-original-nginx-proof",
+    "public-home-same-window-router-preserved",
+    "public-gzip-decodes-identically",
+    "public-versioned-home-cache-and-vary",
+    "public-home-route-current-HTML",
+    "public-scene-viewer-route-current-HTML",
+    "public-retired-R50-home-404",
+    "public-original-scene-HTML-kept",
+    "public-original-login-configuration-available",
+    "250-current-GIS-discovery-ready"
+  ],
+  "observations": [
+    {
+      "label": "publicRoot",
+      "HTTP": 200,
+      "bytes": 2834,
+      "sha256": "7db36a46d78b32d5f8ff83c437dbf4dc23447f6966247260ad4b3b5a36040688"
+    },
+    {
+      "label": "R51Entry",
+      "HTTP": 200,
+      "bytes": 2625635,
+      "sha256": "af9cc2ed1c3cf5b0883fff6db53a6b2de05feb033c43cc03298fe536c7d35a9c"
+    },
+    {
+      "label": "R51Home",
+      "HTTP": 200,
+      "bytes": 7834,
+      "sha256": "c8c88dbff5acbed1739c94416fc10275dedb725fceab8709f3442a9afb0ae83c"
+    },
+    {
+      "label": "R51HomeGzip",
+      "HTTP": 200,
+      "bytes": 4583,
+      "sha256": "b75fa440c3038f85dd1f7beedd2377a86e6991f5114d926f5bcae17f2e242350"
+    },
+    {
+      "label": "homeRoute",
+      "HTTP": 200,
+      "bytes": 2834,
+      "sha256": "7db36a46d78b32d5f8ff83c437dbf4dc23447f6966247260ad4b3b5a36040688"
+    },
+    {
+      "label": "sceneViewerRoute",
+      "HTTP": 200,
+      "bytes": 2834,
+      "sha256": "7db36a46d78b32d5f8ff83c437dbf4dc23447f6966247260ad4b3b5a36040688"
+    },
+    {
+      "label": "retiredR50Home",
+      "HTTP": 404
+    },
+    {
+      "label": "sceneHTML",
+      "HTTP": 200,
+      "bytes": 47649,
+      "sha256": "370aa6ce47b67b3919478af86046de49f2bce7d4043cf641da0d7921b23760ec"
+    },
+    {
+      "label": "originalLoginConfig",
+      "HTTP": 200,
+      "bytes": 104,
+      "sha256": "b7ac34f7f2fe2750dbfed40ad7b318b8eea223c85da9379a596b52fdffa99ffe"
+    },
+    {
+      "label": "local250Discovery",
+      "HTTP": 200,
+      "bytes": 397
+    }
+  ],
+  "readOnly": true,
+  "actualNormalLoginBrowserGISRenderingAnd252Accepted": false,
+  "credentialsCookiesOrDiscoveryIdentifiersReadBack": false,
+  "scope": "fixed R51 first external acceptance; user scene acceptance remains pending"
+}

@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "D130AllArchiveFilesPreviouslyMatchedGit": 316,
+  "D130FrontendCandidatePinsVerified": 273,
+  "D130BackendPinsPreviouslyVerified": 4,
+  "bothClientsMustBeMergedNotOverwritten": true,
+  "receiverNamedSceneFileMethods": [
+    "listSceneFiles",
+    "readSceneFile",
+    "saveSceneFile"
+  ],
+  "senderLiveModelMethods": [
+    "readSceneModels",
+    "writeSceneModels"
+  ],
+  "senderAPICanonicalProductionOriginPinned": true,
+  "futureOriginalOwnedLoopbackMustBindExplicitTrustedOriginWithoutBlanketCORS": true,
+  "receiverAuthRetirementPrivateAssetFetcherMustRemain": true,
+  "senderRuntimeChecksNotClaimedAsReceiverRuntimeChecks": true,
+  "installedOrMerged": false,
+  "publicChanged": false
+}

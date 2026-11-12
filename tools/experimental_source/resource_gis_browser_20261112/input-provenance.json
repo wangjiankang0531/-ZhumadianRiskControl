@@ -1,0 +1,31 @@
+{
+  "D170BaseApplicationCommit": "682bf6ec9f2112cb999db79ff520890578aab32e",
+  "D175FixedApplicationCommit": "a1d2e68f4ee3e39e3e72e7107c4de105743d5a33",
+  "newProductChange": "Only resource_management_topic.js layout; other three JS copied byte-identical from D175",
+  "delta": {
+    "baseD175TopicSHA256": "068937ca0099677da3b4cf54919bf711fca2af6100ab4a32909b357ecbaef927",
+    "newTopicSHA256": "7d06874518b8d78c9b2ea1100dc480493f40988047b1abd1ef29c0262f3b23d0",
+    "reason": "Actual1366 screenshot hid GIS operation buttons below six explanatory paths",
+    "change": "Place GIS actions above closed details containing six relative paths",
+    "backendOrPermissionsChanged": false,
+    "derivedFromD175FixedSource": true
+  },
+  "parentTwoVueSourcesUnchangedFromD170": [
+    {
+      "name": "sceneViewer",
+      "sha256": "e083e98bb4f646baa49f516a7b5044fb6ba9ed945cb5c19efd83a0035fecac19",
+      "bytes": 5112,
+      "scriptAndTemplateCompiled": true
+    },
+    {
+      "name": "sceneEditor",
+      "sha256": "6c1b0ea6f032567747030895c86629010de45de503b7a2b93fe8269cea6a3846",
+      "bytes": 5185,
+      "scriptAndTemplateCompiled": true
+    }
+  ],
+  "parentBundleSHA256": "434aafcbce4bb89ac342739aeca646a16bde233b5768d5504a665c971ff00cc6",
+  "backendOwnManifestUnchanged": "bdf6d7e1814deb80cb63db4235d6e5748175a4f4a0c2eac679a2b7d387a4674b",
+  "integrateOnlyAgainstPublisherFreshCurrentBaseline": "Merge these resource inputs into latest full graph; do not overwrite newer identity/fetchers/business/models with our five compiled products wholesale",
+  "publicOr252Deployed": false
+}

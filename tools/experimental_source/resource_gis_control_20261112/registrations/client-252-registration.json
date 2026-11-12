@@ -1,0 +1,7 @@
+{
+  "schema": "xnby.client-resources.registration.v1",
+  "baseRoot": "F:/XNBY/Zhumadian",
+  "installationRelative": "Application/ClientGIS",
+  "configurationRelative": "Config/client-workspace.json",
+  "GISInstallSHA256": "26342711ce4091661d71893ce43a1e0431417117ba9f9d522d3ce8ea738cac72"
+}

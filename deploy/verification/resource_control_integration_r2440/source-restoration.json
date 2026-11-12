@@ -1,0 +1,100 @@
+{
+  "originalProjectUnchanged": true,
+  "isolatedCopyRestoredToOriginal": true,
+  "receipts": {
+    "avatar": {
+      "files": {
+        "src/layout/components/header-user.vue": {
+          "beforeSHA256": "1176f65a5db7361ebbea1c542c30c117b4f77b291cd385eb7214e32b94fa37bc",
+          "adaptedSHA256": "5ec7dd353ecdd6e67880d8940e2c42f80dc12e7a851174b1390f9eb80a726bb3"
+        },
+        "src/utils/OriginalHeaderAvatarSource.ts": {
+          "beforeSHA256": null,
+          "adaptedSHA256": "1ee6ad59c92aea246ffe339ebf63ee14ad522405a178f7996e840387a270193d"
+        }
+      },
+      "originalSourcesRestored": true
+    },
+    "statistics": {
+      "beforeSHA256": "a4391fafe97aeebd2de59c3803a21470cba2bbfb14153adb605c96f9df0fee35",
+      "candidateSHA256": "fe4e5587ea2e3cf7865ad145c33cb4720dc3b9fc282155335ba61126fc028209",
+      "sourceRestored": true
+    },
+    "editor": {
+      "files": {
+        "src/views/majorHazard/hazardSource/info/addOrEdit.vue": {
+          "before": "a2515a27177881d3764fa83d2d6ebf6eaa27f4dacbab1557acdeef1230c583c8",
+          "after": "4003674be888ee6c1bc1523a4f18e48fa932ec3e97c6057e887ebdeae2f39c59"
+        },
+        "src/views/majorHazard/hazardSource/info/index.vue": {
+          "before": "74cf8aaf0b0410225600e84299b278d4af6a0b37a7cd30b2d39bde38cf319f5d",
+          "after": "88812b9b1ea904f782e4079d4cfe317b0d79e82351be11442c2988a5e3dd5820"
+        }
+      },
+      "sourceRestored": true
+    },
+    "sceneHost": {
+      "files": {
+        "src/router/routes.ts": {
+          "beforeSHA256": "5ac72c44a72fbb5f83c03ee16b2b572ed8728a2a256ad6ac05b144b55731b694",
+          "afterSHA256": "3aef51cc160de46454bb6f817a73c04f047cc6151bfc31124f3bf9ad3a86e97f"
+        },
+        "src/views/sceneEditor/index.vue": {
+          "beforeSHA256": null,
+          "afterSHA256": "abce37ba42471ac46b737903486e1e94e7ac412730c333e71c9939dd529db9bf"
+        },
+        "src/views/sceneEditor/project_scene_host.js": {
+          "beforeSHA256": null,
+          "afterSHA256": "f0b1ff84a58e7439f0bed823923d2a8d7fbe5aac0d3e173e3186eb82aa3aca6d"
+        },
+        "src/views/sceneViewer/index.vue": {
+          "beforeSHA256": null,
+          "afterSHA256": "fbdad8131aeb2efad9c7bfac5b9675b7e2b9b88ddc1efff09b4458f09ea4006e"
+        }
+      },
+      "sourceRestored": true,
+      "originalLoginGuardAndAccountDataChanged": false,
+      "backendACLStillRequired": true,
+      "peerCommit": "db7d1d8f7c863e66a748ba1cb75872fe00589a1c"
+    },
+    "publicSceneEntry": {
+      "path": "src/views/home/index.vue",
+      "beforeSHA256": "c0dfc5c883f3e8612cb5a37f7a280e39ed28d87497e41017c7dc3d74368db931",
+      "afterSHA256": "549d4f14a8fbc8a1857f90df496c3bb65b44d6930a48a1c71cc65a20aff89afa",
+      "target": "/sceneViewer",
+      "originalRouterBaseKept": true,
+      "sameTabSessionStorageKept": true,
+      "sameOriginOriginalLoginGuardAndHost": true,
+      "noCredentialQueryOrNewDebugPort": true,
+      "sourceRestored": true
+    },
+    "modeNavigation": {
+      "files": {
+        "src/views/sceneViewer/index.vue": {
+          "beforeSHA256": "fbdad8131aeb2efad9c7bfac5b9675b7e2b9b88ddc1efff09b4458f09ea4006e",
+          "afterSHA256": "e94479693d087377ac3b801fd09a46276dc73f9d18a7d49ed2b8c047950f7e62"
+        },
+        "src/views/sceneEditor/index.vue": {
+          "beforeSHA256": "abce37ba42471ac46b737903486e1e94e7ac412730c333e71c9939dd529db9bf",
+          "afterSHA256": "e790bbbfbfc7c8e8bc881223d6f999d2728a9db9ae8370b21d0555753890affc"
+        }
+      },
+      "backendACLAndOriginalLoginKept": true,
+      "sourceRestored": true
+    },
+    "resourceWorkspace": {
+      "fixedSevenInputMapSHA256": "48ec119a116c8e63fd52fd1e063bd94e45328351c97a58d04822cf2894dcc4dc",
+      "actualFinalInputSHA256": {
+        "src/views/sceneViewer/index.vue": "e083e98bb4f646baa49f516a7b5044fb6ba9ed945cb5c19efd83a0035fecac19",
+        "src/views/sceneEditor/index.vue": "6c1b0ea6f032567747030895c86629010de45de503b7a2b93fe8269cea6a3846",
+        "src/views/sceneEditor/project_scene_host.js": "a4fc03fcde3c8ed18cba9f60217616830f0475a404f152c5d341f982f668d46f",
+        "src/views/sceneEditor/http_json.js": "edd1a30b10b392afa950ba53b381c2fde26e3628344087d97cd3099ff8cc5962",
+        "src/views/sceneEditor/resource_project_host.js": "c46e1ca6883312e6977af6c9d256f3c4e73fcbd3720413cac1fc5edb574d3a76",
+        "src/views/sceneEditor/client_resource_transport.js": "2717b1561aba141c19fefaf23b8f186bf9d359ba658468fa2ee10d7244c0f90b",
+        "src/views/sceneEditor/scene_topic_navigation.js": "8fca8a63643744748d719540f884f3cac03616bdb2f86dc492b4c0b645c0af07"
+      },
+      "sourceRestored": true
+    }
+  },
+  "failure": null
+}

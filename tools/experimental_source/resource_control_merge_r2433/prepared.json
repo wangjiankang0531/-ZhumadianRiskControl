@@ -1,0 +1,20 @@
+{
+  "allInputsQualifiedAgainstFixedD170AndD176": true,
+  "fullPortalBuildAndSceneRebuildStillPending": true,
+  "parentChangesAgainstD170": [
+    {
+      "afterSHA256": "2717b1561aba141c19fefaf23b8f186bf9d359ba658468fa2ee10d7244c0f90b",
+      "beforeSHA256": "a8b77bf025534268ff569ca375112b4cc93cd903f76dce68e4b45349e131947d",
+      "destination": "src/views/sceneEditor/client_resource_transport.js"
+    }
+  ],
+  "parentCompilerInputs": 7,
+  "parentCompilerMapSHA256": "48ec119a116c8e63fd52fd1e063bd94e45328351c97a58d04822cf2894dcc4dc",
+  "prepared": true,
+  "publicBase": "R51 b3649166",
+  "publicOr252OrPrivateConfigOrRegistryChanged": false,
+  "qualifiedBackendD175OwnManifestStillBdf6d7e1": true,
+  "sceneManifestSHA256": "4ded0cfeab1146c68536c38fb76ac48744769578314d4aa8122b4c2fd5f0a321",
+  "sceneSourceBytes": 5595971,
+  "sceneSourceFiles": 319
+}

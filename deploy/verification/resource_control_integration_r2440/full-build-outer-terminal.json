@@ -1,0 +1,15 @@
+{
+  "exitCode": 0,
+  "actualJobDescendantsZero": true,
+  "forceTerminationUsed": false,
+  "metrics": {
+    "limitFlags": 512,
+    "jobCommitLimitBytes": 3221225472,
+    "reportedPeakJobMemoryBytes": 2185383936,
+    "reportedPeakProcessMemoryBytes": 2086477824,
+    "activeProcesses": 0,
+    "totalProcesses": 17,
+    "terminateOnCloseOrBreakawayEnabled": false
+  },
+  "sourceSHA256": "c5430af0bdac2a905b6e63b876a02bc9846bd7af9ceab1d865c199885e3e803d"
+}

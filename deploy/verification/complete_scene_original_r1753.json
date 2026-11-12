@@ -1,0 +1,115 @@
+{
+  "schema": "xnby.complete-scene.original-host.acceptance.v1",
+  "stage": "R1753",
+  "sceneTests": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 827,
+    "skipped": 0,
+    "tests": 827
+  },
+  "actualMainInputs": 169,
+  "sourceInputs": 266,
+  "fiveOutputs": {
+    "index.html": {
+      "bytes": 47649,
+      "sha256": "370aa6ce47b67b3919478af86046de49f2bce7d4043cf641da0d7921b23760ec"
+    },
+    "scene-help.html": {
+      "bytes": 12851,
+      "sha256": "ee3b40bcaa964b6f62159a5746cdf9ae5aff2244d0c87dbf5dfd68febc6e7084"
+    },
+    "source-config.html": {
+      "bytes": 20434,
+      "sha256": "27127eed9f1a276e67af3544bcc30086ea87f4a8f3120f46999a81c225cd25b7"
+    },
+    "source-gain-worker.js": {
+      "bytes": 261088,
+      "sha256": "a49d6fca117dd9b59983d4c20b121d23bca17b4ba69761e78869b3e2f2105e35"
+    },
+    "viewer.js": {
+      "bytes": 1502267,
+      "sha256": "102bd7c5716b74e8e71326e6e5d4b13fbc751760eababddce129a9c2c2022f96"
+    }
+  },
+  "qualifiedBackendInputs": 35,
+  "qualifiedBackendManifestSHA256": "e1c65c3ced514c7ece16f036564607098f9f50e2b7f368b97355c5da4fb8e105",
+  "backendChecks": 23,
+  "crossLanguageCases": 24,
+  "actualCASProcesses": 4,
+  "CASWinners": 1,
+  "CASConflicts": 3,
+  "componentBrowserChecks": 9,
+  "actualNginxChecks": 1125,
+  "firstOriginalRunPassed": false,
+  "firstOriginalRunCompletedChecks": 33,
+  "firstOriginalCompleteSceneCreateReadOpenCancelOverwriteCancelAndPageRefreshFivePassed": true,
+  "firstOriginalRunFailure": "after save/open, old unsaved-leave test assumed a dirty model; actual model was correctly clean; failure retained",
+  "firstCreateConfirmedExactlyOnce": true,
+  "secondOriginalRunPassed": true,
+  "secondOriginalRunChecks": 34,
+  "secondOriginalRunReadsConfirmedSceneAfterOriginalEightServiceRestart": true,
+  "secondOriginalRunScenePOSTs": 0,
+  "bothOriginalRunsDLGPOSTs": 0,
+  "originalExistingSyntheticNonadminJavaAccounts": 2,
+  "actualOriginalLoginAndCurrentUserUsed": true,
+  "syntheticCurrentUserHTTPUsedInOriginalParent": false,
+  "bothEightAndNativeNormalExit0JobsZeroBeforeCodeMetadataRestore": true,
+  "normalUnsavedModelEditLeaveCancelAndLogoutDeniedAccountVerified": true,
+  "newSceneFileSHA256": "ba18b4a384decf7bc18520517328d01db3eae6f8f4dacae3d211dc15f15d2537",
+  "sameSQLiteRevision2AndOriginalJSONRetained": true,
+  "qualifiedOriginAndFineAuthorizationASTKeptDuringBackendRebase": true,
+  "failedR1746PreflightStringPathMismatchBeforeRunAllocationAndNoPOST": true,
+  "failedR1741ASTGuardBeforeWritingSupport": true,
+  "componentPendingScreenshotInspected": true,
+  "network": {
+    "readerSuccessfulPrivateAssetResponses": 31,
+    "readerPrivateAssetRange206Responses": 1,
+    "readerSuccessfulConfigurationResponses": 5,
+    "deniedConfiguration403Responses": 1,
+    "readerSuccessfulNativeResponses": 15,
+    "deniedPhaseSuccessfulFineResponses": 0,
+    "deniedProject403Responses": 1,
+    "explicitProjectDeniedMessage": true,
+    "oldSceneDetachedEventObserved": false,
+    "oldSceneFrameAbsent": true,
+    "oldSceneContextRejected": true,
+    "rawURLsHeadersOrTokensRecorded": false
+  },
+  "nearSource": {
+    "residentRoots": 2,
+    "maximumDepth": 1,
+    "nativeBytes": 1137800,
+    "visibleRootCount": 2,
+    "indexVerified": true,
+    "session": "connected",
+    "errors": []
+  },
+  "SSHReadOnlyProbe": {
+    "passed": true,
+    "schema": "xnby.zhumadian.ssh.probe.v1",
+    "applicationDirectoryExists": true,
+    "releaseSHA256": "d2918cf14933b7a903368a0f88e6b2075116081cdbb847ca435b67bd01c8ea88",
+    "administratorContext": true,
+    "businessTablesConfigurationOrLogsRead": false,
+    "serverChanged": false,
+    "pinnedSSHHostKeyVerifiedByNativeClient": true,
+    "privateKeyReadByPython": false,
+    "actualDeploymentAccepted": false
+  },
+  "softwareWebGLNotHardwarePerformanceOrUE": true,
+  "fullBusinessRowDigestAuditPerformed": false,
+  "newPersistentSceneJSONNotDeletedOrReplayed": true,
+  "modelLiveSyncD130D131NotMerged": true,
+  "actualPublicIIS_TLS252OrEXEAccepted": false,
+  "publicUpdated": false,
+  "publicPushed": false,
+  "fullCloneReady": false,
+  "remaining": [
+    "receive D130/D131 independently and merge live instance collaboration without overwriting scene files or identity retirement",
+    "actual two-author original Java scene CAS/multi-tab and denied scene-library account coverage",
+    "production storage/minimal whole GIS closure and private asset paths; actual IIS/TLS cache/range/roles, EXE-public-252",
+    "source units/original complete scene layout, all unique Nangang flows/templates and UE G1-G10",
+    "formal Windows sshd port22 takeover and reboot persistence"
+  ]
+}

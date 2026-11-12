@@ -1,0 +1,194 @@
+{
+  "schema": "xnby.spatial.types.v1",
+  "topics": {
+    "portrait": {
+      "name": "园区画像一张图",
+      "description": "园区范围、企业边界及风险对象的空间分布"
+    },
+    "monitoring": {
+      "name": "监测预警一张图",
+      "description": "监测、视频和危险源点位；报警与实时曲线等待业务接口"
+    },
+    "closed": {
+      "name": "封闭管理一张图",
+      "description": "卡口、停车场、道路和人员车辆的空间目录"
+    },
+    "emergency": {
+      "name": "敏捷应急一张图",
+      "description": "危险源、消防和应急资源的空间目录"
+    },
+    "energy": {
+      "name": "能源一张图",
+      "description": "水、电、气、热、污水等能源设备的空间目录"
+    }
+  },
+  "categories": {
+    "enterprise": {
+      "name": "企业厂区",
+      "defaultTopics": [
+        "portrait"
+      ],
+      "businessReference": true
+    },
+    "enterprise-boundary": {
+      "name": "企业边界",
+      "defaultTopics": [
+        "portrait"
+      ],
+      "businessReference": true
+    },
+    "major-hazard": {
+      "name": "重大危险源",
+      "defaultTopics": [
+        "portrait",
+        "monitoring",
+        "emergency"
+      ],
+      "businessReference": true
+    },
+    "hidden-danger": {
+      "name": "隐患点",
+      "defaultTopics": [
+        "portrait",
+        "emergency"
+      ],
+      "businessReference": true
+    },
+    "special-work": {
+      "name": "特殊作业点",
+      "defaultTopics": [
+        "portrait",
+        "monitoring"
+      ],
+      "businessReference": true
+    },
+    "road": {
+      "name": "园区道路",
+      "defaultTopics": [
+        "closed",
+        "emergency"
+      ],
+      "businessReference": true
+    },
+    "access": {
+      "name": "卡口门禁",
+      "defaultTopics": [
+        "closed"
+      ],
+      "businessReference": true
+    },
+    "video": {
+      "name": "视频点位",
+      "defaultTopics": [
+        "monitoring",
+        "closed",
+        "emergency"
+      ],
+      "businessReference": true
+    },
+    "gas-monitor": {
+      "name": "气体监测点",
+      "defaultTopics": [
+        "monitoring",
+        "emergency"
+      ],
+      "businessReference": true
+    },
+    "emergency-resource": {
+      "name": "应急资源",
+      "defaultTopics": [
+        "emergency"
+      ],
+      "businessReference": true
+    },
+    "firefighting": {
+      "name": "消防设施",
+      "defaultTopics": [
+        "emergency"
+      ],
+      "businessReference": true
+    },
+    "patrol": {
+      "name": "重点巡查点",
+      "defaultTopics": [
+        "portrait",
+        "closed"
+      ],
+      "businessReference": true
+    },
+    "public-area": {
+      "name": "公共区域",
+      "defaultTopics": [
+        "portrait",
+        "closed",
+        "emergency"
+      ],
+      "businessReference": true
+    },
+    "person": {
+      "name": "人员定位",
+      "defaultTopics": [
+        "closed",
+        "emergency"
+      ],
+      "businessReference": false
+    },
+    "vehicle": {
+      "name": "车辆定位",
+      "defaultTopics": [
+        "closed",
+        "emergency"
+      ],
+      "businessReference": false
+    },
+    "parking": {
+      "name": "停车场",
+      "defaultTopics": [
+        "closed"
+      ],
+      "businessReference": false
+    },
+    "energy-meter": {
+      "name": "能源计量设备",
+      "defaultTopics": [
+        "energy"
+      ],
+      "businessReference": false
+    },
+    "emergency-expert": {
+      "name": "应急专家",
+      "defaultTopics": [
+        "emergency"
+      ],
+      "businessReference": false
+    },
+    "emergency-team": {
+      "name": "救援队伍",
+      "defaultTopics": [
+        "emergency"
+      ],
+      "businessReference": false
+    },
+    "emergency-store": {
+      "name": "物资库",
+      "defaultTopics": [
+        "emergency"
+      ],
+      "businessReference": false
+    },
+    "shelter": {
+      "name": "避难场所",
+      "defaultTopics": [
+        "emergency"
+      ],
+      "businessReference": false
+    },
+    "medical": {
+      "name": "医疗机构",
+      "defaultTopics": [
+        "emergency"
+      ],
+      "businessReference": false
+    }
+  }
+}

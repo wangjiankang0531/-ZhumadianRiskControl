@@ -1,0 +1,29 @@
+{
+  "files": {
+    "R51_Home_Same_Window.zip": {
+      "bytes": 5486851,
+      "sha256": "b20a29be651340e7ab1fa38fa1cf8afa7cbbec77a5542ae6eba247136ece188b"
+    },
+    "durable_original_operation_r2327.py": {
+      "bytes": 6210,
+      "sha256": "54fab8eaa203e73fc70b92c5f9aebe2acc0f5b9319f33ff57dbd0d97f1da38ed"
+    },
+    "prepared-manifest.json": {
+      "bytes": 108573,
+      "sha256": "47d94deddaa3e73f70e0f09a9538edcbc5fa73637984cc1ed10deae588cc01ed"
+    },
+    "public_home_r51_controller.py": {
+      "bytes": 12554,
+      "sha256": "ce6fd2a6f05101b891549e001820d763812bf8b85e32204995d23c882a329889"
+    }
+  },
+  "preparedManifestSHA256": "47d94deddaa3e73f70e0f09a9538edcbc5fa73637984cc1ed10deae588cc01ed",
+  "publicUploadedOrDeployed": false,
+  "real250252AcceptancePending": true,
+  "sameOriginalLifecycleFunctionsRetained": true,
+  "schema": "xnby.fixed-public-transport-scope.v1",
+  "serverHistoryDeletionIncluded": false,
+  "totalBytes": 5614188,
+  "transportDestination": "C:/FTP_Root/Zhumadian/Zhumadian_Home_Same_Window_20261112_R51",
+  "version": "R51"
+}

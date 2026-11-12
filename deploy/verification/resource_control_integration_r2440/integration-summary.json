@@ -1,0 +1,66 @@
+{
+  "at": "2026-11-12T16:44:29.261964+08:00",
+  "actualPublicRelease": "R51",
+  "actualPublicReleaseSHA256": "b36491663db37033ae2fc450b0209e864d5ebd7b7b7ed1bba7fda6a7e5545323",
+  "newLocalCandidateOnly": true,
+  "sourcePeerFilesIndependentlyMatched": 26,
+  "completeFrontendFiles": 841,
+  "actualCompilerInputs": 3737,
+  "completeFrontendBytes": 17835074,
+  "fixedSceneInputs": 319,
+  "fixedSceneSourceBytes": 5595971,
+  "sceneOutputsMatched": 5,
+  "sceneViewerSHA256": "7846f1621dda9ae7afee25019ef7f1313ab5fc3656dc7abc919704751d4d990b",
+  "fullBuildAndSceneOriginalRootsAndJobsNormalZero": true,
+  "completeGraphRows": 16227,
+  "actualProgramFilesSHARead": 15663,
+  "actualProgramLogicalBytes": 1445194910,
+  "protectedMetadataRowsNotRead": 564,
+  "R49QualificationSparseWrites": 602,
+  "R49QualificationRemovals": 518,
+  "notCurrentPublicIncrementalDeploymentPlan": true,
+  "candidateReleaseSHA256": "66aa3dfd93b63efae9b39be299e038a84f729b51c843bfc8a61fc5fd8b336dfe",
+  "newPrivateSidecarProposalOnlyNoOldFileOverwrite": true,
+  "privateProposalContentExcludedFromSourceGitAndTransport": true,
+  "wholeOriginalApplicationLifecycleAccepted": false,
+  "ordinaryUserPublic250252Accepted": false,
+  "D171StrictManagementNullGapConfirmedWithPeer": true,
+  "nextBootstrapOwnedByPeerCandidateOnly": true,
+  "serverOrClientInstallOrRegistryOrDatabaseOrGISChanged": false,
+  "publicGitPushed": false,
+  "fullCloneReady": false,
+  "proofs": {
+    "peer-source-receipt.json": {
+      "bytes": 7336,
+      "sha256": "cc74f7e819a8f1c78895376f81a4eed3ad1c6559288ff3bb61ca3fccb6250b08"
+    },
+    "full-build-result.json": {
+      "bytes": 1357,
+      "sha256": "a39ee07cd8d7a643aa12579fde3bf5946cfd74ae5a8489461a9a5c0efd25d26e"
+    },
+    "source-restoration.json": {
+      "bytes": 4740,
+      "sha256": "b13c759bef7d2a697fb5a6feb348e2c1f4fbc70e45db2b97fc4a0a90ab5ea91b"
+    },
+    "full-build-outer-terminal.json": {
+      "bytes": 468,
+      "sha256": "b46638d7da54cba8071072a0b87ef0ec4efd71d8611badd61a052a5178c69fa7"
+    },
+    "scene-verification.json": {
+      "bytes": 1257,
+      "sha256": "1e4c249d1f8ee01363087601060df4ad47e56673863951fbd556021f00ea78b0"
+    },
+    "scene-rebuild-receipt.json": {
+      "bytes": 22578,
+      "sha256": "3aa01c0490fa3473ae374dd8c6e034067f0517ff77b97e932636e0353da2dc07"
+    },
+    "scene-outer-terminal.json": {
+      "bytes": 462,
+      "sha256": "bdbaeb76221012c3995efbe1680c717269ca34284451f0002adf15c434163d84"
+    },
+    "complete-graph-verification.json": {
+      "bytes": 1261,
+      "sha256": "73fa81b7b3db6eb833954cf520f7cc9864971e6de68f8bd267edde4192d0bcf8"
+    }
+  }
+}

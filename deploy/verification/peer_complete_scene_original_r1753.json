@@ -1,0 +1,30 @@
+{
+  "schema": "xnby.coordination.complete-scene-library.original-ui.v1",
+  "sender": "驻马店3",
+  "recipient": "驻马店三维",
+  "stage": "R1753",
+  "state": "receiver-original-host-tested-not-peer-ack",
+  "route": "/zhumadian/api/spatial-sync/v2/project/scenes",
+  "schemas": [
+    "xnby.scene-project.v1",
+    "xnby.scene-project.v2"
+  ],
+  "clientMethods": [
+    "listSceneFiles",
+    "readSceneFile",
+    "saveSceneFile"
+  ],
+  "fullSceneFirstCreateCount": 1,
+  "firstOriginalRunFailureRetained": true,
+  "readOnlyOriginalRestartChecks": 34,
+  "bothOriginalRunsDLG_POSTs": 0,
+  "originalEightNativeJobsNormalZero": true,
+  "wholeFileCASAndUnknownCommitReadback": true,
+  "D130D131LiveModelSyncNotMerged": true,
+  "D130Archive316Frontend273Backend4VerifiedButNotInstalled": true,
+  "doNotOverwriteOwnCloseStateIdentityAndPrivateAssetReader": true,
+  "exactFrontendClosure": "D:\\Project\\Zhumadian\\Application\\tools\\experimental_source\\complete_scene_library_r1750\\source-closure.json",
+  "publicUpdated": false,
+  "peer8803OrWorkingSourcesChanged": false,
+  "actualIIS_TLS252Pending": true
+}

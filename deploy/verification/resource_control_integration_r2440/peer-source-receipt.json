@@ -1,0 +1,142 @@
+{
+  "received": true,
+  "sourceCommit": "81baaf11c9e55e43f4bb6d8c5ff55967c0e857e6",
+  "sourceFiles": 26,
+  "allZipGitWorkingSHA256Matched": true,
+  "filePins": {
+    "tools/experimental_source/resource_gis_browser_20261112/input-provenance.json": {
+      "bytes": 1618,
+      "sha256": "ce8eb6715a63abdd7ae5a8758d1f520cd7243706dd78effdf16fd7dee2e8d8e4",
+      "blob": "8c2bb6847900254876835d46db9baa7d2dc94acb"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/README.html": {
+      "bytes": 1561,
+      "sha256": "600dda39051c2e2dec60c949f90633a2d3f6ceb23f590316a7f2b6977e1de3cf",
+      "blob": "5886025817226194e81700fb42909c5fbb10c722"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/recipe/build_actual_vue_fixture.mjs": {
+      "bytes": 5054,
+      "sha256": "516554c8fdd4a51f9816d55f50d4421638e3a4eb78ce27422310c5cb340a8471",
+      "blob": "426d388a863c5fbbb019062213c8eab6247aaa83"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/recipe/discover.mjs": {
+      "bytes": 1377,
+      "sha256": "75fb6f4d8c1344939ac07a557d43c55b1a0b705fabdcad86021cf322ca9653fa",
+      "blob": "4a8437765d74445d71a9893c2965639e0d538289"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/recipe/layer_editor_delivery_manifest.json": {
+      "bytes": 20737,
+      "sha256": "f2ad5af7468b2ae138ac793d47c25999e7eb064c6ec7c76e0a9da73daa334a39",
+      "blob": "23011bc8347d08c9a042ea3aad75e0b7abb3ebfc"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/recipe/prepare_source.py": {
+      "bytes": 1403,
+      "sha256": "ea0db196fa8d07703a1fec2656cbec973a53f54979f8e2edeff8c93c462fcca4",
+      "blob": "ec7944370372f29de72c90086afeaa57a97c8f8e"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/recipe/run_browser03.py": {
+      "bytes": 2219,
+      "sha256": "d5774a4bf658f3b4918feba99d2a06b76bcc035e20a05971e1d59eac5b76b543",
+      "blob": "39241adb536f08271926f7315fa1813b4e4393a2"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/recipe/run_build02.py": {
+      "bytes": 4465,
+      "sha256": "8df4de94d21fbb4f9ea9edbfb832a84444db294a50939ea787629fe2111979a5",
+      "blob": "47e59a619fa4c849875519f22c751f4446cf5b53"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/recipe/run_rebuild.py": {
+      "bytes": 2066,
+      "sha256": "ab9d984af6c99fb79643007d6463c62366417bbfb97082f02d5f146930600c5e",
+      "blob": "0ccce5eb7ef8f7a4aef62c3bdd9abbfec9e4356c"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/recipe/run_unit.py": {
+      "bytes": 1292,
+      "sha256": "7059b2cef9773baa09aea750737ebdabf8963e7d6126522f20301943a397b430",
+      "blob": "41c33f511f162184c203503908ba8488ed05fba5"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/recipe/scene_delivery_sources.json": {
+      "bytes": 55237,
+      "sha256": "4ded0cfeab1146c68536c38fb76ac48744769578314d4aa8122b4c2fd5f0a321",
+      "blob": "7631873350b899ff2692d89bd7edf56779073fcb"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/tests/browser.mjs": {
+      "bytes": 10721,
+      "sha256": "ff0bbebdaa679d9b3c27119d2ae6de5a193c167ebb026fd4c9d3a3322fedb9a7",
+      "blob": "8dd931989c90aea4c8da901e4d020feb38dedd83"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/tests/browser_compact.mjs": {
+      "bytes": 11570,
+      "sha256": "e0ab64144b25b4945d848bfb76177734c9b1a2adb78d32a679519ffe82ce589d",
+      "blob": "8a2fc701c9997dcb713d7bd034cdf7ce4cd127fa"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/tests/run_backend03.py": {
+      "bytes": 5216,
+      "sha256": "d3c4b726f777d700e3980ba4fe87c69d1a1c29747da3db5612354e4c6d4a531a",
+      "blob": "3b545eda38f5e8b435441f288522c57970951391"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/tests/run_browser03.py": {
+      "bytes": 13023,
+      "sha256": "3c1d9d02e97b656d92c1080d5c9d1592e10fd11e2d6d08b9f69e7cae18ef0013",
+      "blob": "e2616ff3eaae07d4bb9d0fadb7540eb7fa77802b"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/tests/synthetic_controller.py": {
+      "bytes": 2404,
+      "sha256": "30172eafcc83c3438958750035629c598d70b68804ce0be834065b7d53d6a0a1",
+      "blob": "887d81075ca0123420200e89ae4da6a4219f59b1"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/verification.json": {
+      "bytes": 3820,
+      "sha256": "6ff68c6781fd6efeb32e3a1267ab0265f072eff017f58b7ffa2ea916d2a84af6",
+      "blob": "529d167d12ac43042fc65db46a1ed14af22db77b"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/web/src/client_resource_transport.js": {
+      "bytes": 9353,
+      "sha256": "2717b1561aba141c19fefaf23b8f186bf9d359ba658468fa2ee10d7244c0f90b",
+      "blob": "b23267bd1af8be7fb52536f60823aa4a753fafcf"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/web/src/http_json.js": {
+      "bytes": 1049,
+      "sha256": "edd1a30b10b392afa950ba53b381c2fde26e3628344087d97cd3099ff8cc5962",
+      "blob": "9703206c90047049df50cb440659a78c4f9c018f"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/web/src/resource_management_client.js": {
+      "bytes": 6198,
+      "sha256": "4457d59a072133a9ea5c535e6da198ac328c552478318a6968ef238e3e358cb4",
+      "blob": "318abc6994974f8f4e039ed6788b7ed38f0c9a55"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/web/src/resource_management_topic.js": {
+      "bytes": 17551,
+      "sha256": "7d06874518b8d78c9b2ea1100dc480493f40988047b1abd1ef29c0262f3b23d0",
+      "blob": "05daa222c7b652fe03652c6d4a34727513951b0e"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/web/tests/client_resource_transport.test.mjs": {
+      "bytes": 8104,
+      "sha256": "bac80ed733c7f063322ea24f9382419e5fb82f4d2658fe9d37b20ae04feb48f7",
+      "blob": "b9dcd6216f895795b26b378dd77d157c08c87c81"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/web/tests/resource_gis_control.test.mjs": {
+      "bytes": 7780,
+      "sha256": "5cdc5d9686257c23c5f92632f84cdf89d6d0ec2375ade605646b61d97be420bb",
+      "blob": "8ce6d6ae4894bbaf2223bc317043ab6a033158a0"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/web/tests/resource_management_client.test.mjs": {
+      "bytes": 5787,
+      "sha256": "61e83c163ba153ef60e7d9d795ffd1a5ff23ae8338aaf23b1b2d3af0518570fc",
+      "blob": "81d8a6ea9a4b41ac3e8a99b98ae1758c71489613"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/web/tests/resource_management_topic.test.mjs": {
+      "bytes": 5524,
+      "sha256": "b1b91ac05d6797b08f0d2de36c755ebe78bfe6c70debe9863c8bd7db2a9fd0f9",
+      "blob": "5237e5f0f7d77f9173f8159ca5208506009d66ca"
+    },
+    "tools/experimental_source/resource_gis_browser_20261112/web/tests/resource_test_dom.mjs": {
+      "bytes": 1432,
+      "sha256": "aff018db6df3d06e546e1fda12c676adda30351b55c9b9ab0b4294b3f830b2de",
+      "blob": "2f16afc02a9ff0038e0490388e7c0bb5995f0a0a"
+    }
+  },
+  "senderBrowserTenStagesAnd39NodeNotRerunAsOurAcceptance": true,
+  "newResourceLayoutNotPublic": true,
+  "actualPublicBaseIsR51": true,
+  "no252OrPublicOrRegistryChange": true
+}

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "priorOriginalParentRefusedBeforeAnyRunOrWrite": true,
+  "actualStaticRows": 57,
+  "actualOriginalRowStringPathMismatchReproduced": true,
+  "canonicalSameCatalogAccepted": true,
+  "differentCatalogAndRouteRejected": true,
+  "allOtherFunctionAndClassASTsUnchanged": true,
+  "beforeSHA256": "5ce274e503546e74650ec19ff55af5b6c83af6db7a08112ad73e459af636fcae",
+  "afterSHA256": "cd6908cd4689b59a17008593946bc9cdea790bbb2bef245221b27bcdb31d7d8a",
+  "sceneSchemaBackendFrontendAndLifecycleChanged": false,
+  "publicChanged": false
+}

@@ -1,0 +1,138 @@
+{
+  "schema": "xnby.resource-gis-control.candidate-verification.v1",
+  "stage": "D175",
+  "atUTC": "2026-11-12T07:43:41.950836+00:00",
+  "candidateOnlyNoProductionAcceptance": true,
+  "backendPermissionAndLifecycleTests": 20,
+  "legacyBackendTests": 25,
+  "nodeChecks": 39,
+  "newFocusedNodeCases": 10,
+  "allTestsPassed": true,
+  "actual250ReadOnly": {
+    "passed": true,
+    "registered953Qualified": true,
+    "currentGISPhase": "ready",
+    "ownedOriginalInstance": true,
+    "protectedConfigManifestAndActiveUnchanged": true,
+    "startStopSpawnRecoveryAndStateWriteForbidden": true,
+    "notPublicOr252OrRootRelocationAcceptance": true
+  },
+  "actualOriginalStopProtocolSyntheticController": {
+    "passed": true,
+    "actualNewAdapterToUnmodifiedOriginalStopProtocol": true,
+    "original953AndOriginalConfigQualification": true,
+    "syntheticControllerExplicitNoGISOrProviderData": true,
+    "fixedQAOnlyRandomPort": true,
+    "separateOriginalPopenAndActualJobZero": [
+      {
+        "originalPID": 2992,
+        "rootExitCode": 0,
+        "originalJobBeforeClose": 0
+      }
+    ],
+    "twoExplicitAcceptedIntents": 2,
+    "noLive250252OrPublicAction": true,
+    "fullOriginalProviderStartAndRootRelocationNotTested": true
+  },
+  "independentOwnProgrammeQualification": {
+    "passed": true,
+    "ownTenCodeAndRegistrationQualified": true,
+    "ownManifestIdentity": "bdf6d7e1814deb80cb63db4235d6e5748175a4f4a0c2eac679a2b7d387a4674b",
+    "externalOriginalProgrammeFiles": 953,
+    "tenthModuleTamperRefused": true,
+    "registeredInterpreterIsolated": true,
+    "resourceHTTPOrGISNotStarted": true,
+    "actual252OwnManifestQualificationPending": true
+  },
+  "finalSixOwnedRootAndJobTerminals": [
+    {
+      "phase": "control-unit20",
+      "rootExitCode": 0,
+      "originalJobBeforeClose": 0
+    },
+    {
+      "phase": "legacy-unit",
+      "rootExitCode": 0,
+      "originalJobBeforeClose": 0
+    },
+    {
+      "phase": "actual250-readonly",
+      "rootExitCode": 0,
+      "originalJobBeforeClose": 0
+    },
+    {
+      "phase": "node-legacy",
+      "rootExitCode": 0,
+      "originalJobBeforeClose": 0
+    },
+    {
+      "phase": "synthetic-control",
+      "rootExitCode": 0,
+      "originalJobBeforeClose": 0
+    },
+    {
+      "phase": "own-programme-qualification",
+      "rootExitCode": 0,
+      "originalJobBeforeClose": 0
+    }
+  ],
+  "actualTenCodeSourceProgrammeCandidate": {
+    "250": {
+      "folder": "Application\\Packages\\ResourceGISControlCandidate_20261112\\client-250",
+      "fileCount": 12,
+      "ownQualifiedCodeFiles": 10,
+      "ownManifestSHA256": "bdf6d7e1814deb80cb63db4235d6e5748175a4f4a0c2eac679a2b7d387a4674b",
+      "externalGIS953SHA256": "26342711ce4091661d71893ce43a1e0431417117ba9f9d522d3ce8ea738cac72",
+      "actualOwnManifestQualificationOnThisMachine": true,
+      "activated": false,
+      "copied252": false
+    },
+    "252": {
+      "folder": "Application\\Packages\\ResourceGISControlCandidate_20261112\\client-252",
+      "fileCount": 12,
+      "ownQualifiedCodeFiles": 10,
+      "ownManifestSHA256": "0903a5506ecf6d7677c2dcadd8bf089e3e65db6adc8d956d914d91b700aa5bce",
+      "externalGIS953SHA256": "26342711ce4091661d71893ce43a1e0431417117ba9f9d522d3ce8ea738cac72",
+      "actualOwnManifestQualificationOnThisMachine": false,
+      "activated": false,
+      "copied252": false
+    }
+  },
+  "publicReadOnlyProbe": {
+    "atUTC": "2026-11-12T07:41:39.172627+00:00",
+    "readOnlyNoAuthenticatedBrowser": true,
+    "publicRootURL": "https://www.joinlinksmart.com/zhumadian/",
+    "publicRootHTTP": 200,
+    "htmlSHA256": "dd6c35f8b2715dbe8517d0cb08fe0ce27c785fa6b8ff125b8972910de9036ab4",
+    "entryScript": "https://www.joinlinksmart.com/zhumadian/branding-20261025/assets/js/index-BYnEbdB9.js",
+    "entrySHA256": "4a15b3d1f1cc352d990e442dc67dcef76bb7b25f235a2565949fe6f0fc63e215",
+    "actualReferencedHomeChunk": "https://www.joinlinksmart.com/zhumadian/branding-20261025/assets/js/index-w-VlSjlt.js",
+    "homeBytes": 7874,
+    "homeSHA256": "8221508e6d1d22fd614a966a9949c34df66c1be59cd03e59425dd1a4c7bb3a49",
+    "actualCommandBranch": "window.open(\"/zhumadian/sceneViewer\",\"_blank\",\"noopener,noreferrer\")",
+    "old8767NotInActualReferencedHome": true,
+    "normalOriginalLoginOrSameWindowOrBothClientsAccepted": false,
+    "releaseNumberNotInferredFromViewerOrHomeAlone": true
+  },
+  "notTested": [
+    "actual browser compiled original Vue with these four new frontend sources",
+    "new GIS control routes through original public authority and real IIS",
+    "actual original full GIS provider startup and cold Windows login",
+    "complete root relocation while real original GIS normal exits",
+    "252 new ten-code qualification and actual client activation",
+    "public original normal login to latest same-window3D on both250/252",
+    "native EXE restore/normal entry or new engine GPU/UE benchmark"
+  ],
+  "preserved": [
+    "frozen R51 and installed D171250/previous D172/D173 sources",
+    "D174252 ten staged files and existing252GIS",
+    "original250GIS/config/manifest/active state",
+    "all user GIS/DLG/models/business data and active edits"
+  ],
+  "producerConcurrencyLimit": "Read leases plus same standard login-start gate/known roots coordinate D171/D175 producers. Arbitrary external legacy CLI or filesystem writers are not claimed globally atomic.",
+  "acceptedIntentPolicy": "Preflight cancellable; at explicit current subject/project write-authorized commit latch intent, finish normally across logout/expiry/leave; normal GIS guard can outlive manager. Never equate manager root0 with whole GIS Job0.",
+  "newRuntimeGISCopies": 0,
+  "publicDeployed": false,
+  "actual252ChangedByThisStage": false,
+  "completeOriginalGoalStillActive": true
+}

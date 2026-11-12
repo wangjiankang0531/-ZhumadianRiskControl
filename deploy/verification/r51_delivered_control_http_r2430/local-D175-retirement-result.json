@@ -1,0 +1,14 @@
+{
+  "retiredFiles": 4712,
+  "logicalBytes": 1031120912,
+  "heldSharedReadOnlyFiles": 0,
+  "sharedFileAttributesNeverCleared": true,
+  "freeBefore": 332136099840,
+  "freeAfter": 332136886272,
+  "exclusivePhysicalFreeNotClaimed": true,
+  "allActualHandlesAndJobsNormalTerminal": true,
+  "ownSyntheticSQLiteConfigurationControlIntentsTerminalsAndLogsPreserved": true,
+  "original2356SupportFilesRawGISSourceAndUserDataPreserved": true,
+  "publicOrClientInstallChanged": false,
+  "retiredQAViewsNotRunnableAndNoRepeatScriptKept": true
+}

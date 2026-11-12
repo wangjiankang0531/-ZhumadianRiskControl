@@ -1,0 +1,12 @@
+{
+  "baselineD172Application": "a693426e5c36d5da57509599a89cb52915e16b6e",
+  "baselineD170Application": "682bf6ec9f2112cb999db79ff520890578aab32e",
+  "externalGISManifestSHA256": "26342711ce4091661d71893ce43a1e0431417117ba9f9d522d3ce8ea738cac72",
+  "external953Bytes": 67466585,
+  "legacyTestsExternalD166SHA256": "128f76e28ba90f82912fd4cfaa74f9d5e97121ab67717e5029e6b5f9ff043b1e",
+  "externalDependenciesNotBundled": true,
+  "newIndependentTenCodeVersion": "client-resources.20261112.2",
+  "D172OldNoGISSubprocessAssumptionSupersededOnlyHere": true,
+  "productionActivated": false,
+  "currentReleaseAndUrgentR51Unchanged": true
+}

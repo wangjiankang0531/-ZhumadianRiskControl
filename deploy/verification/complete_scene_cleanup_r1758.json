@@ -1,0 +1,71 @@
+{
+  "completed": true,
+  "removed": [
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\su1746\\b\\before",
+      "kind": "restored-code-before-exactly-equal-retained-G",
+      "files": 532,
+      "logicalBytes": 10666630
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\su1749\\b\\before",
+      "kind": "restored-code-before-exactly-equal-retained-G",
+      "files": 532,
+      "logicalBytes": 10666630
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\su1749\\ui-restart\\chrome-profile",
+      "kind": "normally-closed-owned-browser-profile",
+      "files": 375,
+      "logicalBytes": 78160876
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\su1751\\b\\before",
+      "kind": "restored-code-before-exactly-equal-retained-G",
+      "files": 532,
+      "logicalBytes": 10666630
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\su1752\\b\\before",
+      "kind": "restored-code-before-exactly-equal-retained-G",
+      "files": 532,
+      "logicalBytes": 10666630
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\su1752\\ui-restart\\chrome-profile",
+      "kind": "normally-closed-owned-browser-profile",
+      "files": 376,
+      "logicalBytes": 77198454
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\su1760\\b\\before",
+      "kind": "restored-code-before-exactly-equal-retained-G",
+      "files": 532,
+      "logicalBytes": 10666630
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\su1760\\ui-restart\\chrome-profile",
+      "kind": "normally-closed-owned-browser-profile",
+      "files": 381,
+      "logicalBytes": 77399594
+    },
+    {
+      "path": "D:\\Project\\Zhumadian\\work\\scene-library-browser-r1740\\browser\\chrome-profile",
+      "kind": "normally-closed-component-browser-profile",
+      "files": 178,
+      "logicalBytes": 21587231
+    }
+  ],
+  "files": 3970,
+  "logicalBytes": 307679305,
+  "freshSuccessfulProcessMatches": 0,
+  "allActualJobsZero": true,
+  "allSavedSceneFilesAndDLG_SQLiteJSONWriteIntentsRetained": true,
+  "smallFailuresAndSourcesLatestCandidatesRetained": true,
+  "retiredBeforeNotDirectRollback": true,
+  "serverTouched": false,
+  "diskFreeBefore": 339868684288,
+  "diskFreeAfter": 340182003712,
+  "diskDeltaNotExclusivelyAttributed": true,
+  "sourceSHA256": "4e3a12eab65876b443b64e77f1b23bdd6ef199890302e1e648cdfb2e33545b45"
+}

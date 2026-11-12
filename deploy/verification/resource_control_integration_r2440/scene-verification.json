@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "sourceFiles": 319,
+  "sourceBytes": 5595971,
+  "sourceIndexSHA256": "74a891864b22f2223b2efca0b9cb40bd44a7557b2555bd33fe6aeb90202e645a",
+  "sourceManifestSHA256": "4ded0cfeab1146c68536c38fb76ac48744769578314d4aa8122b4c2fd5f0a321",
+  "allFiveOutputsMatchFixedD176Pins": true,
+  "outputs": {
+    "index.html": {
+      "bytes": 47649,
+      "sha256": "370aa6ce47b67b3919478af86046de49f2bce7d4043cf641da0d7921b23760ec"
+    },
+    "scene-help.html": {
+      "bytes": 14280,
+      "sha256": "86ce5fed3dbb686aedc76f6d0b4b9fc49cb9eba2f646ae3e7f93e68f42cc065a"
+    },
+    "source-config.html": {
+      "bytes": 20434,
+      "sha256": "27127eed9f1a276e67af3544bcc30086ea87f4a8f3120f46999a81c225cd25b7"
+    },
+    "source-gain-worker.js": {
+      "bytes": 261088,
+      "sha256": "a49d6fca117dd9b59983d4c20b121d23bca17b4ba69761e78869b3e2f2105e35"
+    },
+    "viewer.js": {
+      "bytes": 1624724,
+      "sha256": "7846f1621dda9ae7afee25019ef7f1313ab5fc3656dc7abc919704751d4d990b"
+    }
+  },
+  "sourceInputs": 312,
+  "mainInputs": 190,
+  "sharedSourcesVendorAndCopiedSourceClosureUnchanged": true,
+  "GISOrRuntimeCopied": false,
+  "publicR51Or252Changed": false,
+  "productionLoginOrRenderingAccepted": false
+}

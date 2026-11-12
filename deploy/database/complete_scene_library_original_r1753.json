@@ -1,0 +1,32 @@
+{
+  "schema": "xnby.complete-scene-library.persistence-model.v2",
+  "existingSQLSchemaUnchanged": true,
+  "DDLPerformed": false,
+  "storage": "stable private sceneProjectsRoot / valid .scene.json; complete landscape/models/lighting snapshot, atomic replace and cross-process file lock",
+  "fields": [
+    "schema",
+    "scene",
+    "landscape",
+    "models",
+    "lighting"
+  ],
+  "formatVersions": [
+    "xnby.scene-project.v1",
+    "xnby.scene-project.v2"
+  ],
+  "createCAS": "expectedSHA256=null, path must not exist",
+  "overwriteCAS": "exact current whole file SHA256; 409 keeps winning file",
+  "authorization": "original CurrentUser project read/write ACL and account binding, upload second check; no new database account/grant",
+  "modelAssets": "fixed id/SHA references checked against the exact displayed catalog; never upload GIS/GLB bytes in JSON",
+  "separateRoots": [
+    "sceneProjectsRoot",
+    "projectFilesRoot",
+    "dataRoot",
+    "runRoot"
+  ],
+  "unknownCommit": "retain frozen full scene and block repeat POST; GET identical complete content confirms; different content retains pending",
+  "localVerifiedFileRoot": "D:\\Project\\Zhumadian\\work\\scene-files-original-r1748\\cloud-scenes",
+  "productionInstalled": false,
+  "normalOriginalEightRestartVerified": true,
+  "retirement": "preserve all saved scene files and protected write intents independently of reconstructible code/profile cleanup"
+}

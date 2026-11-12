@@ -1,0 +1,86 @@
+{
+  "schema": "xnby.resource-gis-browser.verification.v1",
+  "stage": "D176",
+  "atUTC": "2026-11-12T08:10:05.369308+00:00",
+  "passedWithinScope": true,
+  "scope": "Actual original two Vue components, full five scene products, original grant authority with synthetic CurrentUser, qualified D175 ten-code manager, synthetic registered GIS controllers. No real original OSGB provider or public normal login.",
+  "actualBrowserStages": 10,
+  "browserErrors": [],
+  "actual1366EssentialControlsVisibleWithoutScroll": true,
+  "sixRelativePathsExpandable": true,
+  "compactNodeTests": 39,
+  "fullBuildSourcePins": 312,
+  "fullBuildMainInputs": 190,
+  "cleanReconstructedFiveProductsByteIdentical": true,
+  "productsSHA256": {
+    "viewer.js": "7846f1621dda9ae7afee25019ef7f1313ab5fc3656dc7abc919704751d4d990b",
+    "source-gain-worker.js": "a49d6fca117dd9b59983d4c20b121d23bca17b4ba69761e78869b3e2f2105e35",
+    "index.html": "370aa6ce47b67b3919478af86046de49f2bce7d4043cf641da0d7921b23760ec",
+    "source-config.html": "27127eed9f1a276e67af3544bcc30086ea87f4a8f3120f46999a81c225cd25b7",
+    "scene-help.html": "86ce5fed3dbb686aedc76f6d0b4b9fc49cb9eba2f646ae3e7f93e68f42cc065a"
+  },
+  "backendSameD175OwnInstallationIdentity": "bdf6d7e1814deb80cb63db4235d6e5748175a4f4a0c2eac679a2b7d387a4674b",
+  "originalAuthoritySourceSHA256": "9a62613fb42502d10b252f7f994ac1db23c826754500a9961af5d190cc0d52b3",
+  "browserEndpointCounts": {
+    "managementRequests": 169,
+    "issueRequests": 42,
+    "forbiddenLocalHeaders": 0,
+    "terrainRequests": 0,
+    "originalACLCalls": 168
+  },
+  "actualUIStartStopRootSaveReadRoleAccountRetirementAndLeaveAcceptedIntentPassed": true,
+  "threeSyntheticOriginalGISRootsAndJobsZero": [
+    {
+      "phase": "synthetic-original-terminal",
+      "number": 1,
+      "rootExitCode": 0,
+      "originalJobBeforeClose": 0
+    },
+    {
+      "phase": "synthetic-original-terminal",
+      "number": 2,
+      "rootExitCode": 0,
+      "originalJobBeforeClose": 0
+    },
+    {
+      "phase": "synthetic-original-terminal",
+      "number": 3,
+      "rootExitCode": 0,
+      "originalJobBeforeClose": 0
+    }
+  ],
+  "backendAndOuterActualRootsZeroJobsZero": true,
+  "ChromeNodeNormalExitAsserted": true,
+  "original250ConfigProgrammeAndActivePinsHeldBeforeAfterAndAfterCleanup": true,
+  "rawOSGBReadsOrCopies": 0,
+  "testSupportFilesQualified": 2356,
+  "testSupportBytes": 515560456,
+  "CurrentUserAndACLExplicitlySynthetic": true,
+  "realGISProviderOrNewEngineGPUOrUEBenchmark": false,
+  "normalOriginalPublicLoginOr252Accepted": false,
+  "unmodifiedFrozenR51AndInstalledD171D172D173D174": true,
+  "firstFailuresPreserved": {
+    "preparation": [
+      "implicitGBKsourceRead",
+      "missingSixSharedJSONInputs",
+      "nestedPowerShellEnumerationBeforeMove"
+    ],
+    "actualBrowser01": "testserverdelivery03wrongindex->correctpeerURLguardrejection; outer1/Job0 noGISstarted",
+    "actualBrowser02": "actual9stagespassed then finalverifierGBKreadUTF8 failed; outer1/Job0; not whole-roundaccepted"
+  },
+  "finalActualBrowserEvidence": "attempt03/browser01/browser-result.json",
+  "cleanup": {
+    "targets": 7,
+    "files": 3754,
+    "logicalBytes": 691065309,
+    "observedFreeDelta": 698023936,
+    "notExclusivePhysicalAttribution": true
+  },
+  "remaining": [
+    "real original fullGIS provider startup/normal stop/root relocation/cold Windows login",
+    "publisher original worker and cross-manager lifetime independently pending",
+    "new fixed resource complete-release private allowlist/configuration and original lifecycle",
+    "real original account public TLS homepage250252 latest same-window acceptance",
+    "original complete UE/native DLG/multisource signs/Web3D/Tianjin objective remains active"
+  ]
+}

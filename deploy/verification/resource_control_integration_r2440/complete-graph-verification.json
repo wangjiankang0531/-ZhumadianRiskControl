@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "completeGraphRows": 16227,
+  "actualProgramFilesRead": 15663,
+  "actualProgramLogicalBytes": 1445194910,
+  "protectedRowsKeptByExactPriorMetadataNotRead": 564,
+  "actualSparseFilesRead": 602,
+  "resourceWorkerSources": 44,
+  "sceneStaticRows": 18,
+  "sameWindowOnlyCompilerInputRetained": true,
+  "changedInputsFromR51": [
+    "src/views/sceneEditor/client_resource_transport.js",
+    "src/views/sceneEditor/http_json.js",
+    "src/views/sceneEditor/index.vue",
+    "src/views/sceneEditor/project_scene_host.js",
+    "src/views/sceneEditor/resource_project_host.js",
+    "src/views/sceneEditor/scene_topic_navigation.js",
+    "src/views/sceneViewer/index.vue"
+  ],
+  "allOriginalProfileFunctionASTUnchanged": true,
+  "changedOriginalSupportFunctions": [
+    "SpatialRuntime.configure_gateway",
+    "SpatialRuntime.start",
+    "SpatialRuntime.verify_gateway",
+    "preflight"
+  ],
+  "newPrivateConfigurationProposalValidatedNotApplied": true,
+  "oldPrivateAccountAccessAndEveryOtherSettingUnchanged": true,
+  "fixedR51TransportManifestUnchanged": true,
+  "installedCodeOrDatabaseOrGISModified": false,
+  "applicationOrGISProcessesStarted": 0,
+  "actualLifecycleOrNormalUserOrPublic250252Accepted": false
+}

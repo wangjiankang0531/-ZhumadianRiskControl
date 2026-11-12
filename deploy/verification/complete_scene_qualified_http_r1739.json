@@ -1,0 +1,112 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "case": "actual-Node-receiver-and-Python-schema-parity-24",
+      "passed": true
+    },
+    {
+      "case": "complete-v2-landscape-model-lighting-snapshot-roundtrip",
+      "passed": true
+    },
+    {
+      "case": "same-content-idempotent-with-exact-CAS",
+      "passed": true
+    },
+    {
+      "case": "create-CAS-refuses-overwrite",
+      "passed": true
+    },
+    {
+      "case": "scene-filenames-require-valid-fixed-root-scene-extension",
+      "passed": true
+    },
+    {
+      "case": "unavailable-model-version-keeps-entire-prior-scene",
+      "passed": true
+    },
+    {
+      "case": "legacy-v1-and-empty-v2-lossless-persistence",
+      "passed": true
+    },
+    {
+      "case": "new-repository-instance-reads-durable-scene",
+      "passed": true
+    },
+    {
+      "case": "actual-replace-failure-keeps-old-whole-file-and-removes-pending",
+      "passed": true
+    },
+    {
+      "case": "four-actual-processes-one-CAS-winner-three-conflicts-no-lost-update",
+      "passed": true
+    },
+    {
+      "case": "legacy-DLG-file-library-default-contract-unchanged",
+      "passed": true
+    },
+    {
+      "case": "actual-original-access-adapter-reader-GET-HEAD-scene-list",
+      "passed": true
+    },
+    {
+      "case": "actual-HTTP-missing-login-role-account-binding-origin-denied",
+      "passed": true
+    },
+    {
+      "case": "reader-cannot-write-and-prior-file-kept",
+      "passed": true
+    },
+    {
+      "case": "actual-authenticated-complete-scene-HTTP-save-and-read",
+      "passed": true
+    },
+    {
+      "case": "configured-loopback-Origin-forwarded-only-exact-trusted-origin-accepted",
+      "passed": true
+    },
+    {
+      "case": "actual-HTTP-stale-CAS-is-409",
+      "passed": true
+    },
+    {
+      "case": "method-query-encoded-traversal-rejected",
+      "passed": true
+    },
+    {
+      "case": "duplicate-JSON-member-and-wrong-content-type-denied",
+      "passed": true
+    },
+    {
+      "case": "actual-revocation-during-upload-rechecked-before-persistence",
+      "passed": true
+    },
+    {
+      "case": "existing-DLG-file-HTTP-route-unchanged",
+      "passed": true
+    },
+    {
+      "case": "explicit-separate-directory-and-pinned-catalog-configured",
+      "passed": true
+    },
+    {
+      "case": "partial-settings-catalog-drift-and-root-overlap-refused",
+      "passed": true
+    }
+  ],
+  "crossLanguageCases": 24,
+  "actualConcurrentCASProcesses": 4,
+  "actualCASWinners": 1,
+  "actualCASConflicts": 3,
+  "sameOriginalPlatformAccessImplementation": true,
+  "identityUpstreamSyntheticNotActualJava": true,
+  "actualAuthenticatedHTTPServerUsed": true,
+  "allServerAndRequestThreadsJoined": true,
+  "noTokensOrAuthHeadersWritten": true,
+  "newSyntheticSceneStateOnly": true,
+  "originalDLGFileContractKept": true,
+  "publicUpdated": false,
+  "originalSixOrEightParentIntegrationAccepted": false,
+  "frontendSceneCloudUIAccepted": false,
+  "actualIIS_TLSAccepted": false
+}

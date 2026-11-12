@@ -1,0 +1,2 @@
+import{checkedSceneProject}from'file:///D:/Project/Zhumadian/work/model-instances-receiver-r1714/source/web/src/scene_project.js';
+let raw='';for await(const p of process.stdin){raw+=p;if(raw.length>1048576)throw Error('BOUNDED_SYNTHETIC_CORPUS_REQUIRED');}const value=JSON.parse(raw);if(value.gate!=='OWN_SCENE_SCHEMA_R1739')throw Error('GATE_REQUIRED');const results=value.cases.map(row=>{try{checkedSceneProject(row.document,value.catalog.models);return true}catch{return false}});console.log(JSON.stringify({results}));

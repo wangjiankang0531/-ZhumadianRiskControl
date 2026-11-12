@@ -1,0 +1,21 @@
+{
+  "R51FixedTransportAndPublicNotChanged": true,
+  "baseSupportSHA256": "06058897585cb4200698ea6b2b4414d320a8c27cf934cec54c8e493ee09ab557",
+  "candidateSupportSHA256": "dcc83dbb6f23f5c426b978fb99cd09a3e11bf479734452856f5e48c8900c558f",
+  "changedOriginalFunctions": [
+    "preflight",
+    "SpatialRuntime.start",
+    "SpatialRuntime.configure_gateway",
+    "SpatialRuntime.verify_gateway"
+  ],
+  "changedPackageFiles": [
+    "tools/layer_sync_gateway_transaction.py"
+  ],
+  "fullApplicationOrServerInstallationNotExecuted": true,
+  "newPureValidator": "checked_client_resources",
+  "originalStopHandleRecoveryAndOwnershipASTRetained": true,
+  "packageManifestSHA256": "6989d7a2429dc938bd8458c2a37fa038b3f847c61375f17395e44813a833a9a3",
+  "packageSourceFiles": 44,
+  "prepared": true,
+  "privateSettingsNotCreatedOrChanged": true
+}

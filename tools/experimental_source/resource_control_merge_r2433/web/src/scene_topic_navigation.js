@@ -1,0 +1,2 @@
+export const SCENE_TOPICS=Object.freeze(['all','portrait','monitoring','closed','emergency','energy','layer-edit','scene-edit','resource-management']);
+export function requestHostedTopic(topic,{window:scope=window}={}){if(!SCENE_TOPICS.includes(topic))throw Error('RESOURCE_TOPIC_INVALID');if(new URLSearchParams(scope.location.search).get('projectHost')!=='1'||!scope.frameElement)return false;scope.frameElement.dispatchEvent(new scope.CustomEvent('xnby-topic-request',{detail:{topic}}));return true;}

@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-12T16:45:06.012523+08:00",
+  "retiredRoot": "D:\\Project\\Zhumadian\\work\\resource-scene-control-r2435\\source",
+  "retiredFiles": 319,
+  "retiredLogicalBytes": 5595971,
+  "actualOriginalRootExitCode": 0,
+  "actualOriginalJobBeforeClose": 0,
+  "freshSuccessfulCIMZero": true,
+  "allFinalPathsBoundedAndNoReparse": true,
+  "retainedOriginalSourceCopiesAndFixedIndexAllSHA256Matched": true,
+  "fiveCurrentProductsSHAUnchanged": true,
+  "diskFreeBeforeBytes": 331991109632,
+  "diskFreeAfterBytes": 331997437952,
+  "observedDeltaBytes": 6328320,
+  "notExclusivePhysicalAttribution": true,
+  "allGISDLGModelsBusinessUploadsConfigurationKept": true,
+  "serverHistoryDeleted": false,
+  "publicUnchangedR51": true,
+  "oldBuildSourceCopyRemovedRebuildNeedsPrepareFromFixedIndex": true
+}

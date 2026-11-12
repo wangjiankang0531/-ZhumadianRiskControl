@@ -1,0 +1,35 @@
+"""A new lifecycle may only read the previously confirmed complete scene, never recreate it."""
+from pathlib import Path
+import ast,hashlib,json
+R=Path('D:/Project/Zhumadian');V=Path(__file__).parent
+def J(p):return json.loads(p.read_bytes())
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+r=J(R/'work/su1749/verified-result.json');t=J(R/'Document/Deployment/fine_browser_original_r1748_20261107/actual-parent-terminal-r1749.json');u=J(R/'work/su1749/ui-restart/result.json');h=J(R/'work/su1749/ui-restart/scene-file-http-summary.json')
+assert not r['passed']and r['originalCodeRestored']and r['originalPointerRestored']and r['allActualJobsZeroBeforeClose']and t['exitCode']==1 and t['actualOuterJobZero']
+assert u['driverPhase']=='normal-unsaved-leave-cancel'and u['failure']=='Expected values to be strictly equal:\n\nfalse !== true\n'
+required={'normal-original-Java-account-saves-full-scene-models-lighting-and-rich-DLG-through-new-library','normal-original-scene-file-read-and-open-cancel-retain-current-model-and-DLG','normal-original-confirmed-open-restores-real-WebGL-model-and-rich-DLG-without-disconnecting-cloud','normal-original-scene-overwrite-cancel-never-repeats-confirmed-create','normal-original-page-refresh-reads-persisted-complete-scene-and-restores-model-with-zero-DLG-POSTs'}
+assert required<={x['case']for x in u['checks']if x['passed']}and h['successfulScenePOSTs']==1 and h['originalDLGPosts']==0 and not h['confirmedCreateReplayed']
+assert r['actualTerminals'][0]['normalOwnedShutdown']and all(v==0 for v in r['actualTerminals'][0]['componentExitCodes'].values())
+intent=J(R/'work/su1749/scene-file-write-intent.private.json');assert intent['confirmed']and intent['name']=='原账号完整场景_r1749.scene.json';assert J(R/'work/scene-files-original-r1748/cloud-scenes'/intent['name'])==intent['expected']
+s=(V/'original_configuration_lifecycle_r1749.mjs').read_text('utf8')
+start=s.index(" const sceneFileName='原账号完整场景_r1749.scene.json'");end=s.index(" const modelShot=await send('Page.captureScreenshot'",start)
+block=r'''
+ const priorIntent=JSON.parse(await fs.readFile('D:/Project/Zhumadian/work/su1749/scene-file-write-intent.private.json','utf8'));assert.equal(priorIntent.confirmed,true);const sceneFileName=priorIntent.name,expectedScene=priorIntent.expected;
+ const libraryClick=id=>ev(`document.querySelector('iframe[title^="驻马店三维"]').contentWindow.document.getElementById('scene-cloud-library-'+${JSON.stringify(id)}).click()`);
+ const libraryField=()=>ev(`(()=>{const w=document.querySelector('iframe[title^="驻马店三维"]').contentWindow,e=w.document.getElementById('scene-cloud-library-name');e.value=${JSON.stringify(sceneFileName)};e.dispatchEvent(new w.Event('input',{bubbles:true}));})()`);
+ const libraryStatus=text=>until(()=>frameEval(`d.getElementById('scene-cloud-library-status').textContent.includes(${JSON.stringify(text)})`),'ACTUAL_SCENE_LIBRARY_'+text);
+ const libraryOpen=async()=>{await ev(`document.querySelector('iframe[title^="驻马店三维"]').contentWindow.document.getElementById('scene-cloud-library').click()`);await until(()=>frameEval(`d.getElementById('scene-cloud-library-dialog').open&&!d.getElementById('scene-cloud-library-read').disabled`),'ACTUAL_SCENE_LIBRARY_OPEN');await libraryField();};
+ await libraryOpen();await libraryClick('read');await libraryStatus('已读取');ownModelConfirmAnswer=true;await libraryClick('import');await until(()=>frameEval(`!d.getElementById('scene-cloud-library-dialog').open&&v.modelOverlay.state.ready`),'ACTUAL_SERVICE_RESTART_SCENE_OPENED');assert.deepEqual(await frameEval('v.modelOverlay.captureSceneState()'),{models:expectedScene.models,lighting:expectedScene.lighting});assert.deepEqual(await frameDoc(),expectedScene.landscape);assert.equal(await frameEval('v.cloudEditorState.running'),true);await mark('normal-original-eight-component-service-restart-reads-prior-confirmed-file-and-restores-model-lighting-DLG');
+ await send('Page.reload',{},editorSession);await until(()=>ev(`document.querySelector('.scene-editor-status')?.dataset.state==='ready'`),'ACTUAL_SCENE_HOST_AFTER_REFRESH');await until(()=>frameEval(`v.cloudEditorState?.state==='ready'&&v.cloudEditorState.running&&w.hongtuSourceAccess?.state.state==='connected'`),'ACTUAL_SCENE_SESSION_AFTER_REFRESH');await ev(`document.querySelector('iframe[title^="驻马店三维"]').contentWindow.document.querySelector('[data-topic="scene-edit"]').click()`);await until(()=>frameEval(`v.modelOverlay&&d.getElementById('model-overlay-select').options.length===29`),'ACTUAL_MODEL_CATALOG_AFTER_REFRESH');await libraryOpen();await libraryClick('read');await libraryStatus('已读取');ownModelConfirmAnswer=true;await libraryClick('import');await until(()=>frameEval(`!d.getElementById('scene-cloud-library-dialog').open&&v.modelOverlay.state.ready`),'ACTUAL_PERSISTED_SCENE_OPEN_AFTER_REFRESH');assert.deepEqual(await frameEval('v.modelOverlay.captureSceneState()'),{models:expectedScene.models,lighting:expectedScene.lighting});assert.deepEqual(await frameDoc(),expectedScene.landscape);await ev(`document.querySelector('iframe[title^="驻马店三维"]').contentWindow.document.getElementById('model-overlay-focus').click()`);await mark('normal-original-restarted-service-and-new-page-read-the-identical-persisted-scene');
+ assert.equal(sceneFilesHTTP.filter(r=>r.method==='POST').length,0);assert.equal(originalDLGPosts,0);await fs.writeFile(O+'/scene-file-http-summary.json',JSON.stringify({responses:sceneFilesHTTP,successfulScenePOSTs:0,originalDLGPosts,confirmedCreateReplayed:false,readOnlyExistingSceneAfterOriginalEightComponentRestart:true,rawHeadersTokensOrBusinessRowsRecorded:false},null,2)+'\n');await mark('normal-original-readonly-restart-zero-scene-POSTs-and-zero-DLG-POSTs');
+'''
+s=s[:start]+block+s[end:];s=s.replace('actualCompleteSceneFileLibraryAndRefresh:true','actualCompleteSceneFileLibraryAndRefresh:true,readOnlyExistingSceneAfterOriginalServiceRestart:true')
+# After a successful save/open the model is intentionally clean. Establish a
+# fresh normal UI edit before the unchanged unsaved-leave contract is tested.
+anchor=" await step('normal-unsaved-leave-cancel');assert.equal(await frameEval('v.modelOverlay.dirty'),true);"
+assert s.count(anchor)==1
+s=s.replace(anchor," await ev(`(()=>{const w=document.querySelector('iframe[title^=\"驻马店三维\"]').contentWindow,d=w.document,e=d.getElementById('model-overlay-x');e.value=String(Number(e.value)+1);d.getElementById('model-overlay-apply').click();})()`);\n"+anchor)
+p=V/'original_configuration_lifecycle_r1751.mjs';assert not p.exists();p.write_text(s,encoding='utf8')
+for old,new in [('run_original_configuration_lifecycle_r1749.py','run_original_configuration_lifecycle_r1751.py'),('launch_original_configuration_lifecycle_r1749.py','launch_original_configuration_lifecycle_r1751.py')]:
+ s=(V/old).read_text('utf8').replace('r1749','r1751').replace('su1749','su1751');ast.parse(s);p=V/new;assert not p.exists();p.write_text(s,encoding='utf8')
+print(json.dumps({'prepared':True,'readonlyExistingConfirmedScene':True,'sceneCreatesAllowed':0,'priorSceneSHA256':sha(R/'work/scene-files-original-r1748/cloud-scenes'/intent['name'])}))
